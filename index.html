@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daftar Aplikasi Saya</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+    overflow-x:hidden;
+}
+
+/* Animated background glow */
+body::before{
+    content:"";
+    position:absolute;
+    width:600px;
+    height:600px;
+    background:radial-gradient(circle,rgba(0,255,255,0.3),transparent 70%);
+    top:-200px;
+    left:-200px;
+    animation:float 8s infinite alternate ease-in-out;
+}
+
+body::after{
+    content:"";
+    position:absolute;
+    width:500px;
+    height:500px;
+    background:radial-gradient(circle,rgba(255,0,150,0.25),transparent 70%);
+    bottom:-200px;
+    right:-200px;
+    animation:float 10s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes float{
+    0%{transform:translateY(0) translateX(0);}
+    100%{transform:translateY(40px) translateX(40px);}
+}
+
+.container{
+    width:90%;
+    max-width:900px;
+    backdrop-filter: blur(15px);
+    background: rgba(255,255,255,0.05);
+    border-radius:25px;
+    padding:50px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+    position:relative;
+    z-index:2;
+    animation:fadeIn 1.2s ease forwards;
+}
+
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(30px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+h1{
+    font-size:2.5rem;
+    text-align:center;
+    margin-bottom:40px;
+    font-weight:700;
+    background: linear-gradient(90deg,#00f5ff,#ff00cc);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.app-list{
+    display:grid;
+    gap:25px;
+}
+
+.app-card{
+    background: rgba(255,255,255,0.08);
+    border-radius:20px;
+    padding:25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:all 0.4s ease;
+    border:1px solid rgba(255,255,255,0.15);
+    position:relative;
+    overflow:hidden;
+}
+
+.app-card::before{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:-100%;
+    background:linear-gradient(120deg,transparent,rgba(255,255,255,0.2),transparent);
+    transition:0.6s;
+}
+
+.app-card:hover::before{
+    left:100%;
+}
+
+.app-card:hover{
+    transform:translateY(-8px) scale(1.02);
+    box-shadow:0 15px 40px rgba(0,0,0,0.6);
+}
+
+.app-info h2{
+    font-size:1.2rem;
+    font-weight:600;
+}
+
+.app-info p{
+    font-size:0.9rem;
+    opacity:0.7;
+    margin-top:5px;
+}
+
+.btn{
+    padding:12px 25px;
+    border-radius:50px;
+    border:none;
+    cursor:pointer;
+    text-decoration:none;
+    font-weight:600;
+    background:linear-gradient(90deg,#00f5ff,#ff00cc);
+    color:#fff;
+    transition:0.3s;
+    box-shadow:0 5px 20px rgba(0,0,0,0.4);
+}
+
+.btn:hover{
+    transform:scale(1.1);
+    box-shadow:0 8px 25px rgba(0,0,0,0.6);
+}
+
+footer{
+    text-align:center;
+    margin-top:40px;
+    font-size:0.85rem;
+    opacity:0.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Daftar Aplikasi Saya</h1>
+
+    <div class="app-list">
+
+        <div class="app-card">
+            <div class="app-info">
+                <h2>Jadwal Imsak Ramadhan 1447 H Kab. Pemalang</h2>
+                <p>Aplikasi jadwal imsak & waktu sholat Ramadhan 1447 H.</p>
+            </div>
+            <a href="https://yanuar-moga.github.io/app/jadwal_imsak/" target="_blank" class="btn">
+                Buka Aplikasi
+            </a>
+        </div>
+
+    </div>
+
+    <footer>
+        © 2026 - Portfolio Aplikasi by Anda
+    </footer>
+</div>
+
+</body>
+</html>
