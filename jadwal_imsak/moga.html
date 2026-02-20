@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jadwal Imsakiyah Ramadhan - Kecamatan Moga</title>
+
+<style>
+body{
+    margin:0;
+    background:#0f2e28;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    font-family:'Segoe UI', sans-serif;
+}
+
+/* CONTAINER */
+.container{
+    width:390px;
+    height:780px;
+    background-image:url('ramadan_template_blank.png');
+    background-size:cover;
+    background-position:center;
+    position:relative;
+    color:#ffffff;
+    overflow:hidden;
+    animation: glow 4s infinite ease-in-out;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+/* Glow halus */
+@keyframes glow{
+    0%{ filter:brightness(1); }
+    50%{ filter:brightness(1.08); }
+    100%{ filter:brightness(1); }
+}
+
+/* Overlay gelap tipis */
+.overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.35) 0%,
+        rgba(0,0,0,0.25) 50%,
+        rgba(0,0,0,0.55) 100%
+    );
+}
+
+/* CONTENT */
+.content{
+    position:relative;
+    z-index:2;
+    padding:120px 30px 0 30px;
+}
+
+/* HEADER */
+h1{
+    text-align:center;
+    font-size:22px;
+    margin-bottom:5px;
+    text-shadow:0 0 15px rgba(255,215,0,0.8);
+}
+
+h2{
+    text-align:center;
+    font-size:14px;
+    margin-bottom:3px;
+}
+
+h3{
+    text-align:center;
+    font-size:13px;
+    margin-bottom:15px;
+    letter-spacing:0.5px;
+}
+
+/* SELECT */
+select{
+    width:100%;
+    padding:10px;
+    border-radius:10px;
+    border:none;
+    margin-bottom:15px;
+    text-align:center;
+    text-align-last:center;
+    font-size:14px;
+    background:rgba(255,255,255,0.9);
+}
+
+/* DATE TEXT */
+.dateText{
+    text-align:center;
+    font-size:12px;
+    margin-bottom:15px;
+    opacity:0.9;
+}
+
+/* TABLE */
+.table{
+    background:rgba(0,0,0,0.45);
+    border-radius:18px;
+    padding:18px;
+    backdrop-filter:blur(8px);
+    box-shadow:0 0 25px rgba(0,0,0,0.4);
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    padding:10px 0;
+    border-bottom:1px solid rgba(255,255,255,0.15);
+    font-size:14px;
+}
+
+.row:last-child{
+    border-bottom:none;
+}
+
+/* FOOTER */
+.footer{
+    position:relative;
+    z-index:2;
+    text-align:center;
+    font-size:11px;
+    padding-bottom:20px;
+    opacity:0.9;
+    letter-spacing:0.5px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<div class="overlay"></div>
+
+<div class="content">
+    <h1>JADWAL IMSAKIYAH</h1>
+    <h2>Ramadhan 1447 H</h2>
+    <h3>Kecamatan Moga</h3>
+
+    <select id="daySelect" onchange="updateSchedule()"></select>
+
+    <div class="dateText" id="dateText"></div>
+
+    <div class="table">
+        <div class="row"><span>Imsak</span><span id="imsak"></span></div>
+        <div class="row"><span>Subuh</span><span id="subuh"></span></div>
+        <div class="row"><span>Dzuhur</span><span id="dzuhur"></span></div>
+        <div class="row"><span>Ashar</span><span id="ashar"></span></div>
+        <div class="row"><span>Maghrib</span><span id="maghrib"></span></div>
+        <div class="row"><span>Isya</span><span id="isya"></span></div>
+    </div>
+</div>
+
+<div class="footer">
+© 2026 MB · All Rights Reserved Jadwal Ramadhan Kec. Moga
+</div>
+
+</div>
+
+<script>
+const data = {
+1:["Kamis, 19 Februari 2026","04.21","04.31","12.00","15.09","18.08","19.19"],
+2:["Jumat, 20 Februari 2026","04.21","04.31","12.00","15.08","18.08","19.18"],
+3:["Sabtu, 21 Februari 2026","04.21","04.31","12.00","15.08","18.08","19.18"],
+4:["Ahad, 22 Februari 2026","04.21","04.31","11.59","15.07","18.07","19.17"],
+5:["Senin, 23 Februari 2026","04.21","04.31","11.59","15.06","18.07","19.17"],
+6:["Selasa, 24 Februari 2026","04.21","04.31","11.59","15.05","18.07","19.17"],
+7:["Rabu, 25 Februari 2026","04.22","04.32","11.59","15.04","18.06","19.16"],
+8:["Kamis, 26 Februari 2026","04.22","04.32","11.59","15.03","18.06","19.16"],
+9:["Jumat, 27 Februari 2026","04.22","04.32","11.59","15.02","18.06","19.15"],
+10:["Sabtu, 28 Februari 2026","04.22","04.32","11.59","15.01","18.05","19.15"],
+11:["Ahad, 1 Maret 2026","04.22","04.32","11.58","15.00","18.05","19.14"],
+12:["Senin, 2 Maret 2026","04.22","04.32","11.58","14.59","18.05","19.14"],
+13:["Selasa, 3 Maret 2026","04.22","04.32","11.58","14.58","18.04","19.13"],
+14:["Rabu, 4 Maret 2026","04.22","04.32","11.58","14.59","18.04","19.13"],
+15:["Kamis, 5 Maret 2026","04.22","04.32","11.57","14.59","18.03","19.12"],
+16:["Jumat, 6 Maret 2026","04.22","04.32","11.57","15.00","18.03","19.12"],
+17:["Sabtu, 7 Maret 2026","04.22","04.32","11.57","15.00","18.03","19.11"],
+18:["Ahad, 8 Maret 2026","04.22","04.32","11.57","15.00","18.02","19.11"],
+19:["Senin, 9 Maret 2026","04.22","04.32","11.57","15.01","18.02","19.10"],
+20:["Selasa, 10 Maret 2026","04.22","04.32","11.56","15.01","18.01","19.10"],
+21:["Rabu, 11 Maret 2026","04.22","04.32","11.56","15.01","18.01","19.09"],
+22:["Kamis, 12 Maret 2026","04.22","04.32","11.56","15.02","18.00","19.09"],
+23:["Jumat, 13 Maret 2026","04.22","04.32","11.55","15.02","18.00","19.08"],
+24:["Sabtu, 14 Maret 2026","04.22","04.32","11.55","15.02","17.59","19.08"],
+25:["Ahad, 15 Maret 2026","04.22","04.32","11.55","15.03","17.59","19.07"],
+26:["Senin, 16 Maret 2026","04.22","04.32","11.55","15.03","17.58","19.07"],
+27:["Selasa, 17 Maret 2026","04.22","04.52","11.54","15.03","17.58","19.06"],
+28:["Rabu, 18 Maret 2026","04.22","04.32","11.54","15.03","17.57","19.06"],
+29:["Kamis, 19 Maret 2026","04.22","04.32","11.54","15.03","17.57","19.05"],
+30:["Jumat, 20 Maret 2026","04.22","04.32","11.54","15.04","17.56","19.05"]
+};
+
+const select=document.getElementById("daySelect");
+
+for(let i=1;i<=30;i++){
+    let opt=document.createElement("option");
+    opt.value=i;
+    opt.text=i+" Ramadhan";
+    select.appendChild(opt);
+}
+
+function addOneMinute(time){
+    let parts=time.split(".");
+    let hour=parseInt(parts[0]);
+    let minute=parseInt(parts[1]);
+    minute+=1;
+    if(minute===60){
+        minute=0;
+        hour+=1;
+    }
+    return (hour<10?"0"+hour:hour)+"."+(minute<10?"0"+minute:minute);
+}
+
+function updateSchedule(){
+    const day=select.value;
+    document.getElementById("dateText").innerText=data[day][0];
+    document.getElementById("imsak").innerText=addOneMinute(data[day][1]);
+    document.getElementById("subuh").innerText=addOneMinute(data[day][2]);
+    document.getElementById("dzuhur").innerText=addOneMinute(data[day][3]);
+    document.getElementById("ashar").innerText=addOneMinute(data[day][4]);
+    document.getElementById("maghrib").innerText=addOneMinute(data[day][5]);
+    document.getElementById("isya").innerText=addOneMinute(data[day][6]);
+}
+
+updateSchedule();
+</script>
+
+</body>
+</html>
