@@ -1,34 +1,181 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
+
 <head>
+
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>CBT Trainer</title>
+
 <link rel="stylesheet" href="css/style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 </head>
+
 
 <body>
 
+<!-- SPLASH SCREEN -->
+
 <div id="splash">
+
+<div class="splash-box">
+
 <h1>CBT TRAINER</h1>
-<p>Memuat aplikasi...</p>
+<p>Simulasi Ujian Profesional</p>
+
+<div class="loader"></div>
+
 </div>
 
-<div id="menu" style="display:none">
+</div>
 
-<h2>Bank Soal</h2>
 
-<a class="paket" href="ujian/ppg1.html">
-PPG Paket 1 (25 Soal)
+<!-- MAIN APP -->
+
+<div id="app" style="display:none">
+
+
+<header class="topbar">
+
+<div class="logo">
+CBT TRAINER
+</div>
+
+<div class="menu-right">
+
+<button onclick="toggleDark()">🌙</button>
+
+</div>
+
+</header>
+
+
+
+<section class="hero">
+
+<h2>Bank Soal Latihan</h2>
+
+<p>
+Platform latihan soal untuk mahasiswa PPG
+dan latihan Informatika SMP
+</p>
+
+</section>
+
+
+
+<section class="banksoal">
+
+
+<h3>Paket Soal</h3>
+
+<div class="card-container">
+
+<a href="ujian/ppg1.html" class="card">
+
+<div class="icon">🧠</div>
+
+<h4>PPG Paket 1</h4>
+
+<p>25 Soal</p>
+
 </a>
 
+
+<a href="ujian/informatika1.html" class="card">
+
+<div class="icon">💻</div>
+
+<h4>Informatika SMP</h4>
+
+<p>Bab Sistem Komputer</p>
+
+</a>
+
+
 </div>
 
+</section>
+
+
+
+<section class="statistik">
+
+<h3>Statistik Latihan</h3>
+
+<div class="stats-box">
+
+<div class="stat">
+
+<h4 id="latihan">0</h4>
+<p>Latihan</p>
+
+</div>
+
+<div class="stat">
+
+<h4 id="tertinggi">0</h4>
+<p>Nilai Tertinggi</p>
+
+</div>
+
+<div class="stat">
+
+<h4 id="rata">0</h4>
+<p>Rata-rata</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<footer>
+
+<p>CBT Trainer © 2026</p>
+
+</footer>
+
+
+</div>
+
+
+
 <script>
+
 setTimeout(()=>{
+
 document.getElementById("splash").style.display="none"
-document.getElementById("menu").style.display="block"
+
+document.getElementById("app").style.display="block"
+
+loadStats()
+
 },2000)
+
+
+function loadStats(){
+
+let latihan=localStorage.getItem("latihan") || 0
+let tinggi=localStorage.getItem("tinggi") || 0
+let rata=localStorage.getItem("rata") || 0
+
+document.getElementById("latihan").innerText=latihan
+document.getElementById("tertinggi").innerText=tinggi
+document.getElementById("rata").innerText=rata
+
+}
+
 </script>
 
+
+<script src="js/darkmode.js"></script>
+
+
 </body>
+
 </html>
