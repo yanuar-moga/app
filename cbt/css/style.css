@@ -1,86 +1,26 @@
 body{
-font-family:Arial;
+
+font-family:'Inter',sans-serif;
+
 margin:0;
-background:#f4f4f4;
-}
 
-.header{
-display:flex;
-justify-content:space-between;
-padding:10px;
-background:#2563eb;
-color:white;
-}
-
-.container{
-display:flex;
-}
-
-.soal-area{
-width:70%;
-padding:20px;
-}
-
-.nav-area{
-width:30%;
-background:#eee;
-padding:10px;
-}
-
-#navSoal{
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:8px;
-}
-
-.nav{
-padding:10px;
-border:1px solid #999;
-text-align:center;
-cursor:pointer;
-transition:0.2s;
-}
-
-.nav:hover{
-transform:scale(1.1);
-}
-
-.belum{background:white;}
-.jawab{background:#22c55e;color:white;}
-.lewat{background:#ccc;}
-
-.dark{
-background:#111;
-color:white;
-}
-
-#splash{
-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-}
-
-body{
-
-font-family:'Poppins',sans-serif;
-margin:0;
 background:#f1f5f9;
+
 color:#1e293b;
 
 }
 
+/* HEADER */
 
-/* TOPBAR */
-
-.topbar{
+.header{
 
 display:flex;
+
 justify-content:space-between;
+
 align-items:center;
 
-padding:15px 30px;
+padding:20px 40px;
 
 background:linear-gradient(90deg,#2563eb,#1e40af);
 
@@ -88,6 +28,27 @@ color:white;
 
 }
 
+.logo{
+
+font-weight:600;
+
+font-size:18px;
+
+}
+
+.dark-btn{
+
+background:white;
+
+border:none;
+
+padding:8px 14px;
+
+border-radius:20px;
+
+cursor:pointer;
+
+}
 
 /* HERO */
 
@@ -95,69 +56,21 @@ color:white;
 
 text-align:center;
 
-padding:40px;
+padding:50px 20px;
 
 }
 
+.hero h2{
 
-/* CARD */
-
-.card-container{
-
-display:flex;
-
-gap:20px;
-
-justify-content:center;
-
-flex-wrap:wrap;
-
-}
-
-
-.card{
-
-background:white;
-
-width:220px;
-
-padding:25px;
-
-border-radius:12px;
-
-text-align:center;
-
-text-decoration:none;
-
-color:#1e293b;
-
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-
-transition:0.3s;
-
-}
-
-.card:hover{
-
-transform:translateY(-5px);
-
-box-shadow:0 15px 25px rgba(0,0,0,0.2);
-
-}
-
-
-.icon{
-
-font-size:40px;
+font-size:32px;
 
 margin-bottom:10px;
 
 }
 
+/* MENU */
 
-/* STATISTIK */
-
-.statistik{
+.menu-section{
 
 padding:40px;
 
@@ -165,41 +78,135 @@ text-align:center;
 
 }
 
+.menu-grid{
 
-.stats-box{
+display:grid;
+
+grid-template-columns:repeat(auto-fit,250px);
+
+justify-content:center;
+
+gap:25px;
+
+margin-top:30px;
+
+}
+
+.menu-card{
+
+background:white;
+
+padding:30px;
+
+border-radius:20px;
+
+text-decoration:none;
+
+color:#1e293b;
+
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+
+transition:0.3s;
+
+}
+
+.menu-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 20px 40px rgba(0,0,0,0.15);
+
+}
+
+.menu-icon{
+
+font-size:45px;
+
+margin-bottom:15px;
+
+}
+
+.start-btn{
+
+margin-top:15px;
+
+background:#2563eb;
+
+color:white;
+
+border:none;
+
+padding:10px 20px;
+
+border-radius:25px;
+
+cursor:pointer;
+
+transition:0.2s;
+
+}
+
+.start-btn:hover{
+
+background:#1e40af;
+
+}
+
+/* STATISTIK */
+
+.stats{
+
+padding:40px;
+
+text-align:center;
+
+}
+
+.stats-grid{
 
 display:flex;
 
 justify-content:center;
 
-gap:40px;
+gap:25px;
+
+margin-top:20px;
 
 }
 
-
-.stat{
+.stat-card{
 
 background:white;
 
-padding:20px;
+padding:25px;
 
-border-radius:10px;
+border-radius:15px;
 
-width:120px;
+width:140px;
 
-box-shadow:0 5px 10px rgba(0,0,0,0.1);
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 
 }
 
-
-.stat h4{
+.stat-card span{
 
 font-size:28px;
 
-margin:0;
+font-weight:600;
 
 }
 
+/* FOOTER */
+
+footer{
+
+text-align:center;
+
+padding:30px;
+
+color:#64748b;
+
+}
 
 /* SPLASH */
 
@@ -223,8 +230,15 @@ color:white;
 
 }
 
+.splash-content{
 
-.loader{
+text-align:center;
+
+}
+
+.spinner{
+
+margin:auto;
 
 margin-top:20px;
 
@@ -242,26 +256,10 @@ animation:spin 1s linear infinite;
 
 }
 
-
 @keyframes spin{
 
 0%{transform:rotate(0deg)}
 
 100%{transform:rotate(360deg)}
-
-}
-
-
-/* FOOTER */
-
-footer{
-
-text-align:center;
-
-padding:20px;
-
-margin-top:40px;
-
-color:#64748b;
 
 }
