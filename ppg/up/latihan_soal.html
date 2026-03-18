@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan Soal PPG</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+
+body{
+background:linear-gradient(135deg,#0f172a,#1e293b);
+color:white;
+display:flex;
+justify-content:center;
+}
+
+.wrapper{
+width:100%;
+max-width:600px;
+padding:20px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.title{
+font-size:1.2rem;
+background:linear-gradient(90deg,#38bdf8,#6366f1);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.timer{
+font-size:0.9rem;
+background:rgba(255,255,255,0.1);
+padding:6px 10px;
+border-radius:10px;
+}
+
+.nav-soal{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(40px,1fr));
+gap:8px;
+margin-bottom:15px;
+}
+
+.nav-soal div{
+padding:8px;
+text-align:center;
+border-radius:8px;
+background:white;
+color:black;
+font-size:0.8rem;
+cursor:pointer;
+}
+
+.nav-soal .answered{background:#22c55e;color:white}
+.nav-soal .doubt{background:#64748b;color:white}
+
+.card{
+background:rgba(255,255,255,0.05);
+padding:18px;
+border-radius:16px;
+backdrop-filter:blur(12px);
+border:1px solid rgba(255,255,255,0.08);
+}
+
+.question{
+font-size:0.9rem;
+margin-bottom:10px;
+}
+
+.option{
+display:block;
+margin-bottom:8px;
+padding:10px;
+border-radius:10px;
+background:rgba(255,255,255,0.08);
+cursor:pointer;
+}
+
+.option input{margin-right:8px}
+
+.actions{
+display:flex;
+justify-content:space-between;
+margin-top:10px;
+}
+
+button{
+padding:8px 12px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+.ragu{background:#64748b;color:white}
+.next{background:linear-gradient(90deg,#6366f1,#38bdf8);color:white}
+
+@media(max-width:500px){
+.wrapper{padding:15px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<div class="header">
+<div class="title">📝 Latihan Soal</div>
+<div class="timer" id="timer">30:00</div>
+</div>
+
+<div class="nav-soal" id="nav"></div>
+
+<div class="card">
+<div class="question" id="question"></div>
+<div id="options"></div>
+
+<div class="actions">
+<button class="ragu" onclick="markDoubt()">Ragu-ragu</button>
+<button class="next" onclick="nextQuestion()">Selanjutnya</button>
+</div>
+</div>
+
+</div>
+
+<script>
+const questions=[
+{
+q:"Apa tujuan utama penilaian autentik?",
+options:[
+"Mengukur hasil akhir saja",
+"Menilai proses dan hasil belajar",
+"Hanya untuk nilai rapor",
+"Sebagai formalitas"
+]
+},
+{
+q:"Model pembelajaran yang berpusat pada siswa adalah...",
+options:[
+"Ceramah",
+"Problem Based Learning",
+"Drill",
+"Hafalan"
+]
+},
+{
+q:"Media pembelajaran berfungsi untuk...",
+options:[
+"Memperumit pembelajaran",
+"Meningkatkan pemahaman siswa",
+"Menggantikan guru",
+"Mengurangi waktu belajar"
+]
+}
+];
+
+let current=0;
+let answers=new Array(questions.length).fill(null);
+let doubt=new Array(questions.length).fill(false);
+
+function loadQuestion(){
+const q=questions[current];
+document.getElementById('question').innerText=(current+1)+'. '+q.q;
+
+let html="";
+q.options.forEach((opt,i)=>{
+html+=`<label class="option">
+<input type="radio" name="opt" value="${i}" ${answers[current]==i?"checked":""} onchange="saveAnswer(${i})">
+${opt}
+</label>`;
+});
+
+document.getElementById('options').innerHTML=html;
+updateNav();
+}
+
+function saveAnswer(i){
+answers[current]=i;
+doubt[current]=false;
+updateNav();
+}
+
+function markDoubt(){
+doubt[current]=true;
+answers[current]=answers[current] ?? null;
+updateNav();
+}
+
+function nextQuestion(){
+if(current<questions.length-1){
+current++;
+loadQuestion();
+}
+}
+
+function updateNav(){
+let html="";
+questions.forEach((_,i)=>{
+let cls="";
+if(answers[i]!=null) cls="answered";
+if(doubt[i]) cls="doubt";
+html+=`<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+});
+
+document.getElementById('nav').innerHTML=html;
+}
+
+function goTo(i){
+current=i;
+loadQuestion();
+}
+
+// TIMER
+let time=1800;
+setInterval(()=>{
+let m=Math.floor(time/60);
+let s=time%60;
+document.getElementById('timer').innerText=`${m}:${s<10?'0':''}${s}`;
+if(time>0) time--;
+},1000);
+
+loadQuestion();
+</script>
+
+</body>
+</html>
