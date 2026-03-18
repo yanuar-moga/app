@@ -1,98 +1,188 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Rangkuman Studi Kasus PPG</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f5f7fa;
-            line-height: 1.6;
-        }
-        .container {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-        }
-        h2 {
-            color: #34495e;
-            border-left: 5px solid #3498db;
-            padding-left: 10px;
-        }
-        p {
-            text-align: justify;
-        }
-        ul {
-            margin-left: 20px;
-        }
-        .identitas {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #ecf0f1;
-            border-radius: 8px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studi Kasus PPG</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+/* WRAPPER */
+.wrapper {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 1.6rem;
+    background: linear-gradient(90deg, #38bdf8, #6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header p {
+    font-size: 0.85rem;
+    color: #cbd5f5;
+}
+
+/* CARD */
+.card {
+    background: rgba(255,255,255,0.05);
+    padding: 18px;
+    border-radius: 16px;
+    margin-bottom: 15px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* IDENTITAS */
+.identitas {
+    background: rgba(255,255,255,0.04);
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+}
+
+/* JUDUL SECTION */
+h2 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: #38bdf8;
+}
+
+/* TEXT */
+p, li {
+    font-size: 0.85rem;
+    color: #cbd5f5;
+    line-height: 1.5;
+}
+
+ul {
+    padding-left: 18px;
+}
+
+/* BUTTON BACK */
+.back {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #6366f1, #38bdf8);
+    text-decoration: none;
+    color: white;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    font-size: 0.7rem;
+    color: #94a3b8;
+    margin-top: 15px;
+}
+
+</style>
 </head>
+
 <body>
 
-<div class="container">
+<div class="wrapper">
 
-    <h1>Studi Kasus PPG</h1>
-
-    <div class="identitas">
-        <p><strong>Nama:</strong> [Isi Nama]</p>
-        <p><strong>NIM:</strong> [Isi NIM]</p>
-        <p><strong>Program:</strong> Pendidikan Profesi Guru (PPG)</p>
+    <div class="header">
+        <h1>📄 Studi Kasus PPG</h1>
+        <p>Analisis Pembelajaran Reflektif</p>
     </div>
 
-    <h2>1. Identifikasi Masalah</h2>
-    <p>
-        Permasalahan yang terjadi dalam proses pembelajaran adalah penggunaan Lembar Kerja Peserta Didik (LKPD) yang belum optimal. LKPD yang digunakan memiliki tingkat kesulitan yang tidak sesuai dengan kemampuan peserta didik serta instruksi yang kurang jelas.
-    </p>
-    <p>
-        Kondisi tersebut menyebabkan peserta didik mengalami kebingungan dalam memahami tugas yang diberikan sehingga berdampak pada rendahnya pemahaman dan hasil belajar.
-    </p>
+    <!-- IDENTITAS -->
+    <div class="card identitas">
+        <p><strong>Nama:</strong> [Isi Nama]</p>
+        <p><strong>NIM:</strong> [Isi NIM]</p>
+        <p><strong>Program:</strong> PPG</p>
+    </div>
 
-    <h2>2. Analisis Penyebab Masalah</h2>
-    <ul>
-        <li>Kurangnya persiapan guru dalam menyusun LKPD</li>
-        <li>LKPD tidak sesuai dengan kemampuan peserta didik</li>
-        <li>Instruksi kurang jelas</li>
-        <li>Pembelajaran berfokus pada penilaian</li>
-    </ul>
+    <!-- 1 -->
+    <div class="card">
+        <h2>1. Identifikasi Masalah</h2>
+        <p>
+            Permasalahan yang terjadi dalam pembelajaran adalah penggunaan LKPD yang belum optimal. LKPD memiliki tingkat kesulitan yang tidak sesuai dan instruksi yang kurang jelas.
+        </p>
+    </div>
 
-    <h2>3. Alternatif Solusi</h2>
-    <ul>
-        <li>Menyusun LKPD sesuai kemampuan siswa</li>
-        <li>Menggunakan bahasa sederhana dan jelas</li>
-        <li>Menambahkan gambar pendukung</li>
-        <li>Menggunakan LKPD individu dan kelompok</li>
-    </ul>
+    <!-- 2 -->
+    <div class="card">
+        <h2>2. Analisis Penyebab</h2>
+        <ul>
+            <li>Kurangnya persiapan guru</li>
+            <li>LKPD tidak sesuai kemampuan siswa</li>
+            <li>Instruksi kurang jelas</li>
+            <li>Fokus pada penilaian</li>
+        </ul>
+    </div>
 
-    <h2>4. Solusi yang Dipilih</h2>
-    <p>
-        Solusi yang dipilih adalah menyusun LKPD yang sistematis, kontekstual, dan sesuai dengan kemampuan peserta didik serta dilengkapi dengan instruksi yang jelas.
-    </p>
+    <!-- 3 -->
+    <div class="card">
+        <h2>3. Alternatif Solusi</h2>
+        <ul>
+            <li>Menyusun LKPD sesuai kemampuan</li>
+            <li>Menggunakan bahasa sederhana</li>
+            <li>Menambahkan gambar</li>
+            <li>LKPD individu & kelompok</li>
+        </ul>
+    </div>
 
-    <h2>5. Implementasi</h2>
-    <ul>
-        <li>Mendesain ulang LKPD</li>
-        <li>Menyederhanakan instruksi</li>
-        <li>Menambahkan gambar</li>
-        <li>Membagi LKPD individu dan kelompok</li>
-        <li>Mendorong diskusi dan berpikir kritis</li>
-    </ul>
+    <!-- 4 -->
+    <div class="card">
+        <h2>4. Solusi Dipilih</h2>
+        <p>
+            LKPD yang kontekstual, sistematis, dan sesuai kemampuan siswa.
+        </p>
+    </div>
 
-    <h2>6. Refleksi dan Hasil</h2>
-    <p>
-        Setelah implementasi, siswa menjadi lebih aktif, percaya diri, dan mudah memahami materi. Suasana kelas menjadi lebih interaktif dan pembelajaran berjalan lebih efektif.
-    </p>
+    <!-- 5 -->
+    <div class="card">
+        <h2>5. Implementasi</h2>
+        <ul>
+            <li>Redesain LKPD</li>
+            <li>Sederhanakan instruksi</li>
+            <li>Tambahkan gambar</li>
+            <li>Pembelajaran individu & kelompok</li>
+        </ul>
+    </div>
+
+    <!-- 6 -->
+    <div class="card">
+        <h2>6. Refleksi & Hasil</h2>
+        <p>
+            Pembelajaran menjadi lebih aktif, siswa lebih percaya diri, dan pemahaman meningkat.
+        </p>
+    </div>
+
+    <!-- BACK -->
+    <a href="../index.html" class="back">⬅ Kembali ke Menu</a>
+
+    <div class="footer">
+        © 2026 PPG Learning Hub
+    </div>
 
 </div>
 
