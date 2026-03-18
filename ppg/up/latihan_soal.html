@@ -22,11 +22,7 @@ h1{text-align:center}
 button{padding:12px;border:none;border-radius:10px;background:#22c55e;color:white;font-weight:bold;cursor:pointer}
 .nomor{text-align:center;margin-bottom:10px}
 .nomor button{margin:3px;background:#334155}
-.hasil{text-align:center;background:#334155;padding:20px;border-radius:12px;margin-top:20px;animation:fadeIn 0.8s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.action-btn{display:inline-block;margin:10px;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:bold}
-.home{background:#38bdf8;color:#0f172a}
-.ulang{background:#f97316;color:white}
+.hasil{text-align:center;background:#334155;padding:20px;border-radius:12px;margin-top:20px}
 </style>
 </head>
 
@@ -37,6 +33,7 @@ button{padding:12px;border:none;border-radius:10px;background:#22c55e;color:whit
 <div class="progress"><div class="bar" id="bar"></div></div>
 
 <div class="nomor" id="navSoal"></div>
+
 <form id="quizForm"></form>
 
 <div class="nav">
@@ -48,21 +45,81 @@ button{padding:12px;border:none;border-radius:10px;background:#22c55e;color:whit
 </div>
 
 <script>
-const data = [...JSON.parse(`[]`)]; // placeholder replaced below
-</script>
-
-<script>
-// DATA SOAL (TIDAK DIUBAH)
-const dataSoal = [
-// (ISI SAMA SEPERTI SEBELUMNYA)
+const data = [
+{
+q:"Seorang guru ingin mengajarkan konsep berbagai topologi jaringan komputer kepada siswa dengan kebutuhan pembelajaran yang beragam, termasuk siswa penyandang disabilitas. Bagaimana guru dapat mengorganisasi konten pembelajaran agar semua siswa dapat memahami materi dengan baik?",
+o:[
+"Menyediakan materi pembelajaran hanya dalam bentuk teks tertulis, tanpa menyertakan media tambahan seperti video, audio, atau gambar, yang dapat membantu memperjelas dan memperkaya pemahaman siswa terhadap konten yang diajarkan.",
+"Menggunakan presentasi visual yang menarik dengan gambar, grafik, dan diagram tanpa menyertakan teks tambahan, agar siswa dapat fokus pada elemen visual untuk memahami konsep yang diajarkan melalui visualisasi yang jelas dan efektif.",
+"Menyediakan materi dalam berbagai format, seperti video dengan teks tertutup, gambar dengan deskripsi audio, dan diagram interaktif yang dapat diakses oleh semua siswa sesuai kebutuhan mereka.",
+"Mengadakan ujian tertulis yang komprehensif tentang topologi jaringan, mencakup berbagai tipe seperti bus, star, ring, dan mesh, untuk mengevaluasi pemahaman siswa terhadap konsep, kelebihan, dan kelemahan masing-masing topologi secara mendalam.",
+"Menyuruh siswa membaca buku teks tentang topologi jaringan komputer."
+],a:2},
+{
+q:"Untuk mengajarkan konsep animasi 2D dan 3D pada peserta didiknya, peserta didik harus mampu menentukan letak perbedaan yang paling mencolok antara animasi 2D dan 3D pada saat membuatnya. Untuk mencapai tujuan pembelajaran tersebut, maka desain pembelajaran yang dianggap paling lengkap dilakukan oleh guru dalam mengajarkan konsep animasi 2D dan 3D tersebut adalah memperhatikan ....",
+o:[
+"objek dan karakter untuk memiliki volume sehingga memberikan kesan yang lebih nyata dan mendalam",
+"penggambaran dilakukan dengan membuat gambar berurutan yang disebut frame untuk menciptakan ilusi gerakan",
+"dimensi, teknik pembuatan, estetika visual, pengalaman interaktif, proses produksi dan biaya",
+"pembuatan objek virtual, pencahayaan, tekstur, dan animasi gerak yang lebih kompleks",
+"nuansa dan tekstur yang lebih kompleks sehingga membuatnya terlihat lebih hidup"
+],a:2},
+{
+q:"Seorang guru ingin memastikan bahwa siswa memahami cara menginstal dan mengkonfigurasi perangkat keras komputer dengan benar. Langkah mana yang harus dilakukan guru untuk mengorganisasi pembelajaran ini agar memudahkan pemahaman siswa?",
+o:[
+"Memberikan ceramah detail tentang langkah-langkah instalasi perangkat keras, mulai dari persiapan perangkat dan perangkat lunak, serta proses pemasangan fisik.",
+"Menyediakan video tutorial yang menunjukkan proses instalasi perangkat keras, disertai dengan latihan praktis di laboratorium komputer.",
+"Menyuruh siswa membaca manual instalasi perangkat keras tanpa bimbingan, dengan tujuan memberikan mereka kesempatan untuk mengembangkan keterampilan mandiri.",
+"Memberikan soal tes tertulis yang mencakup langkah-langkah instalasi perangkat keras, termasuk persiapan, pemasangan fisik, konfigurasi, dan pengujian.",
+"Menyuruh siswa menulis esai tentang pentingnya perangkat keras komputer."
+],a:1},
+{
+q:"Guru menjelaskan kepada siswa tentang proses editing video menggunakan perangkat lunak Adobe Premiere Pro. Bagaimana guru dapat memastikan bahwa siswa memahami tahapan dasar dalam proses editing video?",
+o:[
+"Apa langkah pertama yang harus dilakukan saat memulai proyek baru di Adobe Premiere Pro?",
+"Bagaimana cara menambahkan transisi antara dua klip video?",
+"Mengapa penting untuk memahami timeline dalam proses editing video?",
+"Apa perbedaan antara trimming dan splitting dalam editing video?",
+"Bagaimana cara mengatur kecepatan video di Adobe Premiere Pro?"
+],a:2},
+{
+q:"Pak Agus adalah seorang guru informatika yang akan menyusun desain pembelajaran pada mata pelajaran desain perencanaan produk. Melalui model Project based learning, guru tersebut menerapkan teori konstruktivistik dalam desain pembelajarannya. Tahap pertama yang perlu diperhatikan oleh guru dalam merancang pembelajaran tersebut adalah ...",
+o:[
+"guru meminta peserta didik untuk mencari solusi atau menyelidiki konsep yang telah dipaparkan. Kegiatan tersebut bisa diisi dengan membaca buku, mencari referensi dari berbagai sumber, atau mengorganisasi ilmu-ilmu yang relevan.",
+"peserta didik diminta untuk memberikan pemaparan tentang konsep yang dirumuskan berdasarkan pengetahuan yang telah diperolehnya. Selain itu juga bisa memberikan penguatan berdasarkan keilmuan yang guru miliki.",
+"mengondisikan suasana belajar di kelas menjadi lebih hangat, santun, dan penuh wibawa. Dengan demikian, guru bisa mendorong peserta didik untuk bisa menerapkan pemahaman konseptual yang telah diperolehnya di kehidupan sehari-hari.",
+"guru harus bisa memancing peserta didik tentang suatu pokok bahasan atau konsep, misalnya dengan memberikan sejumlah pertanyaan yang bersifat clickbait di kehidupan sehari-hari. Lalu, guru bisa mulai membangun komunikasi dua arah agar mereka bersedia memberikan gambaran umumnya.",
+"guru membentuk pemikiran peserta didik bahwa bekerja secara mandiri akan menghasilkan kegiatan belajar yang lebih bermakna."
+],a:3},
+{
+q:"Seorang guru informatika melaksanakan asesmen yang dilakukan untuk mengidentifikasi kebutuhan belajar peserta didik, hambatan atau kesulitan yang mereka hadapi, dan juga untuk mendapatkan informasi perkembangan peserta didik. Asesmen yang dilakukan oleh guru tersebut dalam pembelajaran disebut ....",
+o:[
+"asesmen diagnostik",
+"asesmen diagnostik non kognitif",
+"asesmen formatif",
+"asesmen diagnosis kognitif",
+"asesmen sumatif"
+],a:2},
+{
+q:"Anda sedang memberikan tugas proyek kelompok di kelas. Anda mengamati dua siswa, Andi dan Rina, terlibat perselisihan tajam karena merasa salah satu dari mereka tidak bekerja maksimal. Mereka saling menyalahkan sehingga suasana kelompok menjadi tidak kondusif. Sebagai guru, tindakan manakah yang paling tepat Anda lakukan?",
+o:[
+"Menegur keduanya dan memerintahkan mereka segera menyelesaikan masalah secara mandiri tanpa memberikan arahan teknis.",
+"Mendekati Andi dan Rina untuk mendengarkan perspektif masing-masing tanpa menghakimi, lalu membimbing mereka mencari solusi dan memperbaiki komunikasi.",
+"Memisahkan keduanya dari kelompok agar tidak mengganggu siswa lain sampai mereka menyadari sendiri pentingnya kerja sama.",
+"Membiarkan konflik tetap berlangsung sebagai bentuk latihan pendewasaan dan kemandirian siswa dalam menghadapi masalah sosial.",
+"Menjadikan perselisihan mereka sebagai contoh kasus di depan seluruh kelas untuk mendiskusikan cara menyelesaikan konflik yang sehat."
+],a:1},
+{
+q:"Anda sedang mengajar di kelas dalam kondisi lelah dan sedikit kesal karena persoalan pribadi di rumah. Saat siswa sedang fokus mengerjakan tugas mandiri, dua siswa di barisan belakang terus berbisik dan tertawa hingga mengganggu konsentrasi kelas. Tindakan manakah yang paling tepat Anda lakukan?",
+o:[
+"Meminta kedua siswa keluar kelas dengan tegas dan mengurangi nilai keaktifan mereka sebagai bentuk sanksi pelanggaran.",
+"Mengabaikan mereka agar berhenti sendiri, namun mencatat nama mereka untuk diberikan teguran keras di akhir pelajaran.",
+"Menenangkan diri sejenak (regulasi diri), lalu memberikan isyarat mata atau teguran halus agar mereka kembali fokus pada tugas.",
+"Menghentikan seluruh aktivitas kelas dan meminta kedua siswa tersebut berdiri untuk menjelaskan apa yang mereka tertawakan.",
+"Menenangkan diri sejenak, lalu mendekati kedua siswa tersebut untuk berbicara pelan dan mengingatkan kesepakatan kelas tentang ketenangan."
+],a:4}
 ];
 
-// COPY DATA ASLI
-const data2 = "+JSON.stringify("+JSON.stringify(data)+")+";
-</script>
-
-<script>
-const data = "+JSON.stringify(data)+";
 let current=0, jawaban=[];
 const form=document.getElementById('quizForm');
 
@@ -117,30 +174,10 @@ clearInterval(t);
 let benar=0;
 data.forEach((d,i)=>{if(jawaban[i]==d.a) benar++;});
 let nilai=Math.round((benar/data.length)*100);
-
-// RANKING SEDERHANA
-let rank = nilai>=90?"🏆 Sangat Baik": nilai>=75?"👍 Baik": nilai>=60?"🙂 Cukup":"⚠ Perlu Belajar Lagi";
-
-let hasilHTML = `
-<h2>Nilai Anda: ${nilai}</h2>
-<p>Benar: ${benar} dari ${data.length}</p>
-<h3>${rank}</h3>
-
-<div>
-<a href="https://yanuar-moga.github.io/app/ppg/" class="action-btn home">⬅ Kembali ke Home</a>
-<button onclick="ulangUjian()" class="action-btn ulang">🔄 Ulangi Ujian</button>
-</div>
-`;
-
 document.getElementById('hasil').style.display='block';
-document.getElementById('hasil').innerHTML=hasilHTML;
-
+document.getElementById('hasil').innerHTML=`<h2>Nilai Anda: ${nilai}</h2><p>Benar: ${benar} dari ${data.length}</p>`;
 form.style.display='none';
 document.querySelector('.nav').style.display='none';
-}
-
-function ulangUjian(){
-location.reload();
 }
 
 render();
