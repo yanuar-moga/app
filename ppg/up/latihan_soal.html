@@ -3,231 +3,131 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Latihan Soal PPG</title>
+<title>CBT Interaktif</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-
-body{
-background:linear-gradient(135deg,#0f172a,#1e293b);
-color:white;
-display:flex;
-justify-content:center;
-}
-
-.wrapper{
-width:100%;
-max-width:600px;
-padding:20px;
-}
-
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:15px;
-}
-
-.title{
-font-size:1.2rem;
-background:linear-gradient(90deg,#38bdf8,#6366f1);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-.timer{
-font-size:0.9rem;
-background:rgba(255,255,255,0.1);
-padding:6px 10px;
-border-radius:10px;
-}
-
-.nav-soal{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(40px,1fr));
-gap:8px;
-margin-bottom:15px;
-}
-
-.nav-soal div{
-padding:8px;
-text-align:center;
-border-radius:8px;
-background:white;
-color:black;
-font-size:0.8rem;
-cursor:pointer;
-}
-
-.nav-soal .answered{background:#22c55e;color:white}
-.nav-soal .doubt{background:#64748b;color:white}
-
-.card{
-background:rgba(255,255,255,0.05);
-padding:18px;
-border-radius:16px;
-backdrop-filter:blur(12px);
-border:1px solid rgba(255,255,255,0.08);
-}
-
-.question{
-font-size:0.9rem;
-margin-bottom:10px;
-}
-
-.option{
-display:block;
-margin-bottom:8px;
-padding:10px;
-border-radius:10px;
-background:rgba(255,255,255,0.08);
-cursor:pointer;
-}
-
-.option input{margin-right:8px}
-
-.actions{
-display:flex;
-justify-content:space-between;
-margin-top:10px;
-}
-
-button{
-padding:8px 12px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-}
-
-.ragu{background:#64748b;color:white}
-.next{background:linear-gradient(90deg,#6366f1,#38bdf8);color:white}
-
-@media(max-width:500px){
-.wrapper{padding:15px}
-}
+body {font-family: Arial, sans-serif; background:#0f172a; color:white; padding:20px}
+.container{max-width:900px;margin:auto}
+.soal{background:#1e293b;padding:15px;border-radius:10px;margin-bottom:15px}
+.opsi label{display:block;margin:6px 0;cursor:pointer}
+button{padding:12px;border:none;border-radius:8px;background:#22c55e;color:white;font-weight:bold;cursor:pointer;width:100%}
+.hasil{margin-top:20px;padding:15px;background:#334155;border-radius:10px}
 </style>
 </head>
 
 <body>
+<div class="container">
+<h1>CBT Interaktif</h1>
+<form id="quizForm">
 
-<div class="wrapper">
-
-<div class="header">
-<div class="title">📝 Latihan Soal</div>
-<div class="timer" id="timer">30:00</div>
-</div>
-
-<div class="nav-soal" id="nav"></div>
-
-<div class="card">
-<div class="question" id="question"></div>
-<div id="options"></div>
-
-<div class="actions">
-<button class="ragu" onclick="markDoubt()">Ragu-ragu</button>
-<button class="next" onclick="nextQuestion()">Selanjutnya</button>
+<div class="soal">
+<p><b>1.</b> Seorang guru ingin mengajarkan konsep berbagai topologi jaringan komputer kepada siswa dengan kebutuhan pembelajaran yang beragam, termasuk siswa penyandang disabilitas. Bagaimana guru dapat mengorganisasi konten pembelajaran agar semua siswa dapat memahami materi dengan baik?</p>
+<div class="opsi">
+<label><input type="radio" name="q1" value="0"> ○ Menyediakan materi pembelajaran hanya dalam bentuk teks tertulis, tanpa menyertakan media tambahan seperti video, audio, atau gambar, yang dapat membantu memperjelas dan memperkaya pemahaman siswa terhadap konten yang diajarkan.</label>
+<label><input type="radio" name="q1" value="0"> ○ Menggunakan presentasi visual yang menarik dengan gambar, grafik, dan diagram tanpa menyertakan teks tambahan, agar siswa dapat fokus pada elemen visual untuk memahami konsep yang diajarkan melalui visualisasi yang jelas dan efektif.</label>
+<label><input type="radio" name="q1" value="1"> ✅ Menyediakan materi dalam berbagai format, seperti video dengan teks tertutup, gambar dengan deskripsi audio, dan diagram interaktif yang dapat diakses oleh semua siswa sesuai kebutuhan mereka.</label>
+<label><input type="radio" name="q1" value="0"> ○ Mengadakan ujian tertulis yang komprehensif tentang topologi jaringan, mencakup berbagai tipe seperti bus, star, ring, dan mesh, untuk mengevaluasi pemahaman siswa terhadap konsep, kelebihan, dan kelemahan masing-masing topologi secara mendalam.</label>
+<label><input type="radio" name="q1" value="0"> ○ Menyuruh siswa membaca buku teks tentang topologi jaringan komputer.</label>
 </div>
 </div>
+
+<div class="soal">
+<p><b>2.</b> Untuk mengajarkan konsep animasi 2D dan 3D pada peserta didiknya, peserta didik harus mampu menentukan letak perbedaan yang paling mencolok antara animasi 2D dan 3D pada saat membuatnya. Untuk mencapai tujuan pembelajaran tersebut, maka desain pembelajaran yang dianggap paling lengkap dilakukan oleh guru dalam mengajarkan konsep animasi 2D dan 3D tersebut adalah memperhatikan ....</p>
+<div class="opsi">
+<label><input type="radio" name="q2" value="0"> ○ objek dan karakter untuk memiliki volume sehingga memberikan kesan yang lebih nyata dan mendalam</label>
+<label><input type="radio" name="q2" value="0"> ○ penggambaran dilakukan dengan membuat gambar berurutan yang disebut frame untuk menciptakan ilusi gerakan</label>
+<label><input type="radio" name="q2" value="1"> ✅ dimensi, teknik pembuatan, estetika visual, pengalaman interaktif, proses produksi dan biaya</label>
+<label><input type="radio" name="q2" value="0"> ○ pembuatan objek virtual, pencahayaan, tekstur, dan animasi gerak yang lebih kompleks</label>
+<label><input type="radio" name="q2" value="0"> ○ nuansa dan tekstur yang lebih kompleks sehingga membuatnya terlihat lebih hidup</label>
+</div>
+</div>
+
+<div class="soal">
+<p><b>3.</b> Seorang guru ingin memastikan bahwa siswa memahami cara menginstal dan mengkonfigurasi perangkat keras komputer dengan benar. Langkah mana yang harus dilakukan guru untuk mengorganisasi pembelajaran ini agar memudahkan pemahaman siswa?</p>
+<div class="opsi">
+<label><input type="radio" name="q3" value="0"> ○ Memberikan ceramah detail tentang langkah-langkah instalasi perangkat keras, mulai dari persiapan perangkat dan perangkat lunak, serta proses pemasangan fisik.</label>
+<label><input type="radio" name="q3" value="1"> ✅ Menyediakan video tutorial yang menunjukkan proses instalasi perangkat keras, disertai dengan latihan praktis di laboratorium komputer.</label>
+<label><input type="radio" name="q3" value="0"> ○ Menyuruh siswa membaca manual instalasi perangkat keras tanpa bimbingan, dengan tujuan memberikan mereka kesempatan untuk mengembangkan keterampilan mandiri.</label>
+<label><input type="radio" name="q3" value="0"> ○ Memberikan soal tes tertulis yang mencakup langkah-langkah instalasi perangkat keras, termasuk persiapan, pemasangan fisik, konfigurasi, dan pengujian.</label>
+<label><input type="radio" name="q3" value="0"> ○ Menyuruh siswa menulis esai tentang pentingnya perangkat keras komputer.</label>
+</div>
+</div>
+
+<div class="soal">
+<p><b>4.</b> Guru menjelaskan kepada siswa tentang proses editing video menggunakan perangkat lunak Adobe Premiere Pro. Bagaimana guru dapat memastikan bahwa siswa memahami tahapan dasar dalam proses editing video?</p>
+<div class="opsi">
+<label><input type="radio" name="q4" value="0"> Apa langkah pertama yang harus dilakukan saat memulai proyek baru di Adobe Premiere Pro?</label>
+<label><input type="radio" name="q4" value="0"> Bagaimana cara menambahkan transisi antara dua klip video?</label>
+<label><input type="radio" name="q4" value="1"> Mengapa penting untuk memahami timeline dalam proses editing video? ✅</label>
+<label><input type="radio" name="q4" value="0"> Apa perbedaan antara trimming dan splitting dalam editing video?</label>
+<label><input type="radio" name="q4" value="0"> Bagaimana cara mengatur kecepatan video di Adobe Premiere Pro?</label>
+</div>
+</div>
+
+<div class="soal">
+<p><b>5.</b> Pak Agus adalah seorang guru informatika yang akan menyusun desain pembelajaran pada mata pelajaran desain perencanaan produk. Melalui model Project based learning, guru tersebut menerapkan teori konstruktivistik dalam desain pembelajarannya. Tahap pertama yang perlu diperhatikan oleh guru dalam merancang pembelajaran tersebut adalah ...</p>
+<div class="opsi">
+<label><input type="radio" name="q5" value="0"> guru meminta peserta didik untuk mencari solusi atau menyelidiki konsep yang telah dipaparkan. Kegiatan tersebut bisa diisi dengan membaca buku, mencari referensi dari berbagai sumber, atau mengorganisasi ilmu-ilmu yang relevan.</label>
+<label><input type="radio" name="q5" value="0"> peserta didik diminta untuk memberikan pemaparan tentang konsep yang dirumuskan berdasarkan pengetahuan yang telah diperolehnya. Selain itu juga bisa memberikan penguatan berdasarkan keilmuan yang guru miliki.</label>
+<label><input type="radio" name="q5" value="0"> mengondisikan suasana belajar di kelas menjadi lebih hangat, santun, dan penuh wibawa. Dengan demikian, guru bisa mendorong peserta didik untuk bisa menerapkan pemahaman konseptual yang telah diperolehnya di kehidupan sehari-hari.</label>
+<label><input type="radio" name="q5" value="1"> guru harus bisa memancing peserta didik tentang suatu pokok bahasan atau konsep, misalnya dengan memberikan sejumlah pertanyaan yang bersifat clickbait di kehidupan sehari-hari. Lalu, guru bisa mulai membangun komunikasi dua arah agar mereka bersedia memberikan gambaran umumnya. ✅</label>
+<label><input type="radio" name="q5" value="0"> guru membentuk pemikiran peserta didik bahwa bekerja secara mandiri akan menghasilkan kegiatan belajar yang lebih bermakna.</label>
+</div>
+</div>
+
+<div class="soal">
+<p><b>6.</b> Seorang guru informatika melaksanakan asesmen yang dilakukan untuk mengidentifikasi kebutuhan belajar peserta didik, hambatan atau kesulitan yang mereka hadapi, dan juga untuk mendapatkan informasi perkembangan peserta didik. Asesmen yang dilakukan oleh guru tersebut dalam pembelajaran disebut ....</p>
+<div class="opsi">
+<label><input type="radio" name="q6" value="0"> asesmen diagnostik</label>
+<label><input type="radio" name="q6" value="0"> asesmen diagnostik non kognitif</label>
+<label><input type="radio" name="q6" value="1"> asesmen formatif ✅</label>
+<label><input type="radio" name="q6" value="0"> asesmen diagnosis kognitif</label>
+<label><input type="radio" name="q6" value="0"> asesmen sumatif</label>
+</div>
+</div>
+
+<div class="soal">
+<p><b>7.</b> Anda sedang memberikan tugas proyek kelompok di kelas. Anda mengamati dua siswa, Andi dan Rina, terlibat perselisihan tajam karena merasa salah satu dari mereka tidak bekerja maksimal. Mereka saling menyalahkan sehingga suasana kelompok menjadi tidak kondusif. Sebagai guru, tindakan manakah yang paling tepat Anda lakukan?</p>
+<div class="opsi">
+<label><input type="radio" name="q7" value="0"> A. Menegur keduanya dan memerintahkan mereka segera menyelesaikan masalah secara mandiri tanpa memberikan arahan teknis.</label>
+<label><input type="radio" name="q7" value="1"> B. Mendekati Andi dan Rina untuk mendengarkan perspektif masing-masing tanpa menghakimi, lalu membimbing mereka mencari solusi dan memperbaiki komunikasi.</label>
+<label><input type="radio" name="q7" value="0"> C. Memisahkan keduanya dari kelompok agar tidak mengganggu siswa lain sampai mereka menyadari sendiri pentingnya kerja sama.</label>
+<label><input type="radio" name="q7" value="0"> D. Membiarkan konflik tetap berlangsung sebagai bentuk latihan pendewasaan dan kemandirian siswa dalam menghadapi masalah sosial.</label>
+<label><input type="radio" name="q7" value="0"> E. Menjadikan perselisihan mereka sebagai contoh kasus di depan seluruh kelas untuk mendiskusikan cara menyelesaikan konflik yang sehat.</label>
+</div>
+</div>
+
+<div class="soal">
+<p><b>8.</b> Anda sedang mengajar di kelas dalam kondisi lelah dan sedikit kesal karena persoalan pribadi di rumah. Saat siswa sedang fokus mengerjakan tugas mandiri, dua siswa di barisan belakang terus berbisik dan tertawa hingga mengganggu konsentrasi kelas. Tindakan manakah yang paling tepat Anda lakukan?</p>
+<div class="opsi">
+<label><input type="radio" name="q8" value="0"> A. Meminta kedua siswa keluar kelas dengan tegas dan mengurangi nilai keaktifan mereka sebagai bentuk sanksi pelanggaran.</label>
+<label><input type="radio" name="q8" value="0"> B. Mengabaikan mereka agar berhenti sendiri, namun mencatat nama mereka untuk diberikan teguran keras di akhir pelajaran.</label>
+<label><input type="radio" name="q8" value="0"> C. Menenangkan diri sejenak (regulasi diri), lalu memberikan isyarat mata atau teguran halus agar mereka kembali fokus pada tugas.</label>
+<label><input type="radio" name="q8" value="0"> D. Menghentikan seluruh aktivitas kelas dan meminta kedua siswa tersebut berdiri untuk menjelaskan apa yang mereka tertawakan.</label>
+<label><input type="radio" name="q8" value="1"> E. Menenangkan diri sejenak, lalu mendekati kedua siswa tersebut untuk berbicara pelan dan mengingatkan kesepakatan kelas tentang ketenangan.</label>
+</div>
+</div>
+
+<button type="button" onclick="hitungNilai()">Submit</button>
+
+</form>
+
+<div id="hasil" class="hasil" style="display:none"></div>
 
 </div>
 
 <script>
-const questions=[
-{
-q:"Apa tujuan utama penilaian autentik?",
-options:[
-"Mengukur hasil akhir saja",
-"Menilai proses dan hasil belajar",
-"Hanya untuk nilai rapor",
-"Sebagai formalitas"
-]
-},
-{
-q:"Model pembelajaran yang berpusat pada siswa adalah...",
-options:[
-"Ceramah",
-"Problem Based Learning",
-"Drill",
-"Hafalan"
-]
-},
-{
-q:"Media pembelajaran berfungsi untuk...",
-options:[
-"Memperumit pembelajaran",
-"Meningkatkan pemahaman siswa",
-"Menggantikan guru",
-"Mengurangi waktu belajar"
-]
+function hitungNilai(){
+let total = 0;
+let jumlahSoal = 8;
+for(let i=1;i<=jumlahSoal;i++){
+let jawaban = document.querySelector('input[name="q'+i+'"]:checked');
+if(jawaban){total += parseInt(jawaban.value);} }
+let nilai = (total/jumlahSoal)*100;
+let hasilDiv = document.getElementById('hasil');
+hasilDiv.style.display='block';
+hasilDiv.innerHTML = `<h2>Nilai Anda: ${nilai}</h2>`;
 }
-];
-
-let current=0;
-let answers=new Array(questions.length).fill(null);
-let doubt=new Array(questions.length).fill(false);
-
-function loadQuestion(){
-const q=questions[current];
-document.getElementById('question').innerText=(current+1)+'. '+q.q;
-
-let html="";
-q.options.forEach((opt,i)=>{
-html+=`<label class="option">
-<input type="radio" name="opt" value="${i}" ${answers[current]==i?"checked":""} onchange="saveAnswer(${i})">
-${opt}
-</label>`;
-});
-
-document.getElementById('options').innerHTML=html;
-updateNav();
-}
-
-function saveAnswer(i){
-answers[current]=i;
-doubt[current]=false;
-updateNav();
-}
-
-function markDoubt(){
-doubt[current]=true;
-answers[current]=answers[current] ?? null;
-updateNav();
-}
-
-function nextQuestion(){
-if(current<questions.length-1){
-current++;
-loadQuestion();
-}
-}
-
-function updateNav(){
-let html="";
-questions.forEach((_,i)=>{
-let cls="";
-if(answers[i]!=null) cls="answered";
-if(doubt[i]) cls="doubt";
-html+=`<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
-});
-
-document.getElementById('nav').innerHTML=html;
-}
-
-function goTo(i){
-current=i;
-loadQuestion();
-}
-
-// TIMER
-let time=1800;
-setInterval(()=>{
-let m=Math.floor(time/60);
-let s=time%60;
-document.getElementById('timer').innerText=`${m}:${s<10?'0':''}${s}`;
-if(time>0) time--;
-},1000);
-
-loadQuestion();
 </script>
 
 </body>
