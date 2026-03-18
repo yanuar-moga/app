@@ -1,327 +1,195 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CBT ONLINE SEKOLAH</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LATIHAN SOAL UP PPG</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial;background:#0f172a;color:white;margin:0}
+.container{max-width:900px;margin:auto;padding:16px}
+h1{text-align:center}
+input{padding:10px;border-radius:8px;border:none;width:100%;margin:5px 0}
+.start{background:#22c55e;color:white;padding:12px;border:none;border-radius:10px;width:100%;cursor:pointer}
 
-    body {
-      font-family: Arial;
-      background: #0f172a;
-      color: white;
-      margin: 0;
-    }
+.timer{text-align:center;color:#facc15;margin-bottom:10px;font-size:18px}
+.progress{height:8px;background:#1e293b;border-radius:10px;overflow:hidden;margin-bottom:10px}
+.bar{height:100%;background:#22c55e;width:0%}
 
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 16px;
-    }
+.nomor-nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:15px;justify-content:center}
+.nomor-nav button{width:40px;height:40px;border-radius:8px;border:none;background:#334155;color:white;cursor:pointer}
+.nomor-nav button.aktif{background:#22c55e}
+.nomor-nav button.sudah{background:#0ea5e9}
 
-    h1 {
-      text-align: center;
-    }
+.soal{display:none;background:#1e293b;padding:16px;border-radius:12px}
+.soal.active{display:block}
 
-    input {
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      width: 100%;
-      margin: 5px 0;
-    }
+.opsi input{display:none}
+.opsi label{display:flex;gap:12px;margin:10px 0;padding:12px;background:#334155;border-radius:10px;cursor:pointer;border:2px solid transparent}
+.opsi label:hover{background:#475569}
+.opsi span{min-width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:#1e293b;border-radius:6px;font-weight:bold;border:2px solid #64748b}
+.opsi p{margin:0;flex:1}
 
-    .start {
-      background: #22c55e;
-      color: white;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      width: 100%;
-      cursor: pointer;
-    }
+.opsi input:checked + span{background:#22c55e;border-color:#22c55e}
+.opsi label:has(input:checked){border:2px solid #22c55e}
 
-    .timer {
-      text-align: center;
-      color: #facc15;
-      margin-bottom: 10px;
-    }
+.nav{display:flex;justify-content:space-between;margin-top:16px}
+button{padding:12px;border:none;border-radius:10px;background:#22c55e;color:white;font-weight:bold;cursor:pointer}
 
-    .progress {
-      height: 8px;
-      background: #1e293b;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 15px;
-    }
-
-    .bar {
-      height: 100%;
-      background: #22c55e;
-      width: 0%;
-    }
-
-    .soal {
-      display: none;
-      background: #1e293b;
-      padding: 16px;
-      border-radius: 12px;
-    }
-
-    .soal.active {
-      display: block;
-    }
-
-    .opsi label {
-      display: flex;
-      gap: 10px;
-      margin: 8px 0;
-      padding: 10px;
-      background: #334155;
-      border-radius: 8px;
-      cursor: pointer;
-      align-items: flex-start;
-    }
-
-    /* HILANGKAN BULATAN RADIO DEFAULT */
-    .opsi input[type="radio"] {
-      display: none;
-    }
-
-    /* CUSTOM RADIO */
-    .opsi label::before {
-      content: "";
-      width: 18px;
-      height: 18px;
-      border: 2px solid #22c55e;
-      border-radius: 50%;
-      display: inline-block;
-      margin-top: 3px;
-    }
-
-    .opsi input[type="radio"]:checked + span + p,
-    .opsi input[type="radio"]:checked + span {
-      color: #22c55e;
-    }
-
-    .opsi input[type="radio"]:checked + span::before {
-      background: #22c55e;
-    }
-
-    .opsi span {
-      min-width: 22px;
-      font-weight: bold;
-    }
-
-    .opsi p {
-      margin: 0;
-      flex: 1;
-    }
-
-    .nav {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 16px;
-    }
-
-    button {
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      background: #22c55e;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .hasil {
-      text-align: center;
-      background: #334155;
-      padding: 20px;
-      border-radius: 12px;
-      margin-top: 20px;
-    }
-  </style>
+.hasil{text-align:center;background:#334155;padding:20px;border-radius:12px;margin-top:20px;animation:fade 0.5s}
+@keyframes fade{from{opacity:0;transform:translateY(20px)}to{opacity:1}}
+</style>
 </head>
 
 <body>
-  <div class="container">
-    <h1>CBT ONLINE</h1>
+<div class="container">
+<h1>LATIHAN SOAL UP PPG</h1>
 
-    <!-- LOGIN -->
-    <div id="login">
-      <input type="text" id="username" placeholder="Username">
-      <input type="password" id="password" placeholder="Password">
-      <button class="start" onclick="login()">Login</button>
-    </div>
+<div id="login">
+<input id="username" placeholder="Username">
+<input id="password" type="password" placeholder="Password">
+<button class="start" onclick="login()">Login</button>
+</div>
 
-    <!-- UJIAN -->
-    <div id="ujian" style="display:none">
-      <div class="timer">Sisa Waktu: <span id="time">10:00</span></div>
-      <div class="progress">
-        <div class="bar" id="bar"></div>
-      </div>
+<div id="ujian" style="display:none">
+<div class="timer">Sisa Waktu: <span id="time">--:--</span></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
 
-      <form id="quizForm"></form>
+<div class="nomor-nav" id="nomorNav"></div>
 
-      <div class="nav">
-        <button onclick="prevSoal()">Sebelumnya</button>
-        <button onclick="nextSoal()">Next</button>
-      </div>
-    </div>
+<form id="quizForm"></form>
 
-    <!-- HASIL -->
-    <div id="hasil" class="hasil" style="display:none"></div>
-  </div>
+<div class="nav">
+<button onclick="prevSoal()">Prev</button>
+<button onclick="nextSoal()">Next</button>
+</div>
+</div>
 
-  <script>
-    let data = [];
-    let current = 0;
-    let jawaban = [];
-    let usernameSiswa = '';
-    let kelasSiswa = '';
+<div id="hasil" class="hasil" style="display:none"></div>
+</div>
 
-    const form = document.getElementById('quizForm');
+<script>
+let data=[];
+let current=0;
+let jawaban=[];
+let usernameSiswa='';
+let kelasSiswa='';
+let timer;
+let waktu=600;
 
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzxZLHU0PbEbMyJKMxEeYrVBbQmtmsgdHCV_xnRNgSCe8xVs65zCVY3N6NFRnWeLg18/exec';
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbzxZLHU0PbEbMyJKMxEeYrVBbQmtmsgdHCV_xnRNgSCe8xVs65zCVY3N6NFRnWeLg18/exec';
+const form=document.getElementById('quizForm');
 
-    // LOGIN
-    function login() {
-      let username = document.getElementById('username').value;
-      let password = document.getElementById('password').value;
+function login(){
+let u=username.value;
+let p=password.value;
+fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({type:'login',username:u,password:p})})
+.then(r=>r.json())
+.then(r=>{
+if(r.status==='success'){
+usernameSiswa=u;
+kelasSiswa=r.kelas;
+mulai();
+}else alert('Login gagal');
+});}
 
-      if (!username || !password) {
-        alert('Isi username & password dulu');
-        return;
-      }
+function mulai(){
+fetch(SCRIPT_URL)
+.then(r=>r.json())
+.then(r=>{
+data=r;
+login.style.display='none';
+ujian.style.display='block';
+render();
+buatNav();
+show();
+startTimer();
+});}
 
-      fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({ type: 'login', username, password })
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.status == 'success') {
-          usernameSiswa = username;
-          kelasSiswa = res.kelas;
-          mulaiUjian();
-        } else {
-          alert('Username atau password salah!');
-        }
-      });
-    }
+function render(){
+form.innerHTML='';
+data.forEach((d,i)=>{
+let div=document.createElement('div');
+div.className='soal'+(i==0?' active':'');
+div.innerHTML=`<p><b>${i+1}.</b> ${d.q}</p>
+<div class='opsi'>${d.o.map((o,j)=>`
+<label>
+<input type='radio' name='q${i}' value='${j}'>
+<span>${String.fromCharCode(65+j)}</span>
+<p>${o}</p>
+</label>`).join('')}</div>`;
+form.appendChild(div);
+});}
 
-    function mulaiUjian() {
-      fetch(SCRIPT_URL)
-      .then(res => res.json())
-      .then(res => {
-        data = res;
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('ujian').style.display = 'block';
-        render();
-        show();
-      });
-    }
+function buatNav(){
+let nav=document.getElementById('nomorNav');
+nav.innerHTML='';
+data.forEach((_,i)=>{
+let btn=document.createElement('button');
+btn.innerText=i+1;
+btn.onclick=()=>{current=i;show()};
+nav.appendChild(btn);
+});}
 
-    function render() {
-      form.innerHTML = '';
+function updateNav(){
+document.querySelectorAll('.nomor-nav button').forEach((b,i)=>{
+b.classList.remove('aktif','sudah');
+if(i===current)b.classList.add('aktif');
+if(jawaban[i]!=null)b.classList.add('sudah');
+});}
 
-      data.forEach((d, i) => {
-        let div = document.createElement('div');
-        div.className = 'soal' + (i == 0 ? ' active' : '');
+function show(){
+document.querySelectorAll('.soal').forEach((s,i)=>{
+s.classList.toggle('active',i===current);
+});
+bar.style.width=((current+1)/data.length*100)+'%';
+updateNav();}
 
-        div.innerHTML = `
-          <p><b>${i + 1}.</b> ${d.q}</p>
-          <div class='opsi'>
-            ${d.o.map((o, j) => `
-              <label>
-                <input type='radio' name='q${i}' value='${j}'>
-                <span>${String.fromCharCode(65 + j)}.</span>
-                <p>${o}</p>
-              </label>
-            `).join('')}
-          </div>
-        `;
+form.addEventListener('change',e=>{
+jawaban[current]=parseInt(e.target.value);
+updateNav();
+});
 
-        form.appendChild(div);
-      });
-    }
+function nextSoal(){
+if(current<data.length-1){current++;show()}else submitQuiz();}
+function prevSoal(){if(current>0){current--;show()}}
 
-    function show() {
-      document.querySelectorAll('.soal').forEach((s, i) => {
-        s.classList.toggle('active', i == current);
-      });
+function startTimer(){
+timer=setInterval(()=>{
+waktu--;
+let m=Math.floor(waktu/60);
+let s=waktu%60;
+time.innerText=`${m}:${s<10?'0'+s:s}`;
+if(waktu<=0){clearInterval(timer);submitQuiz();}
+},1000);
+}
 
-      document.getElementById('bar').style.width = ((current + 1) / data.length * 100) + '%';
-    }
+function submitQuiz(){
+clearInterval(timer);
+let kosong=jawaban.includes(undefined);
+if(kosong && !confirm('Masih ada soal kosong, lanjut submit?'))return;
 
-    form.addEventListener('change', e => {
-      jawaban[current] = parseInt(e.target.value);
-    });
+let benar=0;
+data.forEach((d,i)=>{if(jawaban[i]==d.a)benar++});
+let nilai=Math.round((benar/data.length)*100);
 
-    function nextSoal() {
-      if (current < data.length - 1) {
-        current++;
-        show();
-      } else {
-        submitQuiz();
-      }
-    }
+fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({type:'nilai',username:usernameSiswa,kelas:kelasSiswa,nilai})});
 
-    function prevSoal() {
-      if (current > 0) {
-        current--;
-        show();
-      }
-    }
+hasil.style.display='block';
+ujian.style.display='none';
 
-    function submitQuiz() {
-      let benar = 0;
+hasil.innerHTML=`
+<h2>${usernameSiswa}</h2>
+<h3>Kelas: ${kelasSiswa}</h3>
+<h1>Nilai: ${nilai}</h1>
+<button onclick='ulang()'>Ulangi Ujian</button><br><br>
+<a href='https://yanuar-moga.github.io/app/ppg/'><button>Home</button></a>`;
+}
 
-      data.forEach((d, i) => {
-        if (jawaban[i] == d.a) benar++;
-      });
-
-      let nilai = Math.round((benar / data.length) * 100);
-
-      fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({
-          type: 'nilai',
-          username: usernameSiswa,
-          kelas: kelasSiswa,
-          nilai
-        })
-      });
-
-      document.getElementById('hasil').style.display = 'block';
-
-      document.getElementById('hasil').innerHTML = `
-        <h2>${usernameSiswa}</h2>
-        <h3>Kelas: ${kelasSiswa}</h3>
-        <h3>Nilai: ${nilai}</h3>
-        <button onclick="ulang()">Ulangi Ujian</button>
-        <br><br>
-        <a href="https://yanuar-moga.github.io/app/ppg/">
-          <button>Kembali ke Home</button>
-        </a>
-      `;
-
-      document.getElementById('ujian').style.display = 'none';
-    }
-
-    function ulang() {
-      current = 0;
-      jawaban = [];
-      document.getElementById('hasil').style.display = 'none';
-      document.getElementById('ujian').style.display = 'block';
-      render();
-      show();
-    }
-  </script>
+function ulang(){
+location.reload();
+}
+</script>
 </body>
 </html>
