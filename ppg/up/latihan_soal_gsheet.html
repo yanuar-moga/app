@@ -84,6 +84,32 @@
       background: #334155;
       border-radius: 8px;
       cursor: pointer;
+      align-items: flex-start;
+    }
+
+    /* HILANGKAN BULATAN RADIO DEFAULT */
+    .opsi input[type="radio"] {
+      display: none;
+    }
+
+    /* CUSTOM RADIO */
+    .opsi label::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      border: 2px solid #22c55e;
+      border-radius: 50%;
+      display: inline-block;
+      margin-top: 3px;
+    }
+
+    .opsi input[type="radio"]:checked + span + p,
+    .opsi input[type="radio"]:checked + span {
+      color: #22c55e;
+    }
+
+    .opsi input[type="radio"]:checked + span::before {
+      background: #22c55e;
     }
 
     .opsi span {
