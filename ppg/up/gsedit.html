@@ -109,7 +109,7 @@ border-radius:12px;
 
 .soal.active{display:block}
 
-/* OPSI ELEGAN */
+/* OPSI */
 .opsi{margin-top:10px;}
 
 .opsi label{
@@ -210,9 +210,7 @@ border-radius:12px;
 
 <h2 style="text-align:center">LATIHAN SOAL UP PPG</h2>
 
-<!-- ✅ TIMER FIX -->
 <div class="timer">Sisa Waktu: <span id="time">10:00</span></div>
-
 <div class="progress"><div class="bar" id="bar"></div></div>
 
 <div class="nomor-nav" id="nav"></div>
@@ -286,7 +284,6 @@ div.className='soal'+(x==0?' active':'');
 
 div.innerHTML=`
 <p><b>${x+1}.</b> ${d.q}</p>
-
 <div class="opsi">
 ${d.o.map((o,y)=>`
 <label onclick="pilih(${x},${y},this)">
@@ -337,29 +334,30 @@ updateNav();
 function next(){i<data.length-1?(i++,show()):submit();}
 function prev(){if(i>0){i--;show()}}
 
-/* ✅ TIMER FINAL FIX */
+/* ✅ TIMER FIX */
 function timerStart(){
 
 const timeEl = document.getElementById('time');
 
-// tampil langsung
-updateTime();
+timer = setInterval(function(){
 
-timer=setInterval(()=>{
 waktu--;
-updateTime();
 
-if(waktu<=0){
+let m = Math.floor(waktu/60);
+let s = waktu % 60;
+
+timeEl.innerText = m + ':' + (s<10 ? '0'+s : s);
+
+if(waktu <= 0){
 clearInterval(timer);
 submit();
 }
-},1000);
 
-function updateTime(){
-let m=Math.floor(waktu/60);
-let s=waktu%60;
-timeEl.innerText = m + ':' + (s<10 ? '0'+s : s);
+if(waktu <= 60){
+timeEl.style.color = 'red';
 }
+
+},1000);
 }
 
 function submit(){
@@ -385,7 +383,13 @@ app.innerHTML=`
 <h2>${user}</h2>
 <h3>Kelas: ${kelas}</h3>
 <h1>Nilai: ${nilai}</h1>
+
 <button onclick="location.reload()">Ulangi</button>
+<br><br>
+<button onclick="window.location.href='https://yanuar-moga.github.io/app/ppg/'">
+Home
+</button>
+
 </div>`;
 }
 </script>
