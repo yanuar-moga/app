@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PPG Learning Hub Premium</title>
+<title>PPG Learning Hub</title>
 
 <style>
 * {
@@ -15,95 +15,76 @@
 
 body {
     background: linear-gradient(135deg, #0f172a, #1e293b);
-    color: #fff;
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+/* CONTAINER */
+.wrapper {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
 }
 
 /* HEADER */
-header {
-    padding: 30px;
+.header {
     text-align: center;
+    margin-bottom: 30px;
 }
 
-header h1 {
-    font-size: 2.5rem;
+.header h1 {
+    font-size: 1.8rem;
     background: linear-gradient(90deg, #38bdf8, #6366f1);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-header p {
+.header p {
+    font-size: 0.9rem;
     color: #cbd5f5;
-    margin-top: 10px;
 }
 
-/* CONTAINER */
-.container {
-    padding: 30px;
-}
-
-/* GRID */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-}
-
-/* CARD GLASS */
+/* CARD */
 .card {
     background: rgba(255,255,255,0.05);
-    border-radius: 20px;
-    padding: 25px;
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.1);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Glow effect */
-.card::before {
-    content: "";
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.1), transparent);
-    transform: rotate(25deg);
-    top: -100%;
-    left: -100%;
-    transition: 0.5s;
-}
-
-.card:hover::before {
-    top: 100%;
-    left: 100%;
+    padding: 18px;
+    border-radius: 16px;
+    margin-bottom: 15px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
 }
 
 .card:hover {
-    transform: translateY(-10px) scale(1.02);
+    transform: translateY(-5px);
     border: 1px solid rgba(99,102,241,0.6);
 }
 
-/* CARD CONTENT */
+/* TITLE */
 .card h3 {
-    font-size: 1.3rem;
-    margin-bottom: 10px;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
 }
 
+/* TEXT */
 .card p {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #cbd5f5;
 }
 
 /* BUTTON */
 .card a {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 10px 15px;
-    border-radius: 8px;
+    margin-top: 10px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
     background: linear-gradient(90deg, #6366f1, #38bdf8);
-    color: white;
     text-decoration: none;
-    font-size: 0.9rem;
+    color: white;
+    font-size: 0.85rem;
     transition: 0.3s;
 }
 
@@ -111,24 +92,22 @@ header p {
     opacity: 0.8;
 }
 
-/* FOOTER */
-footer {
-    text-align: center;
-    padding: 20px;
-    color: #94a3b8;
-    margin-top: 30px;
-    font-size: 0.9rem;
-}
-
 /* BADGE */
 .badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: #6366f1;
-    padding: 5px 10px;
-    border-radius: 10px;
+    align-self: flex-start;
     font-size: 0.7rem;
+    background: #6366f1;
+    padding: 3px 8px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.75rem;
+    color: #94a3b8;
 }
 
 </style>
@@ -136,78 +115,76 @@ footer {
 
 <body>
 
-<header>
-    <h1>PPG Learning Hub</h1>
-    <p>Platform Belajar Premium untuk Persiapan PPG</p>
-</header>
+<div class="wrapper">
 
-<div class="container">
+    <div class="header">
+        <h1>PPG Learning Hub</h1>
+        <p>Belajar Lebih Fokus & Terarah</p>
+    </div>
 
-<div class="grid">
+    <!-- MENU LIST -->
 
     <div class="card">
         <div class="badge">UP</div>
         <h3>📝 Latihan Ujian Pengetahuan</h3>
-        <p>Latihan soal berbasis HOTS untuk persiapan ujian PPG.</p>
+        <p>Soal HOTS untuk persiapan ujian PPG.</p>
         <a href="#">Mulai Latihan</a>
     </div>
 
     <div class="card">
         <div class="badge">CASE</div>
         <h3>📄 Studi Kasus</h3>
-        <p>Analisis kasus sesuai format PPG: masalah, solusi, refleksi.</p>
+        <p>Latihan analisis sesuai format PPG.</p>
         <a href="#">Buka</a>
     </div>
 
     <div class="card">
         <div class="badge">PED</div>
         <h3>🎓 Materi Pedagogik</h3>
-        <p>Diferensiasi, asesmen, strategi pembelajaran modern.</p>
+        <p>Diferensiasi, asesmen, strategi belajar.</p>
         <a href="#">Pelajari</a>
     </div>
 
     <div class="card">
         <div class="badge">PRO</div>
         <h3>📘 Materi Profesional</h3>
-        <p>Penguatan materi bidang studi sesuai kompetensi.</p>
+        <p>Penguatan materi bidang studi.</p>
         <a href="#">Pelajari</a>
     </div>
 
     <div class="card">
         <div class="badge">LKPD</div>
         <h3>📑 Contoh LKPD</h3>
-        <p>Kumpulan LKPD inovatif dan siap digunakan.</p>
+        <p>LKPD siap pakai & inovatif.</p>
         <a href="#">Lihat</a>
     </div>
 
     <div class="card">
         <div class="badge">REF</div>
         <h3>🧠 Refleksi</h3>
-        <p>Latihan refleksi pembelajaran sesuai standar PPG.</p>
+        <p>Latihan refleksi pembelajaran.</p>
         <a href="#">Mulai</a>
     </div>
 
     <div class="card">
-        <div class="badge">TRYOUT</div>
+        <div class="badge">TRY</div>
         <h3>⏱️ Try Out</h3>
-        <p>Simulasi ujian real dengan timer & skor.</p>
+        <p>Simulasi ujian dengan timer.</p>
         <a href="#">Mulai</a>
     </div>
 
     <div class="card">
         <div class="badge">NOTE</div>
         <h3>📌 Catatan</h3>
-        <p>Simpan ringkasan materi & insight belajar kamu.</p>
+        <p>Simpan ringkasan belajar kamu.</p>
         <a href="#">Buka</a>
     </div>
 
-</div>
+    <div class="footer">
+        © 2026 PPG Learning Hub
+    </div>
 
 </div>
-
-<footer>
-    © 2026 PPG Learning Hub — Premium Learning Experience
-</footer>
 
 </body>
 </html>
