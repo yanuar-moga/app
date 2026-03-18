@@ -7,9 +7,9 @@
 
 <style>
 *{box-sizing:border-box}
-body{font-family:Arial;margin:0}
+body{margin:0;font-family:Arial}
 
-/* LOGIN */
+/* ================= LOGIN ================= */
 .login-page{
 min-height:100vh;
 display:flex;
@@ -21,55 +21,57 @@ background:linear-gradient(135deg,#e3f2fd,#bbdefb);
 .login-card{
 width:360px;
 background:#fff;
-padding:25px;
-border-radius:15px;
-box-shadow:0 10px 25px rgba(0,0,0,.2);
+padding:28px;
+border-radius:18px;
+box-shadow:0 12px 30px rgba(0,0,0,.15);
 text-align:center;
 }
 
-.login-card img{width:80px}
-.login-card h2{color:#0A4FA3}
+.logo{width:90px;margin-bottom:10px}
+.title{color:#0A4FA3;margin-bottom:15px}
 
-input{
-width:100%;
-padding:10px;
-margin:8px 0;
-border-radius:8px;
-border:1px solid #ccc;
+.field{margin-bottom:12px;text-align:left}
+.label-text{font-size:13px;color:#444}
+.input-field{
+width:100%;padding:10px;border-radius:8px;border:1px solid #ccc
 }
 
-button{
-padding:12px;
-border:none;
-border-radius:10px;
-background:#0A4FA3;
+.show-pass{font-size:13px;margin:10px 0;text-align:left}
+
+.btn{
+width:100%;padding:12px;
+background:#0A4FA3;color:#fff;
+border:none;border-radius:10px;cursor:pointer
+}
+
+/* ================= UJIAN ================= */
+.app-page{
+display:none;
+min-height:100vh;
+background:#0f172a;
 color:white;
-cursor:pointer;
-width:100%;
+padding:20px;
 }
 
-.show-pass{font-size:13px;text-align:left}
+.container{max-width:900px;margin:auto}
 
-/* UJIAN */
-.container{max-width:900px;margin:auto;padding:16px;background:#0f172a;color:white;display:none}
-.timer{text-align:center;color:#facc15}
+.timer{text-align:center;color:#facc15;margin-bottom:10px}
 .progress{height:8px;background:#1e293b;border-radius:10px}
 .bar{height:100%;background:#22c55e;width:0%}
 
 .nomor-nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
-.nomor-nav button{width:40px;height:40px;background:#334155;color:white}
+.nomor-nav button{width:40px;height:40px;background:#334155;color:white;border:none;border-radius:6px}
+.nomor-nav .aktif{background:#22c55e}
+.nomor-nav .sudah{background:#0ea5e9}
 
 .soal{display:none;background:#1e293b;padding:15px;border-radius:10px}
 .soal.active{display:block}
 
 .opsi label{
-display:flex;
-gap:10px;
-padding:10px;
-margin:5px 0;
-background:#334155;
-border-radius:8px;
-cursor:pointer;
+display:flex;gap:10px;
+padding:10px;margin:5px 0;
+background:#334155;border-radius:8px;
+cursor:pointer
 }
 
 .selected{background:#166534}
@@ -84,25 +86,31 @@ cursor:pointer;
 
 <!-- LOGIN -->
 <div class="login-page" id="loginPage">
-<div class="login-card">
+  <div class="login-card">
+    <img src="assets/logo.png" class="logo">
+    <h2 class="title">Latihan Soal UP PPG</h2>
 
-<img src="assets/logo.png">
-<h2>Latihan Soal UP PPG</h2>
+    <div class="field">
+      <div class="label-text">Username</div>
+      <input id="username" class="input-field">
+    </div>
 
-<input id="username" placeholder="Username">
-<input id="password" type="password" placeholder="Password">
+    <div class="field">
+      <div class="label-text">Password</div>
+      <input id="password" type="password" class="input-field">
+    </div>
 
-<div class="show-pass">
-<input type="checkbox" onclick="togglePass()"> Tampilkan Password
-</div>
+    <div class="show-pass">
+      <input type="checkbox" onclick="togglePass()"> Tampilkan Password
+    </div>
 
-<button onclick="login()">Masuk</button>
-
-</div>
+    <button class="btn" onclick="login()">Masuk</button>
+  </div>
 </div>
 
 <!-- UJIAN -->
-<div class="container" id="app">
+<div class="app-page" id="app">
+<div class="container">
 
 <h2 style="text-align:center">LATIHAN SOAL UP PPG</h2>
 
@@ -110,7 +118,6 @@ cursor:pointer;
 <div class="progress"><div class="bar" id="bar"></div></div>
 
 <div class="nomor-nav" id="nav"></div>
-
 <form id="form"></form>
 
 <div class="nav">
@@ -121,19 +128,18 @@ cursor:pointer;
 <div id="hasil" class="hasil" style="display:none"></div>
 
 </div>
+</div>
 
 <script>
 const URL='https://script.google.com/macros/s/AKfycbzxZLHU0PbEbMyJKMxEeYrVBbQmtmsgdHCV_xnRNgSCe8xVs65zCVY3N6NFRnWeLg18/exec';
 
 let data=[],i=0,jawaban=[],user='',kelas='',timer,waktu=600;
 
-// SHOW PASSWORD
 function togglePass(){
 let p=document.getElementById('password');
 p.type=p.type==='password'?'text':'password';
 }
 
-// LOGIN
 function login(){
 let u=username.value.trim();
 let p=password.value.trim();
@@ -152,19 +158,15 @@ if(r.status==='success'){
 user=u;
 kelas=r.kelas;
 
-// pindah ke ujian
-document.getElementById('loginPage').style.display='none';
-document.getElementById('app').style.display='block';
+loginPage.style.display='none';
+app.style.display='block';
 
 start();
-}else{
-alert('Login gagal');
-}
+}else alert('Login gagal');
 })
-.catch(e=>alert('Gagal koneksi'));
+.catch(()=>alert('Gagal koneksi'));
 }
 
-// START
 function start(){
 fetch(URL)
 .then(r=>r.json())
@@ -177,7 +179,6 @@ timerStart();
 });
 }
 
-// RENDER
 function render(){
 form.innerHTML='';
 data.forEach((d,x)=>{
@@ -197,7 +198,6 @@ form.appendChild(div);
 });
 }
 
-// PILIH
 function pilih(x,y,el){
 jawaban[x]=y;
 el.parentElement.querySelectorAll('label').forEach(l=>l.classList.remove('selected'));
@@ -205,7 +205,6 @@ el.classList.add('selected');
 updateNav();
 }
 
-// NAV
 function nav(){
 nav.innerHTML='';
 data.forEach((_,x)=>{
@@ -216,7 +215,6 @@ nav.appendChild(b);
 });
 }
 
-// UPDATE NAV
 function updateNav(){
 document.querySelectorAll('.nomor-nav button').forEach((b,x)=>{
 b.classList.remove('aktif','sudah');
@@ -225,7 +223,6 @@ if(jawaban[x]!=null)b.classList.add('sudah');
 });
 }
 
-// SHOW
 function show(){
 document.querySelectorAll('.soal').forEach((s,x)=>{
 s.classList.toggle('active',x==i);
@@ -234,40 +231,29 @@ bar.style.width=((i+1)/data.length*100)+'%';
 updateNav();
 }
 
-// NAV BTN
 function next(){i<data.length-1?(i++,show()):submit();}
 function prev(){if(i>0){i--;show()}}
 
-// TIMER
 function timerStart(){
 timer=setInterval(()=>{
 waktu--;
 let m=Math.floor(waktu/60);
 let s=waktu%60;
 time.innerText=`${m}:${s<10?'0'+s:s}`;
-
 if(waktu<=0){clearInterval(timer);submit();}
 },1000);
 }
 
-// SUBMIT
 function submit(){
 clearInterval(timer);
 
 let benar=0;
 data.forEach((d,x)=>{if(jawaban[x]==d.a)benar++;});
-
 let nilai=Math.round((benar/data.length)*100);
 
-// SIMPAN NILAI
 fetch(URL,{
 method:'POST',
-body:JSON.stringify({
-type:'nilai',
-username:user,
-kelas:kelas,
-nilai:nilai
-})
+body:JSON.stringify({type:'nilai',username:user,kelas:kelas,nilai:nilai})
 });
 
 app.innerHTML=`
@@ -276,8 +262,7 @@ app.innerHTML=`
 <h3>Kelas: ${kelas}</h3>
 <h1>Nilai: ${nilai}</h1>
 <button onclick="location.reload()">Ulangi</button>
-</div>
-`;
+</div>`;
 }
 </script>
 
