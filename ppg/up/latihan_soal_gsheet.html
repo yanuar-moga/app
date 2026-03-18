@@ -10,39 +10,55 @@
 body{font-family:Arial;background:#0f172a;color:white;margin:0}
 .container{max-width:900px;margin:auto;padding:16px}
 h1{text-align:center}
+
 input{padding:10px;border-radius:8px;border:none;width:100%;margin:5px 0}
-.start{background:#22c55e;color:white;padding:12px;border:none;border-radius:10px;width:100%;cursor:pointer}
+.start{background:#22c55e;padding:12px;border:none;border-radius:10px;width:100%;cursor:pointer;color:white}
 
 .timer{text-align:center;color:#facc15;margin-bottom:10px;font-size:18px}
 .progress{height:8px;background:#1e293b;border-radius:10px;overflow:hidden;margin-bottom:10px}
 .bar{height:100%;background:#22c55e;width:0%}
 
-.nomor-nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:15px;justify-content:center}
-.nomor-nav button{width:40px;height:40px;border-radius:8px;border:none;background:#334155;color:white;cursor:pointer}
-.nomor-nav button.aktif{background:#22c55e}
-.nomor-nav button.sudah{background:#0ea5e9}
+.nomor-nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px}
+.nomor-nav button{width:40px;height:40px;border:none;border-radius:8px;background:#334155;color:white}
+.nomor-nav .aktif{background:#22c55e}
+.nomor-nav .sudah{background:#0ea5e9}
 
 .soal{display:none;background:#1e293b;padding:16px;border-radius:12px}
 .soal.active{display:block}
 
 .opsi input{display:none}
-.opsi label{display:flex;gap:12px;margin:10px 0;padding:12px;background:#334155;border-radius:10px;cursor:pointer;border:2px solid transparent}
+.opsi label{
+display:flex;gap:10px;margin:8px 0;padding:12px;
+background:#334155;border-radius:10px;cursor:pointer;
+border:2px solid transparent
+}
 .opsi label:hover{background:#475569}
-.opsi span{min-width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:#1e293b;border-radius:6px;font-weight:bold;border:2px solid #64748b}
-.opsi p{margin:0;flex:1}
 
-.opsi input:checked + span{background:#22c55e;border-color:#22c55e}
-.opsi label:has(input:checked){border:2px solid #22c55e}
+.opsi .huruf{
+width:30px;height:30px;border-radius:50%;
+border:2px solid #64748b;
+display:flex;align-items:center;justify-content:center;
+font-weight:bold
+}
 
-.nav{display:flex;justify-content:space-between;margin-top:16px}
-button{padding:12px;border:none;border-radius:10px;background:#22c55e;color:white;font-weight:bold;cursor:pointer}
+.opsi input:checked + .huruf{
+background:#22c55e;border-color:#22c55e
+}
 
-.hasil{text-align:center;background:#334155;padding:20px;border-radius:12px;margin-top:20px;animation:fade 0.5s}
-@keyframes fade{from{opacity:0;transform:translateY(20px)}to{opacity:1}}
+.opsi label.selected{
+border:2px solid #22c55e;
+background:#166534
+}
+
+.nav{display:flex;justify-content:space-between;margin-top:15px}
+button{padding:12px;border:none;border-radius:10px;background:#22c55e;color:white;cursor:pointer}
+
+.hasil{text-align:center;background:#334155;padding:20px;border-radius:12px}
 </style>
 </head>
 
 <body>
+
 <div class="container">
 <h1>LATIHAN SOAL UP PPG</h1>
 
@@ -53,16 +69,16 @@ button{padding:12px;border:none;border-radius:10px;background:#22c55e;color:whit
 </div>
 
 <div id="ujian" style="display:none">
-<div class="timer">Sisa Waktu: <span id="time">--:--</span></div>
+<div class="timer">Sisa Waktu: <span id="time"></span></div>
 <div class="progress"><div class="bar" id="bar"></div></div>
 
-<div class="nomor-nav" id="nomorNav"></div>
+<div class="nomor-nav" id="nav"></div>
 
-<form id="quizForm"></form>
+<form id="form"></form>
 
 <div class="nav">
-<button onclick="prevSoal()">Prev</button>
-<button onclick="nextSoal()">Next</button>
+<button onclick="prev()">Prev</button>
+<button onclick="next()">Next</button>
 </div>
 </div>
 
@@ -70,126 +86,144 @@ button{padding:12px;border:none;border-radius:10px;background:#22c55e;color:whit
 </div>
 
 <script>
-let data=[];
-let current=0;
-let jawaban=[];
-let usernameSiswa='';
-let kelasSiswa='';
-let timer;
-let waktu=600;
+const URL='https://script.google.com/macros/s/AKfycbzxZLHU0PbEbMyJKMxEeYrVBbQmtmsgdHCV_xnRNgSCe8xVs65zCVY3N6NFRnWeLg18/exec';
 
-const SCRIPT_URL='https://script.google.com/macros/s/AKfycbzxZLHU0PbEbMyJKMxEeYrVBbQmtmsgdHCV_xnRNgSCe8xVs65zCVY3N6NFRnWeLg18/exec';
-const form=document.getElementById('quizForm');
+let data=[],i=0,jawaban=[],user='',kelas='',timer,waktu=600;
 
 function login(){
-let u=username.value;
-let p=password.value;
-fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({type:'login',username:u,password:p})})
+fetch(URL,{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+type:'login',
+username:username.value,
+password:password.value
+})
+})
 .then(r=>r.json())
 .then(r=>{
 if(r.status==='success'){
-usernameSiswa=u;
-kelasSiswa=r.kelas;
-mulai();
+user=username.value;
+kelas=r.kelas;
+start();
 }else alert('Login gagal');
-});}
+});
+}
 
-function mulai(){
-fetch(SCRIPT_URL)
+function start(){
+fetch(URL)
 .then(r=>r.json())
 .then(r=>{
 data=r;
 login.style.display='none';
 ujian.style.display='block';
 render();
-buatNav();
+nav();
 show();
-startTimer();
-});}
+timerStart();
+});
+}
 
 function render(){
 form.innerHTML='';
-data.forEach((d,i)=>{
+data.forEach((d,x)=>{
 let div=document.createElement('div');
-div.className='soal'+(i==0?' active':'');
-div.innerHTML=`<p><b>${i+1}.</b> ${d.q}</p>
-<div class='opsi'>${d.o.map((o,j)=>`
-<label>
-<input type='radio' name='q${i}' value='${j}'>
-<span>${String.fromCharCode(65+j)}</span>
-<p>${o}</p>
-</label>`).join('')}</div>`;
-form.appendChild(div);
-});}
+div.className='soal'+(x==0?' active':'');
 
-function buatNav(){
-let nav=document.getElementById('nomorNav');
+div.innerHTML=`
+<p><b>${x+1}.</b> ${d.q}</p>
+<div class="opsi">
+${d.o.map((o,y)=>`
+<label onclick="pilih(${x},${y},this)">
+<input type="radio" name="q${x}" value="${y}">
+<div class="huruf">${String.fromCharCode(65+y)}</div>
+<div>${o}</div>
+</label>
+`).join('')}
+</div>`;
+form.appendChild(div);
+});
+}
+
+function pilih(x,y,el){
+jawaban[x]=y;
+el.parentElement.querySelectorAll('label').forEach(l=>l.classList.remove('selected'));
+el.classList.add('selected');
+updateNav();
+}
+
+function nav(){
 nav.innerHTML='';
-data.forEach((_,i)=>{
-let btn=document.createElement('button');
-btn.innerText=i+1;
-btn.onclick=()=>{current=i;show()};
-nav.appendChild(btn);
-});}
+data.forEach((_,x)=>{
+let b=document.createElement('button');
+b.innerText=x+1;
+b.onclick=()=>{i=x;show()};
+nav.appendChild(b);
+});
+}
 
 function updateNav(){
-document.querySelectorAll('.nomor-nav button').forEach((b,i)=>{
+document.querySelectorAll('.nomor-nav button').forEach((b,x)=>{
 b.classList.remove('aktif','sudah');
-if(i===current)b.classList.add('aktif');
-if(jawaban[i]!=null)b.classList.add('sudah');
-});}
+if(x==i)b.classList.add('aktif');
+if(jawaban[x]!=null)b.classList.add('sudah');
+});
+}
 
 function show(){
-document.querySelectorAll('.soal').forEach((s,i)=>{
-s.classList.toggle('active',i===current);
+document.querySelectorAll('.soal').forEach((s,x)=>{
+s.classList.toggle('active',x==i);
 });
-bar.style.width=((current+1)/data.length*100)+'%';
-updateNav();}
-
-form.addEventListener('change',e=>{
-jawaban[current]=parseInt(e.target.value);
+bar.style.width=((i+1)/data.length*100)+'%';
 updateNav();
-});
+}
 
-function nextSoal(){
-if(current<data.length-1){current++;show()}else submitQuiz();}
-function prevSoal(){if(current>0){current--;show()}}
+function next(){
+if(i<data.length-1){i++;show()}else submit();
+}
+function prev(){
+if(i>0){i--;show()}
+}
 
-function startTimer(){
+function timerStart(){
 timer=setInterval(()=>{
 waktu--;
 let m=Math.floor(waktu/60);
 let s=waktu%60;
 time.innerText=`${m}:${s<10?'0'+s:s}`;
-if(waktu<=0){clearInterval(timer);submitQuiz();}
+if(waktu<=0){clearInterval(timer);submit();}
 },1000);
 }
 
-function submitQuiz(){
+function submit(){
 clearInterval(timer);
-let kosong=jawaban.includes(undefined);
-if(kosong && !confirm('Masih ada soal kosong, lanjut submit?'))return;
 
 let benar=0;
-data.forEach((d,i)=>{if(jawaban[i]==d.a)benar++});
+data.forEach((d,x)=>{if(jawaban[x]==d.a)benar++});
 let nilai=Math.round((benar/data.length)*100);
 
-fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({type:'nilai',username:usernameSiswa,kelas:kelasSiswa,nilai})});
+fetch(URL,{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+type:'nilai',
+username:user,
+kelas:kelas,
+nilai:nilai
+})
+});
 
-hasil.style.display='block';
 ujian.style.display='none';
+hasil.style.display='block';
 
 hasil.innerHTML=`
-<h2>${usernameSiswa}</h2>
-<h3>Kelas: ${kelasSiswa}</h3>
+<h2>${user}</h2>
+<h3>Kelas: ${kelas}</h3>
 <h1>Nilai: ${nilai}</h1>
-<button onclick='ulang()'>Ulangi Ujian</button><br><br>
-<a href='https://yanuar-moga.github.io/app/ppg/'><button>Home</button></a>`;
-}
-
-function ulang(){
-location.reload();
+<button onclick="location.reload()">Ulangi</button>
+`;
 }
 </script>
+
 </body>
 </html>
