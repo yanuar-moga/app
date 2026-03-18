@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPG Learning Hub Premium</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #fff;
+}
+
+/* HEADER */
+header {
+    padding: 30px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(90deg, #38bdf8, #6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header p {
+    color: #cbd5f5;
+    margin-top: 10px;
+}
+
+/* CONTAINER */
+.container {
+    padding: 30px;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* CARD GLASS */
+.card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    padding: 25px;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Glow effect */
+.card::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: rotate(25deg);
+    top: -100%;
+    left: -100%;
+    transition: 0.5s;
+}
+
+.card:hover::before {
+    top: 100%;
+    left: 100%;
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border: 1px solid rgba(99,102,241,0.6);
+}
+
+/* CARD CONTENT */
+.card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 0.9rem;
+    color: #cbd5f5;
+}
+
+/* BUTTON */
+.card a {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #6366f1, #38bdf8);
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.card a:hover {
+    opacity: 0.8;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #94a3b8;
+    margin-top: 30px;
+    font-size: 0.9rem;
+}
+
+/* BADGE */
+.badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #6366f1;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>PPG Learning Hub</h1>
+    <p>Platform Belajar Premium untuk Persiapan PPG</p>
+</header>
+
+<div class="container">
+
+<div class="grid">
+
+    <div class="card">
+        <div class="badge">UP</div>
+        <h3>📝 Latihan Ujian Pengetahuan</h3>
+        <p>Latihan soal berbasis HOTS untuk persiapan ujian PPG.</p>
+        <a href="#">Mulai Latihan</a>
+    </div>
+
+    <div class="card">
+        <div class="badge">CASE</div>
+        <h3>📄 Studi Kasus</h3>
+        <p>Analisis kasus sesuai format PPG: masalah, solusi, refleksi.</p>
+        <a href="#">Buka</a>
+    </div>
+
+    <div class="card">
+        <div class="badge">PED</div>
+        <h3>🎓 Materi Pedagogik</h3>
+        <p>Diferensiasi, asesmen, strategi pembelajaran modern.</p>
+        <a href="#">Pelajari</a>
+    </div>
+
+    <div class="card">
+        <div class="badge">PRO</div>
+        <h3>📘 Materi Profesional</h3>
+        <p>Penguatan materi bidang studi sesuai kompetensi.</p>
+        <a href="#">Pelajari</a>
+    </div>
+
+    <div class="card">
+        <div class="badge">LKPD</div>
+        <h3>📑 Contoh LKPD</h3>
+        <p>Kumpulan LKPD inovatif dan siap digunakan.</p>
+        <a href="#">Lihat</a>
+    </div>
+
+    <div class="card">
+        <div class="badge">REF</div>
+        <h3>🧠 Refleksi</h3>
+        <p>Latihan refleksi pembelajaran sesuai standar PPG.</p>
+        <a href="#">Mulai</a>
+    </div>
+
+    <div class="card">
+        <div class="badge">TRYOUT</div>
+        <h3>⏱️ Try Out</h3>
+        <p>Simulasi ujian real dengan timer & skor.</p>
+        <a href="#">Mulai</a>
+    </div>
+
+    <div class="card">
+        <div class="badge">NOTE</div>
+        <h3>📌 Catatan</h3>
+        <p>Simpan ringkasan materi & insight belajar kamu.</p>
+        <a href="#">Buka</a>
+    </div>
+
+</div>
+
+</div>
+
+<footer>
+    © 2026 PPG Learning Hub — Premium Learning Experience
+</footer>
+
+</body>
+</html>
