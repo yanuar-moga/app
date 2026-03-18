@@ -270,7 +270,7 @@ fetch(URL)
 .then(r=>{
 data=r;
 render();
-nav();
+renderNav();
 show();
 timerStart();
 });
@@ -305,13 +305,14 @@ el.classList.add('selected');
 updateNav();
 }
 
-function nav(){
-nav.innerHTML='';
+function renderNav(){
+const navEl=document.getElementById('nav');
+navEl.innerHTML='';
 data.forEach((_,x)=>{
 let b=document.createElement('button');
 b.innerText=x+1;
 b.onclick=()=>{i=x;show()};
-nav.appendChild(b);
+navEl.appendChild(b);
 });
 }
 
@@ -334,30 +335,36 @@ updateNav();
 function next(){i<data.length-1?(i++,show()):submit();}
 function prev(){if(i>0){i--;show()}}
 
-/* ✅ TIMER FIX */
+/* TIMER FINAL */
 function timerStart(){
 
-const timeEl = document.getElementById('time');
+const timeEl=document.getElementById('time');
 
-timer = setInterval(function(){
+// tampil awal
+renderTime();
+
+timer=setInterval(function(){
 
 waktu--;
 
-let m = Math.floor(waktu/60);
-let s = waktu % 60;
+renderTime();
 
-timeEl.innerText = m + ':' + (s<10 ? '0'+s : s);
-
-if(waktu <= 0){
+if(waktu<=0){
 clearInterval(timer);
 submit();
 }
 
-if(waktu <= 60){
-timeEl.style.color = 'red';
-}
-
 },1000);
+
+function renderTime(){
+let m=Math.floor(waktu/60);
+let s=waktu%60;
+timeEl.textContent=m+':' + (s<10?'0'+s:s);
+
+if(waktu<=60){
+timeEl.style.color='red';
+}
+}
 }
 
 function submit(){
