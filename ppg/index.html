@@ -20,17 +20,15 @@ body {
     justify-content: center;
 }
 
-/* CONTAINER */
 .wrapper {
     width: 100%;
     max-width: 420px;
     padding: 20px;
 }
 
-/* HEADER */
 .header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 .header h1 {
@@ -54,52 +52,50 @@ body {
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255,255,255,0.08);
     transition: 0.3s;
-    display: flex;
-    flex-direction: column;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    border: 1px solid rgba(99,102,241,0.6);
-}
-
-/* TITLE */
-.card h3 {
-    font-size: 1.1rem;
-    margin-bottom: 5px;
-}
-
-/* TEXT */
-.card p {
-    font-size: 0.85rem;
-    color: #cbd5f5;
+    transform: translateY(-4px);
 }
 
 /* BUTTON */
-.card a {
-    margin-top: 10px;
+.button {
+    display: block;
     text-align: center;
     padding: 10px;
     border-radius: 10px;
     background: linear-gradient(90deg, #6366f1, #38bdf8);
     text-decoration: none;
     color: white;
+    margin-top: 10px;
+}
+
+/* COLLAPSIBLE */
+.collapsible {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.submenu {
+    margin-top: 10px;
+    display: none;
+}
+
+.submenu a {
+    display: block;
+    background: rgba(255,255,255,0.03);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    text-decoration: none;
+    color: #cbd5f5;
     font-size: 0.85rem;
     transition: 0.3s;
 }
 
-.card a:hover {
-    opacity: 0.8;
-}
-
-/* BADGE */
-.badge {
-    align-self: flex-start;
-    font-size: 0.7rem;
-    background: #6366f1;
-    padding: 3px 8px;
-    border-radius: 8px;
-    margin-bottom: 8px;
+.submenu a:hover {
+    background: rgba(99,102,241,0.2);
+    color: white;
 }
 
 /* FOOTER */
@@ -109,8 +105,15 @@ body {
     font-size: 0.75rem;
     color: #94a3b8;
 }
-
 </style>
+
+<script>
+function toggleMenu() {
+    const menu = document.getElementById("submenu");
+    menu.style.display = (menu.style.display === "block") ? "none" : "block";
+}
+</script>
+
 </head>
 
 <body>
@@ -119,65 +122,27 @@ body {
 
     <div class="header">
         <h1>PPG Learning Hub</h1>
-        <p>Belajar Lebih Fokus & Terarah</p>
+        <p>Belajar Fokus & Terarah</p>
     </div>
 
-    <!-- MENU LIST -->
-
+    <!-- UJIAN PENGETAHUAN -->
     <div class="card">
-        <div class="badge">UP</div>
-        <h3>📝 Latihan Ujian Pengetahuan</h3>
-        <p>Soal HOTS untuk persiapan ujian PPG.</p>
-        <a href="#">Mulai Latihan</a>
+        <h3>📝 Ujian Pengetahuan</h3>
+        <p>Latihan soal untuk persiapan ujian PPG.</p>
+        <a href="#" class="button">Mulai Latihan</a>
     </div>
 
+    <!-- STUDI KASUS -->
     <div class="card">
-        <div class="badge">CASE</div>
-        <h3>📄 Studi Kasus</h3>
-        <p>Latihan analisis sesuai format PPG.</p>
-        <a href="#">Buka</a>
-    </div>
+        <h3 class="collapsible" onclick="toggleMenu()">📄 Studi Kasus ▼</h3>
+        <p>Latihan analisis kasus sesuai format PPG.</p>
 
-    <div class="card">
-        <div class="badge">PED</div>
-        <h3>🎓 Materi Pedagogik</h3>
-        <p>Diferensiasi, asesmen, strategi belajar.</p>
-        <a href="#">Pelajari</a>
-    </div>
-
-    <div class="card">
-        <div class="badge">PRO</div>
-        <h3>📘 Materi Profesional</h3>
-        <p>Penguatan materi bidang studi.</p>
-        <a href="#">Pelajari</a>
-    </div>
-
-    <div class="card">
-        <div class="badge">LKPD</div>
-        <h3>📑 Contoh LKPD</h3>
-        <p>LKPD siap pakai & inovatif.</p>
-        <a href="#">Lihat</a>
-    </div>
-
-    <div class="card">
-        <div class="badge">REF</div>
-        <h3>🧠 Refleksi</h3>
-        <p>Latihan refleksi pembelajaran.</p>
-        <a href="#">Mulai</a>
-    </div>
-
-    <div class="card">
-        <div class="badge">TRY</div>
-        <h3>⏱️ Try Out</h3>
-        <p>Simulasi ujian dengan timer.</p>
-        <a href="#">Mulai</a>
-    </div>
-
-    <div class="card">
-        <div class="badge">NOTE</div>
-        <h3>📌 Catatan</h3>
-        <p>Simpan ringkasan belajar kamu.</p>
-        <a href="#">Buka</a>
+        <div class="submenu" id="submenu">
+            <a href="#">1. Masalah Media Pembelajaran</a>
+            <a href="#">2. Masalah LKPD</a>
+            <a href="#">3. Masalah Strategi Pembelajaran</a>
+            <a href="#">4. Masalah Penilaian Pembelajaran</a>
+        </div>
     </div>
 
     <div class="footer">
