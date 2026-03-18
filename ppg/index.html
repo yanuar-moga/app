@@ -70,15 +70,10 @@ body {
     margin-top: 10px;
 }
 
-/* COLLAPSIBLE */
-.collapsible {
-    cursor: pointer;
-    font-weight: bold;
-}
-
+/* SUBMENU LANGSUNG TAMPIL */
 .submenu {
-    margin-top: 10px;
-    display: none;
+    margin-top: 12px;
+    display: block;
 }
 
 .submenu a {
@@ -107,13 +102,6 @@ body {
 }
 </style>
 
-<script>
-function toggleMenu() {
-    const menu = document.getElementById("submenu");
-    menu.style.display = (menu.style.display === "block") ? "none" : "block";
-}
-</script>
-
 </head>
 
 <body>
@@ -132,12 +120,12 @@ function toggleMenu() {
         <a href="#" class="button">Mulai Latihan</a>
     </div>
 
-    <!-- STUDI KASUS -->
+    <!-- STUDI KASUS TANPA SPOILER -->
     <div class="card">
-        <h3 class="collapsible" onclick="toggleMenu()">📄 Studi Kasus ▼</h3>
+        <h3>📄 Studi Kasus</h3>
         <p>Latihan analisis kasus sesuai format PPG.</p>
 
-        <div class="submenu" id="submenu">
+        <div class="submenu">
             <a href="https://yanuar-moga.github.io/app/ppg/studykasus/media_pembelajaran">1. Masalah Media Pembelajaran</a>
             <a href="https://yanuar-moga.github.io/app/ppg/studykasus/lkpd">2. Masalah LKPD</a>
             <a href="https://yanuar-moga.github.io/app/ppg/studykasus/masalah_pembelajaran">3. Masalah Strategi Pembelajaran</a>
