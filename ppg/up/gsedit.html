@@ -125,9 +125,7 @@ border:2px solid transparent;
 transition:0.2s;
 }
 
-.opsi label:hover{
-background:#475569;
-}
+.opsi label:hover{background:#475569;}
 
 .opsi .huruf{
 width:32px;
@@ -141,9 +139,7 @@ font-weight:bold;
 flex-shrink:0;
 }
 
-.opsi .text{
-flex:1;
-}
+.opsi .text{flex:1;}
 
 .opsi label.selected{
 border:2px solid #22c55e;
@@ -156,9 +152,7 @@ border-color:#22c55e;
 color:#fff;
 }
 
-.opsi label:active{
-transform:scale(0.98);
-}
+.opsi label:active{transform:scale(0.98);}
 
 .nav{
 display:flex;
@@ -216,7 +210,9 @@ border-radius:12px;
 
 <h2 style="text-align:center">LATIHAN SOAL UP PPG</h2>
 
-<div class="timer">Sisa Waktu: <span id="time"></span></div>
+<!-- ✅ TIMER FIX -->
+<div class="timer">Sisa Waktu: <span id="time">10:00</span></div>
+
 <div class="progress"><div class="bar" id="bar"></div></div>
 
 <div class="nomor-nav" id="nav"></div>
@@ -341,9 +337,12 @@ updateNav();
 function next(){i<data.length-1?(i++,show()):submit();}
 function prev(){if(i>0){i--;show()}}
 
+/* ✅ TIMER FINAL FIX */
 function timerStart(){
 
-// 🔥 TAMPILKAN WAKTU LANGSUNG SAAT MULAI
+const timeEl = document.getElementById('time');
+
+// tampil langsung
 updateTime();
 
 timer=setInterval(()=>{
@@ -355,14 +354,12 @@ clearInterval(timer);
 submit();
 }
 },1000);
-}
 
-// 🔥 FUNCTION FORMAT WAKTU
 function updateTime(){
 let m=Math.floor(waktu/60);
 let s=waktu%60;
-document.getElementById('time').innerText =
-`${m}:${s<10?'0'+s:s}`;
+timeEl.innerText = m + ':' + (s<10 ? '0'+s : s);
+}
 }
 
 function submit(){
