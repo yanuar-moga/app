@@ -6,12 +6,22 @@
 <title>CBT Interaktif</title>
 
 <style>
-body {font-family: Arial, sans-serif; background:#0f172a; color:white; padding:20px}
-.container{max-width:900px;margin:auto}
-.soal{background:#1e293b;padding:15px;border-radius:10px;margin-bottom:15px}
-.opsi label{display:block;margin:6px 0;cursor:pointer}
-button{padding:12px;border:none;border-radius:8px;background:#22c55e;color:white;font-weight:bold;cursor:pointer;width:100%}
-.hasil{margin-top:20px;padding:15px;background:#334155;border-radius:10px}
+*{box-sizing:border-box}
+body {font-family: Arial, sans-serif; background:#0f172a; color:white; margin:0}
+.container{max-width:900px;margin:auto;padding:16px}
+h1{text-align:center;margin:10px 0 20px}
+.soal{background:#1e293b;padding:16px;border-radius:12px;margin-bottom:14px}
+.opsi label{display:block;margin:8px 0;padding:10px;border-radius:8px;background:#334155;cursor:pointer;transition:.2s}
+.opsi input{margin-right:8px}
+.opsi label:hover{background:#475569}
+button{padding:14px;border:none;border-radius:10px;background:#22c55e;color:white;font-weight:bold;cursor:pointer;width:100%;font-size:16px}
+.hasil{margin-top:20px;padding:16px;background:#334155;border-radius:12px;text-align:center}
+
+@media (max-width:600px){
+  .soal{padding:12px}
+  .opsi label{font-size:14px}
+  h1{font-size:20px}
+}
 </style>
 </head>
 
@@ -23,66 +33,66 @@ button{padding:12px;border:none;border-radius:8px;background:#22c55e;color:white
 <div class="soal">
 <p><b>1.</b> Seorang guru ingin mengajarkan konsep berbagai topologi jaringan komputer kepada siswa dengan kebutuhan pembelajaran yang beragam, termasuk siswa penyandang disabilitas. Bagaimana guru dapat mengorganisasi konten pembelajaran agar semua siswa dapat memahami materi dengan baik?</p>
 <div class="opsi">
-<label><input type="radio" name="q1" value="0"> ○ Menyediakan materi pembelajaran hanya dalam bentuk teks tertulis, tanpa menyertakan media tambahan seperti video, audio, atau gambar, yang dapat membantu memperjelas dan memperkaya pemahaman siswa terhadap konten yang diajarkan.</label>
-<label><input type="radio" name="q1" value="0"> ○ Menggunakan presentasi visual yang menarik dengan gambar, grafik, dan diagram tanpa menyertakan teks tambahan, agar siswa dapat fokus pada elemen visual untuk memahami konsep yang diajarkan melalui visualisasi yang jelas dan efektif.</label>
-<label><input type="radio" name="q1" value="1"> ✅ Menyediakan materi dalam berbagai format, seperti video dengan teks tertutup, gambar dengan deskripsi audio, dan diagram interaktif yang dapat diakses oleh semua siswa sesuai kebutuhan mereka.</label>
-<label><input type="radio" name="q1" value="0"> ○ Mengadakan ujian tertulis yang komprehensif tentang topologi jaringan, mencakup berbagai tipe seperti bus, star, ring, dan mesh, untuk mengevaluasi pemahaman siswa terhadap konsep, kelebihan, dan kelemahan masing-masing topologi secara mendalam.</label>
-<label><input type="radio" name="q1" value="0"> ○ Menyuruh siswa membaca buku teks tentang topologi jaringan komputer.</label>
+<label><input type="radio" name="q1" value="0"> A. Menyediakan materi pembelajaran hanya dalam bentuk teks tertulis, tanpa menyertakan media tambahan seperti video, audio, atau gambar, yang dapat membantu memperjelas dan memperkaya pemahaman siswa terhadap konten yang diajarkan.</label>
+<label><input type="radio" name="q1" value="0"> B. Menggunakan presentasi visual yang menarik dengan gambar, grafik, dan diagram tanpa menyertakan teks tambahan, agar siswa dapat fokus pada elemen visual untuk memahami konsep yang diajarkan melalui visualisasi yang jelas dan efektif.</label>
+<label><input type="radio" name="q1" value="1"> C. Menyediakan materi dalam berbagai format, seperti video dengan teks tertutup, gambar dengan deskripsi audio, dan diagram interaktif yang dapat diakses oleh semua siswa sesuai kebutuhan mereka.</label>
+<label><input type="radio" name="q1" value="0"> D. Mengadakan ujian tertulis yang komprehensif tentang topologi jaringan, mencakup berbagai tipe seperti bus, star, ring, dan mesh, untuk mengevaluasi pemahaman siswa terhadap konsep, kelebihan, dan kelemahan masing-masing topologi secara mendalam.</label>
+<label><input type="radio" name="q1" value="0"> E. Menyuruh siswa membaca buku teks tentang topologi jaringan komputer.</label>
 </div>
 </div>
 
 <div class="soal">
 <p><b>2.</b> Untuk mengajarkan konsep animasi 2D dan 3D pada peserta didiknya, peserta didik harus mampu menentukan letak perbedaan yang paling mencolok antara animasi 2D dan 3D pada saat membuatnya. Untuk mencapai tujuan pembelajaran tersebut, maka desain pembelajaran yang dianggap paling lengkap dilakukan oleh guru dalam mengajarkan konsep animasi 2D dan 3D tersebut adalah memperhatikan ....</p>
 <div class="opsi">
-<label><input type="radio" name="q2" value="0"> ○ objek dan karakter untuk memiliki volume sehingga memberikan kesan yang lebih nyata dan mendalam</label>
-<label><input type="radio" name="q2" value="0"> ○ penggambaran dilakukan dengan membuat gambar berurutan yang disebut frame untuk menciptakan ilusi gerakan</label>
-<label><input type="radio" name="q2" value="1"> ✅ dimensi, teknik pembuatan, estetika visual, pengalaman interaktif, proses produksi dan biaya</label>
-<label><input type="radio" name="q2" value="0"> ○ pembuatan objek virtual, pencahayaan, tekstur, dan animasi gerak yang lebih kompleks</label>
-<label><input type="radio" name="q2" value="0"> ○ nuansa dan tekstur yang lebih kompleks sehingga membuatnya terlihat lebih hidup</label>
+<label><input type="radio" name="q2" value="0"> A. objek dan karakter untuk memiliki volume sehingga memberikan kesan yang lebih nyata dan mendalam</label>
+<label><input type="radio" name="q2" value="0"> B. penggambaran dilakukan dengan membuat gambar berurutan yang disebut frame untuk menciptakan ilusi gerakan</label>
+<label><input type="radio" name="q2" value="1"> C. dimensi, teknik pembuatan, estetika visual, pengalaman interaktif, proses produksi dan biaya</label>
+<label><input type="radio" name="q2" value="0"> D. pembuatan objek virtual, pencahayaan, tekstur, dan animasi gerak yang lebih kompleks</label>
+<label><input type="radio" name="q2" value="0"> E. nuansa dan tekstur yang lebih kompleks sehingga membuatnya terlihat lebih hidup</label>
 </div>
 </div>
 
 <div class="soal">
 <p><b>3.</b> Seorang guru ingin memastikan bahwa siswa memahami cara menginstal dan mengkonfigurasi perangkat keras komputer dengan benar. Langkah mana yang harus dilakukan guru untuk mengorganisasi pembelajaran ini agar memudahkan pemahaman siswa?</p>
 <div class="opsi">
-<label><input type="radio" name="q3" value="0"> ○ Memberikan ceramah detail tentang langkah-langkah instalasi perangkat keras, mulai dari persiapan perangkat dan perangkat lunak, serta proses pemasangan fisik.</label>
-<label><input type="radio" name="q3" value="1"> ✅ Menyediakan video tutorial yang menunjukkan proses instalasi perangkat keras, disertai dengan latihan praktis di laboratorium komputer.</label>
-<label><input type="radio" name="q3" value="0"> ○ Menyuruh siswa membaca manual instalasi perangkat keras tanpa bimbingan, dengan tujuan memberikan mereka kesempatan untuk mengembangkan keterampilan mandiri.</label>
-<label><input type="radio" name="q3" value="0"> ○ Memberikan soal tes tertulis yang mencakup langkah-langkah instalasi perangkat keras, termasuk persiapan, pemasangan fisik, konfigurasi, dan pengujian.</label>
-<label><input type="radio" name="q3" value="0"> ○ Menyuruh siswa menulis esai tentang pentingnya perangkat keras komputer.</label>
+<label><input type="radio" name="q3" value="0"> A. Memberikan ceramah detail tentang langkah-langkah instalasi perangkat keras, mulai dari persiapan perangkat dan perangkat lunak, serta proses pemasangan fisik.</label>
+<label><input type="radio" name="q3" value="1"> B. Menyediakan video tutorial yang menunjukkan proses instalasi perangkat keras, disertai dengan latihan praktis di laboratorium komputer.</label>
+<label><input type="radio" name="q3" value="0"> C. Menyuruh siswa membaca manual instalasi perangkat keras tanpa bimbingan, dengan tujuan memberikan mereka kesempatan untuk mengembangkan keterampilan mandiri.</label>
+<label><input type="radio" name="q3" value="0"> D. Memberikan soal tes tertulis yang mencakup langkah-langkah instalasi perangkat keras, termasuk persiapan, pemasangan fisik, konfigurasi, dan pengujian.</label>
+<label><input type="radio" name="q3" value="0"> E. Menyuruh siswa menulis esai tentang pentingnya perangkat keras komputer.</label>
 </div>
 </div>
 
 <div class="soal">
 <p><b>4.</b> Guru menjelaskan kepada siswa tentang proses editing video menggunakan perangkat lunak Adobe Premiere Pro. Bagaimana guru dapat memastikan bahwa siswa memahami tahapan dasar dalam proses editing video?</p>
 <div class="opsi">
-<label><input type="radio" name="q4" value="0"> Apa langkah pertama yang harus dilakukan saat memulai proyek baru di Adobe Premiere Pro?</label>
-<label><input type="radio" name="q4" value="0"> Bagaimana cara menambahkan transisi antara dua klip video?</label>
-<label><input type="radio" name="q4" value="1"> Mengapa penting untuk memahami timeline dalam proses editing video? ✅</label>
-<label><input type="radio" name="q4" value="0"> Apa perbedaan antara trimming dan splitting dalam editing video?</label>
-<label><input type="radio" name="q4" value="0"> Bagaimana cara mengatur kecepatan video di Adobe Premiere Pro?</label>
+<label><input type="radio" name="q4" value="0"> A. Apa langkah pertama yang harus dilakukan saat memulai proyek baru di Adobe Premiere Pro?</label>
+<label><input type="radio" name="q4" value="0"> B. Bagaimana cara menambahkan transisi antara dua klip video?</label>
+<label><input type="radio" name="q4" value="1"> C. Mengapa penting untuk memahami timeline dalam proses editing video?</label>
+<label><input type="radio" name="q4" value="0"> D. Apa perbedaan antara trimming dan splitting dalam editing video?</label>
+<label><input type="radio" name="q4" value="0"> E. Bagaimana cara mengatur kecepatan video di Adobe Premiere Pro?</label>
 </div>
 </div>
 
 <div class="soal">
 <p><b>5.</b> Pak Agus adalah seorang guru informatika yang akan menyusun desain pembelajaran pada mata pelajaran desain perencanaan produk. Melalui model Project based learning, guru tersebut menerapkan teori konstruktivistik dalam desain pembelajarannya. Tahap pertama yang perlu diperhatikan oleh guru dalam merancang pembelajaran tersebut adalah ...</p>
 <div class="opsi">
-<label><input type="radio" name="q5" value="0"> guru meminta peserta didik untuk mencari solusi atau menyelidiki konsep yang telah dipaparkan. Kegiatan tersebut bisa diisi dengan membaca buku, mencari referensi dari berbagai sumber, atau mengorganisasi ilmu-ilmu yang relevan.</label>
-<label><input type="radio" name="q5" value="0"> peserta didik diminta untuk memberikan pemaparan tentang konsep yang dirumuskan berdasarkan pengetahuan yang telah diperolehnya. Selain itu juga bisa memberikan penguatan berdasarkan keilmuan yang guru miliki.</label>
-<label><input type="radio" name="q5" value="0"> mengondisikan suasana belajar di kelas menjadi lebih hangat, santun, dan penuh wibawa. Dengan demikian, guru bisa mendorong peserta didik untuk bisa menerapkan pemahaman konseptual yang telah diperolehnya di kehidupan sehari-hari.</label>
-<label><input type="radio" name="q5" value="1"> guru harus bisa memancing peserta didik tentang suatu pokok bahasan atau konsep, misalnya dengan memberikan sejumlah pertanyaan yang bersifat clickbait di kehidupan sehari-hari. Lalu, guru bisa mulai membangun komunikasi dua arah agar mereka bersedia memberikan gambaran umumnya. ✅</label>
-<label><input type="radio" name="q5" value="0"> guru membentuk pemikiran peserta didik bahwa bekerja secara mandiri akan menghasilkan kegiatan belajar yang lebih bermakna.</label>
+<label><input type="radio" name="q5" value="0"> A. guru meminta peserta didik untuk mencari solusi atau menyelidiki konsep yang telah dipaparkan. Kegiatan tersebut bisa diisi dengan membaca buku, mencari referensi dari berbagai sumber, atau mengorganisasi ilmu-ilmu yang relevan.</label>
+<label><input type="radio" name="q5" value="0"> B. peserta didik diminta untuk memberikan pemaparan tentang konsep yang dirumuskan berdasarkan pengetahuan yang telah diperolehnya. Selain itu juga bisa memberikan penguatan berdasarkan keilmuan yang guru miliki.</label>
+<label><input type="radio" name="q5" value="0"> C. mengondisikan suasana belajar di kelas menjadi lebih hangat, santun, dan penuh wibawa. Dengan demikian, guru bisa mendorong peserta didik untuk bisa menerapkan pemahaman konseptual yang telah diperolehnya di kehidupan sehari-hari.</label>
+<label><input type="radio" name="q5" value="1"> D. guru harus bisa memancing peserta didik tentang suatu pokok bahasan atau konsep, misalnya dengan memberikan sejumlah pertanyaan yang bersifat clickbait di kehidupan sehari-hari. Lalu, guru bisa mulai membangun komunikasi dua arah agar mereka bersedia memberikan gambaran umumnya.</label>
+<label><input type="radio" name="q5" value="0"> E. guru membentuk pemikiran peserta didik bahwa bekerja secara mandiri akan menghasilkan kegiatan belajar yang lebih bermakna.</label>
 </div>
 </div>
 
 <div class="soal">
 <p><b>6.</b> Seorang guru informatika melaksanakan asesmen yang dilakukan untuk mengidentifikasi kebutuhan belajar peserta didik, hambatan atau kesulitan yang mereka hadapi, dan juga untuk mendapatkan informasi perkembangan peserta didik. Asesmen yang dilakukan oleh guru tersebut dalam pembelajaran disebut ....</p>
 <div class="opsi">
-<label><input type="radio" name="q6" value="0"> asesmen diagnostik</label>
-<label><input type="radio" name="q6" value="0"> asesmen diagnostik non kognitif</label>
-<label><input type="radio" name="q6" value="1"> asesmen formatif ✅</label>
-<label><input type="radio" name="q6" value="0"> asesmen diagnosis kognitif</label>
-<label><input type="radio" name="q6" value="0"> asesmen sumatif</label>
+<label><input type="radio" name="q6" value="0"> A. asesmen diagnostik</label>
+<label><input type="radio" name="q6" value="0"> B. asesmen diagnostik non kognitif</label>
+<label><input type="radio" name="q6" value="1"> C. asesmen formatif</label>
+<label><input type="radio" name="q6" value="0"> D. asesmen diagnosis kognitif</label>
+<label><input type="radio" name="q6" value="0"> E. asesmen sumatif</label>
 </div>
 </div>
 
