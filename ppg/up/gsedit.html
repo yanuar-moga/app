@@ -342,13 +342,27 @@ function next(){i<data.length-1?(i++,show()):submit();}
 function prev(){if(i>0){i--;show()}}
 
 function timerStart(){
+
+// 🔥 TAMPILKAN WAKTU LANGSUNG SAAT MULAI
+updateTime();
+
 timer=setInterval(()=>{
 waktu--;
+updateTime();
+
+if(waktu<=0){
+clearInterval(timer);
+submit();
+}
+},1000);
+}
+
+// 🔥 FUNCTION FORMAT WAKTU
+function updateTime(){
 let m=Math.floor(waktu/60);
 let s=waktu%60;
-time.innerText=`${m}:${s<10?'0'+s:s}`;
-if(waktu<=0){clearInterval(timer);submit();}
-},1000);
+document.getElementById('time').innerText =
+`${m}:${s<10?'0'+s:s}`;
 }
 
 function submit(){
