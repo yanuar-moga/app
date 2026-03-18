@@ -38,6 +38,8 @@ body {
   font-size: 22px;
 }
 
+.form { text-align: left; }
+
 .field {
   display: flex;
   flex-direction: column;
@@ -51,9 +53,23 @@ body {
 }
 
 .input-field {
-  padding: 10px;
+  padding: 10px 12px;
   border-radius: 8px;
   border: 1px solid #ccc;
+  font-size: 14px;
+  height: 42px;
+}
+
+.input-field:focus {
+  border-color: #0A4FA3;
+}
+
+.show-pass {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  margin: 6px 0 18px;
 }
 
 .btn-primary {
@@ -63,7 +79,13 @@ body {
   border: none;
   border-radius: 10px;
   color: white;
+  font-size: 15px;
+  font-weight: bold;
   cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #083d82;
 }
 
 .footer {
@@ -78,19 +100,30 @@ body {
 
 <div class="login-card">
 
-  <img src="assets/logo.png" class="logo">
+  <!-- LOGO -->
+  <img src="assets/logo.png" alt="Logo" class="logo" />
+
+  <!-- JUDUL -->
   <h1 class="title">Latihan Soal UP PPG</h1>
 
-  <form id="loginForm">
+  <!-- FORM -->
+  <form id="loginForm" class="form">
 
     <div class="field">
       <span class="label-text">Username</span>
-      <input id="username" class="input-field" required>
+      <input id="username" type="text" class="input-field"
+             placeholder="Masukkan Username" required />
     </div>
 
     <div class="field">
       <span class="label-text">Password</span>
-      <input id="password" type="password" class="input-field" required>
+      <input id="password" type="password" class="input-field"
+             placeholder="Masukkan Password" required />
+    </div>
+
+    <div class="show-pass">
+      <input type="checkbox" id="showPassword" />
+      <label for="showPassword">Tampilkan Password</label>
     </div>
 
     <button type="submit" class="btn-primary">Masuk</button>
@@ -104,12 +137,23 @@ body {
 <script>
 const URL = 'https://script.google.com/macros/s/AKfycbzxZLHU0PbEbMyJKMxEeYrVBbQmtmsgdHCV_xnRNgSCe8xVs65zCVY3N6NFRnWeLg18/exec';
 
-// LOGIN
+// 👁️ SHOW / HIDE PASSWORD
+document.getElementById('showPassword').addEventListener('change', function () {
+  const pass = document.getElementById('password');
+  pass.type = this.checked ? 'text' : 'password';
+});
+
+// 🔐 LOGIN
 document.getElementById("loginForm").addEventListener("submit", function(e){
   e.preventDefault();
 
   const username = document.getElementById('username').value.trim();
   const password = document.getElementById('password').value.trim();
+
+  if(!username || !password){
+    alert("Isi username dan password!");
+    return;
+  }
 
   fetch(URL, {
     method: 'POST',
@@ -119,7 +163,7 @@ document.getElementById("loginForm").addEventListener("submit", function(e){
       password: password
     })
   })
-  .then(res => res.text()) // 🔥 WAJIB (hindari error JSON)
+  .then(res => res.text()) // 🔥 penting
   .then(text => {
     console.log("RAW:", text);
 
@@ -133,7 +177,9 @@ document.getElementById("loginForm").addEventListener("submit", function(e){
     if(res.status === 'success'){
       localStorage.setItem('user', username);
       localStorage.setItem('kelas', res.kelas);
-      window.location.href = "ujian.html";
+
+      // 🔥 redirect aman
+      window.location.href = "./latihan_soal.html";
     } else {
       alert("Username atau password salah!");
     }
