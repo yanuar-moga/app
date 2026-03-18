@@ -9,7 +9,7 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial}
 
-/* ================= LOGIN ================= */
+/* LOGIN */
 .login-page{
 min-height:100vh;
 display:flex;
@@ -32,19 +32,27 @@ text-align:center;
 
 .field{margin-bottom:12px;text-align:left}
 .label-text{font-size:13px;color:#444}
+
 .input-field{
-width:100%;padding:10px;border-radius:8px;border:1px solid #ccc
+width:100%;
+padding:10px;
+border-radius:8px;
+border:1px solid #ccc;
 }
 
 .show-pass{font-size:13px;margin:10px 0;text-align:left}
 
 .btn{
-width:100%;padding:12px;
-background:#0A4FA3;color:#fff;
-border:none;border-radius:10px;cursor:pointer
+width:100%;
+padding:12px;
+background:#0A4FA3;
+color:#fff;
+border:none;
+border-radius:10px;
+cursor:pointer;
 }
 
-/* ================= UJIAN ================= */
+/* UJIAN */
 .app-page{
 display:none;
 min-height:100vh;
@@ -56,29 +64,123 @@ padding:20px;
 .container{max-width:900px;margin:auto}
 
 .timer{text-align:center;color:#facc15;margin-bottom:10px}
-.progress{height:8px;background:#1e293b;border-radius:10px}
-.bar{height:100%;background:#22c55e;width:0%}
 
-.nomor-nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
-.nomor-nav button{width:40px;height:40px;background:#334155;color:white;border:none;border-radius:6px}
+.progress{
+height:8px;
+background:#1e293b;
+border-radius:10px;
+overflow:hidden;
+margin-bottom:10px;
+}
+
+.bar{
+height:100%;
+background:#22c55e;
+width:0%;
+}
+
+.nomor-nav{
+display:flex;
+flex-wrap:wrap;
+gap:6px;
+justify-content:center;
+margin-bottom:10px;
+}
+
+.nomor-nav button{
+width:40px;
+height:40px;
+border:none;
+border-radius:8px;
+background:#334155;
+color:white;
+cursor:pointer;
+}
+
 .nomor-nav .aktif{background:#22c55e}
 .nomor-nav .sudah{background:#0ea5e9}
 
-.soal{display:none;background:#1e293b;padding:15px;border-radius:10px}
-.soal.active{display:block}
-
-.opsi label{
-display:flex;gap:10px;
-padding:10px;margin:5px 0;
-background:#334155;border-radius:8px;
-cursor:pointer
+.soal{
+display:none;
+background:#1e293b;
+padding:16px;
+border-radius:12px;
 }
 
-.selected{background:#166534}
+.soal.active{display:block}
 
-.nav{display:flex;justify-content:space-between;margin-top:10px}
+/* OPSI ELEGAN */
+.opsi{margin-top:10px;}
 
-.hasil{text-align:center;background:#334155;padding:20px;border-radius:10px}
+.opsi label{
+display:flex;
+align-items:center;
+gap:12px;
+padding:12px;
+margin:8px 0;
+background:#334155;
+border-radius:10px;
+cursor:pointer;
+border:2px solid transparent;
+transition:0.2s;
+}
+
+.opsi label:hover{
+background:#475569;
+}
+
+.opsi .huruf{
+width:32px;
+height:32px;
+border-radius:50%;
+border:2px solid #64748b;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+flex-shrink:0;
+}
+
+.opsi .text{
+flex:1;
+}
+
+.opsi label.selected{
+border:2px solid #22c55e;
+background:#166534;
+}
+
+.opsi label.selected .huruf{
+background:#22c55e;
+border-color:#22c55e;
+color:#fff;
+}
+
+.opsi label:active{
+transform:scale(0.98);
+}
+
+.nav{
+display:flex;
+justify-content:space-between;
+margin-top:15px;
+}
+
+button{
+padding:12px;
+border:none;
+border-radius:10px;
+background:#22c55e;
+color:white;
+cursor:pointer;
+}
+
+.hasil{
+text-align:center;
+background:#334155;
+padding:20px;
+border-radius:12px;
+}
 </style>
 </head>
 
@@ -118,6 +220,7 @@ cursor:pointer
 <div class="progress"><div class="bar" id="bar"></div></div>
 
 <div class="nomor-nav" id="nav"></div>
+
 <form id="form"></form>
 
 <div class="nav">
@@ -187,11 +290,15 @@ div.className='soal'+(x==0?' active':'');
 
 div.innerHTML=`
 <p><b>${x+1}.</b> ${d.q}</p>
+
+<div class="opsi">
 ${d.o.map((o,y)=>`
 <label onclick="pilih(${x},${y},this)">
-<input type="radio">
-${String.fromCharCode(65+y)}. ${o}
-</label>`).join('')}
+  <div class="huruf">${String.fromCharCode(65+y)}</div>
+  <div class="text">${o}</div>
+</label>
+`).join('')}
+</div>
 `;
 
 form.appendChild(div);
@@ -249,11 +356,17 @@ clearInterval(timer);
 
 let benar=0;
 data.forEach((d,x)=>{if(jawaban[x]==d.a)benar++;});
+
 let nilai=Math.round((benar/data.length)*100);
 
 fetch(URL,{
 method:'POST',
-body:JSON.stringify({type:'nilai',username:user,kelas:kelas,nilai:nilai})
+body:JSON.stringify({
+type:'nilai',
+username:user,
+kelas:kelas,
+nilai:nilai
+})
 });
 
 app.innerHTML=`
