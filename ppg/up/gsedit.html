@@ -1,194 +1,284 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Login - Latihan Soal UP PPG</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan Soal UP PPG</title>
 
 <style>
-* { box-sizing: border-box; }
+*{box-sizing:border-box}
+body{font-family:Arial;margin:0}
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg,#e3f2fd,#bbdefb);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* LOGIN */
+.login-page{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+background:linear-gradient(135deg,#e3f2fd,#bbdefb);
 }
 
-.login-card {
-  width: 360px;
-  background: #fff;
-  border-radius: 18px;
-  padding: 28px 26px 22px;
-  box-shadow: 0 12px 30px rgba(0,0,0,.15);
-  text-align: center;
+.login-card{
+width:360px;
+background:#fff;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,.2);
+text-align:center;
 }
 
-.logo {
-  width: 90px;
-  margin-bottom: 10px;
+.login-card img{width:80px}
+.login-card h2{color:#0A4FA3}
+
+input{
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:8px;
+border:1px solid #ccc;
 }
 
-.title {
-  margin: 6px 0 18px;
-  color: #0A4FA3;
-  font-size: 22px;
+button{
+padding:12px;
+border:none;
+border-radius:10px;
+background:#0A4FA3;
+color:white;
+cursor:pointer;
+width:100%;
 }
 
-.form { text-align: left; }
+.show-pass{font-size:13px;text-align:left}
 
-.field {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 14px;
+/* UJIAN */
+.container{max-width:900px;margin:auto;padding:16px;background:#0f172a;color:white;display:none}
+.timer{text-align:center;color:#facc15}
+.progress{height:8px;background:#1e293b;border-radius:10px}
+.bar{height:100%;background:#22c55e;width:0%}
+
+.nomor-nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
+.nomor-nav button{width:40px;height:40px;background:#334155;color:white}
+
+.soal{display:none;background:#1e293b;padding:15px;border-radius:10px}
+.soal.active{display:block}
+
+.opsi label{
+display:flex;
+gap:10px;
+padding:10px;
+margin:5px 0;
+background:#334155;
+border-radius:8px;
+cursor:pointer;
 }
 
-.label-text {
-  font-size: 13px;
-  margin-bottom: 5px;
-  color: #444;
-}
+.selected{background:#166534}
 
-.input-field {
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  height: 42px;
-}
+.nav{display:flex;justify-content:space-between;margin-top:10px}
 
-.input-field:focus {
-  border-color: #0A4FA3;
-}
-
-.show-pass {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  margin: 6px 0 18px;
-}
-
-.btn-primary {
-  width: 100%;
-  padding: 11px;
-  background: #0A4FA3;
-  border: none;
-  border-radius: 10px;
-  color: white;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  background: #083d82;
-}
-
-.footer {
-  margin-top: 18px;
-  font-size: 12px;
-  color: #777;
-}
+.hasil{text-align:center;background:#334155;padding:20px;border-radius:10px}
 </style>
 </head>
 
 <body>
 
+<!-- LOGIN -->
+<div class="login-page" id="loginPage">
 <div class="login-card">
 
-  <!-- LOGO -->
-  <img src="assets/logo.png" alt="Logo" class="logo" />
+<img src="assets/logo.png">
+<h2>Latihan Soal UP PPG</h2>
 
-  <!-- JUDUL -->
-  <h1 class="title">Latihan Soal UP PPG</h1>
+<input id="username" placeholder="Username">
+<input id="password" type="password" placeholder="Password">
 
-  <!-- FORM -->
-  <form id="loginForm" class="form">
+<div class="show-pass">
+<input type="checkbox" onclick="togglePass()"> Tampilkan Password
+</div>
 
-    <div class="field">
-      <span class="label-text">Username</span>
-      <input id="username" type="text" class="input-field"
-             placeholder="Masukkan Username" required />
-    </div>
+<button onclick="login()">Masuk</button>
 
-    <div class="field">
-      <span class="label-text">Password</span>
-      <input id="password" type="password" class="input-field"
-             placeholder="Masukkan Password" required />
-    </div>
+</div>
+</div>
 
-    <div class="show-pass">
-      <input type="checkbox" id="showPassword" />
-      <label for="showPassword">Tampilkan Password</label>
-    </div>
+<!-- UJIAN -->
+<div class="container" id="app">
 
-    <button type="submit" class="btn-primary">Masuk</button>
+<h2 style="text-align:center">LATIHAN SOAL UP PPG</h2>
 
-  </form>
+<div class="timer">Sisa Waktu: <span id="time"></span></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
 
-  <div class="footer">© 2025 Latihan Soal UP PPG</div>
+<div class="nomor-nav" id="nav"></div>
+
+<form id="form"></form>
+
+<div class="nav">
+<button onclick="prev()">Prev</button>
+<button onclick="next()">Next</button>
+</div>
+
+<div id="hasil" class="hasil" style="display:none"></div>
 
 </div>
 
 <script>
-const URL = 'https://script.google.com/macros/s/AKfycbzxZLHU0PbEbMyJKMxEeYrVBbQmtmsgdHCV_xnRNgSCe8xVs65zCVY3N6NFRnWeLg18/exec';
+const URL='https://script.google.com/macros/s/AKfycbzxZLHU0PbEbMyJKMxEeYrVBbQmtmsgdHCV_xnRNgSCe8xVs65zCVY3N6NFRnWeLg18/exec';
 
-// 👁️ SHOW / HIDE PASSWORD
-document.getElementById('showPassword').addEventListener('change', function () {
-  const pass = document.getElementById('password');
-  pass.type = this.checked ? 'text' : 'password';
+let data=[],i=0,jawaban=[],user='',kelas='',timer,waktu=600;
+
+// SHOW PASSWORD
+function togglePass(){
+let p=document.getElementById('password');
+p.type=p.type==='password'?'text':'password';
+}
+
+// LOGIN
+function login(){
+let u=username.value.trim();
+let p=password.value.trim();
+
+if(!u||!p){alert('Isi data!');return;}
+
+fetch(URL,{
+method:'POST',
+body:JSON.stringify({type:'login',username:u,password:p})
+})
+.then(res=>res.text())
+.then(t=>{
+let r=JSON.parse(t);
+
+if(r.status==='success'){
+user=u;
+kelas=r.kelas;
+
+// pindah ke ujian
+document.getElementById('loginPage').style.display='none';
+document.getElementById('app').style.display='block';
+
+start();
+}else{
+alert('Login gagal');
+}
+})
+.catch(e=>alert('Gagal koneksi'));
+}
+
+// START
+function start(){
+fetch(URL)
+.then(r=>r.json())
+.then(r=>{
+data=r;
+render();
+nav();
+show();
+timerStart();
+});
+}
+
+// RENDER
+function render(){
+form.innerHTML='';
+data.forEach((d,x)=>{
+let div=document.createElement('div');
+div.className='soal'+(x==0?' active':'');
+
+div.innerHTML=`
+<p><b>${x+1}.</b> ${d.q}</p>
+${d.o.map((o,y)=>`
+<label onclick="pilih(${x},${y},this)">
+<input type="radio">
+${String.fromCharCode(65+y)}. ${o}
+</label>`).join('')}
+`;
+
+form.appendChild(div);
+});
+}
+
+// PILIH
+function pilih(x,y,el){
+jawaban[x]=y;
+el.parentElement.querySelectorAll('label').forEach(l=>l.classList.remove('selected'));
+el.classList.add('selected');
+updateNav();
+}
+
+// NAV
+function nav(){
+nav.innerHTML='';
+data.forEach((_,x)=>{
+let b=document.createElement('button');
+b.innerText=x+1;
+b.onclick=()=>{i=x;show()};
+nav.appendChild(b);
+});
+}
+
+// UPDATE NAV
+function updateNav(){
+document.querySelectorAll('.nomor-nav button').forEach((b,x)=>{
+b.classList.remove('aktif','sudah');
+if(x==i)b.classList.add('aktif');
+if(jawaban[x]!=null)b.classList.add('sudah');
+});
+}
+
+// SHOW
+function show(){
+document.querySelectorAll('.soal').forEach((s,x)=>{
+s.classList.toggle('active',x==i);
+});
+bar.style.width=((i+1)/data.length*100)+'%';
+updateNav();
+}
+
+// NAV BTN
+function next(){i<data.length-1?(i++,show()):submit();}
+function prev(){if(i>0){i--;show()}}
+
+// TIMER
+function timerStart(){
+timer=setInterval(()=>{
+waktu--;
+let m=Math.floor(waktu/60);
+let s=waktu%60;
+time.innerText=`${m}:${s<10?'0'+s:s}`;
+
+if(waktu<=0){clearInterval(timer);submit();}
+},1000);
+}
+
+// SUBMIT
+function submit(){
+clearInterval(timer);
+
+let benar=0;
+data.forEach((d,x)=>{if(jawaban[x]==d.a)benar++;});
+
+let nilai=Math.round((benar/data.length)*100);
+
+// SIMPAN NILAI
+fetch(URL,{
+method:'POST',
+body:JSON.stringify({
+type:'nilai',
+username:user,
+kelas:kelas,
+nilai:nilai
+})
 });
 
-// 🔐 LOGIN
-document.getElementById("loginForm").addEventListener("submit", function(e){
-  e.preventDefault();
-
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
-
-  if(!username || !password){
-    alert("Isi username dan password!");
-    return;
-  }
-
-  fetch(URL, {
-    method: 'POST',
-    body: JSON.stringify({
-      type: 'login',
-      username: username,
-      password: password
-    })
-  })
-  .then(res => res.text()) // 🔥 penting
-  .then(text => {
-    console.log("RAW:", text);
-
-    let res;
-    try {
-      res = JSON.parse(text);
-    } catch(e){
-      throw new Error("Response bukan JSON");
-    }
-
-    if(res.status === 'success'){
-      localStorage.setItem('user', username);
-      localStorage.setItem('kelas', res.kelas);
-
-      // 🔥 redirect aman
-      window.location.href = "./latihan_soal.html";
-    } else {
-      alert("Username atau password salah!");
-    }
-  })
-  .catch(err => {
-    console.error(err);
-    alert("Gagal koneksi ke server!");
-  });
-});
+app.innerHTML=`
+<div class="hasil">
+<h2>${user}</h2>
+<h3>Kelas: ${kelas}</h3>
+<h1>Nilai: ${nilai}</h1>
+<button onclick="location.reload()">Ulangi</button>
+</div>
+`;
+}
 </script>
 
 </body>
