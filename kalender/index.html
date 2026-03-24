@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Kalender Pintar</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
+
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #cfe3f5;
+  padding: 20px;
+}
+
+/* NAV */
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #1e3a8a;
+  color: white;
+  cursor: pointer;
+}
+
+select {
+  padding: 6px;
+}
+
+/* GRID */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+}
+
+/* CARD */
+.card {
+  width: 230px;
+  text-align: center;
+}
+
+/* WARNA KHUSUS */
+.holiday .left {
+  background: #ffe4e6; /* merah muda */
+}
+
+.holiday .date {
+  color: #dc2626;
+}
+
+.has-note .left {
+  background: #fff9c4;
+}
+
+/* SPIRAL */
+.spiral {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: -14px;
+}
+
+.ring {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #1f2937;
+  border-radius: 50%;
+}
+
+/* HEADER */
+.header {
+  color: white;
+  font-weight: 700;
+  padding: 10px;
+  border-radius: 14px 14px 0 0;
+  font-size: 20px;
+}
+
+/* BOX */
+.box {
+  display: flex;
+  border-radius: 0 0 14px 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+}
+
+/* LEFT */
+.left {
+  width: 65%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.date {
+  font-size: 70px;
+  font-weight: 800;
+  color: #ff5722;
+}
+
+/* RIGHT */
+.right {
+  width: 35%;
+  background: #e6f0ff;
+  padding: 10px;
+  position: relative;
+}
+
+.small-month {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+/* BULLET */
+.bullet {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background: #3b82f6;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.line {
+  height: 2px;
+  background: #3b82f6;
+  flex: 1;
+}
+
+/* DESK */
+.desc {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* INPUT */
+textarea {
+  width: 90%;
+  margin-top: 5px;
+  font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <button onclick="prevMonth()">⬅</button>
+  <div id="title"></div>
+  <button onclick="nextMonth()">➡</button>
+
+  <select id="yearSelect" onchange="changeYear(this.value)"></select>
+</div>
+
+<div class="container" id="container"></div>
+
+<script>
+const monthNames = [
+  "Januari","Februari","Maret","April","Mei","Juni",
+  "Juli","Agustus","September","Oktober","November","Desember"
+];
+
+const colors = [
+  "#1e3a8a", "#a3d341", "#a3d341", "#4caf50",
+  "#e879c6", "#8b5cf6", "#8b5cf6", "#f97316",
+  "#06b6d4", "#fb923c", "#10b981", "#facc15"
+];
+
+// DATA HARI LIBUR (contoh 2026, bisa ditambah)
+const holidays = {
+  "2026-0-1": "Tahun Baru Masehi",
+  "2026-2-3": "Hari Suci Nyepi",
+  "2026-4-1": "Hari Buruh",
+  "2026-7-17": "Hari Kemerdekaan",
+  "2026-11-25": "Hari Natal"
+};
+
+let currentMonth = 2;
+let currentYear = 2026;
+
+// dropdown tahun
+const yearSelect = document.getElementById("yearSelect");
+for(let y=2020; y<=2035; y++){
+  let opt = document.createElement("option");
+  opt.value = y;
+  opt.text = y;
+  yearSelect.appendChild(opt);
+}
+yearSelect.value = currentYear;
+
+function render() {
+  document.getElementById("title").innerText =
+    monthNames[currentMonth] + " " + currentYear;
+
+  const container = document.getElementById("container");
+  container.innerHTML = "";
+
+  const totalDays = new Date(currentYear, currentMonth+1, 0).getDate();
+
+  for(let d=1; d<=totalDays; d++) {
+
+    let id = `${currentYear}-${currentMonth}-${d}`;
+    let noteVal = localStorage.getItem("note-"+id) || "";
+    let desc = holidays[id] || "";
+
+    let isHoliday = holidays[id] ? true : false;
+    let hasNote = noteVal !== "";
+
+    let card = document.createElement("div");
+    card.className = "card";
+
+    if(isHoliday) card.classList.add("holiday");
+    if(hasNote) card.classList.add("has-note");
+
+    card.innerHTML = `
+      <div class="spiral">${'<div class="ring"></div>'.repeat(8)}</div>
+
+      <div class="header" style="background:${colors[currentMonth]}">
+        ${monthNames[currentMonth]}
+      </div>
+
+      <div class="box">
+        <div class="left">
+          <div class="date">${d}</div>
+        </div>
+
+        <div class="right" id="note-${id}">
+          <div class="small-month">${monthNames[currentMonth].toUpperCase()}</div>
+
+          ${noteVal || `
+            <div class="bullet"><div class="dot"></div><div class="line"></div></div>
+            <div class="bullet"><div class="dot"></div><div class="line"></div></div>
+          `}
+        </div>
+      </div>
+
+      <div class="desc">${desc}</div>
+
+      <textarea placeholder="Isi catatan"
+        oninput="updateNotes('${id}', this.value)"></textarea>
+    `;
+
+    container.appendChild(card);
+  }
+}
+
+function updateNotes(id, val) {
+  let lines = val.split("\n").map(() => `
+    <div class="bullet">
+      <div class="dot"></div>
+      <div class="line"></div>
+    </div>
+  `).join("");
+
+  document.getElementById("note-"+id).innerHTML =
+    `<div class="small-month">${monthNames[currentMonth].toUpperCase()}</div>` + lines;
+
+  localStorage.setItem("note-"+id, lines);
+  render();
+}
+
+// NAV
+function prevMonth() {
+  currentMonth--;
+  if(currentMonth < 0){
+    currentMonth = 11;
+    currentYear--;
+    yearSelect.value = currentYear;
+  }
+  render();
+}
+
+function nextMonth() {
+  currentMonth++;
+  if(currentMonth > 11){
+    currentMonth = 0;
+    currentYear++;
+    yearSelect.value = currentYear;
+  }
+  render();
+}
+
+function changeYear(y) {
+  currentYear = parseInt(y);
+  render();
+}
+
+render();
+</script>
+
+</body>
+</html>
