@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Kalender Pintar</title>
+<title>Kalender Pintar Rapi</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
 
@@ -13,12 +13,13 @@ body {
   padding: 20px;
 }
 
-/* NAV */
+/* NAVBAR */
 .navbar {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
 }
 
 button {
@@ -28,37 +29,33 @@ button {
   background: #1e3a8a;
   color: white;
   cursor: pointer;
+  font-weight: 600;
 }
 
 select {
   padding: 6px;
+  border-radius: 6px;
 }
 
-/* GRID */
+/* GRID RAPI */
 .container {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 20px;
+}
+
+/* WRAPPER */
+.card-wrapper {
   display: flex;
-  flex-wrap: wrap;
-  gap: 25px;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  min-height: 260px;
 }
 
 /* CARD */
 .card {
-  width: 230px;
+  width: 100%;
   text-align: center;
-}
-
-/* WARNA KHUSUS */
-.holiday .left {
-  background: #ffe4e6; /* merah muda */
-}
-
-.holiday .date {
-  color: #dc2626;
-}
-
-.has-note .left {
-  background: #fff9c4;
 }
 
 /* SPIRAL */
@@ -82,7 +79,7 @@ select {
   font-weight: 700;
   padding: 10px;
   border-radius: 14px 14px 0 0;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 /* BOX */
@@ -102,6 +99,7 @@ select {
   justify-content: center;
 }
 
+/* TANGGAL */
 .date {
   font-size: 70px;
   font-weight: 800;
@@ -146,21 +144,39 @@ select {
   flex: 1;
 }
 
-/* DESK */
+/* DESKRIPSI */
 .desc {
-  margin-top: 12px;
+  min-height: 40px;
+  margin-top: 10px;
   font-size: 14px;
   font-weight: 600;
+  text-align: center;
 }
 
-/* INPUT */
+/* TEXTAREA */
 textarea {
   width: 90%;
   margin-top: 5px;
   font-size: 12px;
+  height: 40px;
+  resize: none;
+}
+
+/* HIGHLIGHT */
+.holiday .left {
+  background: #ffe4e6;
+}
+
+.holiday .date {
+  color: #dc2626;
+}
+
+.has-note .left {
+  background: #fff9c4;
 }
 </style>
 </head>
+
 <body>
 
 <div class="navbar">
@@ -185,7 +201,7 @@ const colors = [
   "#06b6d4", "#fb923c", "#10b981", "#facc15"
 ];
 
-// DATA HARI LIBUR (contoh 2026, bisa ditambah)
+// DATA HARI LIBUR
 const holidays = {
   "2026-0-1": "Tahun Baru Masehi",
   "2026-2-3": "Hari Suci Nyepi",
@@ -197,7 +213,7 @@ const holidays = {
 let currentMonth = 2;
 let currentYear = 2026;
 
-// dropdown tahun
+// DROPDOWN TAHUN
 const yearSelect = document.getElementById("yearSelect");
 for(let y=2020; y<=2035; y++){
   let opt = document.createElement("option");
@@ -219,66 +235,70 @@ function render() {
   for(let d=1; d<=totalDays; d++) {
 
     let id = `${currentYear}-${currentMonth}-${d}`;
-    let noteVal = localStorage.getItem("note-"+id) || "";
+
     let desc = holidays[id] || "";
+    let rawNote = localStorage.getItem("note-"+id+"_raw") || "";
 
     let isHoliday = holidays[id] ? true : false;
-    let hasNote = noteVal !== "";
+    let hasNote = rawNote !== "";
 
-    let card = document.createElement("div");
-    card.className = "card";
+    let wrapper = document.createElement("div");
+    wrapper.className = "card-wrapper";
 
-    if(isHoliday) card.classList.add("holiday");
-    if(hasNote) card.classList.add("has-note");
+    if(isHoliday) wrapper.classList.add("holiday");
+    if(hasNote) wrapper.classList.add("has-note");
 
-    card.innerHTML = `
-      <div class="spiral">${'<div class="ring"></div>'.repeat(8)}</div>
-
-      <div class="header" style="background:${colors[currentMonth]}">
-        ${monthNames[currentMonth]}
-      </div>
-
-      <div class="box">
-        <div class="left">
-          <div class="date">${d}</div>
+    wrapper.innerHTML = `
+      <div class="card">
+        <div class="spiral">
+          ${'<div class="ring"></div>'.repeat(8)}
         </div>
 
-        <div class="right" id="note-${id}">
-          <div class="small-month">${monthNames[currentMonth].toUpperCase()}</div>
+        <div class="header" style="background:${colors[currentMonth]}">
+          ${monthNames[currentMonth]}
+        </div>
 
-          ${noteVal || `
-            <div class="bullet"><div class="dot"></div><div class="line"></div></div>
-            <div class="bullet"><div class="dot"></div><div class="line"></div></div>
-          `}
+        <div class="box">
+          <div class="left">
+            <div class="date">${d}</div>
+          </div>
+
+          <div class="right" id="note-${id}">
+            <div class="small-month">${monthNames[currentMonth].toUpperCase()}</div>
+
+            ${
+              rawNote
+              ? rawNote.split("\n").map(() => `
+                <div class="bullet">
+                  <div class="dot"></div>
+                  <div class="line"></div>
+                </div>
+              `).join("")
+              :
+              `
+              <div class="bullet"><div class="dot"></div><div class="line"></div></div>
+              <div class="bullet"><div class="dot"></div><div class="line"></div></div>
+              `
+            }
+          </div>
         </div>
       </div>
 
       <div class="desc">${desc}</div>
 
       <textarea placeholder="Isi catatan"
-        oninput="updateNotes('${id}', this.value)"></textarea>
+        oninput="updateNotes('${id}', this.value)">${rawNote}</textarea>
     `;
 
-    container.appendChild(card);
+    container.appendChild(wrapper);
   }
 }
 
 function updateNotes(id, val) {
-  let lines = val.split("\n").map(() => `
-    <div class="bullet">
-      <div class="dot"></div>
-      <div class="line"></div>
-    </div>
-  `).join("");
-
-  document.getElementById("note-"+id).innerHTML =
-    `<div class="small-month">${monthNames[currentMonth].toUpperCase()}</div>` + lines;
-
-  localStorage.setItem("note-"+id, lines);
-  render();
+  localStorage.setItem("note-"+id+"_raw", val);
 }
 
-// NAV
+// NAVIGASI
 function prevMonth() {
   currentMonth--;
   if(currentMonth < 0){
