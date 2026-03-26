@@ -149,14 +149,13 @@ button {
   gap: 4px;
 }
 
-/* TEXTAREA ROW (BARU) */
+/* TEXTAREA ROW */
 .textarea-row {
   display: flex;
 }
 
-/* TEXTAREA WRAP (FIX) */
+/* TEXTAREA WRAP (AUTO WIDTH FROM JS) */
 .textarea-wrap {
-  width: 45%;
   margin-top: 10px;
 }
 
@@ -277,7 +276,7 @@ function render(){
       </div>
 
       <div class="box">
-        <div class="left">
+        <div class="left left-col">
           <div class="date ${isToday?'pulse':''} ${isEvent?'holiday':''}">
             ${d}
           </div>
@@ -303,6 +302,17 @@ function render(){
 
     container.appendChild(el);
   }
+
+  // AUTO WIDTH SAMAKAN DENGAN KOLOM TANGGAL
+  setTimeout(() => {
+    document.querySelectorAll(".card-wrapper").forEach(wrapper => {
+      let left = wrapper.querySelector(".left-col");
+      let wrap = wrapper.querySelector(".textarea-wrap");
+      if(left && wrap){
+        wrap.style.width = left.offsetWidth + "px";
+      }
+    });
+  }, 0);
 }
 
 function requestAccess(el){
