@@ -17,7 +17,6 @@ body {
 .navbar {
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 10px;
   margin-bottom: 20px;
   flex-wrap: wrap;
@@ -25,44 +24,26 @@ body {
 
 button {
   padding: 6px 12px;
-  border: none;
   border-radius: 8px;
+  border: none;
   background: #1e3a8a;
   color: white;
-  cursor: pointer;
-  font-weight: 600;
 }
 
-/* GRID RESPONSIVE */
+/* GRID */
 .container {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7,1fr);
   gap: 15px;
 }
 
-@media (max-width: 900px){
-  .container {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 600px){
-  .container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 400px){
-  .container {
-    grid-template-columns: 1fr;
-  }
-}
+@media(max-width:900px){.container{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.container{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:400px){.container{grid-template-columns:1fr}}
 
 /* CARD */
 .card-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
 }
 
 .card {
@@ -104,22 +85,42 @@ button {
   box-shadow: 0 8px 18px rgba(0,0,0,0.2);
 }
 
-/* KIRI (LEBIH KECIL) */
+/* LEFT */
 .left {
   width: 45%;
   background: white;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
+/* DATE */
 .date {
   font-size: 60px;
   font-weight: 800;
   color: #ff5722;
 }
 
-/* KANAN (LEBIH LEBAR) */
+/* HARI */
+.day-name {
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: -8px;
+}
+
+/* PULSE EFFECT */
+.pulse {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {transform: scale(1); color:#ff5722;}
+  50% {transform: scale(1.15); color:#dc2626;}
+  100% {transform: scale(1);}
+}
+
+/* RIGHT */
 .right {
   width: 55%;
   background: #e6f0ff;
@@ -133,20 +134,21 @@ button {
   font-weight: 600;
 }
 
-/* TEXTAREA FULL WIDTH */
+/* TEXTAREA WRAPPER (AGAR TIDAK NEMPEL) */
+.textarea-wrap {
+  padding: 0 8px;
+}
+
 textarea {
   width: 100%;
   margin-top: 10px;
-  font-size: 12px;
   height: 45px;
-  resize: none;
   border-radius: 12px;
   border: none;
   padding: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-/* LOCK */
 textarea.locked {
   background: #eee;
 }
@@ -154,21 +156,20 @@ textarea.locked {
 /* POPUP */
 .popup {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
-  display: none;
-  justify-content: center;
-  align-items: center;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  justify-content:center;
+  align-items:center;
 }
 
 .popup-box {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
+  background:white;
+  padding:20px;
+  border-radius:12px;
 }
 </style>
 </head>
@@ -197,36 +198,51 @@ const PASSWORD = "mb12345";
 let activeTextarea = null;
 
 const monthNames = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+const days = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+
 const colors = ["#1e3a8a","#a3d341","#4caf50","#e879c6","#8b5cf6","#f97316","#06b6d4","#fb923c","#10b981","#facc15"];
+
+/* HARI PENTING */
+const events = {
+  "2026-2-3":"Hari Nyepi",
+  "2026-3-31":"Idul Fitri",
+  "2026-7-17":"Hari Kemerdekaan RI"
+};
 
 let currentMonth = 2;
 let currentYear = 2026;
 
+/* DROPDOWN */
 const yearSelect = document.getElementById("yearSelect");
-for(let y=2020; y<=2035; y++){
-  let opt = document.createElement("option");
-  opt.value = y;
-  opt.text = y;
+for(let y=2020;y<=2035;y++){
+  let opt=document.createElement("option");
+  opt.value=y; opt.text=y;
   yearSelect.appendChild(opt);
 }
-yearSelect.value = currentYear;
+yearSelect.value=currentYear;
 
+/* RENDER */
 function render(){
-  document.getElementById("title").innerText = monthNames[currentMonth]+" "+currentYear;
-  const container = document.getElementById("container");
-  container.innerHTML = "";
+  document.getElementById("title").innerText=monthNames[currentMonth]+" "+currentYear;
+  const container=document.getElementById("container");
+  container.innerHTML="";
 
-  const totalDays = new Date(currentYear, currentMonth+1, 0).getDate();
+  let totalDays=new Date(currentYear,currentMonth+1,0).getDate();
 
   for(let d=1; d<=totalDays; d++){
 
-    let id = `${currentYear}-${currentMonth}-${d}`;
-    let rawNote = localStorage.getItem("note-"+id+"_raw") || "";
+    let id=`${currentYear}-${currentMonth}-${d}`;
+    let dateObj=new Date(currentYear,currentMonth,d);
+    let dayName=days[dateObj.getDay()];
+    let event=events[id] || "-";
+    let rawNote=localStorage.getItem("note-"+id+"_raw") || "";
 
-    let el = document.createElement("div");
-    el.className = "card-wrapper";
+    let isEvent = events[id] ? true : false;
 
-    el.innerHTML = `
+    let el=document.createElement("div");
+    el.className="card-wrapper";
+
+    el.innerHTML=`
     <div class="card">
       <div class="spiral">${'<div class="ring"></div>'.repeat(7)}</div>
 
@@ -236,69 +252,60 @@ function render(){
 
       <div class="box">
         <div class="left">
-          <div class="date">${d}</div>
+          <div class="date ${isEvent ? 'pulse' : ''}">${d}</div>
+          <div class="day-name">${dayName}</div>
         </div>
 
         <div class="right">
           <div class="info">📅 ${d} ${monthNames[currentMonth]} ${currentYear}</div>
-          <div class="info">🌙 ${getHijriDate(currentYear,currentMonth,d)}</div>
           <div class="info">🗓️ ${getJavaneseDay(currentYear,currentMonth,d)}</div>
-          <div class="info">☪️ ${getIslamicEvent(currentYear,currentMonth,d)}</div>
+          <div class="info">⭐ ${event}</div>
         </div>
       </div>
     </div>
 
-    <textarea class="locked"
-      onclick="requestAccess(this)"
-      oninput="updateNotes('${id}', this.value)">${rawNote}</textarea>
+    <div class="textarea-wrap">
+      <textarea class="locked"
+        onclick="requestAccess(this)"
+        oninput="updateNotes('${id}', this.value)">${rawNote}</textarea>
+    </div>
     `;
 
     container.appendChild(el);
   }
 }
 
+/* PASSWORD */
 function requestAccess(el){
-  activeTextarea = el;
-  document.getElementById("popup").style.display = "flex";
+  activeTextarea=el;
+  document.getElementById("popup").style.display="flex";
 }
 
 function checkPassword(){
-  if(document.getElementById("passInput").value === PASSWORD){
+  if(document.getElementById("passInput").value===PASSWORD){
     activeTextarea.classList.remove("locked");
     activeTextarea.removeAttribute("onclick");
-    document.getElementById("popup").style.display = "none";
-  } else {
-    alert("Password salah!");
-  }
+    document.getElementById("popup").style.display="none";
+  } else alert("Password salah!");
 }
 
+/* SAVE */
 function updateNotes(id,val){
-  localStorage.setItem("note-"+id+"_raw", val);
+  localStorage.setItem("note-"+id+"_raw",val);
 }
 
-function prevMonth(){ currentMonth--; if(currentMonth<0){currentMonth=11;currentYear--;} render();}
-function nextMonth(){ currentMonth++; if(currentMonth>11){currentMonth=0;currentYear++;} render();}
-function changeYear(y){ currentYear=parseInt(y); render();}
+/* NAV */
+function prevMonth(){currentMonth--;if(currentMonth<0){currentMonth=11;currentYear--;}render();}
+function nextMonth(){currentMonth++;if(currentMonth>11){currentMonth=0;currentYear++;}render();}
+function changeYear(y){currentYear=parseInt(y);render();}
 
-function getHijriDate(y,m,d){
-  return new Intl.DateTimeFormat('id-TN-u-ca-islamic',{day:'numeric',month:'long',year:'numeric'}).format(new Date(y,m,d));
-}
-
+/* JAWA */
 function getJavaneseDay(y,m,d){
-  const days=["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
   const pasaran=["Legi","Pahing","Pon","Wage","Kliwon"];
   let date=new Date(y,m,d);
   let base=new Date(2023,0,1);
   let diff=Math.floor((date-base)/86400000);
-  return days[date.getDay()]+" "+pasaran[(diff%5+5)%5];
-}
-
-function getIslamicEvent(y,m,d){
-  let h=getHijriDate(y,m,d);
-  if(h.includes("Ramadhan")) return "Puasa Ramadhan";
-  if(h.startsWith("1")&&h.includes("Syawal")) return "Idul Fitri";
-  if(h.startsWith("10")&&h.includes("Dzulhijjah")) return "Idul Adha";
-  return "-";
+  return pasaran[(diff%5+5)%5];
 }
 
 render();
