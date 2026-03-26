@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Kalender Pintar Rapi</title>
+<title>Kalender Pintar Final</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
 
@@ -58,7 +58,7 @@ select {
   text-align: center;
 }
 
-/* SPIRAL CORELDRAW STYLE */
+/* SPIRAL (ARC STYLE) */
 .spiral {
   display: flex;
   justify-content: center;
@@ -126,25 +126,12 @@ select {
   color: #1e3a8a;
 }
 
-/* BULLET */
-.bullet {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.dot {
-  width: 6px;
-  height: 6px;
-  background: #3b82f6;
-  border-radius: 50%;
-  margin-right: 6px;
-}
-
-.line {
-  height: 2px;
-  background: #3b82f6;
-  flex: 1;
+/* INFO */
+.info {
+  font-size: 10px;
+  margin-top: 6px;
+  text-align: left;
+  font-weight: 600;
 }
 
 /* DESKRIPSI */
@@ -172,23 +159,9 @@ textarea {
   cursor: pointer;
 }
 
-/* LOCKED STYLE */
 textarea.locked {
   background: #eee;
   cursor: not-allowed;
-}
-
-/* HIGHLIGHT */
-.holiday .left {
-  background: #ffe4e6;
-}
-
-.holiday .date {
-  color: #dc2626;
-}
-
-.has-note .left {
-  background: #fff9c4;
 }
 
 /* POPUP */
@@ -230,7 +203,7 @@ textarea.locked {
 
 <div class="container" id="container"></div>
 
-<!-- POPUP PASSWORD -->
+<!-- POPUP -->
 <div class="popup" id="popup">
   <div class="popup-box">
     <div>Masukkan Password</div>
@@ -255,17 +228,10 @@ const colors = [
   "#06b6d4", "#fb923c", "#10b981", "#facc15"
 ];
 
-const holidays = {
-  "2026-0-1": "Tahun Baru Masehi",
-  "2026-2-3": "Hari Suci Nyepi",
-  "2026-4-1": "Hari Buruh",
-  "2026-7-17": "Hari Kemerdekaan",
-  "2026-11-25": "Hari Natal"
-};
-
 let currentMonth = 2;
 let currentYear = 2026;
 
+/* DROPDOWN */
 const yearSelect = document.getElementById("yearSelect");
 for(let y=2020; y<=2035; y++){
   let opt = document.createElement("option");
@@ -275,6 +241,7 @@ for(let y=2020; y<=2035; y++){
 }
 yearSelect.value = currentYear;
 
+/* RENDER */
 function render() {
   document.getElementById("title").innerText =
     monthNames[currentMonth] + " " + currentYear;
@@ -287,7 +254,6 @@ function render() {
   for(let d=1; d<=totalDays; d++) {
 
     let id = `${currentYear}-${currentMonth}-${d}`;
-    let desc = holidays[id] || "";
     let rawNote = localStorage.getItem("note-"+id+"_raw") || "";
 
     let wrapper = document.createElement("div");
@@ -310,11 +276,14 @@ function render() {
 
           <div class="right">
             <div class="small-month">${monthNames[currentMonth].toUpperCase()}</div>
+
+            <div class="info">📅 ${d} ${monthNames[currentMonth]} ${currentYear}</div>
+            <div class="info">🌙 ${getHijriDate(currentYear,currentMonth,d)}</div>
+            <div class="info">🗓️ ${getJavaneseDay(currentYear,currentMonth,d)}</div>
+            <div class="info">☪️ ${getIslamicEvent(currentYear,currentMonth,d)}</div>
           </div>
         </div>
       </div>
-
-      <div class="desc">${desc}</div>
 
       <textarea class="locked"
         onclick="requestAccess(this)"
@@ -325,6 +294,7 @@ function render() {
   }
 }
 
+/* PASSWORD */
 function requestAccess(el){
   activeTextarea = el;
   document.getElementById("popup").style.display = "flex";
@@ -342,10 +312,12 @@ function checkPassword(){
   }
 }
 
+/* SAVE */
 function updateNotes(id, val) {
   localStorage.setItem("note-"+id+"_raw", val);
 }
 
+/* NAVIGASI */
 function prevMonth() {
   currentMonth--;
   if(currentMonth < 0){
@@ -369,6 +341,36 @@ function nextMonth() {
 function changeYear(y) {
   currentYear = parseInt(y);
   render();
+}
+
+/* HIJRI */
+function getHijriDate(y,m,d){
+  return new Intl.DateTimeFormat('id-TN-u-ca-islamic',{
+    day:'numeric',month:'long',year:'numeric'
+  }).format(new Date(y,m,d));
+}
+
+/* JAWA */
+function getJavaneseDay(y,m,d){
+  const days = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+  const pasaran = ["Legi","Pahing","Pon","Wage","Kliwon"];
+
+  let date = new Date(y,m,d);
+  let base = new Date(2023,0,1);
+  let diff = Math.floor((date-base)/86400000);
+
+  return days[date.getDay()]+" "+pasaran[(diff%5+5)%5];
+}
+
+/* EVENT ISLAM */
+function getIslamicEvent(y,m,d){
+  let h = getHijriDate(y,m,d);
+
+  if(h.includes("Ramadhan")) return "Puasa Ramadhan";
+  if(h.startsWith("1") && h.includes("Syawal")) return "Idul Fitri";
+  if(h.startsWith("10") && h.includes("Dzulhijjah")) return "Idul Adha";
+
+  return "-";
 }
 
 render();
