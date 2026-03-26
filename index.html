@@ -25,7 +25,6 @@ body{
     background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
     min-height:100vh;
     color:#fff;
-    overflow-x:hidden;
 }
 
 /* HEADER */
@@ -38,15 +37,7 @@ body{
     padding:20px 28px;
     border-radius:26px;
     background:linear-gradient(120deg,var(--primary),var(--accent),var(--secondary));
-    background-size:300% 300%;
-    animation:gradientFlow 18s ease infinite;
     box-shadow:0 25px 55px rgba(0,0,0,.6);
-}
-
-@keyframes gradientFlow{
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
 }
 
 .top-header img{
@@ -57,15 +48,8 @@ body{
     padding:6px;
 }
 
-.top-header h1{
-    font-size:20px;
-    font-weight:600;
-}
-
-.top-header p{
-    font-size:12px;
-    opacity:.9;
-}
+.top-header h1{font-size:20px;}
+.top-header p{font-size:12px;opacity:.9;}
 
 /* CONTENT */
 .container{
@@ -83,7 +67,6 @@ body{
     font-size:2rem;
     text-align:center;
     margin-bottom:40px;
-    font-weight:700;
 }
 
 .app-list{
@@ -98,23 +81,25 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    transition:0.3s;
 }
 
-.app-card:hover{
-    transform:translateY(-5px);
-}
-
-/* BUTTON */
+/* 🔥 BUTTON FIX TOTAL */
 .btn{
-    padding:12px 25px;
+    width:180px; /* FIX ukuran desktop */
+    height:45px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
     border-radius:50px;
     text-decoration:none;
     font-weight:600;
     background:linear-gradient(90deg,var(--primary),var(--secondary));
     color:#fff;
-    min-width:150px;
-    text-align:center;
+    transition:0.3s;
+}
+
+.btn:hover{
+    transform:scale(1.05);
 }
 
 /* MOBILE */
@@ -124,9 +109,10 @@ body{
         gap:15px;
         text-align:center;
     }
+
     .btn{
-        width:80%;
-        max-width:200px;
+        width:100%;
+        max-width:220px; /* semua tombol sama */
     }
 }
 </style>
@@ -179,11 +165,10 @@ body{
             <a href="https://yanuar-moga.github.io/app/kalender" target="_blank" class="btn">Buka Aplikasi</a>
         </div>
 
-        <!-- 🔥 MENU BARU -->
         <div class="app-card">
             <div>
                 <h2>Marketplace</h2>
-                <p>Platform marketplace untuk menjelajahi dan mengelola berbagai produk.</p>
+                <p>Platform marketplace untuk menjelajahi berbagai produk.</p>
             </div>
             <a href="https://yanuar-moga.github.io/app/marketplace/" target="_blank" class="btn">Buka Aplikasi</a>
         </div>
