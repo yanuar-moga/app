@@ -28,6 +28,7 @@ button {
   border: none;
   background: #1e3a8a;
   color: white;
+  cursor: pointer;
 }
 
 /* GRID */
@@ -83,6 +84,7 @@ button {
   border-radius: 0 0 14px 14px;
   overflow: hidden;
   box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+  min-height: 90px;
 }
 
 /* LEFT */
@@ -93,6 +95,7 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 8px 0;
 }
 
 /* DATE */
@@ -102,14 +105,14 @@ button {
   color: #ff5722;
 }
 
-/* HARI */
+/* DAY NAME */
 .day-name {
   font-size: 12px;
   font-weight: 700;
-  margin-top: -8px;
+  margin-top: -2px;
 }
 
-/* PULSE EFFECT */
+/* TODAY PULSE */
 .pulse {
   animation: pulse 1s infinite;
 }
@@ -120,25 +123,38 @@ button {
   100% {transform: scale(1);}
 }
 
+/* HOLIDAY */
+.holiday {
+  color: #dc2626 !important;
+}
+
 /* RIGHT */
 .right {
   width: 55%;
   background: #e6f0ff;
-  padding: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
   font-size: 11px;
 }
 
 /* INFO */
 .info {
-  margin-bottom: 5px;
   font-weight: 600;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-/* TEXTAREA WRAPPER (AGAR TIDAK NEMPEL) */
+/* TEXTAREA WRAP */
 .textarea-wrap {
   padding: 0 8px;
 }
 
+/* TEXTAREA */
 textarea {
   width: 100%;
   margin-top: 10px;
@@ -170,6 +186,7 @@ textarea.locked {
   background:white;
   padding:20px;
   border-radius:12px;
+  text-align:center;
 }
 </style>
 </head>
@@ -202,7 +219,7 @@ const days = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
 
 const colors = ["#1e3a8a","#a3d341","#4caf50","#e879c6","#8b5cf6","#f97316","#06b6d4","#fb923c","#10b981","#facc15"];
 
-/* HARI PENTING */
+/* EVENT HARI PENTING */
 const events = {
   "2026-2-3":"Hari Nyepi",
   "2026-3-31":"Idul Fitri",
@@ -216,7 +233,8 @@ let currentYear = 2026;
 const yearSelect = document.getElementById("yearSelect");
 for(let y=2020;y<=2035;y++){
   let opt=document.createElement("option");
-  opt.value=y; opt.text=y;
+  opt.value=y;
+  opt.text=y;
   yearSelect.appendChild(opt);
 }
 yearSelect.value=currentYear;
@@ -229,6 +247,8 @@ function render(){
 
   let totalDays=new Date(currentYear,currentMonth+1,0).getDate();
 
+  let today = new Date();
+
   for(let d=1; d<=totalDays; d++){
 
     let id=`${currentYear}-${currentMonth}-${d}`;
@@ -236,6 +256,11 @@ function render(){
     let dayName=days[dateObj.getDay()];
     let event=events[id] || "-";
     let rawNote=localStorage.getItem("note-"+id+"_raw") || "";
+
+    let isToday =
+      d === today.getDate() &&
+      currentMonth === today.getMonth() &&
+      currentYear === today.getFullYear();
 
     let isEvent = events[id] ? true : false;
 
@@ -252,7 +277,11 @@ function render(){
 
       <div class="box">
         <div class="left">
-          <div class="date ${isEvent ? 'pulse' : ''}">${d}</div>
+          <div class="date 
+            ${isToday ? 'pulse' : ''} 
+            ${isEvent ? 'holiday' : ''}">
+            ${d}
+          </div>
           <div class="day-name">${dayName}</div>
         </div>
 
@@ -286,7 +315,9 @@ function checkPassword(){
     activeTextarea.classList.remove("locked");
     activeTextarea.removeAttribute("onclick");
     document.getElementById("popup").style.display="none";
-  } else alert("Password salah!");
+  } else {
+    alert("Password salah!");
+  }
 }
 
 /* SAVE */
@@ -295,9 +326,30 @@ function updateNotes(id,val){
 }
 
 /* NAV */
-function prevMonth(){currentMonth--;if(currentMonth<0){currentMonth=11;currentYear--;}render();}
-function nextMonth(){currentMonth++;if(currentMonth>11){currentMonth=0;currentYear++;}render();}
-function changeYear(y){currentYear=parseInt(y);render();}
+function prevMonth(){
+  currentMonth--;
+  if(currentMonth<0){
+    currentMonth=11;
+    currentYear--;
+    yearSelect.value=currentYear;
+  }
+  render();
+}
+
+function nextMonth(){
+  currentMonth++;
+  if(currentMonth>11){
+    currentMonth=0;
+    currentYear++;
+    yearSelect.value=currentYear;
+  }
+  render();
+}
+
+function changeYear(y){
+  currentYear=parseInt(y);
+  render();
+}
 
 /* JAWA */
 function getJavaneseDay(y,m,d){
