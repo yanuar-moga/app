@@ -10,7 +10,7 @@
 body {
   font-family: 'Poppins', sans-serif;
   background: #cfe3f5;
-  padding: 20px;
+  padding: 15px;
 }
 
 /* NAVBAR */
@@ -18,12 +18,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 25px;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 button {
-  padding: 8px 14px;
+  padding: 6px 12px;
   border: none;
   border-radius: 8px;
   background: #1e3a8a;
@@ -32,43 +33,53 @@ button {
   font-weight: 600;
 }
 
-select {
-  padding: 6px;
-  border-radius: 6px;
-}
-
-/* GRID */
+/* GRID RESPONSIVE */
 .container {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 20px;
+  gap: 15px;
 }
 
-/* WRAPPER */
+@media (max-width: 900px){
+  .container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px){
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 400px){
+  .container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* CARD */
 .card-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 260px;
 }
 
-/* CARD */
 .card {
   width: 100%;
-  text-align: center;
 }
 
-/* SPIRAL (ARC STYLE) */
+/* SPIRAL */
 .spiral {
   display: flex;
   justify-content: center;
-  gap: 5px;
-  margin-bottom: -12px;
+  gap: 4px;
+  margin-bottom: -10px;
 }
 
 .ring {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border: 3px solid #1f2937;
   border-radius: 50%;
   border-right-color: transparent;
@@ -82,7 +93,7 @@ select {
   font-weight: 700;
   padding: 10px;
   border-radius: 14px 14px 0 0;
-  font-size: 18px;
+  text-align: center;
 }
 
 /* BOX */
@@ -90,78 +101,54 @@ select {
   display: flex;
   border-radius: 0 0 14px 14px;
   overflow: hidden;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.2);
 }
 
-/* LEFT */
+/* KIRI (LEBIH KECIL) */
 .left {
-  width: 65%;
+  width: 45%;
   background: white;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* DATE */
 .date {
-  font-size: 70px;
+  font-size: 60px;
   font-weight: 800;
   color: #ff5722;
 }
 
-/* RIGHT */
+/* KANAN (LEBIH LEBAR) */
 .right {
-  width: 35%;
+  width: 55%;
   background: #e6f0ff;
-  padding: 10px;
-  position: relative;
-}
-
-.small-month {
-  position: absolute;
-  top: 6px;
-  right: 8px;
-  font-size: 10px;
-  font-weight: 700;
-  color: #1e3a8a;
+  padding: 8px;
+  font-size: 11px;
 }
 
 /* INFO */
 .info {
-  font-size: 10px;
-  margin-top: 6px;
-  text-align: left;
+  margin-bottom: 5px;
   font-weight: 600;
 }
 
-/* DESKRIPSI */
-.desc {
-  min-height: 40px;
-  margin-top: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-}
-
-/* TEXTAREA */
+/* TEXTAREA FULL WIDTH */
 textarea {
-  width: 90%;
-  margin-top: 8px;
+  width: 100%;
+  margin-top: 10px;
   font-size: 12px;
-  height: 42px;
+  height: 45px;
   resize: none;
   border-radius: 12px;
   border: none;
   padding: 8px;
-  outline: none;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  background: #ffffff;
-  cursor: pointer;
 }
 
+/* LOCK */
 textarea.locked {
   background: #eee;
-  cursor: not-allowed;
 }
 
 /* POPUP */
@@ -183,12 +170,6 @@ textarea.locked {
   border-radius: 12px;
   text-align: center;
 }
-
-.popup-box input {
-  padding: 8px;
-  margin-top: 10px;
-  width: 200px;
-}
 </style>
 </head>
 
@@ -203,12 +184,10 @@ textarea.locked {
 
 <div class="container" id="container"></div>
 
-<!-- POPUP -->
 <div class="popup" id="popup">
   <div class="popup-box">
     <div>Masukkan Password</div>
-    <input type="password" id="passInput">
-    <br><br>
+    <input type="password" id="passInput"><br><br>
     <button onclick="checkPassword()">OK</button>
   </div>
 </div>
@@ -217,21 +196,12 @@ textarea.locked {
 const PASSWORD = "mb12345";
 let activeTextarea = null;
 
-const monthNames = [
-  "Januari","Februari","Maret","April","Mei","Juni",
-  "Juli","Agustus","September","Oktober","November","Desember"
-];
-
-const colors = [
-  "#1e3a8a", "#a3d341", "#a3d341", "#4caf50",
-  "#e879c6", "#8b5cf6", "#8b5cf6", "#f97316",
-  "#06b6d4", "#fb923c", "#10b981", "#facc15"
-];
+const monthNames = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+const colors = ["#1e3a8a","#a3d341","#4caf50","#e879c6","#8b5cf6","#f97316","#06b6d4","#fb923c","#10b981","#facc15"];
 
 let currentMonth = 2;
 let currentYear = 2026;
 
-/* DROPDOWN */
 const yearSelect = document.getElementById("yearSelect");
 for(let y=2020; y<=2035; y++){
   let opt = document.createElement("option");
@@ -241,135 +211,93 @@ for(let y=2020; y<=2035; y++){
 }
 yearSelect.value = currentYear;
 
-/* RENDER */
-function render() {
-  document.getElementById("title").innerText =
-    monthNames[currentMonth] + " " + currentYear;
-
+function render(){
+  document.getElementById("title").innerText = monthNames[currentMonth]+" "+currentYear;
   const container = document.getElementById("container");
   container.innerHTML = "";
 
   const totalDays = new Date(currentYear, currentMonth+1, 0).getDate();
 
-  for(let d=1; d<=totalDays; d++) {
+  for(let d=1; d<=totalDays; d++){
 
     let id = `${currentYear}-${currentMonth}-${d}`;
     let rawNote = localStorage.getItem("note-"+id+"_raw") || "";
 
-    let wrapper = document.createElement("div");
-    wrapper.className = "card-wrapper";
+    let el = document.createElement("div");
+    el.className = "card-wrapper";
 
-    wrapper.innerHTML = `
-      <div class="card">
-        <div class="spiral">
-          ${'<div class="ring"></div>'.repeat(8)}
-        </div>
+    el.innerHTML = `
+    <div class="card">
+      <div class="spiral">${'<div class="ring"></div>'.repeat(7)}</div>
 
-        <div class="header" style="background:${colors[currentMonth]}">
-          ${monthNames[currentMonth]}
-        </div>
-
-        <div class="box">
-          <div class="left">
-            <div class="date">${d}</div>
-          </div>
-
-          <div class="right">
-            <div class="small-month">${monthNames[currentMonth].toUpperCase()}</div>
-
-            <div class="info">📅 ${d} ${monthNames[currentMonth]} ${currentYear}</div>
-            <div class="info">🌙 ${getHijriDate(currentYear,currentMonth,d)}</div>
-            <div class="info">🗓️ ${getJavaneseDay(currentYear,currentMonth,d)}</div>
-            <div class="info">☪️ ${getIslamicEvent(currentYear,currentMonth,d)}</div>
-          </div>
-        </div>
+      <div class="header" style="background:${colors[currentMonth]}">
+        ${monthNames[currentMonth]}
       </div>
 
-      <textarea class="locked"
-        onclick="requestAccess(this)"
-        oninput="updateNotes('${id}', this.value)">${rawNote}</textarea>
+      <div class="box">
+        <div class="left">
+          <div class="date">${d}</div>
+        </div>
+
+        <div class="right">
+          <div class="info">📅 ${d} ${monthNames[currentMonth]} ${currentYear}</div>
+          <div class="info">🌙 ${getHijriDate(currentYear,currentMonth,d)}</div>
+          <div class="info">🗓️ ${getJavaneseDay(currentYear,currentMonth,d)}</div>
+          <div class="info">☪️ ${getIslamicEvent(currentYear,currentMonth,d)}</div>
+        </div>
+      </div>
+    </div>
+
+    <textarea class="locked"
+      onclick="requestAccess(this)"
+      oninput="updateNotes('${id}', this.value)">${rawNote}</textarea>
     `;
 
-    container.appendChild(wrapper);
+    container.appendChild(el);
   }
 }
 
-/* PASSWORD */
 function requestAccess(el){
   activeTextarea = el;
   document.getElementById("popup").style.display = "flex";
 }
 
 function checkPassword(){
-  let val = document.getElementById("passInput").value;
-  if(val === PASSWORD){
+  if(document.getElementById("passInput").value === PASSWORD){
     activeTextarea.classList.remove("locked");
     activeTextarea.removeAttribute("onclick");
-    activeTextarea.focus();
     document.getElementById("popup").style.display = "none";
   } else {
     alert("Password salah!");
   }
 }
 
-/* SAVE */
-function updateNotes(id, val) {
+function updateNotes(id,val){
   localStorage.setItem("note-"+id+"_raw", val);
 }
 
-/* NAVIGASI */
-function prevMonth() {
-  currentMonth--;
-  if(currentMonth < 0){
-    currentMonth = 11;
-    currentYear--;
-    yearSelect.value = currentYear;
-  }
-  render();
-}
+function prevMonth(){ currentMonth--; if(currentMonth<0){currentMonth=11;currentYear--;} render();}
+function nextMonth(){ currentMonth++; if(currentMonth>11){currentMonth=0;currentYear++;} render();}
+function changeYear(y){ currentYear=parseInt(y); render();}
 
-function nextMonth() {
-  currentMonth++;
-  if(currentMonth > 11){
-    currentMonth = 0;
-    currentYear++;
-    yearSelect.value = currentYear;
-  }
-  render();
-}
-
-function changeYear(y) {
-  currentYear = parseInt(y);
-  render();
-}
-
-/* HIJRI */
 function getHijriDate(y,m,d){
-  return new Intl.DateTimeFormat('id-TN-u-ca-islamic',{
-    day:'numeric',month:'long',year:'numeric'
-  }).format(new Date(y,m,d));
+  return new Intl.DateTimeFormat('id-TN-u-ca-islamic',{day:'numeric',month:'long',year:'numeric'}).format(new Date(y,m,d));
 }
 
-/* JAWA */
 function getJavaneseDay(y,m,d){
-  const days = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
-  const pasaran = ["Legi","Pahing","Pon","Wage","Kliwon"];
-
-  let date = new Date(y,m,d);
-  let base = new Date(2023,0,1);
-  let diff = Math.floor((date-base)/86400000);
-
+  const days=["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+  const pasaran=["Legi","Pahing","Pon","Wage","Kliwon"];
+  let date=new Date(y,m,d);
+  let base=new Date(2023,0,1);
+  let diff=Math.floor((date-base)/86400000);
   return days[date.getDay()]+" "+pasaran[(diff%5+5)%5];
 }
 
-/* EVENT ISLAM */
 function getIslamicEvent(y,m,d){
-  let h = getHijriDate(y,m,d);
-
+  let h=getHijriDate(y,m,d);
   if(h.includes("Ramadhan")) return "Puasa Ramadhan";
-  if(h.startsWith("1") && h.includes("Syawal")) return "Idul Fitri";
-  if(h.startsWith("10") && h.includes("Dzulhijjah")) return "Idul Adha";
-
+  if(h.startsWith("1")&&h.includes("Syawal")) return "Idul Fitri";
+  if(h.startsWith("10")&&h.includes("Dzulhijjah")) return "Idul Adha";
   return "-";
 }
 
