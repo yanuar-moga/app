@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Kalender Pintar Rapi</title>
+<title>Kalender Pintar Final</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
 
@@ -10,67 +10,63 @@
 body {
   font-family: 'Poppins', sans-serif;
   background: #cfe3f5;
-  padding: 20px;
+  padding: 15px;
 }
 
 /* NAVBAR */
 .navbar {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 25px;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 button {
-  padding: 8px 14px;
-  border: none;
+  padding: 6px 12px;
   border-radius: 8px;
+  border: none;
   background: #1e3a8a;
   color: white;
   cursor: pointer;
-  font-weight: 600;
 }
 
-select {
-  padding: 6px;
-  border-radius: 6px;
-}
-
-/* GRID RAPI */
+/* GRID */
 .container {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(7,1fr);
+  gap: 15px;
 }
 
-/* WRAPPER */
-.card-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 260px;
-}
+@media(max-width:900px){.container{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.container{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:400px){.container{grid-template-columns:1fr}}
 
 /* CARD */
+.card-wrapper {
+  width: 100%;
+}
+
 .card {
   width: 100%;
-  text-align: center;
 }
 
 /* SPIRAL */
 .spiral {
   display: flex;
   justify-content: center;
-  gap: 6px;
-  margin-bottom: -14px;
+  gap: 4px;
+  margin-bottom: -10px;
 }
 
 .ring {
-  width: 12px;
-  height: 12px;
-  border: 2px solid #1f2937;
+  width: 16px;
+  height: 16px;
+  border: 3px solid #1f2937;
   border-radius: 50%;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  transform: rotate(20deg);
 }
 
 /* HEADER */
@@ -79,7 +75,7 @@ select {
   font-weight: 700;
   padding: 10px;
   border-radius: 14px 14px 0 0;
-  font-size: 18px;
+  text-align: center;
 }
 
 /* BOX */
@@ -87,92 +83,113 @@ select {
   display: flex;
   border-radius: 0 0 14px 14px;
   overflow: hidden;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+  min-height: 90px;
 }
 
 /* LEFT */
 .left {
-  width: 65%;
+  width: 45%;
   background: white;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 8px 0;
 }
 
-/* TANGGAL */
+/* DATE */
 .date {
-  font-size: 70px;
+  font-size: 60px;
   font-weight: 800;
   color: #ff5722;
 }
 
+/* DAY NAME */
+.day-name {
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: -2px;
+}
+
+/* TODAY */
+.pulse {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {transform: scale(1); color:#ff5722;}
+  50% {transform: scale(1.15); color:#dc2626;}
+  100% {transform: scale(1);}
+}
+
+/* HOLIDAY */
+.holiday {
+  color: #dc2626 !important;
+}
+
 /* RIGHT */
 .right {
-  width: 35%;
+  width: 55%;
   background: #e6f0ff;
   padding: 10px;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  font-size: 11px;
 }
 
-.small-month {
-  position: absolute;
-  top: 6px;
-  right: 8px;
-  font-size: 10px;
-  font-weight: 700;
-  color: #1e3a8a;
-}
-
-/* BULLET */
-.bullet {
+/* INFO */
+.info {
+  font-weight: 600;
+  line-height: 1.2;
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  gap: 4px;
 }
 
-.dot {
-  width: 6px;
-  height: 6px;
-  background: #3b82f6;
-  border-radius: 50%;
-  margin-right: 6px;
-}
-
-.line {
-  height: 2px;
-  background: #3b82f6;
-  flex: 1;
-}
-
-/* DESKRIPSI */
-.desc {
-  min-height: 40px;
-  margin-top: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
+/* TEXTAREA WRAP (FIX SPACING) */
+.textarea-wrap {
+  width: 100%;
+  padding: 0 12px;
+  box-sizing: border-box;
 }
 
 /* TEXTAREA */
 textarea {
-  width: 90%;
-  margin-top: 5px;
-  font-size: 12px;
-  height: 40px;
-  resize: none;
+  width: 100%;
+  margin-top: 10px;
+  height: 50px;
+  border-radius: 12px;
+  border: none;
+  padding: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  box-sizing: border-box;
 }
 
-/* HIGHLIGHT */
-.holiday .left {
-  background: #ffe4e6;
+textarea.locked {
+  background: #eee;
 }
 
-.holiday .date {
-  color: #dc2626;
+/* POPUP */
+.popup {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  justify-content:center;
+  align-items:center;
 }
 
-.has-note .left {
-  background: #fff9c4;
+.popup-box {
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
 }
 </style>
 </head>
@@ -183,145 +200,157 @@ textarea {
   <button onclick="prevMonth()">⬅</button>
   <div id="title"></div>
   <button onclick="nextMonth()">➡</button>
-
   <select id="yearSelect" onchange="changeYear(this.value)"></select>
 </div>
 
 <div class="container" id="container"></div>
 
+<div class="popup" id="popup">
+  <div class="popup-box">
+    <div>Masukkan Password</div>
+    <input type="password" id="passInput"><br><br>
+    <button onclick="checkPassword()">OK</button>
+  </div>
+</div>
+
 <script>
-const monthNames = [
-  "Januari","Februari","Maret","April","Mei","Juni",
-  "Juli","Agustus","September","Oktober","November","Desember"
-];
+const PASSWORD = "mb12345";
+let activeTextarea = null;
 
-const colors = [
-  "#1e3a8a", "#a3d341", "#a3d341", "#4caf50",
-  "#e879c6", "#8b5cf6", "#8b5cf6", "#f97316",
-  "#06b6d4", "#fb923c", "#10b981", "#facc15"
-];
+const monthNames = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+const days = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
 
-// DATA HARI LIBUR
-const holidays = {
-  "2026-0-1": "Tahun Baru Masehi",
-  "2026-2-3": "Hari Suci Nyepi",
-  "2026-4-1": "Hari Buruh",
-  "2026-7-17": "Hari Kemerdekaan",
-  "2026-11-25": "Hari Natal"
+const colors = ["#1e3a8a","#a3d341","#4caf50","#e879c6","#8b5cf6","#f97316","#06b6d4","#fb923c","#10b981","#facc15"];
+
+const events = {
+  "2026-2-3":"Hari Nyepi",
+  "2026-3-31":"Idul Fitri",
+  "2026-7-17":"Hari Kemerdekaan RI"
 };
 
 let currentMonth = 2;
 let currentYear = 2026;
 
-// DROPDOWN TAHUN
 const yearSelect = document.getElementById("yearSelect");
-for(let y=2020; y<=2035; y++){
-  let opt = document.createElement("option");
-  opt.value = y;
-  opt.text = y;
+for(let y=2020;y<=2035;y++){
+  let opt=document.createElement("option");
+  opt.value=y;
+  opt.text=y;
   yearSelect.appendChild(opt);
 }
-yearSelect.value = currentYear;
+yearSelect.value=currentYear;
 
-function render() {
-  document.getElementById("title").innerText =
-    monthNames[currentMonth] + " " + currentYear;
+function render(){
+  document.getElementById("title").innerText=monthNames[currentMonth]+" "+currentYear;
+  const container=document.getElementById("container");
+  container.innerHTML="";
 
-  const container = document.getElementById("container");
-  container.innerHTML = "";
+  let totalDays=new Date(currentYear,currentMonth+1,0).getDate();
+  let today=new Date();
 
-  const totalDays = new Date(currentYear, currentMonth+1, 0).getDate();
+  for(let d=1; d<=totalDays; d++){
 
-  for(let d=1; d<=totalDays; d++) {
+    let id=`${currentYear}-${currentMonth}-${d}`;
+    let dateObj=new Date(currentYear,currentMonth,d);
+    let dayName=days[dateObj.getDay()];
+    let event=events[id] || "-";
+    let rawNote=localStorage.getItem("note-"+id+"_raw") || "";
 
-    let id = `${currentYear}-${currentMonth}-${d}`;
+    let isToday =
+      d===today.getDate() &&
+      currentMonth===today.getMonth() &&
+      currentYear===today.getFullYear();
 
-    let desc = holidays[id] || "";
-    let rawNote = localStorage.getItem("note-"+id+"_raw") || "";
+    let isEvent = events[id];
 
-    let isHoliday = holidays[id] ? true : false;
-    let hasNote = rawNote !== "";
+    let el=document.createElement("div");
+    el.className="card-wrapper";
 
-    let wrapper = document.createElement("div");
-    wrapper.className = "card-wrapper";
+    el.innerHTML=`
+    <div class="card">
+      <div class="spiral">${'<div class="ring"></div>'.repeat(7)}</div>
 
-    if(isHoliday) wrapper.classList.add("holiday");
-    if(hasNote) wrapper.classList.add("has-note");
-
-    wrapper.innerHTML = `
-      <div class="card">
-        <div class="spiral">
-          ${'<div class="ring"></div>'.repeat(8)}
-        </div>
-
-        <div class="header" style="background:${colors[currentMonth]}">
-          ${monthNames[currentMonth]}
-        </div>
-
-        <div class="box">
-          <div class="left">
-            <div class="date">${d}</div>
-          </div>
-
-          <div class="right" id="note-${id}">
-            <div class="small-month">${monthNames[currentMonth].toUpperCase()}</div>
-
-            ${
-              rawNote
-              ? rawNote.split("\n").map(() => `
-                <div class="bullet">
-                  <div class="dot"></div>
-                  <div class="line"></div>
-                </div>
-              `).join("")
-              :
-              `
-              <div class="bullet"><div class="dot"></div><div class="line"></div></div>
-              <div class="bullet"><div class="dot"></div><div class="line"></div></div>
-              `
-            }
-          </div>
-        </div>
+      <div class="header" style="background:${colors[currentMonth]}">
+        ${monthNames[currentMonth]}
       </div>
 
-      <div class="desc">${desc}</div>
+      <div class="box">
+        <div class="left">
+          <div class="date ${isToday?'pulse':''} ${isEvent?'holiday':''}">
+            ${d}
+          </div>
+          <div class="day-name">${dayName}</div>
+        </div>
 
-      <textarea placeholder="Isi catatan"
+        <div class="right">
+          <div class="info">📅 ${d} ${monthNames[currentMonth]} ${currentYear}</div>
+          <div class="info">🗓️ ${getJavaneseDay(currentYear,currentMonth,d)}</div>
+          <div class="info">⭐ ${event}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="textarea-wrap">
+      <textarea class="locked"
+        onclick="requestAccess(this)"
         oninput="updateNotes('${id}', this.value)">${rawNote}</textarea>
+    </div>
     `;
 
-    container.appendChild(wrapper);
+    container.appendChild(el);
   }
 }
 
-function updateNotes(id, val) {
-  localStorage.setItem("note-"+id+"_raw", val);
+function requestAccess(el){
+  activeTextarea=el;
+  document.getElementById("popup").style.display="flex";
 }
 
-// NAVIGASI
-function prevMonth() {
+function checkPassword(){
+  if(document.getElementById("passInput").value===PASSWORD){
+    activeTextarea.classList.remove("locked");
+    activeTextarea.removeAttribute("onclick");
+    document.getElementById("popup").style.display="none";
+  } else {
+    alert("Password salah!");
+  }
+}
+
+function updateNotes(id,val){
+  localStorage.setItem("note-"+id+"_raw",val);
+}
+
+function prevMonth(){
   currentMonth--;
-  if(currentMonth < 0){
-    currentMonth = 11;
+  if(currentMonth<0){
+    currentMonth=11;
     currentYear--;
-    yearSelect.value = currentYear;
+    yearSelect.value=currentYear;
   }
   render();
 }
 
-function nextMonth() {
+function nextMonth(){
   currentMonth++;
-  if(currentMonth > 11){
-    currentMonth = 0;
+  if(currentMonth>11){
+    currentMonth=0;
     currentYear++;
-    yearSelect.value = currentYear;
+    yearSelect.value=currentYear;
   }
   render();
 }
 
-function changeYear(y) {
-  currentYear = parseInt(y);
+function changeYear(y){
+  currentYear=parseInt(y);
   render();
+}
+
+function getJavaneseDay(y,m,d){
+  const pasaran=["Legi","Pahing","Pon","Wage","Kliwon"];
+  let date=new Date(y,m,d);
+  let base=new Date(2023,0,1);
+  let diff=Math.floor((date-base)/86400000);
+  return pasaran[(diff%5+5)%5];
 }
 
 render();
