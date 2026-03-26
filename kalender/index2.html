@@ -149,20 +149,16 @@ button {
   gap: 4px;
 }
 
-/* TEXTAREA ROW */
-.textarea-row {
-  display: flex;
-}
-
-/* TEXTAREA WRAP (AUTO WIDTH FROM JS) */
+/* TEXTAREA FULL WIDTH */
 .textarea-wrap {
-  margin-top: 10px;
+  width: 100%;
+  padding: 0 8px;
 }
 
-/* TEXTAREA */
 textarea {
   width: 100%;
-  height: 45px;
+  margin-top: 10px;
+  height: 50px;
   border-radius: 12px;
   border: none;
   padding: 8px;
@@ -276,7 +272,7 @@ function render(){
       </div>
 
       <div class="box">
-        <div class="left left-col">
+        <div class="left">
           <div class="date ${isToday?'pulse':''} ${isEvent?'holiday':''}">
             ${d}
           </div>
@@ -291,28 +287,15 @@ function render(){
       </div>
     </div>
 
-    <div class="textarea-row">
-      <div class="textarea-wrap">
-        <textarea class="locked"
-          onclick="requestAccess(this)"
-          oninput="updateNotes('${id}', this.value)">${rawNote}</textarea>
-      </div>
+    <div class="textarea-wrap">
+      <textarea class="locked"
+        onclick="requestAccess(this)"
+        oninput="updateNotes('${id}', this.value)">${rawNote}</textarea>
     </div>
     `;
 
     container.appendChild(el);
   }
-
-  // AUTO WIDTH SAMAKAN DENGAN KOLOM TANGGAL
-  setTimeout(() => {
-    document.querySelectorAll(".card-wrapper").forEach(wrapper => {
-      let left = wrapper.querySelector(".left-col");
-      let wrap = wrapper.querySelector(".textarea-wrap");
-      if(left && wrap){
-        wrap.style.width = left.offsetWidth + "px";
-      }
-    });
-  }, 0);
 }
 
 function requestAccess(el){
