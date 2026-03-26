@@ -28,7 +28,7 @@ body{
     overflow-x:hidden;
 }
 
-/* ================= TOP HEADER ================= */
+/* HEADER */
 .top-header{
     max-width:1200px;
     margin:22px auto 0;
@@ -37,37 +37,10 @@ body{
     gap:16px;
     padding:20px 28px;
     border-radius:26px;
-    position:relative;
-    overflow:hidden;
-
-    background:linear-gradient(
-        120deg,
-        var(--primary),
-        var(--accent),
-        var(--secondary)
-    );
+    background:linear-gradient(120deg,var(--primary),var(--accent),var(--secondary));
     background-size:300% 300%;
-    animation:gradientFlow 18s ease infinite,floating 6s ease-in-out infinite;
-
-    box-shadow:
-        0 25px 55px rgba(0,0,0,.6),
-        inset 0 1px 0 rgba(255,255,255,.35);
-}
-
-.top-header::before{
-    content:"";
-    position:absolute;
-    top:0;
-    left:-70%;
-    width:50%;
-    height:100%;
-    background:linear-gradient(
-        120deg,
-        transparent,
-        rgba(255,255,255,.45),
-        transparent
-    );
-    animation:lightSweep 3.5s ease-out 1;
+    animation:gradientFlow 18s ease infinite;
+    box-shadow:0 25px 55px rgba(0,0,0,.6);
 }
 
 @keyframes gradientFlow{
@@ -76,41 +49,25 @@ body{
     100%{background-position:0% 50%}
 }
 
-@keyframes floating{
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-4px)}
-}
-
-@keyframes lightSweep{
-    from{left:-70%}
-    to{left:130%}
-}
-
 .top-header img{
     width:56px;
     height:56px;
     border-radius:16px;
     background:#fff;
     padding:6px;
-    object-fit:cover;
-    box-shadow:
-        0 12px 30px rgba(0,0,0,.45),
-        inset 0 0 0 1px rgba(255,255,255,.8);
 }
 
 .top-header h1{
-    margin:0;
     font-size:20px;
     font-weight:600;
 }
 
 .top-header p{
-    margin:2px 0 0;
     font-size:12px;
     opacity:.9;
 }
 
-/* ================= MAIN CONTENT ================= */
+/* CONTENT */
 .container{
     width:90%;
     max-width:900px;
@@ -120,12 +77,6 @@ body{
     border-radius:25px;
     padding:50px;
     box-shadow:0 20px 60px rgba(0,0,0,0.5);
-    animation:fadeIn 1.2s ease forwards;
-}
-
-@keyframes fadeIn{
-    from{opacity:0; transform:translateY(30px);}
-    to{opacity:1; transform:translateY(0);}
 }
 
 .section-title{
@@ -133,9 +84,6 @@ body{
     text-align:center;
     margin-bottom:40px;
     font-weight:700;
-    background: linear-gradient(90deg,var(--primary),var(--secondary));
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
 }
 
 .app-list{
@@ -150,81 +98,32 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    transition:all 0.4s ease;
-    border:1px solid rgba(255,255,255,0.15);
-    position:relative;
-    overflow:hidden;
-}
-
-.app-card::before{
-    content:"";
-    position:absolute;
-    width:100%;
-    height:100%;
-    top:0;
-    left:-100%;
-    background:linear-gradient(120deg,transparent,rgba(255,255,255,0.2),transparent);
-    transition:0.6s;
-}
-
-.app-card:hover::before{
-    left:100%;
+    transition:0.3s;
 }
 
 .app-card:hover{
-    transform:translateY(-8px) scale(1.02);
-    box-shadow:0 15px 40px rgba(0,0,0,0.6);
+    transform:translateY(-5px);
 }
 
-.app-info h2{
-    font-size:1.1rem;
-    font-weight:600;
-}
-
-.app-info p{
-    font-size:0.85rem;
-    opacity:0.7;
-    margin-top:5px;
-}
-
-/* ================= BUTTON FIX ================= */
+/* BUTTON */
 .btn{
     padding:12px 25px;
     border-radius:50px;
-    border:none;
-    cursor:pointer;
     text-decoration:none;
     font-weight:600;
     background:linear-gradient(90deg,var(--primary),var(--secondary));
     color:#fff;
-    transition:0.3s;
-    box-shadow:0 5px 20px rgba(0,0,0,0.4);
-
-    /* FIX UKURAN */
     min-width:150px;
     text-align:center;
 }
 
-.btn:hover{
-    transform:scale(1.1);
-    box-shadow:0 8px 25px rgba(0,0,0,0.6);
-}
-
-footer{
-    text-align:center;
-    margin-top:40px;
-    font-size:0.85rem;
-    opacity:0.6;
-}
-
-/* ================= RESPONSIVE ================= */
+/* MOBILE */
 @media(max-width:768px){
     .app-card{
         flex-direction:column;
         gap:15px;
         text-align:center;
     }
-
     .btn{
         width:80%;
         max-width:200px;
@@ -236,7 +135,7 @@ footer{
 <body>
 
 <header class="top-header">
-    <img src="assets/logo.jpg" alt="Logo Aplikasi">
+    <img src="assets/logo.jpg">
     <div>
         <h1>Aplikasi Saya</h1>
         <p>Versi 1.0 · Build 17 Februari 2026 · Dev by MB</p>
@@ -249,50 +148,47 @@ footer{
     <div class="app-list">
 
         <div class="app-card">
-            <div class="app-info">
-                <h2>Jadwal Imsak Ramadhan 1447 H Kab. Pemalang</h2>
-                <p>Aplikasi jadwal imsak & waktu sholat Ramadhan 1447 H.</p>
+            <div>
+                <h2>Jadwal Imsak Ramadhan</h2>
+                <p>Aplikasi jadwal imsak & waktu sholat Ramadhan.</p>
             </div>
-            <a href="https://yanuar-moga.github.io/app/jadwal_imsak/" target="_blank" class="btn">
-                Buka Aplikasi
-            </a>
+            <a href="https://yanuar-moga.github.io/app/jadwal_imsak/" target="_blank" class="btn">Buka Aplikasi</a>
         </div>
 
         <div class="app-card">
-            <div class="app-info">
+            <div>
                 <h2>Timer Ajar</h2>
-                <p>Timer untuk membantu mengatur waktu kegiatan belajar mengajar.</p>
+                <p>Timer untuk membantu mengatur waktu kegiatan belajar.</p>
             </div>
-            <a href="https://yanuar-moga.github.io/informatika/ukin/timer_ajar.html" target="_blank" class="btn">
-                Buka Aplikasi
-            </a>
+            <a href="https://yanuar-moga.github.io/informatika/ukin/timer_ajar.html" target="_blank" class="btn">Buka Aplikasi</a>
         </div>
 
         <div class="app-card">
-            <div class="app-info">
+            <div>
                 <h2>PPG Hub</h2>
-                <p>Pusat akses berbagai kebutuhan dan sumber belajar PPG dalam satu tempat.</p>
+                <p>Pusat akses kebutuhan dan sumber belajar PPG.</p>
             </div>
-            <a href="https://yanuar-moga.github.io/app/ppg" target="_blank" class="btn">
-                Buka Aplikasi
-            </a>
+            <a href="https://yanuar-moga.github.io/app/ppg" target="_blank" class="btn">Buka Aplikasi</a>
         </div>
 
         <div class="app-card">
-            <div class="app-info">
+            <div>
                 <h2>Kalender</h2>
-                <p>Aplikasi kalender interaktif dengan catatan harian, hari penting, dan tampilan modern.</p>
+                <p>Kalender pintar dengan catatan harian dan hari penting.</p>
             </div>
-            <a href="https://yanuar-moga.github.io/app/kalender" target="_blank" class="btn">
-                Buka Aplikasi
-            </a>
+            <a href="https://yanuar-moga.github.io/app/kalender" target="_blank" class="btn">Buka Aplikasi</a>
+        </div>
+
+        <!-- 🔥 MENU BARU -->
+        <div class="app-card">
+            <div>
+                <h2>Marketplace</h2>
+                <p>Platform marketplace untuk menjelajahi dan mengelola berbagai produk.</p>
+            </div>
+            <a href="https://yanuar-moga.github.io/app/marketplace/" target="_blank" class="btn">Buka Aplikasi</a>
         </div>
 
     </div>
-
-    <footer>
-        © 2026 MB · All Rights Reserved
-    </footer>
 </div>
 
 </body>
