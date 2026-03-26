@@ -56,24 +56,24 @@ select {
 .card {
   width: 100%;
   text-align: center;
-  position: relative;
 }
 
-/* SPIRAL (DITINGKATKAN) */
+/* SPIRAL CORELDRAW STYLE */
 .spiral {
   display: flex;
   justify-content: center;
-  gap: 4px;
-  margin-bottom: -10px;
+  gap: 5px;
+  margin-bottom: -12px;
 }
 
 .ring {
-  width: 14px;
-  height: 10px;
-  border: 2px solid #1f2937;
-  border-bottom: none;
-  border-radius: 10px 10px 0 0;
-  background: transparent;
+  width: 18px;
+  height: 18px;
+  border: 3px solid #1f2937;
+  border-radius: 50%;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  transform: rotate(20deg);
 }
 
 /* HEADER */
@@ -156,7 +156,7 @@ select {
   text-align: center;
 }
 
-/* TEXTAREA (DITINGKATKAN MINIMALIS) */
+/* TEXTAREA */
 textarea {
   width: 90%;
   margin-top: 8px;
@@ -169,11 +169,13 @@ textarea {
   outline: none;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   background: #ffffff;
-  transition: 0.2s;
+  cursor: pointer;
 }
 
-textarea:focus {
-  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+/* LOCKED STYLE */
+textarea.locked {
+  background: #eee;
+  cursor: not-allowed;
 }
 
 /* HIGHLIGHT */
@@ -188,6 +190,32 @@ textarea:focus {
 .has-note .left {
   background: #fff9c4;
 }
+
+/* POPUP */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.popup-box input {
+  padding: 8px;
+  margin-top: 10px;
+  width: 200px;
+}
 </style>
 </head>
 
@@ -197,13 +225,25 @@ textarea:focus {
   <button onclick="prevMonth()">⬅</button>
   <div id="title"></div>
   <button onclick="nextMonth()">➡</button>
-
   <select id="yearSelect" onchange="changeYear(this.value)"></select>
 </div>
 
 <div class="container" id="container"></div>
 
+<!-- POPUP PASSWORD -->
+<div class="popup" id="popup">
+  <div class="popup-box">
+    <div>Masukkan Password</div>
+    <input type="password" id="passInput">
+    <br><br>
+    <button onclick="checkPassword()">OK</button>
+  </div>
+</div>
+
 <script>
+const PASSWORD = "mb12345";
+let activeTextarea = null;
+
 const monthNames = [
   "Januari","Februari","Maret","April","Mei","Juni",
   "Juli","Agustus","September","Oktober","November","Desember"
@@ -247,23 +287,16 @@ function render() {
   for(let d=1; d<=totalDays; d++) {
 
     let id = `${currentYear}-${currentMonth}-${d}`;
-
     let desc = holidays[id] || "";
     let rawNote = localStorage.getItem("note-"+id+"_raw") || "";
-
-    let isHoliday = holidays[id] ? true : false;
-    let hasNote = rawNote !== "";
 
     let wrapper = document.createElement("div");
     wrapper.className = "card-wrapper";
 
-    if(isHoliday) wrapper.classList.add("holiday");
-    if(hasNote) wrapper.classList.add("has-note");
-
     wrapper.innerHTML = `
       <div class="card">
         <div class="spiral">
-          ${'<div class="ring"></div>'.repeat(9)}
+          ${'<div class="ring"></div>'.repeat(8)}
         </div>
 
         <div class="header" style="background:${colors[currentMonth]}">
@@ -275,34 +308,37 @@ function render() {
             <div class="date">${d}</div>
           </div>
 
-          <div class="right" id="note-${id}">
+          <div class="right">
             <div class="small-month">${monthNames[currentMonth].toUpperCase()}</div>
-
-            ${
-              rawNote
-              ? rawNote.split("\n").map(() => `
-                <div class="bullet">
-                  <div class="dot"></div>
-                  <div class="line"></div>
-                </div>
-              `).join("")
-              :
-              `
-              <div class="bullet"><div class="dot"></div><div class="line"></div></div>
-              <div class="bullet"><div class="dot"></div><div class="line"></div></div>
-              `
-            }
           </div>
         </div>
       </div>
 
       <div class="desc">${desc}</div>
 
-      <textarea placeholder="Isi catatan"
+      <textarea class="locked"
+        onclick="requestAccess(this)"
         oninput="updateNotes('${id}', this.value)">${rawNote}</textarea>
     `;
 
     container.appendChild(wrapper);
+  }
+}
+
+function requestAccess(el){
+  activeTextarea = el;
+  document.getElementById("popup").style.display = "flex";
+}
+
+function checkPassword(){
+  let val = document.getElementById("passInput").value;
+  if(val === PASSWORD){
+    activeTextarea.classList.remove("locked");
+    activeTextarea.removeAttribute("onclick");
+    activeTextarea.focus();
+    document.getElementById("popup").style.display = "none";
+  } else {
+    alert("Password salah!");
   }
 }
 
