@@ -112,7 +112,7 @@ button {
   margin-top: -2px;
 }
 
-/* TODAY PULSE */
+/* TODAY */
 .pulse {
   animation: pulse 1s infinite;
 }
@@ -149,16 +149,20 @@ button {
   gap: 4px;
 }
 
-/* TEXTAREA WRAP (FIXED) */
-.textarea-wrap {
-  width: 45%;
-  margin: 10px auto 0 auto;
+/* TEXTAREA ROW (BARU) */
+.textarea-row {
+  display: flex;
 }
 
-/* TEXTAREA (FIXED) */
+/* TEXTAREA WRAP (FIX) */
+.textarea-wrap {
+  width: 45%;
+  margin-top: 10px;
+}
+
+/* TEXTAREA */
 textarea {
   width: 100%;
-  margin-top: 0;
   height: 45px;
   border-radius: 12px;
   border: none;
@@ -220,7 +224,6 @@ const days = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
 
 const colors = ["#1e3a8a","#a3d341","#4caf50","#e879c6","#8b5cf6","#f97316","#06b6d4","#fb923c","#10b981","#facc15"];
 
-/* EVENT */
 const events = {
   "2026-2-3":"Hari Nyepi",
   "2026-3-31":"Idul Fitri",
@@ -289,10 +292,12 @@ function render(){
       </div>
     </div>
 
-    <div class="textarea-wrap">
-      <textarea class="locked"
-        onclick="requestAccess(this)"
-        oninput="updateNotes('${id}', this.value)">${rawNote}</textarea>
+    <div class="textarea-row">
+      <div class="textarea-wrap">
+        <textarea class="locked"
+          onclick="requestAccess(this)"
+          oninput="updateNotes('${id}', this.value)">${rawNote}</textarea>
+      </div>
     </div>
     `;
 
