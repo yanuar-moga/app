@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Kalender Cetak Profesional</title>
+<title>Kalender Pintar Final</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
 
@@ -15,117 +15,179 @@ body {
 
 /* NAVBAR */
 .navbar {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
-/* HEADER HARI */
-.day-header {
-  display: grid;
-  grid-template-columns: repeat(7,1fr);
-  margin-bottom: 10px;
-  font-weight: 700;
-  text-align: center;
+button {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  background: #1e3a8a;
+  color: white;
+  cursor: pointer;
 }
 
 /* GRID */
 .container {
   display: grid;
   grid-template-columns: repeat(7,1fr);
-  gap: 10px;
+  gap: 15px;
 }
+
+@media(max-width:900px){.container{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.container{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:400px){.container{grid-template-columns:1fr}}
 
 /* CARD */
-.card {
-  background: white;
-  border-radius: 14px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  overflow: hidden;
+.card-wrapper {
+  width: 100%;
 }
 
-/* HEADER BULAN */
+.card {
+  width: 100%;
+}
+
+/* SPIRAL */
+.spiral {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: -10px;
+}
+
+.ring {
+  width: 16px;
+  height: 16px;
+  border: 3px solid #1f2937;
+  border-radius: 50%;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  transform: rotate(20deg);
+}
+
+/* HEADER */
 .header {
-  background: #4caf50;
   color: white;
-  text-align: center;
-  padding: 6px;
   font-weight: 700;
+  padding: 10px;
+  border-radius: 14px 14px 0 0;
+  text-align: center;
 }
 
 /* BOX */
 .box {
   display: flex;
-  min-height: 80px;
+  border-radius: 0 0 14px 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+  min-height: 90px;
 }
 
 /* LEFT */
 .left {
   width: 45%;
+  background: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 8px 0;
 }
 
+/* DATE */
 .date {
-  font-size: 40px;
+  font-size: 60px;
   font-weight: 800;
   color: #ff5722;
 }
 
+/* DAY NAME */
 .day-name {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
+  margin-top: -2px;
 }
 
-/* RIGHT */
-.right {
-  width: 55%;
-  font-size: 10px;
-  padding: 5px;
-}
-
-/* INFO */
-.info {
-  margin-bottom: 3px;
-}
-
-/* TEXTAREA */
-.textarea-wrap {
-  width: 100%;
-  padding: 5px;
-}
-
-textarea {
-  width: 100%;
-  height: 40px;
-  border-radius: 10px;
-  border: none;
-  padding: 5px;
-  background: #eee;
-}
-
-/* TODAY */
+/* TODAY PULSE */
 .pulse {
   animation: pulse 1s infinite;
 }
 
 @keyframes pulse {
-  0% {transform: scale(1);}
-  50% {transform: scale(1.2); color:red;}
+  0% {transform: scale(1); color:#ff5722;}
+  50% {transform: scale(1.15); color:#dc2626;}
   100% {transform: scale(1);}
 }
 
 /* HOLIDAY */
 .holiday {
-  color: red;
+  color: #dc2626 !important;
 }
 
-/* PRINT MODE */
-@media print {
-  body {
-    background: white;
-  }
+/* RIGHT */
+.right {
+  width: 55%;
+  background: #e6f0ff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  font-size: 11px;
+}
+
+/* INFO */
+.info {
+  font-weight: 600;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* TEXTAREA WRAP (FIXED) */
+.textarea-wrap {
+  width: 45%;
+  margin: 10px auto 0 auto;
+}
+
+/* TEXTAREA (FIXED) */
+textarea {
+  width: 100%;
+  margin-top: 0;
+  height: 45px;
+  border-radius: 12px;
+  border: none;
+  padding: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+textarea.locked {
+  background: #eee;
+}
+
+/* POPUP */
+.popup {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+
+.popup-box {
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
 }
 </style>
 </head>
@@ -133,86 +195,153 @@ textarea {
 <body>
 
 <div class="navbar">
-  <h2 id="title"></h2>
-</div>
-
-<div class="day-header">
-  <div>Minggu</div>
-  <div>Senin</div>
-  <div>Selasa</div>
-  <div>Rabu</div>
-  <div>Kamis</div>
-  <div>Jumat</div>
-  <div>Sabtu</div>
+  <button onclick="prevMonth()">⬅</button>
+  <div id="title"></div>
+  <button onclick="nextMonth()">➡</button>
+  <select id="yearSelect" onchange="changeYear(this.value)"></select>
 </div>
 
 <div class="container" id="container"></div>
 
-<script>
-const monthNames=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
-const days=["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+<div class="popup" id="popup">
+  <div class="popup-box">
+    <div>Masukkan Password</div>
+    <input type="password" id="passInput"><br><br>
+    <button onclick="checkPassword()">OK</button>
+  </div>
+</div>
 
-const events={
+<script>
+const PASSWORD = "mb12345";
+let activeTextarea = null;
+
+const monthNames = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+const days = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+
+const colors = ["#1e3a8a","#a3d341","#4caf50","#e879c6","#8b5cf6","#f97316","#06b6d4","#fb923c","#10b981","#facc15"];
+
+/* EVENT */
+const events = {
   "2026-2-3":"Hari Nyepi",
   "2026-3-31":"Idul Fitri",
   "2026-7-17":"Hari Kemerdekaan RI"
 };
 
-let currentMonth=2;
-let currentYear=2026;
+let currentMonth = 2;
+let currentYear = 2026;
+
+const yearSelect = document.getElementById("yearSelect");
+for(let y=2020;y<=2035;y++){
+  let opt=document.createElement("option");
+  opt.value=y;
+  opt.text=y;
+  yearSelect.appendChild(opt);
+}
+yearSelect.value=currentYear;
 
 function render(){
   document.getElementById("title").innerText=monthNames[currentMonth]+" "+currentYear;
   const container=document.getElementById("container");
   container.innerHTML="";
 
-  let firstDay=new Date(currentYear,currentMonth,1).getDay();
   let totalDays=new Date(currentYear,currentMonth+1,0).getDate();
-
   let today=new Date();
 
-  // kosong sebelum tanggal 1
-  for(let i=0;i<firstDay;i++){
-    container.innerHTML+="<div></div>";
-  }
-
-  for(let d=1;d<=totalDays;d++){
+  for(let d=1; d<=totalDays; d++){
 
     let id=`${currentYear}-${currentMonth}-${d}`;
     let dateObj=new Date(currentYear,currentMonth,d);
     let dayName=days[dateObj.getDay()];
-    let event=events[id]||"-";
+    let event=events[id] || "-";
+    let rawNote=localStorage.getItem("note-"+id+"_raw") || "";
 
-    let isToday=
+    let isToday =
       d===today.getDate() &&
       currentMonth===today.getMonth() &&
       currentYear===today.getFullYear();
 
-    let isEvent=events[id];
+    let isEvent = events[id];
 
-    container.innerHTML+=`
+    let el=document.createElement("div");
+    el.className="card-wrapper";
+
+    el.innerHTML=`
     <div class="card">
-      <div class="header">${monthNames[currentMonth]}</div>
+      <div class="spiral">${'<div class="ring"></div>'.repeat(7)}</div>
+
+      <div class="header" style="background:${colors[currentMonth]}">
+        ${monthNames[currentMonth]}
+      </div>
 
       <div class="box">
         <div class="left">
-          <div class="date ${isToday?'pulse':''} ${isEvent?'holiday':''}">${d}</div>
+          <div class="date ${isToday?'pulse':''} ${isEvent?'holiday':''}">
+            ${d}
+          </div>
           <div class="day-name">${dayName}</div>
         </div>
 
         <div class="right">
-          <div class="info">${d} ${monthNames[currentMonth]}</div>
-          <div class="info">${getJavaneseDay(currentYear,currentMonth,d)}</div>
-          <div class="info">${event}</div>
+          <div class="info">📅 ${d} ${monthNames[currentMonth]} ${currentYear}</div>
+          <div class="info">🗓️ ${getJavaneseDay(currentYear,currentMonth,d)}</div>
+          <div class="info">⭐ ${event}</div>
         </div>
       </div>
+    </div>
 
-      <div class="textarea-wrap">
-        <textarea></textarea>
-      </div>
+    <div class="textarea-wrap">
+      <textarea class="locked"
+        onclick="requestAccess(this)"
+        oninput="updateNotes('${id}', this.value)">${rawNote}</textarea>
     </div>
     `;
+
+    container.appendChild(el);
   }
+}
+
+function requestAccess(el){
+  activeTextarea=el;
+  document.getElementById("popup").style.display="flex";
+}
+
+function checkPassword(){
+  if(document.getElementById("passInput").value===PASSWORD){
+    activeTextarea.classList.remove("locked");
+    activeTextarea.removeAttribute("onclick");
+    document.getElementById("popup").style.display="none";
+  } else {
+    alert("Password salah!");
+  }
+}
+
+function updateNotes(id,val){
+  localStorage.setItem("note-"+id+"_raw",val);
+}
+
+function prevMonth(){
+  currentMonth--;
+  if(currentMonth<0){
+    currentMonth=11;
+    currentYear--;
+    yearSelect.value=currentYear;
+  }
+  render();
+}
+
+function nextMonth(){
+  currentMonth++;
+  if(currentMonth>11){
+    currentMonth=0;
+    currentYear++;
+    yearSelect.value=currentYear;
+  }
+  render();
+}
+
+function changeYear(y){
+  currentYear=parseInt(y);
+  render();
 }
 
 function getJavaneseDay(y,m,d){
