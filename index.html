@@ -74,6 +74,7 @@ body{
     gap:25px;
 }
 
+/* CARD */
 .app-card{
     background: rgba(255,255,255,0.08);
     border-radius:20px;
@@ -81,13 +82,26 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    min-height:100px;
 }
 
-/* 🔥 BUTTON FIX TOTAL */
+/* BIAR TEXT RAPI */
+.app-card h2{
+    font-size:18px;
+    margin-bottom:5px;
+}
+
+.app-card p{
+    font-size:13px;
+    opacity:.85;
+}
+
+/* 🔥 BUTTON FIX TOTAL (SEMUA SAMA) */
 .btn{
-    width:180px; /* FIX ukuran desktop */
+    width:180px;
     height:45px;
-    display:inline-flex;
+    flex-shrink:0; /* 🔥 penting biar ga mengecil */
+    display:flex;
     align-items:center;
     justify-content:center;
     border-radius:50px;
@@ -111,8 +125,8 @@ body{
     }
 
     .btn{
-        width:100%;
-        max-width:220px; /* semua tombol sama */
+        width:200px; /* semua tetap sama */
+        height:45px;
     }
 }
 </style>
@@ -171,6 +185,14 @@ body{
                 <p>Platform marketplace untuk menjelajahi berbagai produk.</p>
             </div>
             <a href="https://yanuar-moga.github.io/app/marketplace/" target="_blank" class="btn">Buka Aplikasi</a>
+        </div>
+
+        <div class="app-card">
+            <div>
+                <h2>Short Link</h2>
+                <p>Aplikasi untuk memperpendek link dengan cepat dan mudah.</p>
+            </div>
+            <a href="https://yanuar-moga.github.io/short/" target="_blank" class="btn">Buka Aplikasi</a>
         </div>
 
     </div>
