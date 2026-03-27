@@ -59,6 +59,18 @@ min-height:100vh;
 background:#0f172a;
 color:white;
 padding:20px;
+position:relative;
+}
+
+/* 🔥 USER INFO */
+.user-box{
+position:absolute;
+top:15px;
+right:20px;
+background:#1e293b;
+padding:8px 12px;
+border-radius:10px;
+font-size:13px;
 }
 
 .container{max-width:900px;margin:auto}
@@ -175,6 +187,16 @@ background:#334155;
 padding:20px;
 border-radius:12px;
 }
+
+/* 🔥 RESPONSIVE */
+@media(max-width:600px){
+.user-box{
+font-size:12px;
+padding:6px 10px;
+top:10px;
+right:10px;
+}
+}
 </style>
 </head>
 
@@ -206,6 +228,10 @@ border-radius:12px;
 
 <!-- UJIAN -->
 <div class="app-page" id="app">
+
+<!-- 🔥 USER LOGIN -->
+<div class="user-box" id="userBox"></div>
+
 <div class="container">
 
 <h2 style="text-align:center">LATIHAN SOAL UP PPG</h2>
@@ -257,6 +283,10 @@ kelas=r.kelas;
 
 loginPage.style.display='none';
 app.style.display='block';
+
+/* 🔥 TAMPIL USER */
+document.getElementById('userBox').innerHTML =
+"👤 " + user + " | " + kelas;
 
 start();
 }else alert('Login gagal');
@@ -335,36 +365,26 @@ updateNav();
 function next(){i<data.length-1?(i++,show()):submit();}
 function prev(){if(i>0){i--;show()}}
 
-/* TIMER FINAL */
 function timerStart(){
-
 const timeEl=document.getElementById('time');
-
-// tampil awal
-renderTime();
-
-timer=setInterval(function(){
-
-waktu--;
-
-renderTime();
-
-if(waktu<=0){
-clearInterval(timer);
-submit();
-}
-
-},1000);
 
 function renderTime(){
 let m=Math.floor(waktu/60);
 let s=waktu%60;
 timeEl.textContent=m+':' + (s<10?'0'+s:s);
+if(waktu<=60){timeEl.style.color='red';}
+}
 
-if(waktu<=60){
-timeEl.style.color='red';
+renderTime();
+
+timer=setInterval(function(){
+waktu--;
+renderTime();
+if(waktu<=0){
+clearInterval(timer);
+submit();
 }
-}
+},1000);
 }
 
 function submit(){
@@ -396,7 +416,6 @@ app.innerHTML=`
 <button onclick="window.location.href='https://yanuar-moga.github.io/app/ppg/'">
 Home
 </button>
-
 </div>`;
 }
 </script>
