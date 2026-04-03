@@ -93,8 +93,6 @@ display:block;
 
 select{
 appearance:none;
--webkit-appearance:none;
--moz-appearance:none;
 background:white;
 }
 
@@ -106,10 +104,6 @@ gap:8px;
 font-size:13px;
 }
 
-.passwordCheck input{
-width:auto;
-}
-
 button{
 background:#2563eb;
 color:white;
@@ -119,11 +113,6 @@ border-radius:8px;
 cursor:pointer;
 font-weight:500;
 width:100%;
-}
-
-button:disabled{
-background:#94a3b8;
-cursor:not-allowed;
 }
 
 #nomor{
@@ -168,7 +157,7 @@ border-radius:10px;
 margin-top:20px;
 }
 
-/* SOAL */
+/* CARD SOAL */
 .soalCard{
 background:#f8fafc;
 border-radius:14px;
@@ -177,10 +166,11 @@ border:1px solid #e2e8f0;
 margin-bottom:15px;
 }
 
+/* HEADER SOAL */
 .soalHeader{
 display:flex;
 gap:10px;
-margin-bottom:10px;
+margin-bottom:12px;
 align-items:flex-start;
 }
 
@@ -200,43 +190,47 @@ margin-top:2px;
 
 .soalText{
 flex:1;
-line-height:1.6;
+line-height:1.7;
 text-align:justify;
 }
 
-/* OPSI LJK STYLE */
+/* OPSI LJK */
 .opsi{
 display:flex;
-align-items:flex-start; /* 🔥 PENTING */
+align-items:flex-start;
 gap:10px;
-padding:10px 12px;
+padding:8px 12px;
 border-radius:10px;
 cursor:pointer;
-margin-bottom:8px;
+margin-bottom:6px;
 transition:0.2s;
 border:1px solid #e2e8f0;
 background:white;
+
+/* 🔥 INI YANG BIKIN MUNDUR SEJAJAR SOAL */
+margin-left:38px;
 }
 
 .opsi:hover{
-background:#f8fafc;
+background:#f1f5f9;
 }
 
-/* 🔥 LINGKARAN DIPERKECIL */
+/* LINGKARAN */
 .circle{
-min-width:26px;
-height:26px;
+min-width:22px;
+height:22px;
 border-radius:50%;
-border:2px solid #94a3b8;
+border:1.5px solid #94a3b8;
 display:flex;
 align-items:center;
 justify-content:center;
-font-weight:bold;
-font-size:12px;
+font-weight:600;
+font-size:11px;
 color:#334155;
-margin-top:2px; /* 🔥 BIAR SEJAJAR TEKS */
+margin-top:2px;
 }
 
+/* TEKS OPSI */
 .teks{
 flex:1;
 line-height:1.5;
@@ -369,23 +363,18 @@ p.type = (p.type==="password") ? "text" : "password";
 }
 
 function cekKelas(){
-
-var k = document.getElementById("kelas").value;
+var k = document.getElementById("kelas").value.toLowerCase().trim();
 var tokenBox = document.getElementById("tokenBox");
 var tokenInput = document.getElementById("token");
 
-k = k.toLowerCase().trim();
-
-if(k === "free"){
-tokenBox.style.display = "block";
-tokenInput.placeholder = "12345CBT";
-tokenInput.value = "";
+if(k==="free"){
+tokenBox.style.display="block";
+tokenInput.placeholder="12345CBT";
+tokenInput.value="";
 }else{
-tokenBox.style.display = "none";
-tokenInput.value = "";
-tokenInput.placeholder = "";
+tokenBox.style.display="none";
+tokenInput.value="";
 }
-
 }
 
 function login(){
@@ -400,7 +389,7 @@ alert("Lengkapi login!");
 return;
 }
 
-if(kelas && kelas.toLowerCase()=="free" && token!="12345CBT"){
+if(kelas.toLowerCase()=="free" && token!="12345CBT"){
 alert("Token salah!");
 return;
 }
@@ -413,11 +402,6 @@ jk=res.jk;
 kelas=res.kelas;
 level=res.level || "normal";
 
-localStorage.setItem("nama",nama);
-localStorage.setItem("kelas",kelas);
-localStorage.setItem("jk",jk);
-localStorage.setItem("level",level);
-
 document.getElementById("login").style.display="none";
 document.getElementById("ujian").style.display="block";
 
@@ -427,7 +411,7 @@ document.getElementById("statusUjian").style.display="block";
 
 loadSoal();
 
-}else alert(res.pesan || "Login gagal");
+}else alert("Login gagal");
 
 });
 
@@ -446,7 +430,6 @@ k.appendChild(o);
 }
 
 function loadNama(){
-
 kelas=document.getElementById("kelas").value;
 
 if(!kelas){
@@ -455,17 +438,14 @@ return;
 }
 
 gas("getNama",{kelas:kelas},function(data){
-
 var n=document.getElementById("nama");
 n.innerHTML="<option>Pilih Nama</option>";
-
 data.forEach(x=>{
 var o=document.createElement("option");
 o.value=x;
 o.text=x;
 n.appendChild(o);
 });
-
 });
 }
 
@@ -474,11 +454,11 @@ function loadSoal(){
 gas("getSoal",{},function(data){
 
 if(level.toLowerCase()=="free"){
-soal = data.slice(0,10);
-waktu = 20 * 60;
+soal=data.slice(0,10);
+waktu=20*60;
 }else{
-soal = data;
-waktu = 30 * 60;
+soal=data;
+waktu=30*60;
 }
 
 jawaban=[];
@@ -509,10 +489,6 @@ html+="<div class='noSoal'>"+(no+1)+"</div>";
 html+="<div class='soalText'>"+s.pertanyaan+"</div>";
 html+="</div>";
 
-if(s.gambar && s.gambar.trim()!=""){
-html+="<img src='"+s.gambar+"' style='max-width:100%;margin:10px 0;border-radius:10px'><br>";
-}
-
 var huruf=["A","B","C","D","E"];
 
 s.opsi.forEach((o,i)=>{
@@ -533,16 +509,11 @@ document.getElementById("soal").innerHTML=html;
 }
 
 function jawab(v,el){
-
 jawaban[no]=v;
-
 document.querySelectorAll(".opsi").forEach(x=>x.classList.remove("aktif"));
 el.classList.add("aktif");
-
 document.getElementById("n"+no).classList.add("dijawab");
-
 updateProgress();
-
 }
 
 function next(){if(no<soal.length-1){no++;tampil();}}
@@ -555,28 +526,13 @@ document.getElementById("progressBar").style.width=(j/soal.length*100)+"%";
 }
 
 function kirim(){
-
 if(sudahSubmit) return;
 
-gas("submitJawaban",{
-jawaban:jawaban,
-nama:nama,
-kelas:kelas
-},function(nilai){
-
+gas("submitJawaban",{jawaban:jawaban,nama:nama,kelas:kelas},function(nilai){
 alert("Nilai Anda : "+nilai);
-
 sudahSubmit=true;
 document.getElementById("btnKirim").disabled=true;
-
-document.getElementById("statusUjian").innerHTML="Sudah Mengerjakan";
-document.getElementById("statusUjian").classList.remove("belum");
-document.getElementById("statusUjian").classList.add("sudah");
-
-localStorage.clear();
-
 });
-
 }
 
 function timer(){
@@ -584,48 +540,19 @@ setInterval(()=>{
 waktu--;
 var m=Math.floor(waktu/60);
 var d=waktu%60;
-d=d<10?"0"+d:d;
+if(d<10)d="0"+d;
 document.getElementById("timer").innerHTML="⏱️ "+m+":"+d;
 if(waktu<=0) kirim();
 },1000);
 }
 
 function logout(){
-if(confirm("Logout?")){
 localStorage.clear();
 location.reload();
 }
-}
 
 window.onload=function(){
-
 loadKelas();
-
-var n=localStorage.getItem("nama");
-var k=localStorage.getItem("kelas");
-
-if(n&&k){
-
-nama=n;
-kelas=k;
-jk=localStorage.getItem("jk");
-level=localStorage.getItem("level") || "normal";
-
-document.getElementById("login").style.display="none";
-document.getElementById("ujian").style.display="block";
-
-document.getElementById("userInfo").innerHTML="👤 "+nama+" | "+kelas+" | "+level;
-document.getElementById("btnLogout").style.display="block";
-document.getElementById("statusUjian").style.display="block";
-
-loadSoal();
-
-}
-
-window.onbeforeunload=function(){
-return "Ujian sedang berlangsung!";
-}
-
 }
 
 document.getElementById("kelas").addEventListener("change",function(){
