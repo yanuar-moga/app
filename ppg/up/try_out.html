@@ -168,7 +168,7 @@ border-radius:10px;
 margin-top:20px;
 }
 
-/* CARD SOAL */
+/* SOAL */
 .soalCard{
 background:#f8fafc;
 border-radius:14px;
@@ -181,11 +181,12 @@ margin-bottom:15px;
 display:flex;
 gap:10px;
 margin-bottom:10px;
+align-items:flex-start;
 }
 
 .noSoal{
-min-width:32px;
-height:32px;
+min-width:28px;
+height:28px;
 background:#2563eb;
 color:white;
 border-radius:50%;
@@ -193,7 +194,8 @@ display:flex;
 align-items:center;
 justify-content:center;
 font-weight:bold;
-font-size:14px;
+font-size:13px;
+margin-top:2px;
 }
 
 .soalText{
@@ -202,34 +204,37 @@ line-height:1.6;
 text-align:justify;
 }
 
-/* OPSI */
+/* OPSI LJK STYLE */
 .opsi{
 display:flex;
-align-items:flex-start;
-gap:12px;
-padding:12px;
-border-radius:12px;
+align-items:flex-start; /* 🔥 PENTING */
+gap:10px;
+padding:10px 12px;
+border-radius:10px;
 cursor:pointer;
-margin-bottom:10px;
+margin-bottom:8px;
 transition:0.2s;
-border:1.5px solid #e2e8f0;
+border:1px solid #e2e8f0;
 background:white;
 }
 
 .opsi:hover{
-background:#f1f5f9;
+background:#f8fafc;
 }
 
+/* 🔥 LINGKARAN DIPERKECIL */
 .circle{
-min-width:34px;
-height:34px;
+min-width:26px;
+height:26px;
 border-radius:50%;
 border:2px solid #94a3b8;
 display:flex;
 align-items:center;
 justify-content:center;
 font-weight:bold;
+font-size:12px;
 color:#334155;
+margin-top:2px; /* 🔥 BIAR SEJAJAR TEKS */
 }
 
 .teks{
@@ -238,6 +243,7 @@ line-height:1.5;
 text-align:justify;
 }
 
+/* AKTIF */
 .opsi.aktif{
 border-color:#2563eb;
 background:#eff6ff;
