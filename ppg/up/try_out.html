@@ -86,8 +86,7 @@ margin-top:12px;
 }
 
 /* INPUT */
-.inputBox,
-select{
+.inputBox{
 width:100%;
 padding:10px;
 border-radius:8px;
@@ -95,13 +94,6 @@ border:1px solid #ccc;
 margin-top:4px;
 box-sizing:border-box;
 display:block;
-}
-
-select{
-appearance:none;
--webkit-appearance:none;
--moz-appearance:none;
-background:white;
 }
 
 /* CHECKBOX PASSWORD */
@@ -197,12 +189,10 @@ transition:0.25s;
 border:2px solid #e2e8f0;
 }
 
-/* HOVER */
 .opsi:hover{
 background:#f8fafc;
 }
 
-/* LINGKARAN HURUF */
 .circle{
 width:34px;
 height:34px;
@@ -213,39 +203,22 @@ align-items:center;
 justify-content:center;
 font-weight:bold;
 color:#334155;
-transition:0.25s;
 }
 
-/* TEXT */
 .teks{
 flex:1;
 text-align:justify;
-line-height:1.5;
 }
 
-/* OPSI AKTIF */
 .opsi.aktif{
 border:2px solid #2563eb;
 background:#eff6ff;
 }
 
-/* LINGKARAN AKTIF */
 .opsi.aktif .circle{
 background:#2563eb;
 color:white;
 border-color:#2563eb;
-}
-
-/* ANIMASI BOUNCE */
-@keyframes bounceClick{
-0%{transform:scale(1);}
-30%{transform:scale(1.2);}
-60%{transform:scale(0.9);}
-100%{transform:scale(1);}
-}
-
-.bounce{
-animation:bounceClick 0.3s ease;
 }
 
 /* NAV */
@@ -257,12 +230,6 @@ margin-top:15px;
 
 .navBtn button{
 flex:1;
-}
-
-/* RESPONSIVE */
-@media(max-width:600px){
-.soalText{font-size:14px;}
-.teks{font-size:14px;}
 }
 
 </style>
@@ -287,13 +254,11 @@ flex:1;
 
 <h2>Try Out UP PPG</h2>
 
+<!-- LOGIN -->
 <div id="login" class="loginBox">
 
-<label>Kelas</label>
-<select id="kelas"></select>
-
-<label>Nama</label>
-<select id="nama"></select>
+<label>Username</label>
+<input type="text" id="username" class="inputBox">
 
 <label>Password</label>
 <input type="password" id="password" class="inputBox">
@@ -308,6 +273,7 @@ flex:1;
 
 </div>
 
+<!-- UJIAN -->
 <div id="ujian" style="display:none">
 
 <div id="timer"></div>
@@ -335,7 +301,7 @@ flex:1;
 var URL_SCRIPT="https://script.google.com/macros/s/AKfycbyIIkiSDaj2VnlXo8SSeKENbUKB2OuZOfdHIs2AFbfbVCq_qquMtaHTylnk5MBv7DDX/exec";
 
 var soal=[],jawaban=[],no=0;
-var nama,jk,kelas;
+var username,kelas;
 var waktu=1800;
 var sudahSubmit=false;
 
@@ -355,61 +321,39 @@ p.type = (p.type==="password") ? "text" : "password";
 
 function login(){
 
-nama=document.getElementById("nama").value;
+username=document.getElementById("username").value;
 var password=document.getElementById("password").value;
 
-if(!nama||!password){alert("Lengkapi login!");return;}
+if(!username||!password){
+alert("Lengkapi login!");
+return;
+}
 
-gas("login",{nama:nama,password:password},function(res){
+gas("login",{username:username,password:password},function(res){
 
 if(res.status=="ok"){
 
-jk=res.jk;
 kelas=res.kelas;
 
-localStorage.setItem("nama",nama);
+localStorage.setItem("username",username);
 localStorage.setItem("kelas",kelas);
-localStorage.setItem("jk",jk);
 
 document.getElementById("login").style.display="none";
 document.getElementById("ujian").style.display="block";
 
-document.getElementById("userInfo").innerHTML="👤 "+nama+" | "+kelas;
+document.getElementById("userInfo").innerHTML="👤 "+username+" | "+kelas;
 document.getElementById("btnLogout").style.display="block";
 document.getElementById("statusUjian").style.display="block";
 
 loadSoal();
 timer();
 
-}else alert("Login gagal");
-
-});
-
+}else{
+alert("Username atau Password salah!");
 }
 
-function loadKelas(){
-gas("getKelas",{},function(data){
-var k=document.getElementById("kelas");
-k.innerHTML="<option>Pilih Kelas</option>";
-data.forEach(x=>{
-var o=document.createElement("option");
-o.value=x;o.text=x;
-k.appendChild(o);
 });
-});
-}
 
-function loadNama(){
-kelas=document.getElementById("kelas").value;
-gas("getNama",{kelas:kelas},function(data){
-var n=document.getElementById("nama");
-n.innerHTML="<option>Pilih Nama</option>";
-data.forEach(x=>{
-var o=document.createElement("option");
-o.value=x;o.text=x;
-n.appendChild(o);
-});
-});
 }
 
 function loadSoal(){
@@ -439,10 +383,6 @@ var s=soal[no];
 
 var html="<div class='soalText'><b>"+(no+1)+".</b> "+s.pertanyaan+"</div>";
 
-if(s.gambar && s.gambar.trim()!=""){
-html+="<img src='"+s.gambar+"' style='max-width:100%;margin:10px 0;border-radius:10px'><br>";
-}
-
 var huruf=["A","B","C","D","E"];
 
 s.opsi.forEach((o,i)=>{
@@ -467,12 +407,6 @@ jawaban[no]=v;
 document.querySelectorAll(".opsi").forEach(x=>x.classList.remove("aktif"));
 el.classList.add("aktif");
 
-/* bounce animasi */
-var c = el.querySelector(".circle");
-c.classList.remove("bounce");
-void c.offsetWidth;
-c.classList.add("bounce");
-
 document.getElementById("n"+no).classList.add("dijawab");
 
 localStorage.setItem("jawaban",JSON.stringify(jawaban));
@@ -495,7 +429,7 @@ if(sudahSubmit) return;
 
 gas("submitJawaban",{
 jawaban:jawaban,
-nama:nama,
+username:username,
 kelas:kelas
 },function(nilai){
 
@@ -529,41 +463,6 @@ localStorage.clear();
 location.reload();
 }
 }
-
-window.onload=function(){
-
-loadKelas();
-
-var n=localStorage.getItem("nama");
-var k=localStorage.getItem("kelas");
-
-if(n&&k){
-
-nama=n;
-kelas=k;
-
-document.getElementById("login").style.display="none";
-document.getElementById("ujian").style.display="block";
-
-document.getElementById("userInfo").innerHTML="👤 "+nama+" | "+kelas;
-document.getElementById("btnLogout").style.display="block";
-document.getElementById("statusUjian").style.display="block";
-
-var jwb=localStorage.getItem("jawaban");
-if(jwb) jawaban=JSON.parse(jwb);
-
-loadSoal();
-timer();
-
-}
-
-window.onbeforeunload=function(){
-return "Ujian sedang berlangsung!";
-}
-
-}
-
-document.getElementById("kelas").addEventListener("change",loadNama);
 
 </script>
 
