@@ -206,8 +206,6 @@ margin-bottom:6px;
 transition:0.2s;
 border:1px solid #e2e8f0;
 background:white;
-
-/* 🔥 INI YANG BIKIN MUNDUR SEJAJAR SOAL */
 margin-left:38px;
 }
 
@@ -261,6 +259,13 @@ flex:1;
 
 #tokenBox{
 transition:all 0.3s ease;
+}
+
+.soalText img,
+.teks img{
+max-width:100%;
+border-radius:10px;
+margin-top:8px;
 }
 
 @media(max-width:600px){
@@ -486,20 +491,38 @@ var html="<div class='soalCard'>";
 
 html+="<div class='soalHeader'>";
 html+="<div class='noSoal'>"+(no+1)+"</div>";
-html+="<div class='soalText'>"+s.pertanyaan+"</div>";
+
+var isiSoal = s.pertanyaan;
+
+if(isiSoal && isiSoal.includes("http") && (isiSoal.includes(".png") || isiSoal.includes(".jpg") || isiSoal.includes(".jpeg"))){
+isiSoal = `<img src="${isiSoal}">`;
+}
+
+html+="<div class='soalText'>"+isiSoal+"</div>";
 html+="</div>";
+
+if(s.gambar && s.gambar.trim()!=""){
+html+=`<img src="${s.gambar}">`;
+}
 
 var huruf=["A","B","C","D","E"];
 
 s.opsi.forEach((o,i)=>{
+
 var aktif=jawaban[no]==o.key?"aktif":"";
+var teksOpsi = o.text;
+
+if(teksOpsi && teksOpsi.includes("http") && (teksOpsi.includes(".png") || teksOpsi.includes(".jpg") || teksOpsi.includes(".jpeg"))){
+teksOpsi = `<img src="${teksOpsi}">`;
+}
 
 html+=`
 <div class="opsi ${aktif}" onclick="jawab('${o.key}', this)">
 <div class="circle">${huruf[i]}</div>
-<div class="teks">${o.text}</div>
+<div class="teks">${teksOpsi}</div>
 </div>
 `;
+
 });
 
 html+="</div>";
