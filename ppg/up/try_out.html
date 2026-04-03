@@ -4,7 +4,7 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Try Out UP PPG</title>
+<title>CBT Ujian Sekolah</title>
 
 <style>
 
@@ -92,6 +92,7 @@ margin:3px;
 background:#e2e8f0;
 border-radius:6px;
 cursor:pointer;
+font-size:13px;
 }
 
 .dijawab{
@@ -149,6 +150,10 @@ margin-top:15px;
 }
 
 .navBtn button{flex:1;}
+
+@media(max-width:600px){
+.container{padding:15px;}
+}
 
 </style>
 
@@ -210,39 +215,39 @@ margin-top:15px;
 
 <script>
 
-var URL_SCRIPT="https://script.google.com/macros/s/AKfycbwrBaRD430woke0a5oA7KqjRz_cONOU22bTFpF3ZpgXnp3MBLr3wZH8HK48Jnhed2ZB/exec";
+var URL_SCRIPT="https://script.google.com/macros/s/AKfycbyIIkiSDaj2VnlXo8SSeKENbUKB2OuZOfdHIs2AFbfbVCq_qquMtaHTylnk5MBv7DDX/exec";
 
 var soal=[],jawaban=[],no=0;
 var username,kelas;
 var waktu=1800;
 var sudahSubmit=false;
 
-// ================= GAS FETCH =================
-function gas(func,data,callback){
+// ================= GAS =================
+function gas(data,callback){
+
+const payload = "data=" + encodeURIComponent(JSON.stringify(data));
 
 fetch(URL_SCRIPT,{
 method:"POST",
 headers:{
-"Content-Type":"application/json"
+"Content-Type":"application/x-www-form-urlencoded"
 },
-body:JSON.stringify({
-func:func,
-data:data
+body:payload
 })
+.then(res=>res.text())
+.then(txt=>{
+try{
+callback(JSON.parse(txt));
+}catch(e){
+console.log("RESPON:",txt);
+alert("Server error");
+}
 })
-.then(res=>res.json())
-.then(callback)
 .catch(err=>{
+console.error(err);
 alert("Gagal konek ke server!");
-console.log(err);
 });
 
-}
-
-// ================= PASSWORD =================
-function togglePass(){
-var p=document.getElementById("password");
-p.type = (p.type==="password") ? "text" : "password";
 }
 
 // ================= LOGIN =================
@@ -256,11 +261,13 @@ alert("Isi username & password!");
 return;
 }
 
-gas("login",{username:username,password:password},function(res){
+gas({
+type:"login",
+username:username,
+password:password
+},function(res){
 
-console.log(res);
-
-if(res.status==="ok"){
+if(res.status==="success"){
 
 kelas=res.kelas;
 
@@ -285,7 +292,7 @@ alert("Username atau Password salah!");
 // ================= LOAD SOAL =================
 function loadSoal(){
 
-gas("getSoal",{},function(data){
+gas({type:"getSoal"},function(data){
 
 soal=data;
 jawaban=[];
@@ -358,13 +365,14 @@ function kirim(){
 
 if(sudahSubmit) return;
 
-gas("submitJawaban",{
+gas({
+type:"submit",
 jawaban:jawaban,
 username:username,
 kelas:kelas
-},function(nilai){
+},function(res){
 
-alert("Nilai Anda: "+nilai);
+alert("Nilai Anda: "+res.nilai);
 
 sudahSubmit=true;
 document.getElementById("btnKirim").disabled=true;
@@ -390,6 +398,12 @@ document.getElementById("timer").innerHTML="⏱️ "+m+":"+d;
 if(waktu<=0) kirim();
 
 },1000);
+}
+
+// ================= PASSWORD =================
+function togglePass(){
+var p=document.getElementById("password");
+p.type = (p.type==="password") ? "text" : "password";
 }
 
 // ================= LOGOUT =================
