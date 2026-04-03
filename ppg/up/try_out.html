@@ -91,11 +91,6 @@ box-sizing:border-box;
 display:block;
 }
 
-select{
-appearance:none;
-background:white;
-}
-
 .passwordCheck{
 margin-top:8px;
 display:flex;
@@ -113,6 +108,10 @@ border-radius:8px;
 cursor:pointer;
 font-weight:500;
 width:100%;
+}
+
+button:disabled{
+background:#94a3b8;
 }
 
 #nomor{
@@ -157,6 +156,7 @@ border-radius:10px;
 margin-top:20px;
 }
 
+/* CARD */
 .soalCard{
 background:#f8fafc;
 border-radius:14px;
@@ -165,6 +165,7 @@ border:1px solid #e2e8f0;
 margin-bottom:15px;
 }
 
+/* HEADER */
 .soalHeader{
 display:flex;
 gap:10px;
@@ -192,6 +193,7 @@ line-height:1.7;
 text-align:justify;
 }
 
+/* OPSI LJK */
 .opsi{
 display:flex;
 align-items:flex-start;
@@ -200,7 +202,6 @@ padding:8px 12px;
 border-radius:10px;
 cursor:pointer;
 margin-bottom:6px;
-transition:0.2s;
 border:1px solid #e2e8f0;
 background:white;
 margin-left:38px;
@@ -220,7 +221,6 @@ align-items:center;
 justify-content:center;
 font-weight:600;
 font-size:11px;
-color:#334155;
 margin-top:2px;
 }
 
@@ -241,6 +241,13 @@ color:white;
 border-color:#2563eb;
 }
 
+.soalText img,
+.teks img{
+max-width:100%;
+border-radius:10px;
+margin-top:8px;
+}
+
 .navBtn{
 display:flex;
 gap:10px;
@@ -252,12 +259,7 @@ flex:1;
 }
 
 #tokenBox{
-transition:all 0.3s ease;
-}
-
-@media(max-width:600px){
-.soalText{font-size:14px;}
-.teks{font-size:14px;}
+transition:0.3s;
 }
 
 </style>
@@ -272,7 +274,7 @@ transition:all 0.3s ease;
 <div></div>
 
 <div class="userBox">
-<div class="userInfo" id="userInfo"></div>
+<div id="userInfo"></div>
 <div class="status belum" id="statusUjian">Belum Mengerjakan</div>
 <button id="btnLogout" onclick="logout()">Logout</button>
 </div>
@@ -294,14 +296,14 @@ transition:all 0.3s ease;
 <input type="password" id="password" class="inputBox">
 
 <div class="passwordCheck">
-<input type="checkbox" id="showPass" onclick="lihatPassword()">
-<label for="showPass">Tampilkan Password</label>
+<input type="checkbox" onclick="lihatPassword()">
+<label>Tampilkan Password</label>
 </div>
 
 <div id="tokenBox" style="display:none;">
 <label>Token</label>
 <input type="text" id="token" class="inputBox">
-<small style="color:#64748b;font-size:12px;">Masukkan token sesuai yang ditampilkan</small>
+<small style="color:#64748b;font-size:12px;">Ketik ulang token samar</small>
 </div>
 
 <br>
@@ -318,7 +320,6 @@ transition:all 0.3s ease;
 </div>
 
 <div id="nomor"></div>
-
 <div id="soal"></div>
 
 <div class="navBtn">
@@ -336,9 +337,8 @@ transition:all 0.3s ease;
 var URL_SCRIPT="https://script.google.com/macros/s/AKfycbxshIulNSOovCjQKY8aDklsXFJGYnYF1CXlGHsiMpOafLI_xqlV6Vwjynj-8s9aoms2/exec";
 
 var soal=[],jawaban=[],no=0;
-var nama,jk,kelas,level="normal";
+var nama,kelas,level="normal";
 var waktu=0;
-var sudahSubmit=false;
 
 function gas(func,data,callback){
 fetch(URL_SCRIPT,{
@@ -351,20 +351,20 @@ body:JSON.stringify({func:func,data:data})
 
 function lihatPassword(){
 var p=document.getElementById("password");
-p.type = (p.type==="password") ? "text" : "password";
+p.type=(p.type==="password")?"text":"password";
 }
 
 function cekKelas(){
-var k=document.getElementById("kelas").value.toLowerCase().trim();
-var tokenBox=document.getElementById("tokenBox");
-var tokenInput=document.getElementById("token");
+var k=document.getElementById("kelas").value.toLowerCase();
+var t=document.getElementById("tokenBox");
+var i=document.getElementById("token");
 
 if(k==="free"){
-tokenBox.style.display="block";
-tokenInput.placeholder="12345CBT";
+t.style.display="block";
+i.placeholder="12345CBT";
 }else{
-tokenBox.style.display="none";
-tokenInput.value="";
+t.style.display="none";
+i.value="";
 }
 }
 
@@ -375,27 +375,20 @@ kelas=document.getElementById("kelas").value;
 var password=document.getElementById("password").value;
 var token=document.getElementById("token").value;
 
-if(!nama||!password){
-alert("Lengkapi login!");
-return;
-}
+if(!nama||!password){alert("Lengkapi login");return;}
 
 if(kelas.toLowerCase()=="free" && token!="12345CBT"){
-alert("Token salah!");
-return;
+alert("Token salah");return;
 }
 
 gas("login",{nama:nama,password:password,token:token},function(res){
 
 if(res.status=="ok"){
 
-jk=res.jk;
-kelas=res.kelas;
 level=res.level||"normal";
 
 localStorage.setItem("nama",nama);
 localStorage.setItem("kelas",kelas);
-localStorage.setItem("jk",jk);
 localStorage.setItem("level",level);
 
 document.getElementById("login").style.display="none";
@@ -416,7 +409,7 @@ loadSoal();
 function loadKelas(){
 gas("getKelas",{},function(data){
 var k=document.getElementById("kelas");
-k.innerHTML="<option value=''>Pilih Kelas</option>";
+k.innerHTML="<option>Pilih Kelas</option>";
 data.forEach(x=>{
 var o=document.createElement("option");
 o.value=x;o.text=x;
@@ -428,18 +421,12 @@ k.appendChild(o);
 function loadNama(){
 kelas=document.getElementById("kelas").value;
 
-if(!kelas){
-document.getElementById("nama").innerHTML="<option>Pilih Nama</option>";
-return;
-}
-
 gas("getNama",{kelas:kelas},function(data){
 var n=document.getElementById("nama");
 n.innerHTML="<option>Pilih Nama</option>";
 data.forEach(x=>{
 var o=document.createElement("option");
-o.value=x;
-o.text=x;
+o.value=x;o.text=x;
 n.appendChild(o);
 });
 });
@@ -449,27 +436,24 @@ function loadSoal(){
 
 gas("getSoal",{},function(data){
 
-if(level.toLowerCase()=="free"){
+if(level=="free"){
 soal=data.slice(0,10);
-waktu=20*60;
+waktu=1200;
 }else{
 soal=data;
-waktu=30*60;
+waktu=1800;
 }
 
-jawaban=JSON.parse(localStorage.getItem("jawaban"))||[];
-
+jawaban=[];
 document.getElementById("nomor").innerHTML="";
 
 soal.forEach((s,i)=>{
-jawaban[i]=jawaban[i]||"";
+jawaban.push("");
 document.getElementById("nomor").innerHTML+=
 "<span id='n"+i+"' onclick='goto("+i+")'>"+(i+1)+"</span>";
-if(jawaban[i]) document.getElementById("n"+i).classList.add("dijawab");
 });
 
 tampil();
-updateProgress();
 timer();
 
 });
@@ -479,25 +463,35 @@ timer();
 function tampil(){
 
 var s=soal[no];
-
 var html="<div class='soalCard'>";
 
 html+="<div class='soalHeader'>";
 html+="<div class='noSoal'>"+(no+1)+"</div>";
-html+="<div class='soalText'>"+s.pertanyaan+"</div>";
-html+="</div>";
+
+var isi=s.pertanyaan;
+if(isi && isi.includes("http")){
+isi=`<img src="${isi}">`;
+}
+
+html+="<div class='soalText'>"+isi+"</div></div>";
+
+if(s.gambar){
+html+=`<img src="${s.gambar}">`;
+}
 
 var huruf=["A","B","C","D","E"];
 
 s.opsi.forEach((o,i)=>{
-var aktif=jawaban[no]==o.key?"aktif":"";
+var teks=o.text;
+if(teks && teks.includes("http")){
+teks=`<img src="${teks}">`;
+}
 
 html+=`
-<div class="opsi ${aktif}" onclick="jawab('${o.key}', this)">
+<div class="opsi ${jawaban[no]==o.key?"aktif":""}" onclick="jawab('${o.key}',this)">
 <div class="circle">${huruf[i]}</div>
-<div class="teks">${o.text}</div>
-</div>
-`;
+<div class="teks">${teks}</div>
+</div>`;
 });
 
 html+="</div>";
@@ -508,7 +502,6 @@ document.getElementById("soal").innerHTML=html;
 
 function jawab(v,el){
 jawaban[no]=v;
-localStorage.setItem("jawaban",JSON.stringify(jawaban));
 document.querySelectorAll(".opsi").forEach(x=>x.classList.remove("aktif"));
 el.classList.add("aktif");
 document.getElementById("n"+no).classList.add("dijawab");
@@ -525,13 +518,8 @@ document.getElementById("progressBar").style.width=(j/soal.length*100)+"%";
 }
 
 function kirim(){
-if(sudahSubmit) return;
-
 gas("submitJawaban",{jawaban:jawaban,nama:nama,kelas:kelas},function(nilai){
-alert("Nilai Anda : "+nilai);
-sudahSubmit=true;
-document.getElementById("btnKirim").disabled=true;
-localStorage.clear();
+alert("Nilai Anda: "+nilai);
 });
 }
 
@@ -557,13 +545,10 @@ loadKelas();
 
 var n=localStorage.getItem("nama");
 var k=localStorage.getItem("kelas");
+var l=localStorage.getItem("level");
 
 if(n&&k){
-
-nama=n;
-kelas=k;
-jk=localStorage.getItem("jk");
-level=localStorage.getItem("level")||"normal";
+nama=n;kelas=k;level=l;
 
 document.getElementById("login").style.display="none";
 document.getElementById("ujian").style.display="block";
@@ -573,7 +558,6 @@ document.getElementById("btnLogout").style.display="block";
 document.getElementById("statusUjian").style.display="block";
 
 loadSoal();
-
 }
 
 }
