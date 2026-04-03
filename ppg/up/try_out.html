@@ -4,7 +4,7 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CBT Ujian Sekolah</title>
+<title>CBT Try Out</title>
 
 <style>
 
@@ -25,35 +25,9 @@ border-radius:16px;
 box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.userBox{
+h2{
 text-align:center;
-min-width:160px;
-}
-
-.status{display:none;font-size:13px;margin-top:4px;}
-.status.belum{color:#f59e0b;}
-.status.sudah{color:#22c55e;}
-
-#btnLogout{display:none;background:#ef4444;}
-
-.logo{
-display:block;
-margin:auto;
-width:90px;
-margin-bottom:10px;
-}
-
-h2{text-align:center;}
-
-.loginBox{
-max-width:320px;
-margin:auto;
+margin-bottom:20px;
 }
 
 .inputBox{
@@ -62,6 +36,7 @@ padding:10px;
 border-radius:8px;
 border:1px solid #ccc;
 margin-top:10px;
+box-sizing:border-box;
 }
 
 button{
@@ -73,9 +48,12 @@ background:#2563eb;
 color:white;
 margin-top:10px;
 cursor:pointer;
+font-weight:500;
 }
 
-button:disabled{background:#94a3b8;}
+button:disabled{
+background:#94a3b8;
+}
 
 #nomor{
 display:flex;
@@ -84,7 +62,8 @@ margin-top:10px;
 }
 
 #nomor span{
-width:32px;height:32px;
+width:32px;
+height:32px;
 display:flex;
 align-items:center;
 justify-content:center;
@@ -100,28 +79,19 @@ background:#22c55e!important;
 color:white;
 }
 
-#progressBox{
-height:8px;
-background:#e5e7eb;
-border-radius:10px;
-margin-top:10px;
-}
-
-#progressBar{
-height:8px;
-width:0%;
-background:#2563eb;
-border-radius:10px;
-}
-
 .opsi{
 display:flex;
-gap:10px;
+gap:12px;
 padding:12px;
 border-radius:10px;
-border:2px solid #e2e8f0;
-margin-top:8px;
 cursor:pointer;
+margin-top:10px;
+border:2px solid #e2e8f0;
+transition:0.2s;
+}
+
+.opsi:hover{
+background:#f8fafc;
 }
 
 .opsi.aktif{
@@ -130,26 +100,37 @@ border-color:#2563eb;
 }
 
 .circle{
-width:30px;height:30px;
+width:32px;
+height:32px;
 border-radius:50%;
 border:2px solid #94a3b8;
 display:flex;
 align-items:center;
 justify-content:center;
+font-weight:bold;
 }
 
 .opsi.aktif .circle{
 background:#2563eb;
 color:white;
+border-color:#2563eb;
 }
 
 .navBtn{
 display:flex;
 gap:10px;
-margin-top:15px;
+margin-top:20px;
 }
 
-.navBtn button{flex:1;}
+.navBtn button{
+flex:1;
+}
+
+#timer{
+font-weight:bold;
+text-align:right;
+margin-bottom:10px;
+}
 
 @media(max-width:600px){
 .container{padding:15px;}
@@ -163,27 +144,15 @@ margin-top:15px;
 
 <div class="container">
 
-<div class="header">
-<div></div>
-
-<div class="userBox">
-<div id="userInfo"></div>
-<div class="status belum" id="statusUjian">Belum Mengerjakan</div>
-<button id="btnLogout" onclick="logout()">Logout</button>
-</div>
-</div>
-
-<img class="logo" src="https://yanuar-moga.github.io/app/ppg/up/assets/logo.png">
-
-<h2>Try Out UP PPG</h2>
+<h2>Try Out CBT</h2>
 
 <!-- LOGIN -->
-<div id="login" class="loginBox">
+<div id="login">
 
 <input type="text" id="username" class="inputBox" placeholder="Username">
 <input type="password" id="password" class="inputBox" placeholder="Password">
 
-<label>
+<label style="font-size:13px;">
 <input type="checkbox" onclick="togglePass()"> Tampilkan Password
 </label>
 
@@ -196,11 +165,8 @@ margin-top:15px;
 
 <div id="timer"></div>
 
-<div id="progressBox">
-<div id="progressBar"></div>
-</div>
-
 <div id="nomor"></div>
+
 <div id="soal"></div>
 
 <div class="navBtn">
@@ -218,7 +184,7 @@ margin-top:15px;
 var URL_SCRIPT="https://script.google.com/macros/s/AKfycbyIIkiSDaj2VnlXo8SSeKENbUKB2OuZOfdHIs2AFbfbVCq_qquMtaHTylnk5MBv7DDX/exec";
 
 var soal=[],jawaban=[],no=0;
-var username,kelas;
+var username,kelas,tipe;
 var waktu=1800;
 var sudahSubmit=false;
 
@@ -270,13 +236,10 @@ password:password
 if(res.status==="success"){
 
 kelas=res.kelas;
+tipe=res.tipe;
 
 document.getElementById("login").style.display="none";
 document.getElementById("ujian").style.display="block";
-
-document.getElementById("userInfo").innerHTML="👤 "+username+" | "+kelas;
-document.getElementById("statusUjian").style.display="block";
-document.getElementById("btnLogout").style.display="block";
 
 loadSoal();
 timer();
@@ -292,7 +255,10 @@ alert("Username atau Password salah!");
 // ================= LOAD SOAL =================
 function loadSoal(){
 
-gas({type:"getSoal"},function(data){
+gas({
+type:"getSoal",
+tipe:tipe
+},function(data){
 
 soal=data;
 jawaban=[];
@@ -318,12 +284,17 @@ function tampil(){
 var s=soal[no];
 var huruf=["A","B","C","D","E"];
 
-var html="<b>"+(no+1)+".</b> "+s.pertanyaan;
+var html="<div><b>"+(no+1)+".</b> "+s.pertanyaan+"</div>";
+
+// 🔥 GAMBAR
+if(s.gambar && s.gambar.trim()!=""){
+html += "<img src='"+s.gambar+"' style='max-width:100%;margin:10px 0;border-radius:10px'>";
+}
 
 s.opsi.forEach((o,i)=>{
-var aktif = jawaban[no]==o.key ? "aktif":"";
+var aktif=jawaban[no]==o.key?"aktif":"";
 
-html += `
+html+=`
 <div class="opsi ${aktif}" onclick="jawab('${o.key}',this)">
 <div class="circle">${huruf[i]}</div>
 <div>${o.text}</div>
@@ -345,20 +316,12 @@ el.classList.add("aktif");
 
 document.getElementById("n"+no).classList.add("dijawab");
 
-updateProgress();
-
 }
 
 // ================= NAV =================
 function next(){ if(no<soal.length-1){no++;tampil();} }
 function prev(){ if(no>0){no--;tampil();} }
 function goto(n){ no=n; tampil(); }
-
-// ================= PROGRESS =================
-function updateProgress(){
-var j = jawaban.filter(x=>x!="").length;
-document.getElementById("progressBar").style.width = (j/soal.length*100)+"%";
-}
 
 // ================= KIRIM =================
 function kirim(){
@@ -369,17 +332,14 @@ gas({
 type:"submit",
 jawaban:jawaban,
 username:username,
-kelas:kelas
+kelas:kelas,
+tipe:tipe
 },function(res){
 
 alert("Nilai Anda: "+res.nilai);
 
 sudahSubmit=true;
 document.getElementById("btnKirim").disabled=true;
-
-document.getElementById("statusUjian").innerHTML="Sudah Mengerjakan";
-document.getElementById("statusUjian").classList.remove("belum");
-document.getElementById("statusUjian").classList.add("sudah");
 
 });
 
@@ -389,6 +349,7 @@ document.getElementById("statusUjian").classList.add("sudah");
 function timer(){
 setInterval(()=>{
 waktu--;
+
 var m=Math.floor(waktu/60);
 var d=waktu%60;
 if(d<10)d="0"+d;
@@ -404,13 +365,6 @@ if(waktu<=0) kirim();
 function togglePass(){
 var p=document.getElementById("password");
 p.type = (p.type==="password") ? "text" : "password";
-}
-
-// ================= LOGOUT =================
-function logout(){
-if(confirm("Logout?")){
-location.reload();
-}
 }
 
 </script>
