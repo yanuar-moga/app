@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
 
 <meta charset="UTF-8">
@@ -14,7 +14,6 @@ background:#f1f5f9;
 margin:0;
 }
 
-/* CONTAINER */
 .container{
 max-width:900px;
 width:95%;
@@ -26,7 +25,6 @@ border-radius:16px;
 box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
-/* HEADER */
 .header{
 display:flex;
 justify-content:space-between;
@@ -58,7 +56,6 @@ background:#ef4444;
 display:none;
 }
 
-/* LOGO */
 .logo{
 display:block;
 margin:auto;
@@ -66,37 +63,26 @@ width:90px;
 margin-bottom:10px;
 }
 
-/* JUDUL */
 h2{
 text-align:center;
 margin-bottom:20px;
-font-weight:700;
 color:#1e293b;
 }
 
-/* LOGIN */
 .loginBox{
 max-width:320px;
 margin:auto;
 }
 
-.loginBox label{
-display:block;
-margin-top:12px;
-}
-
-/* INPUT */
 .inputBox{
 width:100%;
 padding:10px;
 border-radius:8px;
 border:1px solid #ccc;
-margin-top:4px;
+margin-top:8px;
 box-sizing:border-box;
-display:block;
 }
 
-/* CHECKBOX PASSWORD */
 .passwordCheck{
 margin-top:8px;
 display:flex;
@@ -105,11 +91,6 @@ gap:8px;
 font-size:13px;
 }
 
-.passwordCheck input{
-width:auto;
-}
-
-/* BUTTON */
 button{
 background:#2563eb;
 color:white;
@@ -117,16 +98,14 @@ border:none;
 padding:10px;
 border-radius:8px;
 cursor:pointer;
-font-weight:500;
 width:100%;
+margin-top:10px;
 }
 
 button:disabled{
 background:#94a3b8;
-cursor:not-allowed;
 }
 
-/* NOMOR */
 #nomor{
 display:flex;
 flex-wrap:wrap;
@@ -151,7 +130,6 @@ background:#22c55e!important;
 color:white;
 }
 
-/* PROGRESS */
 #progressBox{
 height:8px;
 background:#e5e7eb;
@@ -166,17 +144,6 @@ background:#2563eb;
 border-radius:10px;
 }
 
-/* SOAL */
-#soal{
-margin-top:15px;
-}
-
-.soalText{
-text-align:justify;
-line-height:1.6;
-}
-
-/* OPSI */
 .opsi{
 display:flex;
 align-items:center;
@@ -185,13 +152,10 @@ padding:12px;
 border-radius:12px;
 cursor:pointer;
 margin-bottom:10px;
-transition:0.25s;
 border:2px solid #e2e8f0;
 }
 
-.opsi:hover{
-background:#f8fafc;
-}
+.opsi:hover{background:#f8fafc;}
 
 .circle{
 width:34px;
@@ -202,13 +166,9 @@ display:flex;
 align-items:center;
 justify-content:center;
 font-weight:bold;
-color:#334155;
 }
 
-.teks{
-flex:1;
-text-align:justify;
-}
+.teks{flex:1;}
 
 .opsi.aktif{
 border:2px solid #2563eb;
@@ -218,19 +178,15 @@ background:#eff6ff;
 .opsi.aktif .circle{
 background:#2563eb;
 color:white;
-border-color:#2563eb;
 }
 
-/* NAV */
 .navBtn{
 display:flex;
 gap:10px;
 margin-top:15px;
 }
 
-.navBtn button{
-flex:1;
-}
+.navBtn button{flex:1;}
 
 </style>
 
@@ -257,18 +213,13 @@ flex:1;
 <!-- LOGIN -->
 <div id="login" class="loginBox">
 
-<label>Username</label>
-<input type="text" id="username" class="inputBox">
-
-<label>Password</label>
-<input type="password" id="password" class="inputBox">
+<input type="text" id="username" class="inputBox" placeholder="Username">
+<input type="password" id="password" class="inputBox" placeholder="Password">
 
 <div class="passwordCheck">
-<input type="checkbox" id="showPass" onclick="lihatPassword()">
-<label for="showPass">Tampilkan Password</label>
+<input type="checkbox" onclick="lihatPassword()"> Tampilkan Password
 </div>
 
-<br>
 <button onclick="login()">Login</button>
 
 </div>
@@ -321,8 +272,8 @@ p.type = (p.type==="password") ? "text" : "password";
 
 function login(){
 
-username=document.getElementById("username").value;
-var password=document.getElementById("password").value;
+username=document.getElementById("username").value.trim();
+var password=document.getElementById("password").value.trim();
 
 if(!username||!password){
 alert("Lengkapi login!");
@@ -381,7 +332,7 @@ function tampil(){
 
 var s=soal[no];
 
-var html="<div class='soalText'><b>"+(no+1)+".</b> "+s.pertanyaan+"</div>";
+var html="<div><b>"+(no+1)+".</b> "+s.pertanyaan+"</div>";
 
 var huruf=["A","B","C","D","E"];
 
@@ -390,8 +341,8 @@ var aktif=jawaban[no]==o.key?"aktif":"";
 
 html+=`
 <div class="opsi ${aktif}" onclick="jawab('${o.key}', this)">
-    <div class="circle">${huruf[i]}</div>
-    <div class="teks">${o.text}</div>
+<div class="circle">${huruf[i]}</div>
+<div class="teks">${o.text}</div>
 </div>
 `;
 });
@@ -409,7 +360,6 @@ el.classList.add("aktif");
 
 document.getElementById("n"+no).classList.add("dijawab");
 
-localStorage.setItem("jawaban",JSON.stringify(jawaban));
 updateProgress();
 
 }
