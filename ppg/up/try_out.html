@@ -156,7 +156,6 @@ border-radius:10px;
 margin-top:20px;
 }
 
-/* CARD */
 .soalCard{
 background:#f8fafc;
 border-radius:14px;
@@ -165,7 +164,6 @@ border:1px solid #e2e8f0;
 margin-bottom:15px;
 }
 
-/* HEADER */
 .soalHeader{
 display:flex;
 gap:10px;
@@ -193,7 +191,6 @@ line-height:1.7;
 text-align:justify;
 }
 
-/* OPSI */
 .opsi{
 display:flex;
 align-items:flex-start;
@@ -385,7 +382,7 @@ gas("login",{nama:nama,password:password,token:token},function(res){
 
 if(res.status=="ok"){
 
-level=res.level||"normal";
+level=(res.level||"normal").toLowerCase();
 
 localStorage.setItem("nama",nama);
 localStorage.setItem("kelas",kelas);
@@ -436,13 +433,15 @@ function loadSoal(){
 
 gas("getSoal",{},function(data){
 
-if(level=="free"){
+if(
+kelas.toLowerCase()=="free" ||
+level=="free"
+){
 soal=data.slice(0,10);
 }else{
 soal=data;
 }
 
-/* 🔥 TIMER DINAMIS */
 waktu = soal.length * 90;
 
 jawaban=[];
