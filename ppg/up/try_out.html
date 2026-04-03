@@ -193,7 +193,7 @@ line-height:1.7;
 text-align:justify;
 }
 
-/* OPSI LJK */
+/* OPSI */
 .opsi{
 display:flex;
 align-items:flex-start;
@@ -438,11 +438,12 @@ gas("getSoal",{},function(data){
 
 if(level=="free"){
 soal=data.slice(0,10);
-waktu=1200;
 }else{
 soal=data;
-waktu=1800;
 }
+
+/* 🔥 TIMER DINAMIS */
+waktu = soal.length * 90;
 
 jawaban=[];
 document.getElementById("nomor").innerHTML="";
