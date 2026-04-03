@@ -4,7 +4,7 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CBT Ujian Sekolah</title>
+<title>CBT Try Out UP PPG</title>
 
 <style>
 
@@ -14,7 +14,6 @@ background:#f1f5f9;
 margin:0;
 }
 
-/* CONTAINER */
 .container{
 max-width:900px;
 width:95%;
@@ -26,7 +25,6 @@ border-radius:16px;
 box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
-/* HEADER */
 .header{
 display:flex;
 justify-content:space-between;
@@ -58,7 +56,6 @@ background:#ef4444;
 display:none;
 }
 
-/* LOGO */
 .logo{
 display:block;
 margin:auto;
@@ -66,7 +63,6 @@ width:90px;
 margin-bottom:10px;
 }
 
-/* JUDUL */
 h2{
 text-align:center;
 margin-bottom:20px;
@@ -74,7 +70,6 @@ font-weight:700;
 color:#1e293b;
 }
 
-/* LOGIN */
 .loginBox{
 max-width:320px;
 margin:auto;
@@ -85,7 +80,6 @@ display:block;
 margin-top:12px;
 }
 
-/* INPUT */
 .inputBox,
 select{
 width:100%;
@@ -104,7 +98,6 @@ appearance:none;
 background:white;
 }
 
-/* CHECKBOX PASSWORD */
 .passwordCheck{
 margin-top:8px;
 display:flex;
@@ -117,7 +110,6 @@ font-size:13px;
 width:auto;
 }
 
-/* BUTTON */
 button{
 background:#2563eb;
 color:white;
@@ -134,7 +126,6 @@ background:#94a3b8;
 cursor:not-allowed;
 }
 
-/* NOMOR */
 #nomor{
 display:flex;
 flex-wrap:wrap;
@@ -159,7 +150,6 @@ background:#22c55e!important;
 color:white;
 }
 
-/* PROGRESS */
 #progressBox{
 height:8px;
 background:#e5e7eb;
@@ -174,7 +164,6 @@ background:#2563eb;
 border-radius:10px;
 }
 
-/* SOAL */
 #soal{
 margin-top:15px;
 }
@@ -184,7 +173,6 @@ text-align:justify;
 line-height:1.6;
 }
 
-/* OPSI */
 .opsi{
 display:flex;
 align-items:center;
@@ -252,6 +240,10 @@ margin-top:15px;
 flex:1;
 }
 
+#tokenBox{
+transition:all 0.3s ease;
+}
+
 @media(max-width:600px){
 .soalText{font-size:14px;}
 .teks{font-size:14px;}
@@ -275,9 +267,9 @@ flex:1;
 </div>
 </div>
 
-<img class="logo" src="https://yanuar-moga.github.io/informatika/asesmen/assets/logo.png">
+<img class="logo" src="https://yanuar-moga.github.io/app/ppg/up/assets/logo.png">
 
-<h2>CBT Ujian Sekolah</h2>
+<h2>CBT Try Out UP PPG</h2>
 
 <div id="login" class="loginBox">
 
@@ -290,12 +282,14 @@ flex:1;
 <label>Password</label>
 <input type="password" id="password" class="inputBox">
 
-<label>Token (khusus Free)</label>
-<input type="text" id="token" class="inputBox">
-
 <div class="passwordCheck">
 <input type="checkbox" id="showPass" onclick="lihatPassword()">
 <label for="showPass">Tampilkan Password</label>
+</div>
+
+<div id="tokenBox" style="display:none;">
+<label>Token</label>
+<input type="password" id="token" class="inputBox" placeholder="Masukkan token">
 </div>
 
 <br>
@@ -346,6 +340,24 @@ body:JSON.stringify({func:func,data:data})
 function lihatPassword(){
 var p=document.getElementById("password");
 p.type = (p.type==="password") ? "text" : "password";
+}
+
+function cekKelas(){
+
+var k = document.getElementById("kelas").value;
+var tokenBox = document.getElementById("tokenBox");
+var tokenInput = document.getElementById("token");
+
+k = k.toLowerCase().trim();
+
+if(k === "free"){
+tokenBox.style.display = "block";
+tokenInput.value = "12345CBT";
+}else{
+tokenBox.style.display = "none";
+tokenInput.value = "";
+}
+
 }
 
 function login(){
@@ -424,7 +436,6 @@ function loadSoal(){
 
 gas("getSoal",{},function(data){
 
-// 🔥 BATASI FREE JADI 10 SOAL
 if(level.toLowerCase()=="free"){
 soal = data.slice(0,10);
 waktu = 20 * 60;
@@ -578,7 +589,10 @@ return "Ujian sedang berlangsung!";
 
 }
 
-document.getElementById("kelas").addEventListener("change",loadNama);
+document.getElementById("kelas").addEventListener("change",function(){
+loadNama();
+cekKelas();
+});
 
 </script>
 
