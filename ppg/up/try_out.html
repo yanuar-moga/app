@@ -4,7 +4,7 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Try Out UP PPG</title>
+<title>CBT Ujian Sekolah</title>
 
 <style>
 
@@ -275,9 +275,9 @@ flex:1;
 </div>
 </div>
 
-<img class="logo" src="https://yanuar-moga.github.io/app/ppg/up/assets/logo.png">
+<img class="logo" src="https://yanuar-moga.github.io/informatika/asesmen/assets/logo.png">
 
-<h2>TRY OUT UP PPG</h2>
+<h2>CBT Ujian Sekolah</h2>
 
 <div id="login" class="loginBox">
 
@@ -383,28 +383,50 @@ loadSoal();
 }
 
 function loadKelas(){
+
 gas("getKelas",{},function(data){
+
 var k=document.getElementById("kelas");
-k.innerHTML="<option>Pilih Kelas</option>";
+k.innerHTML="<option value=''>Pilih Kelas</option>";
+
 data.forEach(x=>{
 var o=document.createElement("option");
 o.value=x;o.text=x;
 k.appendChild(o);
 });
+
 });
+
 }
 
 function loadNama(){
+
 kelas=document.getElementById("kelas").value;
+
+if(!kelas){
+document.getElementById("nama").innerHTML="<option>Pilih Nama</option>";
+return;
+}
+
 gas("getNama",{kelas:kelas},function(data){
+
 var n=document.getElementById("nama");
 n.innerHTML="<option>Pilih Nama</option>";
+
+if(!data || data.length==0){
+n.innerHTML="<option>Data tidak ditemukan</option>";
+return;
+}
+
 data.forEach(x=>{
 var o=document.createElement("option");
-o.value=x;o.text=x;
+o.value=x;
+o.text=x;
 n.appendChild(o);
 });
+
 });
+
 }
 
 function loadSoal(){
