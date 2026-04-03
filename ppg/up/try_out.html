@@ -157,7 +157,6 @@ border-radius:10px;
 margin-top:20px;
 }
 
-/* CARD SOAL */
 .soalCard{
 background:#f8fafc;
 border-radius:14px;
@@ -166,7 +165,6 @@ border:1px solid #e2e8f0;
 margin-bottom:15px;
 }
 
-/* HEADER SOAL */
 .soalHeader{
 display:flex;
 gap:10px;
@@ -194,7 +192,6 @@ line-height:1.7;
 text-align:justify;
 }
 
-/* OPSI LJK */
 .opsi{
 display:flex;
 align-items:flex-start;
@@ -213,7 +210,6 @@ margin-left:38px;
 background:#f1f5f9;
 }
 
-/* LINGKARAN */
 .circle{
 min-width:22px;
 height:22px;
@@ -228,14 +224,12 @@ color:#334155;
 margin-top:2px;
 }
 
-/* TEKS OPSI */
 .teks{
 flex:1;
 line-height:1.5;
 text-align:justify;
 }
 
-/* AKTIF */
 .opsi.aktif{
 border-color:#2563eb;
 background:#eff6ff;
@@ -259,13 +253,6 @@ flex:1;
 
 #tokenBox{
 transition:all 0.3s ease;
-}
-
-.soalText img,
-.teks img{
-max-width:100%;
-border-radius:10px;
-margin-top:8px;
 }
 
 @media(max-width:600px){
@@ -313,7 +300,7 @@ margin-top:8px;
 
 <div id="tokenBox" style="display:none;">
 <label>Token</label>
-<input type="text" id="token" class="inputBox" placeholder="">
+<input type="text" id="token" class="inputBox">
 <small style="color:#64748b;font-size:12px;">Masukkan token sesuai yang ditampilkan</small>
 </div>
 
@@ -368,14 +355,13 @@ p.type = (p.type==="password") ? "text" : "password";
 }
 
 function cekKelas(){
-var k = document.getElementById("kelas").value.toLowerCase().trim();
-var tokenBox = document.getElementById("tokenBox");
-var tokenInput = document.getElementById("token");
+var k=document.getElementById("kelas").value.toLowerCase().trim();
+var tokenBox=document.getElementById("tokenBox");
+var tokenInput=document.getElementById("token");
 
 if(k==="free"){
 tokenBox.style.display="block";
 tokenInput.placeholder="12345CBT";
-tokenInput.value="";
 }else{
 tokenBox.style.display="none";
 tokenInput.value="";
@@ -405,7 +391,12 @@ if(res.status=="ok"){
 
 jk=res.jk;
 kelas=res.kelas;
-level=res.level || "normal";
+level=res.level||"normal";
+
+localStorage.setItem("nama",nama);
+localStorage.setItem("kelas",kelas);
+localStorage.setItem("jk",jk);
+localStorage.setItem("level",level);
 
 document.getElementById("login").style.display="none";
 document.getElementById("ujian").style.display="block";
@@ -466,17 +457,19 @@ soal=data;
 waktu=30*60;
 }
 
-jawaban=[];
+jawaban=JSON.parse(localStorage.getItem("jawaban"))||[];
 
 document.getElementById("nomor").innerHTML="";
 
 soal.forEach((s,i)=>{
-jawaban.push("");
+jawaban[i]=jawaban[i]||"";
 document.getElementById("nomor").innerHTML+=
 "<span id='n"+i+"' onclick='goto("+i+")'>"+(i+1)+"</span>";
+if(jawaban[i]) document.getElementById("n"+i).classList.add("dijawab");
 });
 
 tampil();
+updateProgress();
 timer();
 
 });
@@ -491,38 +484,20 @@ var html="<div class='soalCard'>";
 
 html+="<div class='soalHeader'>";
 html+="<div class='noSoal'>"+(no+1)+"</div>";
-
-var isiSoal = s.pertanyaan;
-
-if(isiSoal && isiSoal.includes("http") && (isiSoal.includes(".png") || isiSoal.includes(".jpg") || isiSoal.includes(".jpeg"))){
-isiSoal = `<img src="${isiSoal}">`;
-}
-
-html+="<div class='soalText'>"+isiSoal+"</div>";
+html+="<div class='soalText'>"+s.pertanyaan+"</div>";
 html+="</div>";
-
-if(s.gambar && s.gambar.trim()!=""){
-html+=`<img src="${s.gambar}">`;
-}
 
 var huruf=["A","B","C","D","E"];
 
 s.opsi.forEach((o,i)=>{
-
 var aktif=jawaban[no]==o.key?"aktif":"";
-var teksOpsi = o.text;
-
-if(teksOpsi && teksOpsi.includes("http") && (teksOpsi.includes(".png") || teksOpsi.includes(".jpg") || teksOpsi.includes(".jpeg"))){
-teksOpsi = `<img src="${teksOpsi}">`;
-}
 
 html+=`
 <div class="opsi ${aktif}" onclick="jawab('${o.key}', this)">
 <div class="circle">${huruf[i]}</div>
-<div class="teks">${teksOpsi}</div>
+<div class="teks">${o.text}</div>
 </div>
 `;
-
 });
 
 html+="</div>";
@@ -533,6 +508,7 @@ document.getElementById("soal").innerHTML=html;
 
 function jawab(v,el){
 jawaban[no]=v;
+localStorage.setItem("jawaban",JSON.stringify(jawaban));
 document.querySelectorAll(".opsi").forEach(x=>x.classList.remove("aktif"));
 el.classList.add("aktif");
 document.getElementById("n"+no).classList.add("dijawab");
@@ -555,6 +531,7 @@ gas("submitJawaban",{jawaban:jawaban,nama:nama,kelas:kelas},function(nilai){
 alert("Nilai Anda : "+nilai);
 sudahSubmit=true;
 document.getElementById("btnKirim").disabled=true;
+localStorage.clear();
 });
 }
 
@@ -575,7 +552,30 @@ location.reload();
 }
 
 window.onload=function(){
+
 loadKelas();
+
+var n=localStorage.getItem("nama");
+var k=localStorage.getItem("kelas");
+
+if(n&&k){
+
+nama=n;
+kelas=k;
+jk=localStorage.getItem("jk");
+level=localStorage.getItem("level")||"normal";
+
+document.getElementById("login").style.display="none";
+document.getElementById("ujian").style.display="block";
+
+document.getElementById("userInfo").innerHTML="👤 "+nama+" | "+kelas+" | "+level;
+document.getElementById("btnLogout").style.display="block";
+document.getElementById("statusUjian").style.display="block";
+
+loadSoal();
+
+}
+
 }
 
 document.getElementById("kelas").addEventListener("change",function(){
