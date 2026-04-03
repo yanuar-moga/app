@@ -289,7 +289,8 @@ transition:all 0.3s ease;
 
 <div id="tokenBox" style="display:none;">
 <label>Token</label>
-<input type="password" id="token" class="inputBox" placeholder="Masukkan token">
+<input type="text" id="token" class="inputBox" placeholder="">
+<small style="color:#64748b;font-size:12px;">Masukkan token sesuai yang ditampilkan</small>
 </div>
 
 <br>
@@ -352,10 +353,12 @@ k = k.toLowerCase().trim();
 
 if(k === "free"){
 tokenBox.style.display = "block";
-tokenInput.value = "12345CBT";
+tokenInput.placeholder = "12345CBT";
+tokenInput.value = "";
 }else{
 tokenBox.style.display = "none";
 tokenInput.value = "";
+tokenInput.placeholder = "";
 }
 
 }
@@ -363,10 +366,19 @@ tokenInput.value = "";
 function login(){
 
 nama=document.getElementById("nama").value;
+kelas=document.getElementById("kelas").value;
 var password=document.getElementById("password").value;
 var token=document.getElementById("token").value;
 
-if(!nama||!password){alert("Lengkapi login!");return;}
+if(!nama||!password){
+alert("Lengkapi login!");
+return;
+}
+
+if(kelas && kelas.toLowerCase()=="free" && token!="12345CBT"){
+alert("Token salah!");
+return;
+}
 
 gas("login",{nama:nama,password:password,token:token},function(res){
 
