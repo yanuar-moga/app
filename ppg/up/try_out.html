@@ -127,22 +127,22 @@ cursor:not-allowed;
 }
 
 #nomor{
-display:flex;
-flex-wrap:wrap;
-margin-top:10px;
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(36px,1fr));
+gap:6px;
+margin-top:15px;
 }
 
 #nomor span{
-width:32px;
-height:32px;
+height:36px;
 display:flex;
 align-items:center;
 justify-content:center;
-margin:3px;
 background:#e2e8f0;
-border-radius:6px;
+border-radius:8px;
 cursor:pointer;
 font-size:13px;
+font-weight:600;
 }
 
 .dijawab{
@@ -165,32 +165,63 @@ border-radius:10px;
 }
 
 #soal{
-margin-top:15px;
+margin-top:20px;
+}
+
+/* CARD SOAL */
+.soalCard{
+background:#f8fafc;
+border-radius:14px;
+padding:16px;
+border:1px solid #e2e8f0;
+margin-bottom:15px;
+}
+
+.soalHeader{
+display:flex;
+gap:10px;
+margin-bottom:10px;
+}
+
+.noSoal{
+min-width:32px;
+height:32px;
+background:#2563eb;
+color:white;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+font-size:14px;
 }
 
 .soalText{
-text-align:justify;
+flex:1;
 line-height:1.6;
+text-align:justify;
 }
 
+/* OPSI */
 .opsi{
 display:flex;
-align-items:center;
+align-items:flex-start;
 gap:12px;
 padding:12px;
 border-radius:12px;
 cursor:pointer;
 margin-bottom:10px;
-transition:0.25s;
-border:2px solid #e2e8f0;
+transition:0.2s;
+border:1.5px solid #e2e8f0;
+background:white;
 }
 
 .opsi:hover{
-background:#f8fafc;
+background:#f1f5f9;
 }
 
 .circle{
-width:34px;
+min-width:34px;
 height:34px;
 border-radius:50%;
 border:2px solid #94a3b8;
@@ -199,17 +230,16 @@ align-items:center;
 justify-content:center;
 font-weight:bold;
 color:#334155;
-transition:0.25s;
 }
 
 .teks{
 flex:1;
-text-align:justify;
 line-height:1.5;
+text-align:justify;
 }
 
 .opsi.aktif{
-border:2px solid #2563eb;
+border-color:#2563eb;
 background:#eff6ff;
 }
 
@@ -217,17 +247,6 @@ background:#eff6ff;
 background:#2563eb;
 color:white;
 border-color:#2563eb;
-}
-
-@keyframes bounceClick{
-0%{transform:scale(1);}
-30%{transform:scale(1.2);}
-60%{transform:scale(0.9);}
-100%{transform:scale(1);}
-}
-
-.bounce{
-animation:bounceClick 0.3s ease;
 }
 
 .navBtn{
@@ -477,7 +496,12 @@ function tampil(){
 
 var s=soal[no];
 
-var html="<div class='soalText'><b>"+(no+1)+".</b> "+s.pertanyaan+"</div>";
+var html="<div class='soalCard'>";
+
+html+="<div class='soalHeader'>";
+html+="<div class='noSoal'>"+(no+1)+"</div>";
+html+="<div class='soalText'>"+s.pertanyaan+"</div>";
+html+="</div>";
 
 if(s.gambar && s.gambar.trim()!=""){
 html+="<img src='"+s.gambar+"' style='max-width:100%;margin:10px 0;border-radius:10px'><br>";
@@ -496,6 +520,8 @@ html+=`
 `;
 });
 
+html+="</div>";
+
 document.getElementById("soal").innerHTML=html;
 
 }
@@ -506,11 +532,6 @@ jawaban[no]=v;
 
 document.querySelectorAll(".opsi").forEach(x=>x.classList.remove("aktif"));
 el.classList.add("aktif");
-
-var c = el.querySelector(".circle");
-c.classList.remove("bounce");
-void c.offsetWidth;
-c.classList.add("bounce");
 
 document.getElementById("n"+no).classList.add("dijawab");
 
