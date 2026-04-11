@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CBT Try Out UP PPG</title>
+
+<style>
+
+body{
+font-family:'Segoe UI';
+background:#f1f5f9;
+margin:0;
+}
+
+.container{
+max-width:900px;
+width:95%;
+margin:auto;
+margin-top:20px;
+background:white;
+padding:20px;
+border-radius:16px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.userBox{
+text-align:center;
+min-width:160px;
+}
+
+.userInfo{
+font-size:14px;
+font-weight:600;
+}
+
+.status{
+font-size:13px;
+margin-top:4px;
+display:none;
+}
+
+.status.belum{color:#f59e0b;}
+.status.sudah{color:#22c55e;}
+
+#btnLogout{
+margin-top:6px;
+background:#ef4444;
+display:none;
+}
+
+.logo{
+display:block;
+margin:auto;
+width:90px;
+margin-bottom:10px;
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+font-weight:700;
+color:#1e293b;
+}
+
+.loginBox{
+max-width:320px;
+margin:auto;
+}
+
+.loginBox label{
+display:block;
+margin-top:12px;
+}
+
+.inputBox,
+select{
+width:100%;
+padding:10px;
+border-radius:8px;
+border:1px solid #ccc;
+margin-top:4px;
+box-sizing:border-box;
+display:block;
+}
+
+.passwordCheck{
+margin-top:8px;
+display:flex;
+align-items:center;
+gap:8px;
+font-size:13px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:10px;
+border-radius:8px;
+cursor:pointer;
+font-weight:500;
+width:100%;
+}
+
+button:disabled{
+background:#94a3b8;
+}
+
+#nomor{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(36px,1fr));
+gap:6px;
+margin-top:15px;
+}
+
+#nomor span{
+height:36px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#e2e8f0;
+border-radius:8px;
+cursor:pointer;
+font-size:13px;
+font-weight:600;
+}
+
+.dijawab{
+background:#22c55e!important;
+color:white;
+}
+
+#progressBox{
+height:8px;
+background:#e5e7eb;
+border-radius:10px;
+margin-top:10px;
+}
+
+#progressBar{
+height:8px;
+width:0%;
+background:#2563eb;
+border-radius:10px;
+}
+
+#soal{
+margin-top:20px;
+}
+
+.soalCard{
+background:#f8fafc;
+border-radius:14px;
+padding:16px;
+border:1px solid #e2e8f0;
+margin-bottom:15px;
+}
+
+.soalHeader{
+display:flex;
+gap:10px;
+margin-bottom:12px;
+align-items:flex-start;
+}
+
+.noSoal{
+min-width:28px;
+height:28px;
+background:#2563eb;
+color:white;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+font-size:13px;
+margin-top:2px;
+}
+
+.soalText{
+flex:1;
+line-height:1.7;
+text-align:justify;
+}
+
+.opsi{
+display:flex;
+align-items:flex-start;
+gap:10px;
+padding:8px 12px;
+border-radius:10px;
+cursor:pointer;
+margin-bottom:6px;
+border:1px solid #e2e8f0;
+background:white;
+margin-left:38px;
+}
+
+.opsi:hover{
+background:#f1f5f9;
+}
+
+.circle{
+min-width:22px;
+height:22px;
+border-radius:50%;
+border:1.5px solid #94a3b8;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:600;
+font-size:11px;
+margin-top:2px;
+}
+
+.teks{
+flex:1;
+line-height:1.5;
+text-align:justify;
+}
+
+.opsi.aktif{
+border-color:#2563eb;
+background:#eff6ff;
+}
+
+.opsi.aktif .circle{
+background:#2563eb;
+color:white;
+border-color:#2563eb;
+}
+
+.soalText img,
+.teks img{
+max-width:100%;
+border-radius:10px;
+margin-top:8px;
+}
+
+.navBtn{
+display:flex;
+gap:10px;
+margin-top:15px;
+}
+
+.navBtn button{
+flex:1;
+}
+
+#tokenBox{
+transition:0.3s;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<div></div>
+
+<div class="userBox">
+<div id="userInfo"></div>
+<div class="status belum" id="statusUjian">Belum Mengerjakan</div>
+<button id="btnLogout" onclick="logout()">Logout</button>
+</div>
+</div>
+
+<img class="logo" src="https://yanuar-moga.github.io/app/ppg/up/assets/logo.png">
+
+<h2>CBT Try Out UP PPG</h2>
+
+<div id="login" class="loginBox">
+
+<label>Kelas</label>
+<select id="kelas"></select>
+
+<label>Nama</label>
+<select id="nama"></select>
+
+<label>Password</label>
+<input type="password" id="password" class="inputBox">
+
+<div class="passwordCheck">
+<input type="checkbox" onclick="lihatPassword()">
+<label>Tampilkan Password</label>
+</div>
+
+<div id="tokenBox" style="display:none;">
+<label>Token</label>
+<input type="text" id="token" class="inputBox">
+<small style="color:#64748b;font-size:12px;">Ketik ulang token samar</small>
+</div>
+
+<br>
+<button onclick="login()">Login</button>
+
+</div>
+
+<div id="ujian" style="display:none">
+
+<div id="timer"></div>
+
+<div id="progressBox">
+<div id="progressBar"></div>
+</div>
+
+<div id="nomor"></div>
+<div id="soal"></div>
+
+<div class="navBtn">
+<button onclick="prev()">Prev</button>
+<button id="btnKirim" onclick="kirim()">Selesai</button>
+<button onclick="next()">Next</button>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+var URL_SCRIPT="https://script.google.com/macros/s/AKfycbx8pJD2JD_yXaNMIyTLuoVCRh7iusS7ixjpiLVxL_tmlf_A5eDo6EBmEo1UszDbGDdi/exec";
+
+var soal=[],jawaban=[],no=0;
+var nama,kelas,level="normal";
+var waktu=0;
+
+function gas(func,data,callback){
+fetch(URL_SCRIPT,{
+method:"POST",
+body:JSON.stringify({func:func,data:data})
+})
+.then(res=>res.json())
+.then(callback);
+}
+
+function lihatPassword(){
+var p=document.getElementById("password");
+p.type=(p.type==="password")?"text":"password";
+}
+
+function cekKelas(){
+var k=document.getElementById("kelas").value.toLowerCase();
+var t=document.getElementById("tokenBox");
+var i=document.getElementById("token");
+
+if(k==="free"){
+t.style.display="block";
+i.placeholder="12345CBT";
+}else{
+t.style.display="none";
+i.value="";
+}
+}
+
+function login(){
+
+nama=document.getElementById("nama").value;
+kelas=document.getElementById("kelas").value;
+var password=document.getElementById("password").value;
+var token=document.getElementById("token").value;
+
+if(!nama||!password){alert("Lengkapi login");return;}
+
+if(kelas.toLowerCase()=="free" && token!="12345CBT"){
+alert("Token salah");return;
+}
+
+gas("login",{nama:nama,password:password,token:token},function(res){
+
+if(res.status=="ok"){
+
+level=(res.level||"normal").toLowerCase();
+
+localStorage.setItem("nama",nama);
+localStorage.setItem("kelas",kelas);
+localStorage.setItem("level",level);
+
+document.getElementById("login").style.display="none";
+document.getElementById("ujian").style.display="block";
+
+document.getElementById("userInfo").innerHTML="👤 "+nama+" | "+kelas+" | "+level;
+document.getElementById("btnLogout").style.display="block";
+document.getElementById("statusUjian").style.display="block";
+
+loadSoal();
+
+}else alert("Login gagal");
+
+});
+
+}
+
+function loadKelas(){
+gas("getKelas",{},function(data){
+var k=document.getElementById("kelas");
+k.innerHTML="<option>Pilih Kelas</option>";
+data.forEach(x=>{
+var o=document.createElement("option");
+o.value=x;o.text=x;
+k.appendChild(o);
+});
+});
+}
+
+function loadNama(){
+kelas=document.getElementById("kelas").value;
+
+gas("getNama",{kelas:kelas},function(data){
+var n=document.getElementById("nama");
+n.innerHTML="<option>Pilih Nama</option>";
+data.forEach(x=>{
+var o=document.createElement("option");
+o.value=x;o.text=x;
+n.appendChild(o);
+});
+});
+}
+
+function loadSoal(){
+
+gas("getSoal",{},function(data){
+
+if(
+kelas.toLowerCase()=="free" ||
+level=="free"
+){
+soal=data.slice(0,10);
+}else{
+soal=data;
+}
+
+waktu = soal.length * 90;
+
+jawaban=[];
+document.getElementById("nomor").innerHTML="";
+
+soal.forEach((s,i)=>{
+jawaban.push("");
+document.getElementById("nomor").innerHTML+=
+"<span id='n"+i+"' onclick='goto("+i+")'>"+(i+1)+"</span>";
+});
+
+tampil();
+timer();
+
+});
+
+}
+
+function tampil(){
+
+var s=soal[no];
+var html="<div class='soalCard'>";
+
+html+="<div class='soalHeader'>";
+html+="<div class='noSoal'>"+(no+1)+"</div>";
+
+var isi=s.pertanyaan;
+if(isi && isi.includes("http")){
+isi=`<img src="${isi}">`;
+}
+
+html+="<div class='soalText'>"+isi+"</div></div>";
+
+if(s.gambar){
+html+=`<img src="${s.gambar}">`;
+}
+
+var huruf=["A","B","C","D","E"];
+
+s.opsi.forEach((o,i)=>{
+var teks=o.text;
+if(teks && teks.includes("http")){
+teks=`<img src="${teks}">`;
+}
+
+html+=`
+<div class="opsi ${jawaban[no]==o.key?"aktif":""}" onclick="jawab('${o.key}',this)">
+<div class="circle">${huruf[i]}</div>
+<div class="teks">${teks}</div>
+</div>`;
+});
+
+html+="</div>";
+
+document.getElementById("soal").innerHTML=html;
+
+}
+
+function jawab(v,el){
+jawaban[no]=v;
+document.querySelectorAll(".opsi").forEach(x=>x.classList.remove("aktif"));
+el.classList.add("aktif");
+document.getElementById("n"+no).classList.add("dijawab");
+updateProgress();
+}
+
+function next(){if(no<soal.length-1){no++;tampil();}}
+function prev(){if(no>0){no--;tampil();}}
+function goto(n){no=n;tampil();}
+
+function updateProgress(){
+var j=jawaban.filter(x=>x!="").length;
+document.getElementById("progressBar").style.width=(j/soal.length*100)+"%";
+}
+
+function kirim(){
+gas("submitJawaban",{jawaban:jawaban,nama:nama,kelas:kelas},function(nilai){
+alert("Nilai Anda: "+nilai);
+});
+}
+
+function timer(){
+setInterval(()=>{
+waktu--;
+var m=Math.floor(waktu/60);
+var d=waktu%60;
+if(d<10)d="0"+d;
+document.getElementById("timer").innerHTML="⏱️ "+m+":"+d;
+if(waktu<=0) kirim();
+},1000);
+}
+
+function logout(){
+localStorage.clear();
+location.reload();
+}
+
+window.onload=function(){
+
+loadKelas();
+
+var n=localStorage.getItem("nama");
+var k=localStorage.getItem("kelas");
+var l=localStorage.getItem("level");
+
+if(n&&k){
+nama=n;kelas=k;level=l;
+
+document.getElementById("login").style.display="none";
+document.getElementById("ujian").style.display="block";
+
+document.getElementById("userInfo").innerHTML="👤 "+nama+" | "+kelas+" | "+level;
+document.getElementById("btnLogout").style.display="block";
+document.getElementById("statusUjian").style.display="block";
+
+loadSoal();
+}
+
+}
+
+document.getElementById("kelas").addEventListener("change",function(){
+loadNama();
+cekKelas();
+});
+
+</script>
+
+</body>
+</html>
