@@ -30,8 +30,8 @@ body{
 }
 
 .userBox{
-  text-align:center;
-  min-width:160px;
+  text-align:right;
+  min-width:200px;
 }
 
 .status{
@@ -58,9 +58,16 @@ body{
 
 h2{
   text-align:center;
-  margin-bottom:20px;
+  margin-bottom:10px;
   font-weight:700;
   color:#1e293b;
+}
+
+#infoAkses{
+  text-align:center;
+  font-size:13px;
+  color:#64748b;
+  margin-bottom:10px;
 }
 
 .loginBox{
@@ -200,6 +207,7 @@ button{
 <div></div>
 <div class="userBox">
 <div id="userInfo"></div>
+<div id="infoAkses"></div>
 <div class="status belum" id="statusUjian">Belum Mengerjakan</div>
 <button id="btnLogout" onclick="logout()">Logout</button>
 </div>
@@ -312,7 +320,7 @@ function login(){
   gas("login",{nama:nama,password:password,token:token},function(res){
     if(res.status=="ok"){
 
-      level=(res.level||"").toLowerCase();
+      level=(res.level||"");
 
       localStorage.setItem("nama",nama);
       localStorage.setItem("kelas",kelas);
@@ -323,6 +331,9 @@ function login(){
 
       document.getElementById("userInfo").innerHTML=
         "👤 "+nama+" | "+kelas+" | "+res.level;
+
+      document.getElementById("infoAkses").innerHTML=
+        res.deskripsi || "";
 
       document.getElementById("btnLogout").style.display="block";
       document.getElementById("statusUjian").style.display="block";
@@ -364,7 +375,6 @@ function loadNama(){
   });
 }
 
-// 🔥 FIX PENTING DI SINI
 function loadSoal(){
   gas("getSoal",{nama:nama},function(data){
 
