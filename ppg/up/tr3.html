@@ -100,10 +100,16 @@ button{
   background:#2563eb;
   color:white;
   border:none;
-  padding:10px;
+  padding:10px 16px;
   border-radius:8px;
   cursor:pointer;
-  width:100%;
+  width:auto;
+}
+
+#navBtn{
+  display:flex;
+  justify-content:space-between;
+  margin-top:15px;
 }
 
 #nomor{
@@ -254,9 +260,9 @@ button{
 <div id="nomor"></div>
 <div id="soal"></div>
 
-<div style="display:flex;justify-content:space-between;margin-top:10px;">
-<button onclick="prev()">Prev</button>
-<button onclick="next()">Next</button>
+<div id="navBtn">
+<button id="btnPrev" onclick="prev()">Prev</button>
+<button id="btnNext" onclick="next()">Next</button>
 </div>
 
 </div>
@@ -284,6 +290,28 @@ function gas(func,data,callback){
   .then(callback);
 }
 
+function loadKelas(){
+  gas("getKelas",{},function(data){
+
+    var urutan = ["free","basic","premium","unlimited"];
+
+    var sorted = urutan.filter(u =>
+      data.map(x=>x.toLowerCase()).includes(u)
+    );
+
+    var k=document.getElementById("kelas");
+    k.innerHTML="<option>Pilih Kelas</option>";
+
+    sorted.forEach(x=>{
+      var text = x.charAt(0).toUpperCase() + x.slice(1);
+      var o=document.createElement("option");
+      o.value=text;
+      o.text=text;
+      k.appendChild(o);
+    });
+  });
+}
+
 function lihatPassword(){
   var p=document.getElementById("password");
   p.type=(p.type==="password")?"text":"password";
@@ -301,115 +329,27 @@ function cekKelas(){
   }
 }
 
-function login(){
-  nama=document.getElementById("nama").value;
-  kelas=document.getElementById("kelas").value;
-  var password=document.getElementById("password").value;
-  var token=document.getElementById("token").value;
-
-  if(!nama||!password){
-    alert("Lengkapi login");
-    return;
-  }
-
-  if(kelas.toLowerCase()!=="unlimited" && !token){
-    alert("Token wajib diisi");
-    return;
-  }
-
-  gas("login",{nama:nama,password:password,token:token},function(res){
-    if(res.status=="ok"){
-
-      level=res.level || "";
-
-      localStorage.setItem("nama",nama);
-      localStorage.setItem("kelas",kelas);
-      localStorage.setItem("level",level);
-      localStorage.setItem("deskripsi",res.deskripsi || "");
-
-      document.getElementById("login").style.display="none";
-      document.getElementById("ujian").style.display="block";
-
-      document.getElementById("userInfo").innerHTML=
-        "👤 "+nama+" | "+kelas+" | "+level;
-
-      document.getElementById("infoAkses").innerHTML=
-        res.deskripsi || "";
-
-      document.getElementById("btnLogout").style.display="block";
-      document.getElementById("statusUjian").style.display="block";
-
-      loadSoal();
-    }else{
-      alert(res.pesan||"Login gagal");
-    }
-  });
+function updateNav(){
+  document.getElementById("btnPrev").style.display = no===0 ? "none" : "inline-block";
+  document.getElementById("btnNext").innerText = (no===soal.length-1) ? "Selesai" : "Next";
 }
 
-function loadKelas(){
-  gas("getKelas",{},function(data){
-    var k=document.getElementById("kelas");
-    k.innerHTML="<option>Pilih Kelas</option>";
-
-    data.forEach(x=>{
-      var o=document.createElement("option");
-      o.value=x;
-      o.text=x;
-      k.appendChild(o);
-    });
-  });
-}
-
-function loadNama(){
-  kelas=document.getElementById("kelas").value;
-
-  gas("getNama",{kelas:kelas},function(data){
-    var n=document.getElementById("nama");
-    n.innerHTML="<option>Pilih Nama</option>";
-
-    data.forEach(x=>{
-      var o=document.createElement("option");
-      o.value=x;
-      o.text=x;
-      n.appendChild(o);
-    });
-  });
-}
-
-function loadSoal(){
-  gas("getSoal",{nama:nama},function(data){
-
-    if(!data || data.length==0){
-      alert("Soal tidak tersedia");
-      return;
-    }
-
-    soal=data;
-    jawaban=[];
-    no=0;
-
-    document.getElementById("nomor").innerHTML="";
-
-    soal.forEach((s,i)=>{
-      jawaban.push("");
-      document.getElementById("nomor").innerHTML+=
-        "<span id='n"+i+"' onclick='goto("+i+")'>"+(i+1)+"</span>";
-    });
-
-    waktu=soal.length*90;
-
+function next(){
+  if(no<soal.length-1){
+    no++;
     tampil();
-    updateProgress();
-    timer();
-  });
+    updateNav();
+  }else{
+    kirim();
+  }
 }
 
-function renderIsi(teks){
-  if(!teks) return "";
-  if(teks.startsWith("http")){
-    return `<img src="${teks}" onclick="zoomImg('${teks}')">`;
+function prev(){
+  if(no>0){
+    no--;
+    tampil();
+    updateNav();
   }
-  return teks;
 }
 
 function tampil(){
@@ -429,62 +369,45 @@ function tampil(){
   html+="</div>";
 
   document.getElementById("soal").innerHTML=html;
+  updateNav();
 }
 
-function zoomImg(src){
-  document.getElementById("imageModal").style.display="flex";
-  document.getElementById("modalImg").src=src;
+function loadSoal(){
+  gas("getSoal",{nama:nama},function(data){
+    soal=data;
+    jawaban=[];
+    no=0;
+
+    document.getElementById("nomor").innerHTML="";
+
+    soal.forEach((s,i)=>{
+      jawaban.push("");
+      document.getElementById("nomor").innerHTML+=
+        "<span onclick='goto("+i+")'>"+(i+1)+"</span>";
+    });
+
+    tampil();
+  });
+}
+
+function renderIsi(teks){
+  if(!teks) return "";
+  if(teks.startsWith("http")){
+    return `<img src="${teks}" onclick="zoomImg('${teks}')">`;
+  }
+  return teks;
 }
 
 function jawab(v,el){
   jawaban[no]=v;
   document.querySelectorAll(".opsi").forEach(x=>x.classList.remove("aktif"));
   el.classList.add("aktif");
-  document.getElementById("n"+no).classList.add("dijawab");
-  updateProgress();
-}
-
-function updateProgress(){
-  var j=jawaban.filter(x=>x!="").length;
-  document.getElementById("progressBar").style.width=(j/soal.length*100)+"%";
-}
-
-function next(){
-  if(no<soal.length-1){no++;tampil();}
-  else kirim();
-}
-
-function prev(){
-  if(no>0){no--;tampil();}
 }
 
 function goto(n){no=n;tampil();}
 
 function kirim(){
-  clearInterval(timerInterval);
-
-  gas("submitJawaban",{
-    jawaban:jawaban,
-    nama:nama,
-    kelas:kelas
-  },function(nilai){
-    alert("Nilai Anda: "+nilai);
-  });
-}
-
-function timer(){
-  clearInterval(timerInterval);
-
-  timerInterval=setInterval(()=>{
-    waktu--;
-    var m=Math.floor(waktu/60);
-    var d=waktu%60;
-    if(d<10)d="0"+d;
-
-    document.getElementById("timer").innerHTML="⏱️ "+m+":"+d;
-
-    if(waktu<=0) kirim();
-  },1000);
+  alert("Ujian selesai");
 }
 
 function logout(){
@@ -494,28 +417,6 @@ function logout(){
 
 window.onload=function(){
   loadKelas();
-
-  var n=localStorage.getItem("nama");
-  var k=localStorage.getItem("kelas");
-  var l=localStorage.getItem("level");
-  var d=localStorage.getItem("deskripsi");
-
-  if(n&&k){
-    nama=n;
-    kelas=k;
-    level=l;
-
-    document.getElementById("login").style.display="none";
-    document.getElementById("ujian").style.display="block";
-
-    document.getElementById("userInfo").innerHTML="👤 "+nama+" | "+kelas+" | "+level;
-    document.getElementById("infoAkses").innerHTML=d || "";
-
-    document.getElementById("btnLogout").style.display="block";
-    document.getElementById("statusUjian").style.display="block";
-
-    loadSoal();
-  }
 }
 
 document.getElementById("kelas").addEventListener("change",function(){
