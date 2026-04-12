@@ -367,9 +367,12 @@ function loadNama(){
 function loadSoal(){
   gas("getSoal",{nama:nama},function(data){
 
-    soal=data;
+    if(!data || data.length==0){
+      alert("Soal tidak tersedia");
+      return;
+    }
 
-    waktu=soal.length*90;
+    soal=data;
     jawaban=[];
     no=0;
 
@@ -381,6 +384,8 @@ function loadSoal(){
         "<span id='n"+i+"' onclick='goto("+i+")'>"+(i+1)+"</span>";
     });
 
+    waktu=soal.length*90;
+
     tampil();
     updateProgress();
     timer();
@@ -389,7 +394,7 @@ function loadSoal(){
 
 function renderIsi(teks){
   if(!teks) return "";
-  if(teks.includes("http")){
+  if(teks.startsWith("http")){
     return `<img src="${teks}" onclick="zoomImg('${teks}')">`;
   }
   return teks;
