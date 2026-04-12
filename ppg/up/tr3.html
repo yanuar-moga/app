@@ -300,7 +300,9 @@ button:disabled{
     <div id="tokenBox" style="display:none;">
       <label>Token</label>
       <input type="text" id="token" class="inputBox">
-      <small style="color:#64748b;font-size:12px;">Ketik ulang token samar</small>
+      <small style="color:#64748b;font-size:12px;">
+        Gunakan token sesuai level (Free / Basic / Premium)
+      </small>
     </div>
 
     <br>
@@ -331,7 +333,7 @@ button:disabled{
 var URL_SCRIPT="https://script.google.com/macros/s/AKfycbxkR915Z-eS61U9OIAtu_CzULtAo6I6niI1MZ6h3nSpLSQBoXTn-IeIVV-J6GaVVC1O/exec";
 
 var soal=[],jawaban=[],no=0;
-var nama,kelas,level="normal";
+var nama,kelas,level="";
 var waktu=0;
 var timerInterval=null;
 
@@ -352,14 +354,12 @@ function lihatPassword(){
 function cekKelas(){
   var k=document.getElementById("kelas").value.toLowerCase();
   var t=document.getElementById("tokenBox");
-  var i=document.getElementById("token");
 
-  if(k==="free"){
+  if(k==="free" || k==="basic" || k==="premium"){
     t.style.display="block";
-    i.placeholder="12345CBT";
   }else{
     t.style.display="none";
-    i.value="";
+    document.getElementById("token").value="";
   }
 }
 
@@ -374,14 +374,15 @@ function login(){
     return;
   }
 
-  if(kelas.toLowerCase()=="free" && token!="12345CBT"){
-    alert("Token salah");
+  if(kelas.toLowerCase()!="unlimited" && !token){
+    alert("Token wajib diisi");
     return;
   }
 
   gas("login",{nama:nama,password:password,token:token},function(res){
     if(res.status=="ok"){
-      level = res.level || "Full Akses";
+
+      level=(res.level||"").toLowerCase();
 
       localStorage.setItem("nama",nama);
       localStorage.setItem("kelas",kelas);
@@ -390,13 +391,15 @@ function login(){
       document.getElementById("login").style.display="none";
       document.getElementById("ujian").style.display="block";
 
-      document.getElementById("userInfo").innerHTML="👤 "+nama+" | "+kelas+" | "+level;
+      document.getElementById("userInfo").innerHTML=
+        "👤 "+nama+" | "+kelas+" | "+res.level;
+
       document.getElementById("btnLogout").style.display="block";
       document.getElementById("statusUjian").style.display="block";
 
       loadSoal();
     }else{
-      alert("Login gagal");
+      alert(res.pesan||"Login gagal");
     }
   });
 }
@@ -432,13 +435,9 @@ function loadNama(){
 }
 
 function loadSoal(){
-  gas("getSoal",{},function(data){
+  gas("getSoal",{level:level},function(data){
 
-    if(kelas.toLowerCase()=="free" || level=="free"){
-      soal=data.slice(0,10);
-    }else{
-      soal=data;
-    }
+    soal=data;
 
     waktu=soal.length*90;
     jawaban=[];
