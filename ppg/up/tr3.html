@@ -255,7 +255,6 @@ button{
 
 </div>
 
-<!-- MODAL ZOOM GAMBAR -->
 <div id="imageModal" onclick="this.style.display='none'">
 <img id="modalImg">
 </div>
@@ -366,7 +365,7 @@ function loadNama(){
 }
 
 function loadSoal(){
-  gas("getSoal",{level:level},function(data){
+  gas("getSoal",{nama:nama},function(data){
 
     soal=data;
 
@@ -390,7 +389,6 @@ function loadSoal(){
 
 function renderIsi(teks){
   if(!teks) return "";
-
   if(teks.includes("http")){
     return `<img src="${teks}" onclick="zoomImg('${teks}')">`;
   }
