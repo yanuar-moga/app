@@ -148,16 +148,46 @@ button{
 .opsi{
   display:flex;
   gap:10px;
-  padding:8px;
+  padding:10px;
   border-radius:10px;
   cursor:pointer;
   margin-top:6px;
   border:1px solid #e2e8f0;
+  align-items:flex-start;
+}
+
+.opsi:hover{
+  background:#f1f5f9;
 }
 
 .opsi.aktif{
   border-color:#2563eb;
   background:#eff6ff;
+}
+
+.opsi img{
+  max-width:120px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+#imageModal{
+  display:none;
+  position:fixed;
+  z-index:999;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.8);
+  justify-content:center;
+  align-items:center;
+}
+
+#imageModal img{
+  max-width:90%;
+  max-height:90%;
+  border-radius:10px;
 }
 </style>
 </head>
@@ -225,6 +255,11 @@ button{
 
 </div>
 
+<!-- MODAL ZOOM GAMBAR -->
+<div id="imageModal" onclick="this.style.display='none'">
+<img id="modalImg">
+</div>
+
 <script>
 var URL_SCRIPT="https://script.google.com/macros/s/AKfycbxkR915Z-eS61U9OIAtu_CzULtAo6I6niI1MZ6h3nSpLSQBoXTn-IeIVV-J6GaVVC1O/exec";
 
@@ -278,7 +313,7 @@ function login(){
   gas("login",{nama:nama,password:password,token:token},function(res){
     if(res.status=="ok"){
 
-      level=(res.level||"").toString().trim().toLowerCase();
+      level=(res.level||"").toLowerCase();
 
       localStorage.setItem("nama",nama);
       localStorage.setItem("kelas",kelas);
@@ -353,22 +388,37 @@ function loadSoal(){
   });
 }
 
+function renderIsi(teks){
+  if(!teks) return "";
+
+  if(teks.includes("http")){
+    return `<img src="${teks}" onclick="zoomImg('${teks}')">`;
+  }
+  return teks;
+}
+
 function tampil(){
   var s=soal[no];
   var html="<div class='soalCard'>";
 
-  html+="<b>"+(no+1)+".</b> "+s.pertanyaan;
+  html+="<b>"+(no+1)+".</b> "+renderIsi(s.pertanyaan);
 
   s.opsi.forEach(o=>{
     html+=`
     <div class="opsi ${jawaban[no]==o.key?"aktif":""}" onclick="jawab('${o.key}',this)">
-      ${o.key}. ${o.text}
+      <div><b>${o.key}.</b></div>
+      <div>${renderIsi(o.text)}</div>
     </div>`;
   });
 
   html+="</div>";
 
   document.getElementById("soal").innerHTML=html;
+}
+
+function zoomImg(src){
+  document.getElementById("imageModal").style.display="flex";
+  document.getElementById("modalImg").src=src;
 }
 
 function jawab(v,el){
