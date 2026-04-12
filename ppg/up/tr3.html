@@ -34,11 +34,6 @@ body{
   min-width:160px;
 }
 
-.userInfo{
-  font-size:14px;
-  font-weight:600;
-}
-
 .status{
   font-size:13px;
   margin-top:4px;
@@ -78,21 +73,18 @@ h2{
   margin-top:12px;
 }
 
-.inputBox,
-select{
+.inputBox,select{
   width:100%;
   padding:10px;
   border-radius:8px;
   border:1px solid #ccc;
   margin-top:4px;
   box-sizing:border-box;
-  display:block;
 }
 
 .passwordCheck{
   margin-top:8px;
   display:flex;
-  align-items:center;
   gap:8px;
   font-size:13px;
 }
@@ -104,12 +96,7 @@ button{
   padding:10px;
   border-radius:8px;
   cursor:pointer;
-  font-weight:500;
   width:100%;
-}
-
-button:disabled{
-  background:#94a3b8;
 }
 
 #nomor{
@@ -150,115 +137,27 @@ button:disabled{
   border-radius:10px;
 }
 
-#soal{
-  margin-top:20px;
-}
-
 .soalCard{
   background:#f8fafc;
   border-radius:14px;
   padding:16px;
   border:1px solid #e2e8f0;
-  margin-bottom:15px;
-}
-
-.soalHeader{
-  display:flex;
-  gap:10px;
-  margin-bottom:12px;
-  align-items:flex-start;
-}
-
-.noSoal{
-  min-width:28px;
-  height:28px;
-  background:#2563eb;
-  color:white;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  font-size:13px;
-  margin-top:2px;
-}
-
-.soalText{
-  flex:1;
-  line-height:1.7;
-  text-align:justify;
+  margin-top:15px;
 }
 
 .opsi{
   display:flex;
-  align-items:flex-start;
   gap:10px;
-  padding:8px 12px;
+  padding:8px;
   border-radius:10px;
   cursor:pointer;
-  margin-bottom:6px;
+  margin-top:6px;
   border:1px solid #e2e8f0;
-  background:white;
-  margin-left:38px;
-}
-
-.opsi:hover{
-  background:#f1f5f9;
-}
-
-.circle{
-  min-width:22px;
-  height:22px;
-  border-radius:50%;
-  border:1.5px solid #94a3b8;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:600;
-  font-size:11px;
-  margin-top:2px;
-}
-
-.teks{
-  flex:1;
-  line-height:1.5;
-  text-align:justify;
 }
 
 .opsi.aktif{
   border-color:#2563eb;
   background:#eff6ff;
-}
-
-.opsi.aktif .circle{
-  background:#2563eb;
-  color:white;
-  border-color:#2563eb;
-}
-
-.soalText img,
-.teks img{
-  max-width:100%;
-  border-radius:10px;
-  margin-top:8px;
-}
-
-.navBtn{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:18px;
-}
-
-.navBtn button{
-  width:auto !important;
-  min-width:90px;
-  padding:10px 18px;
-  flex:none;
-}
-
-#tokenBox{
-  transition:0.3s;
 }
 </style>
 </head>
@@ -267,65 +166,62 @@ button:disabled{
 
 <div class="container">
 
-  <div class="header">
-    <div></div>
+<div class="header">
+<div></div>
+<div class="userBox">
+<div id="userInfo"></div>
+<div class="status belum" id="statusUjian">Belum Mengerjakan</div>
+<button id="btnLogout" onclick="logout()">Logout</button>
+</div>
+</div>
 
-    <div class="userBox">
-      <div id="userInfo"></div>
-      <div class="status belum" id="statusUjian">Belum Mengerjakan</div>
-      <button id="btnLogout" onclick="logout()">Logout</button>
-    </div>
-  </div>
+<img class="logo" src="https://yanuar-moga.github.io/app/ppg/up/assets/logo.png">
 
-  <img class="logo" src="https://yanuar-moga.github.io/app/ppg/up/assets/logo.png">
+<h2>CBT Try Out UP PPG</h2>
 
-  <h2>CBT Try Out UP PPG</h2>
+<div id="login" class="loginBox">
 
-  <div id="login" class="loginBox">
+<label>Kelas</label>
+<select id="kelas"></select>
 
-    <label>Kelas</label>
-    <select id="kelas"></select>
+<label>Nama</label>
+<select id="nama"></select>
 
-    <label>Nama</label>
-    <select id="nama"></select>
+<label>Password</label>
+<input type="password" id="password" class="inputBox">
 
-    <label>Password</label>
-    <input type="password" id="password" class="inputBox">
+<div class="passwordCheck">
+<input type="checkbox" onclick="lihatPassword()">
+<label>Tampilkan Password</label>
+</div>
 
-    <div class="passwordCheck">
-      <input type="checkbox" onclick="lihatPassword()">
-      <label>Tampilkan Password</label>
-    </div>
+<div id="tokenBox" style="display:none;">
+<label>Token</label>
+<input type="text" id="token" class="inputBox">
+</div>
 
-    <div id="tokenBox" style="display:none;">
-      <label>Token</label>
-      <input type="text" id="token" class="inputBox">
-      <small style="color:#64748b;font-size:12px;">
-        Gunakan token sesuai level (Free / Basic / Premium)
-      </small>
-    </div>
+<br>
+<button onclick="login()">Login</button>
 
-    <br>
-    <button onclick="login()">Login</button>
-  </div>
+</div>
 
-  <div id="ujian" style="display:none">
+<div id="ujian" style="display:none">
 
-    <div id="timer"></div>
+<div id="timer"></div>
 
-    <div id="progressBox">
-      <div id="progressBar"></div>
-    </div>
+<div id="progressBox">
+<div id="progressBar"></div>
+</div>
 
-    <div id="nomor"></div>
-    <div id="soal"></div>
+<div id="nomor"></div>
+<div id="soal"></div>
 
-    <div class="navBtn">
-      <button onclick="prev()">Prev</button>
-      <button id="btnNext" onclick="next()">Next</button>
-    </div>
+<div style="display:flex;justify-content:space-between;margin-top:10px;">
+<button onclick="prev()">Prev</button>
+<button id="btnNext" onclick="next()">Next</button>
+</div>
 
-  </div>
+</div>
 
 </div>
 
@@ -355,7 +251,7 @@ function cekKelas(){
   var k=document.getElementById("kelas").value.toLowerCase();
   var t=document.getElementById("tokenBox");
 
-  if(k==="free" || k==="basic" || k==="premium"){
+  if(k==="free"||k==="basic"||k==="premium"){
     t.style.display="block";
   }else{
     t.style.display="none";
@@ -374,7 +270,7 @@ function login(){
     return;
   }
 
-  if(kelas.toLowerCase()!="unlimited" && !token){
+  if(kelas.toLowerCase()!=="unlimited" && !token){
     alert("Token wajib diisi");
     return;
   }
@@ -382,7 +278,7 @@ function login(){
   gas("login",{nama:nama,password:password,token:token},function(res){
     if(res.status=="ok"){
 
-      level=(res.level||"").toLowerCase();
+      level=(res.level||"").toString().trim().toLowerCase();
 
       localStorage.setItem("nama",nama);
       localStorage.setItem("kelas",kelas);
@@ -447,7 +343,7 @@ function loadSoal(){
 
     soal.forEach((s,i)=>{
       jawaban.push("");
-      document.getElementById("nomor").innerHTML +=
+      document.getElementById("nomor").innerHTML+=
         "<span id='n"+i+"' onclick='goto("+i+")'>"+(i+1)+"</span>";
     });
 
@@ -461,52 +357,25 @@ function tampil(){
   var s=soal[no];
   var html="<div class='soalCard'>";
 
-  html+="<div class='soalHeader'>";
-  html+="<div class='noSoal'>"+(no+1)+"</div>";
+  html+="<b>"+(no+1)+".</b> "+s.pertanyaan;
 
-  var isi=s.pertanyaan;
-  if(isi && isi.includes("http")){
-    isi=`<img src="${isi}">`;
-  }
-
-  html+="<div class='soalText'>"+isi+"</div></div>";
-
-  if(s.gambar){
-    html+=`<img src="${s.gambar}">`;
-  }
-
-  var huruf=["A","B","C","D","E"];
-
-  s.opsi.forEach((o,i)=>{
-    var teks=o.text;
-
-    if(teks && teks.includes("http")){
-      teks=`<img src="${teks}">`;
-    }
-
+  s.opsi.forEach(o=>{
     html+=`
     <div class="opsi ${jawaban[no]==o.key?"aktif":""}" onclick="jawab('${o.key}',this)">
-      <div class="circle">${huruf[i]}</div>
-      <div class="teks">${teks}</div>
+      ${o.key}. ${o.text}
     </div>`;
   });
 
   html+="</div>";
 
   document.getElementById("soal").innerHTML=html;
-  updateNavButton();
 }
 
 function jawab(v,el){
   jawaban[no]=v;
-
-  document.querySelectorAll(".opsi").forEach(x=>{
-    x.classList.remove("aktif");
-  });
-
+  document.querySelectorAll(".opsi").forEach(x=>x.classList.remove("aktif"));
   el.classList.add("aktif");
   document.getElementById("n"+no).classList.add("dijawab");
-
   updateProgress();
 }
 
@@ -515,38 +384,16 @@ function updateProgress(){
   document.getElementById("progressBar").style.width=(j/soal.length*100)+"%";
 }
 
-function updateNavButton(){
-  var btn=document.getElementById("btnNext");
-
-  if(no===soal.length-1){
-    btn.innerHTML="Selesai";
-    btn.onclick=kirim;
-    btn.style.background="#22c55e";
-  }else{
-    btn.innerHTML="Next";
-    btn.onclick=next;
-    btn.style.background="#2563eb";
-  }
-}
-
 function next(){
-  if(no<soal.length-1){
-    no++;
-    tampil();
-  }
+  if(no<soal.length-1){no++;tampil();}
+  else kirim();
 }
 
 function prev(){
-  if(no>0){
-    no--;
-    tampil();
-  }
+  if(no>0){no--;tampil();}
 }
 
-function goto(n){
-  no=n;
-  tampil();
-}
+function goto(n){no=n;tampil();}
 
 function kirim(){
   clearInterval(timerInterval);
@@ -565,17 +412,13 @@ function timer(){
 
   timerInterval=setInterval(()=>{
     waktu--;
-
     var m=Math.floor(waktu/60);
     var d=waktu%60;
-
     if(d<10)d="0"+d;
 
     document.getElementById("timer").innerHTML="⏱️ "+m+":"+d;
 
-    if(waktu<=0){
-      kirim();
-    }
+    if(waktu<=0) kirim();
   },1000);
 }
 
