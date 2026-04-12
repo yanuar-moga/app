@@ -248,7 +248,7 @@ button{
 
 <div style="display:flex;justify-content:space-between;margin-top:10px;">
 <button onclick="prev()">Prev</button>
-<button id="btnNext" onclick="next()">Next</button>
+<button onclick="next()">Next</button>
 </div>
 
 </div>
@@ -364,6 +364,7 @@ function loadNama(){
   });
 }
 
+// 🔥 FIX PENTING DI SINI
 function loadSoal(){
   gas("getSoal",{nama:nama},function(data){
 
