@@ -320,17 +320,18 @@ function login(){
   gas("login",{nama:nama,password:password,token:token},function(res){
     if(res.status=="ok"){
 
-      level=(res.level||"");
+      level=res.level || "";
 
       localStorage.setItem("nama",nama);
       localStorage.setItem("kelas",kelas);
       localStorage.setItem("level",level);
+      localStorage.setItem("deskripsi",res.deskripsi || "");
 
       document.getElementById("login").style.display="none";
       document.getElementById("ujian").style.display="block";
 
       document.getElementById("userInfo").innerHTML=
-        "👤 "+nama+" | "+kelas+" | "+res.level;
+        "👤 "+nama+" | "+kelas+" | "+level;
 
       document.getElementById("infoAkses").innerHTML=
         res.deskripsi || "";
@@ -497,6 +498,7 @@ window.onload=function(){
   var n=localStorage.getItem("nama");
   var k=localStorage.getItem("kelas");
   var l=localStorage.getItem("level");
+  var d=localStorage.getItem("deskripsi");
 
   if(n&&k){
     nama=n;
@@ -507,6 +509,8 @@ window.onload=function(){
     document.getElementById("ujian").style.display="block";
 
     document.getElementById("userInfo").innerHTML="👤 "+nama+" | "+kelas+" | "+level;
+    document.getElementById("infoAkses").innerHTML=d || "";
+
     document.getElementById("btnLogout").style.display="block";
     document.getElementById("statusUjian").style.display="block";
 
