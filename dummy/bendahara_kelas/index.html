@@ -1,1 +1,1070 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>E-Bendahara</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Poppins',sans-serif;
+  background:#f3f4f6;
+  color:#111827;
+  width:100%;
+  max-width:600px;
+  margin:auto;
+  min-height:100vh;
+}
+
+.hidden{
+  display:none !important;
+}
+
+/* ========================================
+HEADER
+======================================== */
+.header{
+  background:linear-gradient(135deg, #4f46e5, #7c3aed);
+  padding:34px 20px;
+  text-align:center;
+  color:white;
+}
+
+.logo{
+  font-size:42px;
+  margin-bottom:6px;
+}
+
+.title{
+  font-size:18px;
+  font-weight:700;
+}
+
+.subtitle{
+  font-size:12px;
+  opacity:.9;
+}
+
+/* ========================================
+CONTAINER
+======================================== */
+.container{
+  padding:16px;
+}
+
+/* ========================================
+CARD
+======================================== */
+.card{
+  background:white;
+  border-radius:24px;
+  padding:18px;
+  margin-bottom:16px;
+  box-shadow:0 4px 16px rgba(0,0,0,.06);
+}
+
+/* ========================================
+INPUT
+======================================== */
+input,
+select,
+button{
+  width:100%;
+  border:none;
+  outline:none;
+  border-radius:14px;
+  padding:14px;
+  font-size:14px;
+  font-family:'Poppins',sans-serif;
+}
+
+input,
+select{
+  background:#f3f4f6;
+  margin-top:10px;
+}
+
+button{
+  background:linear-gradient(135deg, #4f46e5, #7c3aed);
+  color:white;
+  font-weight:700;
+  margin-top:14px;
+  cursor:pointer;
+}
+
+/* Transisi visual saat tombol terkunci (Anti-Spam) */
+button:disabled {
+  background: linear-gradient(135deg, #a5b4fc, #c084fc) !important;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* ========================================
+LOGIN
+======================================== */
+.loginBox{
+  margin-top:18px;
+}
+
+.loginTitle{
+  text-align:center;
+  margin-bottom:10px;
+}
+
+.loginDesc{
+  text-align:center;
+  color:#6b7280;
+  margin-bottom:24px;
+  font-size:14px;
+}
+
+/* ========================================
+USER
+======================================== */
+.userBox{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:16px;
+}
+
+.role{
+  display:inline-block;
+  background:#dbeafe;
+  color:#2563eb;
+  font-size:11px;
+  font-weight:600;
+  padding:4px 10px;
+  border-radius:10px;
+  margin-bottom:6px;
+}
+
+.logout{
+  width:auto !important;
+  background:white !important;
+  color:#ef4444 !important;
+  border:1px solid #ef4444 !important;
+  padding:10px 18px !important;
+  font-size:13px;
+  transition: all 0.2s ease;
+}
+
+/* Transisi visual spesifik untuk tombol logout saat terkunci */
+.logout:disabled {
+  background: #f3f4f6 !important;
+  color: #9ca3af !important;
+  border: 1px solid #d1d5db !important;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* ========================================
+MENU
+======================================== */
+.menu{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:10px;
+}
+
+.menu button{
+  background:white;
+  color:#6b7280;
+  border:1px solid #e5e7eb;
+}
+
+.menu button.active{
+  background:linear-gradient(135deg, #7c3aed, #6d28d9);
+  color:white;
+  border:none;
+}
+
+/* ========================================
+KATEGORI
+======================================== */
+.kategoriRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  margin-bottom:16px;
+}
+
+.kategoriLabel{
+  font-size:13px;
+  font-weight:700;
+}
+
+.kategoriInput{
+  width:120px !important;
+  margin:0 !important;
+  text-align:right;
+}
+
+/* ========================================
+TABLE
+======================================== */
+.tableWrap{
+  overflow:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,
+td{
+  padding:12px 8px;
+  border-bottom:1px solid #e5e7eb;
+  font-size:12px;
+  text-align:center;
+}
+
+th{
+  background:#fafafa;
+  color:#111827;
+}
+
+.lunas{
+  background:#dcfce7;
+  color:#16a34a;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:700;
+}
+
+.kurang{
+  background:#fee2e2;
+  color:#dc2626;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:700;
+}
+
+/* ========================================
+SALDO
+======================================== */
+.saldoSection{
+  margin-bottom:28px;
+}
+
+.saldoTitle{
+  margin-bottom:16px;
+  font-size:16px;
+}
+
+.saldoItem{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:18px;
+  font-weight:600;
+}
+
+.totalSaldo{
+  background:#2563eb;
+  color:white;
+  border-radius:16px;
+  padding:16px;
+  display:flex;
+  justify-content:space-between;
+  font-weight:700;
+}
+
+/* ========================================
+PROFILE
+======================================== */
+.profile{
+  text-align:center;
+}
+
+.profile img{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid white;
+  margin-bottom:14px;
+}
+
+/* Style Tambahan untuk Info Last Update */
+.infoUpdateBox {
+  background: #fdf2f8;
+  border: 1px dashed #f472b6;
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 11px;
+  color: #db2777;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.infoUpdateItem {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Modifikasi Box Update Khusus halaman Admin agar match dengan tema Biru/Ungu */
+.infoUpdateBoxAdmin {
+  background: #f0f4f8;
+  border: 1px dashed #4f46e5;
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 11px;
+  color: #4f46e5;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ========================================
+FOOTER
+======================================== */
+.footer{
+  text-align:center;
+  color:#9ca3af;
+  font-size:12px;
+  padding:34px 10px;
+}
+
+/* ========================================
+POPUP
+======================================== */
+.popup{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#16a34a;
+  color:white;
+  padding:14px 20px;
+  border-radius:14px;
+  z-index:999;
+  animation:popupShow .3s ease;
+}
+
+@keyframes popupShow{
+  from{
+    opacity:0;
+    transform:translate(-50%,-20px);
+  }
+  to{
+    opacity:1;
+    transform:translate(-50%,0);
+  }
+}
+
+/* ========================================
+MOBILE
+======================================== */
+@media(max-width:480px){
+  .menu{
+    gap:8px;
+  }
+  .menu button{
+    font-size:12px;
+    padding:12px 8px;
+  }
+  .kategoriInput{
+    width:100px !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="logo">💰</div>
+  <div class="title">E-Bendahara</div>
+  <div class="subtitle">Manajemen Keuangan Kelas Digital</div>
+</div>
+
+<div id="loginPage" class="container">
+  <div class="card loginBox">
+    <h2 class="loginTitle">Selamat Datang</h2>
+    <div class="loginDesc">Masukkan PIN Keamanan</div>
+    <input type="password" id="pin" placeholder="••••••">
+    <button onclick="login()">BUKA PANEL</button>
+  </div>
+</div>
+
+<div id="adminPage" class="hidden container">
+  <div class="userBox">
+    <div>
+      <div class="role" id="roleText"></div>
+      <h2 id="namaAdmin"></h2>
+    </div>
+    <button class="logout" onclick="logout(this)">Keluar</button>
+  </div>
+
+  <!-- Tampilan Info Last Update Pada Sisi Admin / Wali Kelas -->
+  <div class="infoUpdateBoxAdmin">
+    <div class="infoUpdateItem">
+      <strong>📅 Sinkronisasi Terakhir:</strong>
+      <span id="adminUpdateTanggal">-</span>
+    </div>
+    <div class="infoUpdateItem">
+      <strong>👤 Entry Terakhir Oleh:</strong>
+      <span id="adminUpdateOleh">-</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="menu">
+      <button id="btnInput" class="active" onclick="showMenu('input')">Input</button>
+      <button id="btnRekap" onclick="showMenu('rekap')">Rekap</button>
+      <button id="btnSaldo" onclick="showMenu('saldo')">Saldo</button>
+    </div>
+  </div>
+
+  <div id="menuInput">
+    <div class="card">
+      <div style="margin-bottom:10px; font-weight:600">Pilih Siswa</div>
+      <select id="siswaSelect"></select>
+      <hr style="margin:16px 0; border:none; border-top:1px solid #e5e7eb">
+      <div style="display:flex; justify-content:space-between; margin-bottom:16px; font-size:12px; font-weight:700">
+        <div>KATEGORI</div>
+        <div>NOMINAL</div>
+      </div>
+      <div id="kategoriBox"></div>
+      <button onclick="saveTransaksi()">SIMPAN TRANSAKSI</button>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:14px">Setor Ke Kesiswaan</h3>
+      <input type="number" id="setorKAS" placeholder="KAS">
+      <input type="number" id="setorGALON" placeholder="GALON">
+      <input type="number" id="setorKARTU" placeholder="Kartu Pelajar">
+      <input type="number" id="setorTALI" placeholder="Tali Asih">
+      <input type="text" id="penerima" placeholder="Nama Penerima">
+      <button onclick="saveSetor()">SIMPAN SETORAN</button>
+    </div>
+  </div>
+
+  <div id="menuRekap" class="hidden">
+    <div class="card">
+      <div class="tableWrap">
+        <table id="rekapTable"></table>
+      </div>
+    </div>
+  </div>
+
+  <div id="menuSaldo" class="hidden">
+    <div class="card">
+      <div id="saldoContent"></div>
+    </div>
+  </div>
+</div>
+
+<div id="siswaPage" class="hidden container">
+  <div class="card profile">
+    <img id="fotoSiswa">
+    <h2 id="namaSiswa"></h2>
+    <p id="jkSiswa"></p>
+    <p id="nisnSiswa"></p>
+  </div>
+
+  <div class="infoUpdateBox">
+    <div class="infoUpdateItem">
+      <strong>📅 Update Terakhir:</strong>
+      <span id="lastUpdateTanggal">-</span>
+    </div>
+    <div class="infoUpdateItem">
+      <strong>👤 Petugas Input:</strong>
+      <span id="lastUpdateOleh">-</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Jumlah Sudah Dibayar</h3>
+    <br>
+    <div id="sudahBayar"></div>
+  </div>
+
+  <div class="card">
+    <h3>Jumlah Belum Dibayar</h3>
+    <br>
+    <div id="belumBayar"></div>
+  </div>
+
+  <button class="logout" style="width:100%" onclick="logout(this)">Keluar</button>
+</div>
+
+<div class="footer">
+  e-Bendahara v1.2 <br>
+  © 2026 MB All Rights Reserved
+</div>
+
+<script>
+// ========================================
+// CONFIG
+// ========================================
+const API_URL = "https://script.google.com/macros/s/AKfycbwzPEFwcL17OkXHESRAdjXFc1JdsS6cxqImrKW4vxu7YGk3zFJu_ABRl5FbzS_a1j6W/exec";
+
+let TARGET = [];
+let DASHBOARD = {};
+
+let LOGIN_NAME = "";
+let LOGIN_ROLE = "";
+let LOGIN_PIN = "";
+
+// Helper untuk membaca informasi Device pengguna secara otomatis
+function getClientDevice() {
+  if (navigator.userAgentData && navigator.userAgentData.platform) {
+    return navigator.userAgentData.platform;
+  }
+  const userAgent = navigator.userAgent;
+  if (userAgent.match(/Android/i)) return "Android Phone";
+  if (userAgent.match(/iPhone|iPad|iPod/i)) return "iOS Device";
+  if (userAgent.match(/Windows/i)) return "Windows PC";
+  if (userAgent.match(/Macintosh/i)) return "Mac Computer";
+  if (userAgent.match(/Linux/i)) return "Linux PC";
+  return "Perangkat Web";
+}
+
+// Helper untuk membaca IP Publik secara dinamis via API ipify
+async function getClientIP() {
+  try {
+    const res = await fetch("https://api.ipify.org?format=json");
+    const data = await res.json();
+    return data.ip || "-";
+  } catch (err) {
+    return "-";
+  }
+}
+
+// ========================================
+// FETCH DATA
+// ========================================
+async function postData(data){
+  const res = await fetch(API_URL,{
+    method:"POST",
+    body:JSON.stringify(data)
+  });
+  return await res.json();
+}
+
+// ========================================
+// POPUP
+// ========================================
+function popup(text){
+  const div = document.createElement("div");
+  div.className = "popup";
+  div.innerHTML = text;
+  document.body.appendChild(div);
+  setTimeout(()=>{ div.remove(); },2500);
+}
+
+// ========================================
+// ENTER LOGIN
+// ========================================
+document.getElementById("pin").addEventListener("keypress", function(e){
+  if(e.key === "Enter"){
+    login();
+  }
+});
+
+// ========================================
+// AUTO LOGIN ONLOAD
+// ========================================
+window.onload = async function(){
+  const pin = localStorage.getItem("eb_pin");
+  const role = localStorage.getItem("eb_role");
+  const nama = localStorage.getItem("eb_nama");
+  const user = localStorage.getItem("eb_user");
+
+  if(!pin){
+    return;
+  }
+
+  LOGIN_PIN = pin;
+  LOGIN_NAME = nama || "";
+  LOGIN_ROLE = user || "";
+
+  // Ambil data tracking saat auto-login dijalankan
+  const currentIP = await getClientIP();
+  const currentDevice = getClientDevice();
+
+  // Kirim data restore session ke Apps Script
+  try {
+    await postData({
+      action: "restoreSession",
+      sessionId: localStorage.getItem("eb_session_id") || "",
+      ip: currentIP,
+      device: currentDevice
+    });
+  } catch (e) {}
+
+  // SISWA
+  if(role == "SISWA"){
+    await loadSiswaDashboard(pin);
+  }
+  // ADMIN
+  else{
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("adminPage").classList.remove("hidden");
+    document.getElementById("namaAdmin").innerHTML = LOGIN_NAME;
+    document.getElementById("roleText").innerHTML = LOGIN_ROLE;
+    await loadDashboard();
+  }
+};
+
+// ========================================
+// LOGIN WITH TRACKING EXTENSION & ANTI-SPAM
+// ========================================
+async function login(){
+  const pin = document.getElementById("pin").value.trim();
+
+  if(pin == ""){
+    popup("PIN wajib diisi");
+    return;
+  }
+
+  // Target tombol login
+  const loginBtn = document.querySelector("#loginPage button");
+  const originalText = loginBtn.innerHTML;
+  
+  // Kunci tombol segera setelah diklik pertama kali
+  loginBtn.disabled = true;
+  loginBtn.innerHTML = "MEMPROSES...";
+
+  try {
+    // Melacak IP dan Nama Perangkat secara real-time sebelum request dikirim
+    const userIP = await getClientIP();
+    const userDevice = getClientDevice();
+
+    const res = await postData({
+      action:"login",
+      pin:pin,
+      ip: userIP,         // Mengirim variabel IP Publik asli ke log baru
+      device: userDevice  // Mengirim info Perangkat asli ke log baru
+    });
+
+    if(!res.success){
+      popup(res.message);
+      // Lepas kunci tombol jika login ditolak/gagal
+      loginBtn.disabled = false;
+      loginBtn.innerHTML = originalText;
+      return;
+    }
+
+    LOGIN_NAME = res.nama;
+    LOGIN_ROLE = res.user;
+    LOGIN_PIN = pin;
+
+    localStorage.setItem("eb_pin", pin);
+    localStorage.setItem("eb_role", res.role);
+    localStorage.setItem("eb_nama", res.nama);
+    localStorage.setItem("eb_user", res.user);
+    localStorage.setItem("eb_session_id", res.sessionId || "");
+
+    // SISWA
+    if(res.role == "SISWA"){
+      await loadSiswaDashboard(pin);
+      popup("Login berhasil");
+      return;
+    }
+
+    // ADMIN
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("adminPage").classList.remove("hidden");
+    document.getElementById("namaAdmin").innerHTML = LOGIN_NAME;
+    document.getElementById("roleText").innerHTML = LOGIN_ROLE;
+
+    await loadDashboard();
+    popup("Login berhasil");
+
+  } catch (error) {
+    popup("Gangguan koneksi, silakan coba lagi");
+    // Lepas kunci tombol jika terjadi error jaringan saat login
+    loginBtn.disabled = false;
+    loginBtn.innerHTML = originalText;
+  }
+}
+
+// ========================================
+// LOAD DASHBOARD
+// ========================================
+async function loadDashboard(){
+  const res = await postData({
+    action:"getDashboard"
+  });
+
+  if(!res.success){
+    popup("Gagal load dashboard");
+    return;
+  }
+
+  DASHBOARD = res;
+  TARGET = res.target;
+
+  // Render info update di sisi admin page
+  document.getElementById("adminUpdateTanggal").innerHTML = res.lastUpdateDate || "-";
+  document.getElementById("adminUpdateOleh").innerHTML = res.lastUpdateBy || "-";
+
+  renderSiswa();
+  renderKategori();
+  renderRekap();
+  renderSaldo();
+}
+
+// ========================================
+// RENDER SISWA
+// ========================================
+function renderSiswa(){
+  const select = document.getElementById("siswaSelect");
+  select.innerHTML = "";
+
+  DASHBOARD.siswa.forEach(s=>{
+    select.innerHTML += `
+      <option value="${s.no}|${s.nama}">
+        ${s.nama}
+      </option>
+    `;
+  });
+}
+
+// ========================================
+// RENDER KATEGORI
+// ========================================
+function renderKategori(){
+  const box = document.getElementById("kategoriBox");
+  box.innerHTML = "";
+
+  TARGET.forEach(t=>{
+    box.innerHTML += `
+      <div class="kategoriRow">
+        <div class="kategoriLabel">
+          ${t.kategori}
+        </div>
+        <input type="number" id="kat_${t.kategori}" value="0" class="kategoriInput">
+      </div>
+    `;
+  });
+}
+
+// ========================================
+// SAVE TRANSAKSI WITH ANTI-SPAM
+// ========================================
+async function saveTransaksi(){
+  const siswa = document.getElementById("siswaSelect").value.split("|");
+  let adaInput = false;
+
+  // Target tombol "SIMPAN TRANSAKSI"
+  const simpanBtn = document.querySelector("#menuInput button[onclick='saveTransaksi()']");
+  const originalText = simpanBtn.innerHTML;
+
+  // Kunci tombol sebelum perulangan AJAX / pengiriman ke GAS dimulai
+  simpanBtn.disabled = true;
+  simpanBtn.innerHTML = "MENYIMPAN...";
+
+  try {
+    for(let i=0; i<TARGET.length; i++){
+      const t = TARGET[i];
+      const nominal = Number(document.getElementById("kat_" + t.kategori).value || 0);
+
+      if(nominal > 0){
+        adaInput = true;
+        await postData({
+          action:"saveTransaksi",
+          no:siswa[0],
+          nama:siswa[1],
+          kategori:t.kategori,
+          jumlah:nominal,
+          oleh:LOGIN_NAME
+        });
+      }
+    }
+
+    if(!adaInput){
+      popup("Isi minimal 1 nominal");
+      // Lepas kunci jika nominal input kosong semuanya
+      simpanBtn.disabled = false;
+      simpanBtn.innerHTML = originalText;
+      return;
+    }
+
+    await loadDashboard();
+    renderKategori();
+    popup("Transaksi berhasil");
+
+  } catch (error) {
+    popup("Gagal menyimpan, silakan coba kembali");
+  } finally {
+    // Apapun hasil akhirnya (berhasil/gagal), kembalikan tombol ke status aktif
+    simpanBtn.disabled = false;
+    simpanBtn.innerHTML = originalText;
+  }
+}
+
+// ========================================
+// SAVE SETOR WITH ANTI-SPAM
+// ========================================
+async function saveSetor(){
+  // Target tombol "SIMPAN SETORAN"
+  const setorBtn = document.querySelector("#menuInput button[onclick='saveSetor()']");
+  const originalText = setorBtn.innerHTML;
+
+  // Kunci tombol setoran agar tidak diklik ganda
+  setorBtn.disabled = true;
+  setorBtn.innerHTML = "MENYETOR...";
+
+  try {
+    const res = await postData({
+      action:"saveSetor",
+      KAS: document.getElementById("setorKAS").value || 0,
+      GALON: document.getElementById("setorGALON").value || 0,
+      KARTU: document.getElementById("setorKARTU").value || 0,
+      TALI: document.getElementById("setorTALI").value || 0,
+      penerima: document.getElementById("penerima").value
+    });
+
+    if(res.success){
+      document.getElementById("setorKAS").value = "";
+      document.getElementById("setorGALON").value = "";
+      document.getElementById("setorKARTU").value = "";
+      document.getElementById("setorTALI").value = "";
+      document.getElementById("penerima").value = "";
+
+      await loadDashboard();
+      popup("Setoran berhasil");
+    }
+  } catch (error) {
+    popup("Gagal mengirim setoran, periksa jaringan");
+  } finally {
+    // Kembalikan tombol ke keadaan semula setelah proses backend selesai
+    setorBtn.disabled = false;
+    setorBtn.innerHTML = originalText;
+  }
+}
+
+// ========================================
+// RENDER REKAP
+// ========================================
+function renderRekap(){
+  const table = document.getElementById("rekapTable");
+  let html = "";
+
+  DASHBOARD.rekap.forEach((row,index)=>{
+    html += "<tr>";
+    row.forEach((cell,col)=>{
+      // HEADER
+      if(index === 0){
+        html += `<th>${cell}</th>`;
+      }
+      // BODY
+      else{
+        // NAMA SISWA
+        if(col === 0){
+          html += `<td style="text-align:left; font-weight:600">${cell}</td>`;
+        }
+        // STATUS LUNAS
+        else if(String(cell).toUpperCase() === "LUNAS"){
+          html += `<td><span class="lunas">LUNAS</span></td>`;
+        }
+        // ANGKA SISA
+        else{
+          const nominal = Number(cell || 0);
+          html += `<td><span class="kurang">Rp${nominal.toLocaleString('id-ID')}</span></td>`;
+        }
+      }
+    });
+    html += "</tr>";
+  });
+
+  table.innerHTML = html;
+}
+
+// ========================================
+// RENDER SALDO
+// ========================================
+function renderSaldo(){
+  const saldo = DASHBOARD.saldo;
+
+  let pemasukanHTML = "";
+  let setorHTML = "";
+  let saldoHTML = "";
+
+  let totalMasuk = 0;
+  let totalKeluar = 0;
+  let totalSaldo = 0;
+
+  saldo.slice(1).forEach(s=>{
+    const kategori = s[0];
+    const masuk = Number(s[1] || 0);
+    const keluar = Number(s[2] || 0);
+    const akhir = Number(s[3] || 0);
+
+    totalMasuk += masuk;
+    totalKeluar += keluar;
+    totalSaldo += akhir;
+
+    pemasukanHTML += `
+      <div class="saldoItem">
+        <div>${kategori}</div>
+        <div>Rp${masuk.toLocaleString('id-ID')}</div>
+      </div>
+    `;
+
+    setorHTML += `
+      <div class="saldoItem">
+        <div>${kategori}</div>
+        <div>Rp${keluar.toLocaleString('id-ID')}</div>
+      </div>
+    `;
+
+    saldoHTML += `
+      <div class="saldoItem">
+        <div>${kategori}</div>
+        <div>Rp${akhir.toLocaleString('id-ID')}</div>
+      </div>
+    `;
+  });
+
+  document.getElementById("saldoContent").innerHTML = `
+    <div class="saldoSection">
+      <h3 class="saldoTitle">Total Pemasukan</h3>
+      ${pemasukanHTML}
+      <div class="totalSaldo">
+        <div>TOTAL MASUK</div>
+        <div>Rp${totalMasuk.toLocaleString('id-ID')}</div>
+      </div>
+    </div>
+
+    <div class="saldoSection">
+      <h3 class="saldoTitle">Sudah Disetor</h3>
+      ${setorHTML}
+      <div class="totalSaldo">
+        <div>TOTAL SETOR</div>
+        <div>Rp${totalKeluar.toLocaleString('id-ID')}</div>
+      </div>
+    </div>
+
+    <div class="saldoSection">
+      <h3 class="saldoTitle">Saldo Bendahara</h3>
+      ${saldoHTML}
+      <div class="totalSaldo">
+        <div>TOTAL SALDO</div>
+        <div>Rp${totalSaldo.toLocaleString('id-ID')}</div>
+      </div>
+    </div>
+  `;
+}
+
+// ========================================
+// MENU TABS PANEL SWITCH
+// ========================================
+function showMenu(menu){
+  document.getElementById("menuInput").classList.add("hidden");
+  document.getElementById("menuRekap").classList.add("hidden");
+  document.getElementById("menuSaldo").classList.add("hidden");
+
+  document.getElementById("btnInput").classList.remove("active");
+  document.getElementById("btnRekap").classList.remove("active");
+  document.getElementById("btnSaldo").classList.remove("active");
+
+  if(menu == "input"){
+    document.getElementById("menuInput").classList.remove("hidden");
+    document.getElementById("btnInput").classList.add("active");
+  }
+  if(menu == "rekap"){
+    document.getElementById("menuRekap").classList.remove("hidden");
+    document.getElementById("btnRekap").classList.add("active");
+  }
+  if(menu == "saldo"){
+    document.getElementById("menuSaldo").classList.remove("hidden");
+    document.getElementById("btnSaldo").classList.add("active");
+  }
+}
+
+// ========================================
+// DASHBOARD SISWA VIEW (DENGAN INFO UPDATE)
+// ========================================
+async function loadSiswaDashboard(nisn){
+  const res = await postData({
+    action:"getSiswaDashboard",
+    nisn:nisn
+  });
+
+  if(!res.success){
+    popup("Data tidak ditemukan");
+    return;
+  }
+
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("siswaPage").classList.remove("hidden");
+
+  document.getElementById("fotoSiswa").src = res.siswa.foto;
+  document.getElementById("namaSiswa").innerHTML = res.siswa.nama;
+  document.getElementById("jkSiswa").innerHTML = res.siswa.jk;
+  document.getElementById("nisnSiswa").innerHTML = res.siswa.nisn;
+
+  // Menampilkan Info Last Update dari properti Apps Script ke Element HTML
+  document.getElementById("lastUpdateTanggal").innerHTML = res.lastUpdateDate || "-";
+  document.getElementById("lastUpdateOleh").innerHTML = res.lastUpdateBy || "-";
+
+  let bayar = "";
+  let kurang = "";
+
+  Object.keys(res.bayar).forEach(k=>{
+    bayar += `
+      <div class="saldoItem">
+        <div>${k}</div>
+        <div>Rp${Number(res.bayar[k]).toLocaleString('id-ID')}</div>
+      </div>
+    `;
+  });
+
+  Object.keys(res.kurang).forEach(k=>{
+    kurang += `
+      <div class="saldoItem">
+        <div>${k}</div>
+        <div>Rp${Number(res.kurang[k]).toLocaleString('id-ID')}</div>
+      </div>
+    `;
+  });
+
+  document.getElementById("sudahBayar").innerHTML = bayar;
+  document.getElementById("belumBayar").innerHTML = kurang;
+}
+
+// ========================================
+// LOGOUT WITH LOG CONSTRAINTS & ANTI-SPAM ANIMATION
+// ========================================
+async function logout(element){
+  // Validasi jika element pengirim dioperasikan langsung dari komponen DOM button
+  if (element && element.tagName === "BUTTON") {
+    element.disabled = true;
+    element.innerHTML = "KELUAR...";
+  }
+
+  try{
+    await postData({
+      action:"logout",
+      sessionId: localStorage.getItem("eb_session_id") || "-"
+    });
+  }catch(err){}
+
+  localStorage.removeItem("eb_pin");
+  localStorage.removeItem("eb_role");
+  localStorage.removeItem("eb_nama");
+  localStorage.removeItem("eb_user");
+  localStorage.removeItem("eb_session_id");
+
+  location.reload();
+}
+</script>
+</body>
+</html>
