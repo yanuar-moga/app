@@ -409,7 +409,6 @@ MOBILE
     <button class="logout" onclick="logout(this)">Keluar</button>
   </div>
 
-  <!-- Tampilan Info Last Update Pada Sisi Admin / Wali Kelas -->
   <div class="infoUpdateBoxAdmin">
     <div class="infoUpdateItem">
       <strong>📅 Sinkronisasi Terakhir:</strong>
@@ -990,7 +989,7 @@ function showMenu(menu){
 }
 
 // ========================================
-// DASHBOARD SISWA VIEW (DENGAN INFO UPDATE)
+// DASHBOARD SISWA VIEW (DENGAN TOTAL AKUMULASI)
 // ========================================
 async function loadSiswaDashboard(nisn){
   const res = await postData({
@@ -1017,24 +1016,52 @@ async function loadSiswaDashboard(nisn){
 
   let bayar = "";
   let kurang = "";
+  
+  // Inisialisasi variabel matematika penghitung total akumulasi iuran
+  let akumulasiBayar = 0;
+  let akumulasiKurang = 0;
 
+  // Render per baris iuran SUDAH DIBAYAR sekaligus menambahkan nominal ke total akumulasi
   Object.keys(res.bayar).forEach(k=>{
+    const nominal = Number(res.bayar[k] || 0);
+    akumulasiBayar += nominal;
+    
     bayar += `
       <div class="saldoItem">
         <div>${k}</div>
-        <div>Rp${Number(res.bayar[k]).toLocaleString('id-ID')}</div>
+        <div>Rp${nominal.toLocaleString('id-ID')}</div>
       </div>
     `;
   });
 
+  // Render per baris iuran BELUM DIBAYAR sekaligus menambahkan nominal ke total akumulasi
   Object.keys(res.kurang).forEach(k=>{
+    const nominal = Number(res.kurang[k] || 0);
+    akumulasiKurang += nominal;
+    
     kurang += `
       <div class="saldoItem">
         <div>${k}</div>
-        <div>Rp${Number(res.kurang[k]).toLocaleString('id-ID')}</div>
+        <div>Rp${nominal.toLocaleString('id-ID')}</div>
       </div>
     `;
   });
+
+  // MENAMBAHKAN BARIS TOTAL SUDAH DIBAYAR (Tema Biru bawaan .totalSaldo)
+  bayar += `
+    <div class="totalSaldo" style="margin-top: 14px;">
+      <div>TOTAL SUDAH DIBAYAR</div>
+      <div>Rp${akumulasiBayar.toLocaleString('id-ID')}</div>
+    </div>
+  `;
+
+  // MENAMBAHKAN BARIS TOTAL SISA TAGIHAN (Diberi override warna Merah #ef4444 sebagai penarik perhatian)
+  kurang += `
+    <div class="totalSaldo" style="margin-top: 14px; background: #ef4444;">
+      <div>TOTAL SISA TAGIHAN</div>
+      <div>Rp${akumulasiKurang.toLocaleString('id-ID')}</div>
+    </div>
+  `;
 
   document.getElementById("sudahBayar").innerHTML = bayar;
   document.getElementById("belumBayar").innerHTML = kurang;
