@@ -3,466 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>MONITOR ANTREAN - Verifikator SIVERA</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
-
-body{
-    background-color:#f4f6f9;
-    font-family:'Segoe UI',sans-serif;
-    padding:20px 0;
-}
-
-.card-monitor{
-    background:white;
-    border-radius:12px;
-    box-shadow:0 4px 12px rgba(0,0,0,.08);
-    overflow:hidden;
-    margin-bottom:20px;
-}
-
-.header-monitor{
-    background:linear-gradient(135deg,#212529,#343a40);
-    color:white;
-    padding:20px;
-    border-bottom:5px solid #ffcc00;
-}
-
-.table-responsive{
-    max-height:600px;
-    overflow-y:auto;
-}
-
-.table th{
-    position:sticky;
-    top:0;
-    background:#343a40 !important;
-    color:white;
-    z-index:10;
-}
-
+body{background:#f4f6f9;font-family:Segoe UI,sans-serif;padding:20px 0}
+.card-monitor{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.08);overflow:hidden}
+.header-monitor{background:linear-gradient(135deg,#212529,#343a40);color:#fff;padding:20px;border-bottom:5px solid #ffcc00}
+.table-responsive{max-height:650px;overflow-y:auto}
+.table th{position:sticky;top:0;background:#343a40!important;color:#fff;z-index:10}
 </style>
-
 </head>
 <body>
 
 <div class="container-fluid px-4">
-
 <div class="card-monitor">
 
 <div class="header-monitor d-flex justify-content-between align-items-center flex-wrap gap-3">
-
 <div>
-<h4 class="mb-1 fw-bold">
-<i class="fa-solid fa-desktop text-warning"></i>
-MONITORING ANTREAN PPDB / SPMB
-</h4>
-
-<p class="mb-0 small text-light opacity-75">
-SMP Negeri 1 Moga | Halaman Khusus Verifikator & Panitia
-</p>
+<h4 class="mb-1 fw-bold"><i class="fa-solid fa-desktop text-warning"></i> MONITORING ANTREAN PPDB / SPMB</h4>
+<p class="mb-0 small text-light opacity-75">SMP Negeri 1 Moga | Halaman Khusus Verifikator & Panitia</p>
 </div>
-
 <div class="text-md-end">
-
-<span class="badge bg-primary p-2 mb-1" id="liveClock">
---:--:-- WIB
-</span>
-
-<div class="small text-light">
-Total Hari Ini :
-<strong id="counterTotal" class="text-warning">
-0 / 150
-</strong>
+<span class="badge bg-primary p-2 mb-1" id="liveClock">--:--:-- WIB</span>
+<div class="small text-light">Total Hari Ini : <strong id="counterTotal" class="text-warning">0 / 150</strong></div>
 </div>
-
-</div>
-
 </div>
 
 <div class="p-3 bg-light border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
-
 <div class="d-flex gap-2">
-
-<button class="btn btn-success btn-sm" onclick="muatDataAntrean()">
-<i class="fa-solid fa-rotate-right"></i>
-Refresh Data
+<button class="btn btn-success btn-sm" onclick="refreshManual()">
+<i class="fa-solid fa-rotate-right"></i> Refresh Data
 </button>
-
-<span id="refreshStatus"
-class="text-muted small align-self-center">
-Siap
-</span>
-
+<span id="refreshStatus" class="text-muted small align-self-center">Siap</span>
 </div>
 
 <div class="d-flex gap-2">
-
-<span class="badge bg-primary">
-DOM :
-<span id="countDom">0</span>
-</span>
-
-<span class="badge bg-success">
-PRS :
-<span id="countPrs">0</span>
-</span>
-
-<span class="badge bg-warning text-dark">
-AFM :
-<span id="countAfm">0</span>
-</span>
-
-<span class="badge bg-danger">
-MUT :
-<span id="countMut">0</span>
-</span>
-
+<span class="badge bg-primary">DOM : <span id="countDom">0</span></span>
+<span class="badge bg-success">PRS : <span id="countPrs">0</span></span>
+<span class="badge bg-warning text-dark">AFM : <span id="countAfm">0</span></span>
+<span class="badge bg-danger">MUT : <span id="countMut">0</span></span>
 </div>
-
 </div>
 
 <div class="p-3">
-
 <div class="table-responsive">
-
 <table class="table table-striped table-hover align-middle border mb-0">
-
 <thead>
-
 <tr class="text-center">
-
 <th>No</th>
-<th>Waktu Masuk</th>
+<th>Waktu</th>
 <th>No Antrean</th>
 <th>Jalur</th>
-<th>Nama Lengkap</th>
+<th>Nama</th>
 <th>NISN</th>
-<th>Asal Sekolah</th>
+<th>Sekolah</th>
 <th>WhatsApp</th>
-
 </tr>
-
 </thead>
-
-<tbody id="isiTabel">
-
-<tr>
-
-<td colspan="8"
-class="text-center p-5">
-
-<div class="spinner-border spinner-border-sm text-primary"></div>
-
-Mengambil data...
-
-</td>
-
-</tr>
-
-</tbody>
-
+<tbody id="isiTabel"></tbody>
 </table>
-
+</div>
 </div>
 
 </div>
-
-</div>
-
 </div>
 
 <script>
+const API_URL="https://script.google.com/macros/s/AKfycbyqhfjJmLWMTqtLjt5zOrDuQFrf1d3YqPRhex64g6S9VQr_JEXrr-xLHpiacg8IWU4/exec";
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbyqhfjJmLWMTqtLjt5zOrDuQFrf1d3YqPRhex64g6S9VQr_JEXrr-xLHpiacg8IWU4/exec";
-
-window.onload = function(){
-
-    startClock();
-
-    muatDataAntrean();
-
+window.onload=()=>{
+ startClock();
+ muatDataAntrean(false);
 };
 
-// ======================
-// CLOCK
-// ======================
-
 function startClock(){
-
-    updateClock();
-
-    setInterval(updateClock,1000);
-
+ setInterval(()=>{
+   document.getElementById("liveClock").innerText=new Date().toLocaleTimeString("id-ID")+" WIB";
+ },1000);
 }
 
-function updateClock(){
-
-    const now = new Date();
-
-    document.getElementById("liveClock").innerText =
-    now.toLocaleTimeString("id-ID") + " WIB";
-
+async function refreshManual(){
+ const r=await Swal.fire({
+  title:"Refresh Data?",
+  text:"Ambil data terbaru dari server",
+  icon:"question",
+  showCancelButton:true,
+  confirmButtonText:"Ya Refresh"
+ });
+ if(r.isConfirmed) muatDataAntrean(true);
 }
 
-// ======================
-// LOAD DATA
-// ======================
+async function muatDataAntrean(showToast=true){
+ document.getElementById("refreshStatus").innerHTML='Sinkronisasi...';
 
-async function muatDataAntrean(){
+ Swal.fire({
+  title:"Sinkronisasi Data",
+  html:"Menghubungi server...",
+  allowOutsideClick:false,
+  didOpen:()=>Swal.showLoading()
+ });
 
-    const status =
-    document.getElementById(
-    "refreshStatus"
-    );
+ try{
+   const res=await fetch(API_URL+"?action=antrean");
+   const rows=await res.json();
+   Swal.close();
+   renderTable(rows);
+   document.getElementById("refreshStatus").innerHTML="Data Terkini";
 
-    status.innerHTML =
-    '<i class="fa-solid fa-spinner fa-spin"></i> Sinkronisasi...';
+   if(showToast){
+      Swal.fire({
+       toast:true,
+       position:"top-end",
+       icon:"success",
+       title:"Data berhasil diperbarui",
+       showConfirmButton:false,
+       timer:2000
+      });
+   }
 
-    try{
-
-        const response =
-        await fetch(
-        API_URL + "?action=antrean"
-        );
-
-        const rows =
-        await response.json();
-
-        status.innerHTML =
-        '<i class="fa-solid fa-check text-success"></i> Data Terkini';
-
-        renderTable(rows);
-
-    }
-
-    catch(err){
-
-        console.error(err);
-
-        status.innerHTML =
-        '<i class="fa-solid fa-triangle-exclamation text-danger"></i> Gagal';
-
-        alert(
-        "Gagal mengambil data dari server."
-        );
-
-    }
-
+ }catch(err){
+   Swal.fire({
+     icon:"error",
+     title:"Koneksi Gagal",
+     text:"Tidak dapat mengambil data dari server."
+   });
+ }
 }
-
-// ======================
-// RENDER TABLE
-// ======================
 
 function renderTable(rows){
+ const tbody=document.getElementById("isiTabel");
 
-    const tbody =
-    document.getElementById(
-    "isiTabel"
-    );
+ if(!rows || rows.length===0){
+   tbody.innerHTML='<tr><td colspan="8" class="text-center p-5">Belum ada data antrean hari ini</td></tr>';
+   updateCounters(0,0,0,0);
+   return;
+ }
 
-    if(!rows || rows.length===0){
+ let html="";
+ let cDom=0,cPrs=0,cAfm=0,cMut=0;
 
-        tbody.innerHTML = `
-        <tr>
-        <td colspan="8"
-        class="text-center p-5 text-danger fw-bold">
+ for(let i=rows.length-1;i>=0;i--){
+   const r=rows[i];
 
-        <i class="fa-solid fa-folder-open"></i>
+   if(r.kategori==="Domisili") cDom++;
+   if(r.kategori==="Prestasi") cPrs++;
+   if(r.kategori==="Afirmasi") cAfm++;
+   if(r.kategori==="Mutasi") cMut++;
 
-        Belum ada data antrean hari ini
+   let badge="bg-primary";
+   if(r.kategori==="Prestasi") badge="bg-success";
+   if(r.kategori==="Afirmasi") badge="bg-warning text-dark";
+   if(r.kategori==="Mutasi") badge="bg-danger";
 
-        </td>
-        </tr>
-        `;
+   html+=`<tr class="text-center">
+   <td>${i+1}</td>
+   <td>${r.waktu||""}</td>
+   <td><b>${r.nomorAntrean||""}</b></td>
+   <td><span class="badge ${badge}">${r.kategori||""}</span></td>
+   <td class="text-start">${r.nama||""}</td>
+   <td>${r.nisn||""}</td>
+   <td class="text-start">${r.sekolah||""}</td>
+   <td><a target="_blank" class="btn btn-sm btn-outline-success" href="https://wa.me/${formatWA(r.hp)}">${r.hp||""}</a></td>
+   </tr>`;
+ }
 
-        updateCounters(
-        0,0,0,0
-        );
-
-        return;
-
-    }
-
-    let html = "";
-
-    let cDom = 0;
-    let cPrs = 0;
-    let cAfm = 0;
-    let cMut = 0;
-
-    for(let i=rows.length-1;i>=0;i--){
-
-        const r = rows[i];
-
-        if(r.kategori==="Domisili")
-        cDom++;
-
-        if(r.kategori==="Prestasi")
-        cPrs++;
-
-        if(r.kategori==="Afirmasi")
-        cAfm++;
-
-        if(r.kategori==="Mutasi")
-        cMut++;
-
-        let badgeClass =
-        "bg-primary";
-
-        if(r.kategori==="Prestasi")
-        badgeClass =
-        "bg-success";
-
-        if(r.kategori==="Afirmasi")
-        badgeClass =
-        "bg-warning text-dark";
-
-        if(r.kategori==="Mutasi")
-        badgeClass =
-        "bg-danger";
-
-        html += `
-
-        <tr class="text-center">
-
-        <td>${i+1}</td>
-
-        <td class="small">
-        ${r.waktu}
-        </td>
-
-        <td class="fw-bold">
-        ${r.nomorAntrean}
-        </td>
-
-        <td>
-        <span class="badge ${badgeClass}">
-        ${r.kategori}
-        </span>
-        </td>
-
-        <td class="text-start fw-bold">
-        ${r.nama}
-        </td>
-
-        <td>
-        <code>${r.nisn}</code>
-        </td>
-
-        <td class="text-start small">
-        ${r.sekolah}
-        </td>
-
-        <td>
-
-        <a
-        href="https://wa.me/${formatWA(r.hp)}"
-        target="_blank"
-        class="btn btn-sm btn-outline-success">
-
-        <i class="fa-brands fa-whatsapp"></i>
-
-        ${r.hp}
-
-        </a>
-
-        </td>
-
-        </tr>
-
-        `;
-
-    }
-
-    tbody.innerHTML =
-    html;
-
-    updateCounters(
-    cDom,
-    cPrs,
-    cAfm,
-    cMut
-    );
-
+ tbody.innerHTML=html;
+ updateCounters(cDom,cPrs,cAfm,cMut);
 }
 
-// ======================
-// COUNTER
-// ======================
-
-function updateCounters(
-dom,
-prs,
-afm,
-mut
-){
-
-    const total =
-    dom +
-    prs +
-    afm +
-    mut;
-
-    document.getElementById(
-    "counterTotal"
-    ).innerText =
-    `${total} / 150`;
-
-    document.getElementById(
-    "countDom"
-    ).innerText =
-    dom;
-
-    document.getElementById(
-    "countPrs"
-    ).innerText =
-    prs;
-
-    document.getElementById(
-    "countAfm"
-    ).innerText =
-    afm;
-
-    document.getElementById(
-    "countMut"
-    ).innerText =
-    mut;
-
+function updateCounters(dom,prs,afm,mut){
+ const total=dom+prs+afm+mut;
+ document.getElementById("counterTotal").innerText=`${total} / 150`;
+ document.getElementById("countDom").innerText=dom;
+ document.getElementById("countPrs").innerText=prs;
+ document.getElementById("countAfm").innerText=afm;
+ document.getElementById("countMut").innerText=mut;
 }
-
-// ======================
-// FORMAT WA
-// ======================
 
 function formatWA(num){
-
-    if(!num)
-    return "";
-
-    let cleaned =
-    String(num)
-    .replace(/\D/g,'');
-
-    if(cleaned.startsWith('0')){
-
-        cleaned =
-        '62' +
-        cleaned.substring(1);
-
-    }
-
-    return cleaned;
-
+ if(!num) return "";
+ let cleaned=String(num).replace(/\D/g,'');
+ if(cleaned.startsWith("0")) cleaned="62"+cleaned.substring(1);
+ return cleaned;
 }
-
 </script>
-
 </body>
 </html>
