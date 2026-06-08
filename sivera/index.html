@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIVERA - Ambil Antrean SMPN 1 Moga</title>
+  
+  <style>
+    :root {
+      --primary-color: #1A237E;
+      --accent-color: #FFB300;
+      --bg-color: #F5F5F5;
+      --card-bg: #FFFFFF;
+      --text-color: #333333;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+    
+    .navbar { display: flex; justify-content: space-between; align-items: center; background-color: var(--primary-color); color: white; padding: 15px 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .brand-container { display: flex; align-items: center; gap: 15px; }
+    .school-logo { width: 60px; height: 60px; object-fit: contain; }
+    .school-info h1 { font-size: 1.4rem; font-weight: 700; line-height: 1.2; color: white; }
+    .school-info p { font-size: 0.8rem; opacity: 0.9; }
+    .school-info a { color: var(--accent-color); text-decoration: none; font-weight: bold; }
+    .school-info a:hover { text-decoration: underline; }
+    .system-tagline { font-weight: bold; font-size: 0.9rem; color: var(--accent-color); }
+
+    .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+    .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 25px; }
+    .card-title { font-size: 1.2rem; font-weight: bold; color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 8px; margin-bottom: 20px; }
+    
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.9rem; }
+    .form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
+    .form-control:focus { outline: none; border-color: var(--primary-color); }
+    
+    .btn { display: inline-block; width: 100%; padding: 12px; font-size: 1rem; font-weight: bold; text-align: center; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; transition: background 0.3s; }
+    .btn-primary { background-color: var(--primary-color); color: white; }
+    .btn-primary:hover { background-color: #0F172A; }
+    .btn-primary:disabled { background-color: #cccccc; cursor: not-allowed; }
+    .btn-accent { background-color: var(--accent-color); color: #1A237E; margin-bottom: 10px; }
+    .btn-accent:hover { background-color: #FFA000; }
+    
+    .progress-bar-container { background-color: #E0E0E0; border-radius: 10px; height: 12px; margin: 5px 0 15px 0; overflow: hidden; }
+    .progress-fill { background-color: #2E7D32; height: 100%; width: 0%; transition: width 0.5s ease-in-out; }
+    .text-center { text-align: center; }
+    .mt-20 { margin-top: 20px; }
+    .mb-20 { margin-bottom: 20px; }
+    
+    .footer { text-align: center; padding: 20px; font-size: 0.85rem; color: #666; background: #E0E0E0; margin-top: 50px; }
+
+    @media (max-width: 768px) {
+      .navbar { flex-direction: column; text-align: center; padding: 15px; gap: 10px; }
+      .brand-container { flex-direction: column; gap: 8px; }
+      .school-logo { width: 50px; height: 50px; }
+      .school-info h1 { font-size: 1.2rem; }
+      .grid-2 { grid-template-columns: 1fr !important; gap: 15px; }
+      .container { padding: 0 10px; margin: 10px auto; }
+      .card { padding: 15px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="brand-container">
+      <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo SMPN 1 Moga" class="school-logo">
+      <div class="school-info">
+        <h1>🎓 SIVERA</h1>
+        <p>SMP Negeri 1 Moga | Jl. Simpang Tiga Banyumudal, Kec. Moga</p>
+        <p>Website Resmi: <a href="https://smpn1moga.sch.id/" target="_blank">smpn1moga.sch.id</a></p>
+      </div>
+    </div>
+    <div class="system-tagline">
+      <span>Cepat • Transparan • Terintegrasi</span>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="systemMessageCard" class="card text-center" style="display:none;">
+      <h2 id="sysMessageTitle" style="color:var(--primary-color);">Memeriksa Status Sistem...</h2>
+      <p id="sysCountdown" class="mt-20" style="font-weight:bold; font-size:1.5rem; color:#D32F2F;"></p>
+    </div>
+
+    <div id="mainFormLayout" class="grid-2">
+      <div>
+        <div class="card">
+          <div class="card-title">Pengumuman Terkini</div>
+          <div id="announcementBox">Memuat pengumuman...</div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">Ketersediaan Kuota Terisi</div>
+          <label>Jalur Domisili (Kuota: <span id="maxDOM">0</span>)</label>
+          <div class="progress-bar-container"><div id="progressDOM" class="progress-fill"></div></div>
+          
+          <label>Jalur Prestasi (Kuota: <span id="maxPRE">0</span>)</label>
+          <div class="progress-bar-container"><div id="progressPRE" class="progress-fill"></div></div>
+          
+          <label>Jalur Afirmasi (Kuota: <span id="maxAFI">0</span>)</label>
+          <div class="progress-bar-container"><div id="progressAFI" class="progress-fill"></div></div>
+          
+          <label>Jalur Mutasi (Kuota: <span id="maxMUT">0</span>)</label>
+          <div class="progress-bar-container"><div id="progressMUT" class="progress-fill"></div></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" id="formCard">
+          <div class="card-title">Formulir Ambil Nomor Antrean Verifikasi</div>
+          <form id="antreanForm" onsubmit="event.preventDefault(); handleAmbilAntrean();">
+            <div class="form-group">
+              <label>Nomor Pendaftaran SPMB</label>
+              <input type="text" id="noSpmb" class="form-control" required placeholder="Contoh: SPMB-2026-XXXX">
+            </div>
+            <div class="form-group">
+              <label>NISN</label>
+              <input type="number" id="nisn" class="form-control" required placeholder="10 Digit NISN">
+            </div>
+            <div class="form-group">
+              <label>Nama Lengkap</label>
+              <input type="text" id="nama" class="form-control" required placeholder="Sesuai Akta Kelahiran">
+            </div>
+            <div class="form-group">
+              <label>Jenis Kelamin</label>
+              <select id="jk" class="form-control" required>
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Asal Sekolah</label>
+              <input type="text" id="asalSekolah" class="form-control" required placeholder="Nama SD/MI Asal">
+            </div>
+            <div class="form-group">
+              <label>Desa Domisili</label>
+              <input type="text" id="desa" class="form-control" required placeholder="Nama Desa Sekarang">
+            </div>
+            <div class="form-group">
+              <label>Nomor WhatsApp</label>
+              <input type="tel" id="noWa" class="form-control" required placeholder="08XXXXXXXXXX">
+            </div>
+            <div class="form-group">
+              <label>Jalur Pendaftaran</label>
+              <select id="jalur" class="form-control" required>
+                <option value="Domisili">Domisili</option>
+                <option value="Prestasi">Prestasi</option>
+                <option value="Afirmasi">Afirmasi</option>
+                <option value="Mutasi">Mutasi</option>
+              </select>
+            </div>
+            <button type="submit" id="btnSubmit" class="btn btn-primary mt-20">Ambil Nomor Antrean</button>
+          </form>
+        </div>
+
+        <div class="card text-center" id="successCard" style="display:none;">
+          <h2 style="color:#388E3C; margin-bottom:15px;">Pengambilan Antrean Berhasil!</h2>
+          <div style="font-size: 2.5rem; font-weight: bold; margin: 15px 0; color: var(--primary-color);" id="resNomor">---</div>
+          <table style="width:100%; margin-bottom: 20px; text-align: left; font-size:0.95rem;">
+            <tr><td style="width:35%; font-weight:bold;">Nama</td><td>: <span id="resNama"></span></td></tr>
+            <tr><td style="font-weight:bold;">Jalur</td><td>: <span id="resJalur"></span></td></tr>
+            <tr><td style="font-weight:bold;">Waktu Ambil</td><td>: <span id="resWaktu"></span></td></tr>
+          </table>
+          <div class="mb-20">
+            <img id="qrCodeImg" src="" alt="QR Code Antrean" style="border: 1px solid #ddd; padding: 5px; max-width: 200px;">
+          </div>
+          <button onclick="window.print()" class="btn btn-accent">Cetak Bukti</button>
+          <a href="cek.html" class="btn btn-primary">Cek Status Realtime</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>SIVERA Apps by MB | © 2026 SMP Negeri 1 Moga. All Rights Reserved</p>
+  </div>
+
+  <script>
+    // ==========================================
+    // CONFIGURATION: PASTE URL WEB APP GAS DI SINI
+    // ==========================================
+    const URL_GAS = "https://script.google.com/macros/s/XXXXXX/exec"; 
+
+    window.addEventListener('load', function() {
+      // Ambil data inisialisasi awal lewat skema fetch GET
+      fetch(`${URL_GAS}?action=getInitialData`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success || data.settings) {
+            initPage(data);
+          } else {
+            renderBlockout("Gagal memuat konfigurasi sistem server.");
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          renderBlockout("Koneksi gagal ke server Backend SIVERA.");
+        });
+    });
+
+    function initPage(data) {
+      // 1. Render Pengumuman
+      let annHtml = '';
+      if(!data.announcements || data.announcements.length === 0) {
+        annHtml = '<p>Tidak ada pengumuman operasional aktif hari ini.</p>';
+      } else {
+        data.announcements.forEach(a => {
+          annHtml += `<div style="margin-bottom:15px;"><strong>${a.judul}</strong><p style="font-size:0.9rem; opacity:0.8; margin-top:5px;">${a.isi}</p></div><hr style="opacity:0.1; margin:10px 0;">`;
+        });
+      }
+      document.getElementById('announcementBox').innerHTML = annHtml;
+
+      // 2. Setup Batas Kuota Visual
+      document.getElementById('maxDOM').innerText = data.settings['Kuota Domisili'] || 116;
+      document.getElementById('maxPRE').innerText = data.settings['Kuota Prestasi'] || 108;
+      document.getElementById('maxAFI').innerText = data.settings['Kuota Afirmasi'] || 58;
+      document.getElementById('maxMUT').innerText = data.settings['Kuota Mutasi'] || 6;
+
+      // 3. Validasi Kontrol Rentang Jadwal Buka/Tutup Sistem
+      const statusSistem = data.settings['Status Sistem'];
+      if(statusSistem === 'Nonaktif') {
+        renderBlockout("Sistem SIVERA Sedang Dinonaktifkan Sementara oleh Administrator.");
+        return;
+      }
+
+      const tglMulai = new Date(data.settings['Tanggal Mulai'] + 'T' + data.settings['Jam Buka']);
+      const tglSelesai = new Date(data.settings['Tanggal Selesai'] + 'T' + data.settings['Jam Tutup']);
+      const serverTime = new Date(data.serverTime);
+
+      if(serverTime < tglMulai) {
+        renderBlockout("Pendaftaran antrean belum dibuka.", true, tglMulai, serverTime);
+        return;
+      } else if (serverTime > tglSelesai) {
+        renderBlockout("Pengambilan antrean telah ditutup.");
+        return;
+      }
+      
+      // 4. Mengisi Data Progress Statistik Bar Terisi (GET request via fetch)
+      fetch(`${URL_GAS}?action=getStatistikData`)
+        .then(res => res.json())
+        .then(res => {
+           if(res.success && res.stats) {
+              let s = res.stats;
+              updateProgressBar('progressDOM', s['Domisili'] || 0, data.settings['Kuota Domisili'] || 116);
+              updateProgressBar('progressPRE', s['Prestasi'] || 0, data.settings['Kuota Prestasi'] || 108);
+              updateProgressBar('progressAFI', s['Afirmasi'] || 0, data.settings['Kuota Afirmasi'] || 58);
+              updateProgressBar('progressMUT', s['Mutasi'] || 0, data.settings['Kuota Mutasi'] || 6);
+           }
+        }).catch(err => console.log("Statistik gagal dimuat:", err));
+    }
+
+    function updateProgressBar(id, terisi, total) {
+      let pct = (parseInt(terisi) / parseInt(total)) * 100;
+      document.getElementById(id).style.width = Math.min(pct, 100) + '%';
+    }
+
+    function renderBlockout(msg, countdown = false, targetDate = null, currentDate = null) {
+      document.getElementById('mainFormLayout').style.display = 'none';
+      document.getElementById('systemMessageCard').style.display = 'block';
+      document.getElementById('sysMessageTitle').innerText = msg;
+      
+      if(countdown && targetDate) {
+        let diff = targetDate.getTime() - currentDate.getTime();
+        let interval = setInterval(function() {
+          if (diff <= 0) {
+            clearInterval(interval);
+            window.location.reload();
+          }
+          let hours = Math.floor(diff / (1000 * 60 * 60));
+          let mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          let secs = Math.floor((diff % (1000 * 60)) / 1000);
+          document.getElementById('sysCountdown').innerText = `Membuka Dalam: ${hours}j ${mins}m ${secs}d`;
+          diff -= 1000;
+        }, 1000);
+      }
+    }
+
+    function handleAmbilAntrean() {
+      document.getElementById('btnSubmit').disabled = true;
+      document.getElementById('btnSubmit').innerText = "Memproses...";
+      
+      const payload = {
+        action: "submitAntrean",
+        formData: {
+          noSpmb: document.getElementById('noSpmb').value,
+          nisn: document.getElementById('nisn').value,
+          nama: document.getElementById('nama').value,
+          jk: document.getElementById('jk').value,
+          asalSekolah: document.getElementById('asalSekolah').value,
+          desa: document.getElementById('desa').value,
+          noWa: document.getElementById('noWa').value,
+          jalur: document.getElementById('jalur').value
+        },
+        meta: getDeviceMeta()
+      };
+
+      // Mengirimkan data via POST Fetch API ke GAS
+      fetch(URL_GAS, {
+        method: "POST",
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(res => {
+        if(res.success) {
+          document.getElementById('formCard').style.display = 'none';
+          document.getElementById('successCard').style.display = 'block';
+          document.getElementById('resNomor').innerText = res.nomorAntrean;
+          document.getElementById('resNama').innerText = res.nama;
+          document.getElementById('resJalur').innerText = res.jalur;
+          document.getElementById('resWaktu').innerText = res.tanggal;
+          
+          // Memanfaatkan qrserver API gratis untuk membuat QR-Code bukti pendaftaran
+          document.getElementById('qrCodeImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(res.nomorAntrean + '|' + payload.formData.nisn)}`;
+        } else {
+          alert(res.message);
+          document.getElementById('btnSubmit').disabled = false;
+          document.getElementById('btnSubmit').innerText = "Ambil Nomor Antrean";
+        }
+      })
+      .catch(err => {
+        alert("Terjadi kegagalan sistem saat menghubungi server backend.");
+        document.getElementById('btnSubmit').disabled = false;
+        document.getElementById('btnSubmit').innerText = "Ambil Nomor Antrean";
+      });
+    }
+
+    // Ekstraksi Metadata Perangkat Alternatif Sisi Client (Pengganti include GAS)
+    function getDeviceMeta() {
+      const ua = navigator.userAgent;
+      let os = "Unknown OS";
+      if (ua.indexOf("Windows") !== -1) os = "Windows";
+      else if (ua.indexOf("Mac") !== -1) os = "MacOS";
+      else if (ua.indexOf("X11") !== -1) os = "UNIX";
+      else if (ua.indexOf("Linux") !== -1) os = "Linux";
+      else if (/Android/.test(ua)) os = "Android";
+      else if (/iPhone|iPad|iPod/.test(ua)) os = "iOS";
+
+      return {
+        ip: "Client-IP", // GAS doPost akan membaca IP server, jika ingin IP asli butuh library third-party ipify
+        browser: navigator.appName || "Browser",
+        os: os,
+        device: /Mobi|Android|iPhone/i.test(ua) ? "Mobile" : "Desktop"
+      };
+    }
+  </script>
+</body>
+</html>
