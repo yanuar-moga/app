@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIVERA - Cek Status Antrean SMPN 1 Moga</title>
+  
+  <style>
+    :root {
+      --primary-color: #1A237E;
+      --secondary-color: #0D47A1;
+      --accent-color: #FFB300;
+      --bg-color: #F5F5F5;
+      --card-bg: #FFFFFF;
+      --text-color: #333333;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+    
+    .navbar { display: flex; justify-content: space-between; align-items: center; background-color: var(--primary-color); color: white; padding: 15px 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .brand-container { display: flex; align-items: center; gap: 15px; }
+    .school-logo { width: 60px; height: 60px; object-fit: contain; }
+    .school-info h1 { font-size: 1.4rem; font-weight: 700; line-height: 1.2; color: white; }
+    .school-info p { font-size: 0.8rem; opacity: 0.9; }
+    .school-info a { color: var(--accent-color); text-decoration: none; font-weight: bold; }
+    .nav-link { color: white; text-decoration: none; font-weight: bold; padding: 8px 15px; background-color: rgba(255,255,255,0.1); border-radius: 6px; font-size: 0.9rem; transition: background 0.3s; }
+    .nav-link:hover { background-color: rgba(255,255,255,0.2); }
+
+    .container { max-width: 700px; margin: 30px auto; padding: 0 20px; }
+    .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 25px; }
+    .card-title { font-size: 1.2rem; font-weight: bold; color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 8px; margin-bottom: 20px; }
+    
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 10px; font-size: 0.95rem; }
+    .form-control { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
+    .form-control:focus { outline: none; border-color: var(--primary-color); }
+    
+    .search-box-wrapper { display: flex; gap: 10px; }
+    
+    .btn { display: inline-block; padding: 12px 24px; font-size: 1rem; font-weight: bold; text-align: center; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; transition: background 0.3s; }
+    .btn-primary { background-color: var(--primary-color); color: white; }
+    .btn-primary:hover { background-color: #0F172A; }
+    .btn-accent { background-color: var(--accent-color); color: #1A237E; }
+    .btn-accent:hover { background-color: #FFA000; }
+    
+    /* Styling Komponen Badge Status Realtime */
+    .badge { padding: 6px 14px; font-size: 0.85rem; font-weight: bold; border-radius: 20px; text-transform: uppercase; color: white; background-color: #757575; }
+    .badge-waiting { background-color: #F57C00; }   /* Oranye untuk Menunggu */
+    .badge-active { background-color: #D32F2F; animation: pulse 1.5s infinite; }    /* Merah berkedip untuk Dipanggil */
+    .badge-success { background-color: #388E3C; }   /* Hijau untuk Terverifikasi */
+    .badge-danger { background-color: #C62828; }    /* Merah tua untuk Batal/Ditolak */
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+
+    .footer { text-align: center; padding: 20px; font-size: 0.85rem; color: #666; background: #E0E0E0; margin-top: 50px; }
+
+    /* Media Query Responsivitas HP */
+    @media (max-width: 768px) {
+      .navbar { flex-direction: column; text-align: center; padding: 15px; gap: 12px; }
+      .brand-container { flex-direction: column; gap: 8px; }
+      .school-logo { width: 50px; height: 50px; }
+      .school-info h1 { font-size: 1.2rem; }
+      .container { padding: 0 10px; margin: 10px auto; }
+      .card { padding: 15px; }
+      .search-box-wrapper { flex-direction: column; }
+      .search-box-wrapper button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="brand-container">
+      <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo SMPN 1 Moga" class="school-logo">
+      <div class="school-info">
+        <h1>🎓 SIVERA</h1>
+        <p>SMP Negeri 1 Moga | Jl. Simpang Tiga Banyumudal, Kec. Moga</p>
+        <p>Website Resmi: <a href="https://smpn1moga.sch.id/" target="_blank">smpn1moga.sch.id</a></p>
+      </div>
+    </div>
+    <a href="daftar.html" class="nav-link">← Ke Pendaftaran</a>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <div class="card-title">Cek Status & Posisi Antrean Realtime</div>
+      <div class="form-group">
+        <label for="searchKeyword">Masukkan Nomor Antrean atau NISN Siswa</label>
+        <div class="search-box-wrapper">
+          <input type="text" id="searchKeyword" class="form-control" placeholder="Contoh: DOM-001 atau 310294xxxx">
+          <button onclick="prosesCekStatus()" id="btnCari" class="btn btn-primary">Cari Data</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="statusResultCard" class="card" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; gap: 10px;">
+        <h3 id="lblNama" style="color:var(--primary-color);">Nama Pendaftar</h3>
+        <span id="badgeStatus" class="badge">Status</span>
+      </div>
+      
+      <div style="overflow-x: auto;">
+        <table style="width:100%; border-collapse: collapse; margin-bottom: 20px; min-width: 250px;">
+          <tr style="border-bottom: 1px solid #eee; height:38px;">
+            <td style="width:45%; color:#555;">Nomor Antrean</td>
+            <td>: <strong id="lblAntrean" style="color:var(--secondary-color); font-size:1.1rem;"></strong></td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eee; height:38px;">
+            <td style="color:#555;">NISN</td>
+            <td>: <span id="lblNisn"></span></td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eee; height:38px;">
+            <td style="color:#555;">Jalur Pendaftaran</td>
+            <td>: <span id="lblJalur"></span></td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eee; height:38px;">
+            <td style="color:#555;">Sedang Dilayani</td>
+            <td>: <span id="lblSedangDilayani" style="font-weight:bold; color:#2E7D32;">-</span></td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eee; height:38px;">
+            <td style="color:#555;">Posisi Urutan Anda</td>
+            <td>: Baris ke-<span id="lblPosisi" style="font-weight: 600;"></span> dari berkas masuk</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eee; height:38px;">
+            <td style="color:#555;">Sisa Antrean di Depan</td>
+            <td>: <span id="lblSisa" style="font-weight: bold; color: #E65100;"></span> Antrean Lagi</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eee; height:38px;">
+            <td style="color:#555;">Estimasi Waktu Tunggu</td>
+            <td>: <span id="lblEstimasi" style="font-weight:bold; color:#D32F2F;">-</span></td>
+          </tr>
+        </table>
+      </div>
+
+      <div style="display:flex; flex-direction: column; gap: 10px; background-color: var(--bg-color); padding: 12px; border-radius: 6px; text-align: center;">
+        <span style="font-size:0.8rem; color:#666;">Data Terakhir Diperbarui: <strong id="lblTimeUpdated">-</strong></span>
+        <button onclick="prosesCekStatus()" id="btnRefresh" class="btn btn-accent" style="padding: 10px; font-size:0.9rem; width: 100%;">🔄 Perbarui Status</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>SIVERA Apps by MB | © 2026 SMP Negeri 1 Moga. All Rights Reserved</p>
+  </div>
+
+  <script>
+    // ==========================================
+    // CONFIGURATION: PASTE URL WEB APP GAS DI SINI
+    // ==========================================
+    const URL_GAS = "https://script.google.com/macros/s/XXXXXX/exec"; 
+
+    function prosesCekStatus() {
+      const kw = document.getElementById('searchKeyword').value.trim();
+      if(!kw) return alert('Mohon masukkan keyword pencarian dahulu.');
+      
+      // Memberikan efek loading pada tombol pencarian
+      setLoadingState(true);
+      
+      // Melakukan pemanggilan data menggunakan struktur REST API (GET) ke GAS Baru Anda
+      fetch(`${URL_GAS}?action=cekStatusAntrean&keyword=${encodeURIComponent(kw)}`)
+        .then(res => res.json())
+        .then(res => {
+          setLoadingState(false);
+          if(res.success) {
+            document.getElementById('statusResultCard').style.display = 'block';
+            document.getElementById('lblNama').innerText = res.nama;
+            document.getElementById('lblAntrean').innerText = res.nomorAntrean;
+            document.getElementById('lblNisn').innerText = res.nisn;
+            document.getElementById('lblJalur').innerText = res.jalur;
+            document.getElementById('lblSedangDilayani').innerText = res.sedangDilayani;
+            document.getElementById('lblPosisi').innerText = res.posisiAntrean;
+            document.getElementById('lblSisa').innerText = res.sisaAntrean;
+            document.getElementById('lblEstimasi').innerText = res.estimasiWaktu;
+            document.getElementById('lblTimeUpdated').innerText = res.updatedAt;
+
+            // Logika pengaturan kelas warna badge secara dinamis
+            const b = document.getElementById('badgeStatus');
+            b.className = 'badge'; // reset class
+            b.innerText = res.status;
+            
+            if(res.status === 'Menunggu') {
+              b.classList.add('badge-waiting');
+            } else if(res.status === 'Sedang Dipanggil') {
+              b.classList.add('badge-active');
+            } else if(res.status === 'Terverifikasi') {
+              b.classList.add('badge-success');
+            } else {
+              b.classList.add('badge-danger');
+            }
+          } else {
+            alert(res.message);
+            document.getElementById('statusResultCard').style.display = 'none';
+          }
+        })
+        .catch(err => {
+          setLoadingState(false);
+          console.error(err);
+          alert('Gagal mengambil data. Hubungan internet terputus atau backend server down.');
+        });
+    }
+
+    function setLoadingState(isLoading) {
+      const btnCari = document.getElementById('btnCari');
+      const btnRefresh = document.getElementById('btnRefresh');
+      
+      if(isLoading) {
+        btnCari.disabled = true;
+        btnCari.innerText = "Memuat...";
+        btnRefresh.disabled = true;
+        btnRefresh.innerText = "Memperbarui Data...";
+      } else {
+        btnCari.disabled = false;
+        btnCari.innerText = "Cari Data";
+        btnRefresh.disabled = false;
+        btnRefresh.innerText = "🔄 Perbarui Status";
+      }
+    }
+  </script>
+</body>
+</html>
