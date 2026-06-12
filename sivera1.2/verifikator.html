@@ -8,6 +8,15 @@
     <style>
         .popup-animate { transform: scale(0.9); opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .popup-active { transform: scale(1); opacity: 1; }
+        
+        /* ANIMASI LOGO POPUP */
+        @keyframes verifPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(30, 58, 138, 0.3)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(30, 58, 138, 0.6)); }
+        }
+        .animate-logo-popup {
+            animation: verifPulse 3s ease-in-out infinite;
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen text-gray-800 flex flex-col">
@@ -60,7 +69,7 @@
                                 <th class="p-2.5">No</th>
                                 <th class="p-2.5">Nama</th>
                                 <th class="p-2.5">Jalur</th>
-                                <th class="p-2.5">Status</th>
+                                <th class="p-2.5"><span class="px-2 py-0.5 rounded text-[9px] font-black tracking-wider ${badge}">Status</span></th>
                                 <th class="p-2.5 text-center">Aksi</th>
                             </tr>
                         </thead>
@@ -71,33 +80,98 @@
         </div>
     </div>
 
-    <!-- FOOTER REVISI -->
+    <!-- FOOTER -->
     <footer class="bg-white border-t-2 border-gray-200 py-4 text-center text-xs text-gray-600 mt-auto shadow-inner w-full">
         <button onclick="toggleDevPopup(true)" class="hover:text-blue-900 font-bold tracking-wide uppercase focus:outline-none transition">
             Aplikasi SIVERA V 1.2
         </button>
     </footer>
 
-    <!-- POPUP DEVELOPER -->
+    <!-- GLOBAL POP-UP SUBSTITUSI ALERT & CONFIRM -->
+    <div id="global-alert-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="global-alert-box" class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-blue-900">
+            <h3 id="global-alert-title" class="text-lg font-black text-blue-900 uppercase tracking-wide mb-2">NOTIFIKASI PETUGAS</h3>
+            <p id="global-alert-desc" class="text-sm font-semibold text-gray-600 mb-5 whitespace-pre-line">Pesan modal verifikator.</p>
+            <div id="global-alert-buttons" class="flex gap-3 justify-center"></div>
+        </div>
+    </div>
+
+    <!-- REVISI: RE-DESIGN POP-UP DEVELOPER VERIFIKATOR PANEL -->
     <div id="dev-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
         <div id="dev-box" class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-blue-900">
-            <h3 class="text-xl font-black text-blue-900 tracking-wider mb-1">SIVERA V 1.2</h3>
-            <div class="w-12 h-1 bg-amber-400 mx-auto mb-4"></div>
-            <div class="text-left text-xs space-y-2 bg-gray-50 p-4 rounded-xl border font-mono text-gray-700 mb-5">
-                <div><strong>Dev :</strong> MB</div>
-                <div><strong>Version :</strong> 1.2</div>
-                <div><strong>Build :</strong> 12 Juni 2026</div>
-                <div><strong>Contac :</strong> <a href="mailto:yanuar.b@gmail.com" class="text-blue-600 underline font-bold">yanuar.b@gmail.com</a></div>
+            
+            <!-- Identitas Utama & Logo Animasi -->
+            <div class="flex flex-col items-center mb-5">
+                <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-gray-100 shadow p-1 bg-white animate-logo-popup mb-3">
+                    <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Sivera Logo" class="w-full h-full object-cover rounded-full">
+                </div>
+                <h3 class="text-base font-black text-blue-950 uppercase tracking-wide">Sistem Verivikasi Antrean</h3>
+                <div class="flex items-center gap-3 mt-1 text-xs font-mono text-gray-500 bg-gray-50 px-3 py-1 rounded-full border">
+                    <span><strong>Dev:</strong> MB</span>
+                    <span class="text-gray-300">|</span>
+                    <span><strong>Version:</strong> 1.2</span>
+                </div>
             </div>
-            <button onclick="toggleDevPopup(false)" class="w-full bg-blue-900 hover:bg-blue-950 text-white font-bold text-xs py-3 rounded-xl uppercase tracking-wider transition">Tutup</button>
+
+            <!-- Menu Grid Informasi Jelas -->
+            <div class="grid grid-cols-1 gap-2.5 text-left mb-6">
+                <div class="bg-gradient-to-r from-slate-50 to-blue-50 p-3 rounded-xl border flex items-center gap-3 shadow-sm">
+                    <div class="bg-blue-900 text-white p-2 rounded-lg text-xs font-black tracking-tight">BUILD</div>
+                    <div class="text-xs font-black text-blue-950">12 Juni 2026</div>
+                </div>
+                <a href="mailto:yanuar.b@gmail.com" class="bg-gradient-to-r from-slate-50 to-blue-50 p-3 rounded-xl border flex items-center gap-3 shadow-sm hover:border-blue-900 transition block">
+                    <div class="bg-gray-200 text-blue-900 p-2 rounded-lg text-xs font-black tracking-tight border">CONTACT</div>
+                    <div class="text-xs font-black text-blue-950 underline break-all">yanuar.b@gmail.com</div>
+                </a>
+            </div>
+
+            <button onclick="toggleDevPopup(false)" class="w-full bg-blue-900 hover:bg-blue-950 text-white font-black text-xs py-3.5 rounded-xl uppercase tracking-wider transition shadow-md">
+                KEMBALI KERJA
+            </button>
         </div>
     </div>
 
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzA0xQfsUmrVWGTI1WQFauY3UZ2HIV5u7WZRKJ39bpKM1V9cScV-PfRj-n8gZ6Emk9uvw/exec";
         let sessionLoket = "", sessionPin = "";
+        let confirmCallback = null;
 
-        // ANTI MENTAL: Cek session simpanan di localStorage saat pertama kali dimuat
+        window.alert = function(message) {
+            const popup = document.getElementById('global-alert-popup');
+            const box = document.getElementById('global-alert-box');
+            document.getElementById('global-alert-title').innerText = "NOTIFIKASI LOKET";
+            document.getElementById('global-alert-desc').innerText = message;
+            document.getElementById('global-alert-buttons').innerHTML = `
+                <button onclick="closeGlobalPopup()" class="w-full bg-blue-800 hover:bg-blue-900 text-white font-black text-xs py-3 rounded-xl uppercase tracking-wider transition">MENGERTI</button>
+            `;
+            popup.classList.remove('pointer-events-none', 'opacity-0');
+            setTimeout(() => box.classList.add('popup-active'), 50);
+        };
+
+        window.customConfirm = function(message, callback) {
+            confirmCallback = callback;
+            const popup = document.getElementById('global-alert-popup');
+            const box = document.getElementById('global-alert-box');
+            document.getElementById('global-alert-title').innerText = "KONFIRMASI PETUGAS";
+            document.getElementById('global-alert-desc').innerText = message;
+            document.getElementById('global-alert-buttons').innerHTML = `
+                <button onclick="triggerConfirm(false)" class="flex-1 bg-gray-200 text-gray-700 font-bold text-xs py-3 rounded-xl uppercase tracking-wider transition">BATAL</button>
+                <button onclick="triggerConfirm(true)" class="flex-1 bg-blue-800 hover:bg-blue-900 text-white font-black text-xs py-3 rounded-xl uppercase tracking-wider transition">LAYANI</button>
+            `;
+            popup.classList.remove('pointer-events-none', 'opacity-0');
+            setTimeout(() => box.classList.add('popup-active'), 50);
+        };
+
+        function triggerConfirm(value) {
+            closeGlobalPopup();
+            if(confirmCallback) confirmCallback(value);
+        }
+
+        function closeGlobalPopup() {
+            document.getElementById('global-alert-box').classList.remove('popup-active');
+            document.getElementById('global-alert-popup').classList.add('opacity-0', 'pointer-events-none');
+        }
+
         window.onload = function() {
             const savedLoket = localStorage.getItem('sivera_loket');
             const savedPin = localStorage.getItem('sivera_loket_pin');
@@ -130,7 +204,7 @@
                 if(data.status === "authorized") {
                     sessionLoket = loket; sessionPin = pin;
                     localStorage.setItem('sivera_loket', loket);
-                    localStorage.setItem('sivera_loket_pin', pin); // Amankan Sesi
+                    localStorage.setItem('sivera_loket_pin', pin);
                     document.getElementById('auth-panel').classList.add('hidden');
                     document.getElementById('main-panel').classList.remove('hidden');
                     document.getElementById('label-loket').innerText = `Ruang Loket: ${loket} (${data.nama_petugas})`;
@@ -170,18 +244,20 @@
         }
 
         function validasiAntrean(no, nama) {
-            if(!confirm(`Layani nomor antrean ${no}?`)) return;
-            fetch(APPS_SCRIPT_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "serveQueue", no_antrean: no, loket: sessionLoket, pin: sessionPin })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if(data.status === "success") {
-                    document.getElementById('active-num').innerText = String(no).padStart(3, '0');
-                    document.getElementById('active-name').innerText = nama;
-                    loadQueueTable();
-                }
+            window.customConfirm(`Layani nomor antrean ${no}?`, function(isYes) {
+                if(!isYes) return;
+                fetch(APPS_SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify({ action: "serveQueue", no_antrean: no, loket: sessionLoket, pin: sessionPin })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.status === "success") {
+                        document.getElementById('active-num').innerText = String(no).padStart(3, '0');
+                        document.getElementById('active-name').innerText = nama;
+                        loadQueueTable();
+                    }
+                });
             });
         }
 
