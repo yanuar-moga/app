@@ -47,7 +47,6 @@
 </head>
 <body class="bg-gray-100 font-sans antialiased text-gray-800 flex flex-col min-h-screen">
 
-    <!-- HEADER -->
     <header class="bg-smp-blue text-white shadow-md p-4 sticky top-0 z-40">
         <div class="max-w-md mx-auto flex items-center gap-4">
             <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo SMP" class="w-14 h-14 object-contain drop-shadow">
@@ -59,7 +58,6 @@
         </div>
     </header>
 
-    <!-- LIVE NOTIFICATION -->
     <div class="bg-amber-400 border-b border-amber-500 py-2.5 px-4 text-center shadow-sm">
         <div class="max-w-md mx-auto flex flex-col items-center justify-center font-black text-blue-950 uppercase tracking-wide">
             <div id="live-info-l1" class="text-xs text-blue-900 opacity-90 tracking-widest">Memuat info loket...</div>
@@ -67,7 +65,6 @@
         </div>
     </div>
 
-    <!-- TEXT TICKER VERTIKAL -->
     <div class="bg-gray-900 text-osis-yellow text-xs px-4 border-b border-gray-800">
         <div class="max-w-md mx-auto ticker-vertical-container">
             <div id="text-ticker-container" class="ticker-vertical-content font-bold uppercase tracking-wide text-center whitespace-normal break-words leading-tight">
@@ -76,10 +73,8 @@
         </div>
     </div>
 
-    <!-- MAIN CONTENT -->
     <main class="flex-grow p-4 max-w-md w-full mx-auto">
         
-        <!-- TAB NAVIGATION -->
         <div class="flex bg-gray-200 p-1 rounded-xl mb-4 shadow-inner">
             <button onclick="switchTab('daftar')" id="btn-tab-daftar" class="flex-1 py-2 text-sm font-bold rounded-lg bg-white text-smp-blue shadow-sm transition">
                 AMBIL ANTREAN
@@ -89,7 +84,6 @@
             </button>
         </div>
 
-        <!-- TAB 1: FORM DAFTAR -->
         <div id="tab-daftar" class="bg-white rounded-2xl p-5 shadow-md border border-gray-200">
             <h2 class="text-lg font-black text-smp-blue mb-4 border-b pb-2 tracking-wide uppercase">
                 Form Pendaftaran Antrean
@@ -137,7 +131,6 @@
                     <textarea id="alamat" required rows="2" class="w-full bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:border-smp-blue outline-none transition" placeholder="Nama desa, RT/RW, Kecamatan"></textarea>
                 </div>
                 
-                <!-- CAPTCHA SECURITY -->
                 <div class="bg-gray-100 p-3 rounded-xl border border-gray-300">
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Verifikasi Keamanan</label>
                     <div class="flex items-center gap-3">
@@ -152,7 +145,6 @@
             </form>
         </div>
 
-        <!-- TAB 2: CEK STATUS -->
         <div id="tab-status" class="bg-white rounded-2xl p-5 shadow-md border border-gray-200 hidden">
             <h2 class="text-lg font-black text-smp-blue mb-4 border-b pb-2 tracking-wide uppercase">
                 Cek Realtime Antrean
@@ -162,7 +154,6 @@
                 <button onclick="checkStatus()" class="bg-smp-blue text-white px-5 rounded-lg text-xs font-black uppercase hover:bg-blue-900 transition">CARI</button>
             </div>
             
-            <!-- Result Box -->
             <div id="status-result" class="hidden space-y-4">
                 <div class="bg-blue-600 p-5 rounded-2xl text-center text-white shadow-inner">
                     <p class="text-xs font-bold uppercase tracking-widest text-blue-200">Nomor Antrean Anda</p>
@@ -191,14 +182,12 @@
         </div>
     </main>
 
-    <!-- FOOTER -->
     <footer class="bg-white border-t-2 border-gray-200 py-4 text-center text-xs text-gray-600 mt-auto shadow-inner">
         <button onclick="toggleDevPopup(true)" class="hover:text-smp-blue font-bold tracking-wide uppercase focus:outline-none transition">
             Aplikasi SIVERA V 1.2
         </button>
     </footer>
 
-    <!-- GLOBAL DYNAMIC POP-UP SYSTEM -->
     <div id="global-alert-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
         <div id="global-alert-box" class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-smp-blue">
             <h3 id="global-alert-title" class="text-lg font-black text-gray-950 uppercase tracking-wide mb-2">NOTIFIKASI</h3>
@@ -209,7 +198,6 @@
         </div>
     </div>
 
-    <!-- FLASH MESSAGE ALERT POP-UP -->
     <div id="flash-popup" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
         <div id="flash-box" class="bg-gradient-to-br from-amber-400 to-amber-300 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-4 border-blue-900">
             <h3 class="text-lg font-black text-blue-950 uppercase tracking-widest mb-2">[ PENGUMUMAN KILAT PANITIA ]</h3>
@@ -218,16 +206,14 @@
         </div>
     </div>
 
-    <!-- REVISI: POP-UP DEVELOPER DENGAN ANIMASI LOGO & FOOTER MENU INTERAKTIF -->
     <div id="dev-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
         <div id="dev-box" class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-smp-blue">
             
-            <!-- Bagian Logo Bergerak & Identitas Utama -->
             <div class="flex flex-col items-center mb-5">
                 <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-gray-100 shadow p-1 bg-white animate-logo-popup mb-3">
                     <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Sivera Logo" class="w-full h-full object-cover rounded-full">
                 </div>
-                <h3 class="text-base font-black text-gray-900 uppercase tracking-wide">Sistem Verivikasi Antrean</h3>
+                <h3 class="text-base font-black text-gray-900 uppercase tracking-wide">Sistem Verifikasi Antrean</h3>
                 <div class="flex items-center gap-3 mt-1 text-xs font-mono text-gray-500 bg-gray-100 px-3 py-1 rounded-full border">
                     <span><strong>Dev:</strong> MB</span>
                     <span class="text-gray-300">|</span>
@@ -235,7 +221,6 @@
                 </div>
             </div>
 
-            <!-- Bagian Footer yang Diubah Menjadi Menu Informasi Jelas -->
             <div class="grid grid-cols-1 gap-2.5 text-left mb-6">
                 <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-xl border border-blue-100 flex items-center gap-3 shadow-sm">
                     <div class="bg-smp-blue text-white p-2 rounded-lg text-xs font-bold tracking-tight">BUILD</div>
@@ -382,6 +367,7 @@
             }).catch(() => alert("Koneksi Error. Gagal menghubungi server."));
         }
 
+        /* REVISI PARSING ESTIMASI JAM DI SINI */
         function checkStatus() {
             const nisn = document.getElementById('search-nisn').value;
             if(!nisn) return;
@@ -393,10 +379,27 @@
                     document.getElementById('res-no-antrean').innerText = String(data.no_antrean).padStart(3, '0');
                     document.getElementById('res-nama').innerText = data.nama;
                     document.getElementById('res-current').innerText = data.current_serving || "Belum Mulai";
+                    
                     let sisa = data.no_antrean - data.current_serving;
                     document.getElementById('res-sisa').innerText = sisa > 0 ? `${sisa} Orang` : (sisa === 0 ? "GILIRAN ANDA!" : "SELESAI");
                     document.getElementById('res-ruang').innerText = data.ruang ? `Silakan menuju ke Ruang Verifikator ${data.ruang}` : "Menunggu panggilan loket...";
-                    document.getElementById('res-jam').innerText = data.estimasi_jam ? `Pukul ${data.estimasi_jam} WIB` : "--:--";
+                    
+                    // Logic Konversi Epoch Date String (1899-12-30T...) ke Jam Lokal WIB
+                    if (data.estimasi_jam) {
+                        if (data.estimasi_jam.includes('T') && data.estimasi_jam.includes('Z')) {
+                            const dateObj = new Date(data.estimasi_jam);
+                            const jam = String(dateObj.getHours()).padStart(2, '0');
+                            const menit = String(dateObj.getMinutes()).padStart(2, '0');
+                            const detik = String(dateObj.getSeconds()).padStart(2, '0');
+                            
+                            document.getElementById('res-jam').innerText = `Pukul ${jam}:${menit}:${detik} WIB`;
+                        } else {
+                            document.getElementById('res-jam').innerText = `Pukul ${data.estimasi_jam} WIB`;
+                        }
+                    } else {
+                        document.getElementById('res-jam').innerText = "Pukul --:-- WIB";
+                    }
+
                 } else {
                     alert("Nomor NISN tidak terdaftar.");
                 }
@@ -408,11 +411,11 @@
             .then(res => res.json())
             .then(data => {
                 if(data.rawActive) {
-                    document.getElementById('live-info-l1').innerText = `Verivikator R ${data.rawActive.loket}`;
-                    document.getElementById('live-info-l2').innerText = `Sedang Verivikasi No Antrean ${data.rawActive.no} (a.n ${data.rawActive.nama})`;
+                    document.getElementById('live-info-l1').innerText = `Verifikasi R ${data.rawActive.loket}`;
+                    document.getElementById('live-info-l2').innerText = `Sedang Verifikasi No Antrean ${data.rawActive.no} (a.n ${data.rawActive.nama})`;
                 } else {
                     document.getElementById('live-info-l1').innerText = "STATUS VERIFIKATOR";
-                    document.getElementById('live-info-l2').innerText = "Belum Ada Antrean Aktif";
+                    document.getElementById('live-info-l2').innerText = "Belum there Antrean Aktif";
                 }
 
                 if(data.ticker) {
