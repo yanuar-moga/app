@@ -3,88 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sivera - Admin Area</title>
+    <title>Sivera - Super Admin Panel</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-900 min-h-screen text-slate-100 font-sans p-4">
+<body class="bg-gray-900 text-slate-100 font-sans flex flex-col min-h-screen p-4">
 
-    <div class="max-w-5xl mx-auto space-y-6">
-        <!-- HEADER BAR -->
-        <header class="flex justify-between items-center bg-gray-800 p-4 rounded-xl border border-gray-700 shadow-xl">
-            <div class="flex items-center gap-3">
-                <div class="bg-amber-400 p-2 rounded-lg text-gray-900 font-black"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                <div>
-                    <h1 class="text-lg font-bold">Sivera Super Administrator</h1>
-                    <p class="text-xs text-gray-400">Pusat kendali operasional & pemeliharaan sistem</p>
-                </div>
+    <!-- SECURITY LOGIN PANEL -->
+    <div id="admin-auth" class="max-w-md mx-auto mt-20 p-6 bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 w-full">
+        <h2 class="text-xl font-black text-center text-amber-400 mb-2 uppercase tracking-wider">SECURITY LOGIN ADMIN</h2>
+        <p class="text-center text-xs text-gray-400 mb-6 uppercase font-bold">Aplikasi Sivera V 1.2</p>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Masukkan PIN Kode Admin</label>
+                <input type="password" id="admin-pin" class="w-full bg-gray-700 border-2 border-gray-600 rounded-lg p-3 text-center tracking-widest font-black text-white focus:border-amber-400 outline-none" placeholder="••••••••">
             </div>
-            <button onclick="resetSystem()" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-3 py-2 rounded-lg transition">Reset Seluruh Antrean</button>
+            <button onclick="verifyAdminPin()" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 py-3 rounded-xl font-black uppercase tracking-wider transition text-sm">
+                BUKA AKSES SISTEM
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTROL PANEL (HIDDEN DEFAULT) -->
+    <div id="admin-dashboard" class="max-w-5xl mx-auto space-y-6 w-full hidden">
+        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-800 p-4 rounded-xl border border-gray-700 shadow-xl gap-4">
+            <div>
+                <h1 class="text-lg font-black text-amber-400 uppercase tracking-wide">Sivera Pusat Kendali Utama</h1>
+                <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">SMP NEGERI 1 MOGA</p>
+            </div>
+            <button onclick="resetSystem()" class="bg-red-600 hover:bg-red-700 text-white font-black text-xs px-4 py-2.5 rounded-lg tracking-wider uppercase transition">
+                RESET SELURUH DATA ANTREAN
+            </button>
         </header>
 
-        <!-- KENDALI FITUR BARU & KONFIGURASI -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- PENGATURAN TEKNIS & GERBANG ANTREAN -->
             <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 space-y-4">
-                <h3 class="text-sm font-bold text-amber-400 border-b border-gray-700 pb-2"><i class="fa-solid fa-sliders"></i> Pengaturan Parameter</h3>
+                <h3 class="text-sm font-black text-amber-400 border-b border-gray-700 pb-2 uppercase tracking-wider">KONTROL PARAMETER</h3>
+                
+                <!-- GERBANG BUKA/TUTUP -->
                 <div>
-                    <label class="block text-xs text-gray-400 mb-1">Estimasi Waktu per Berkas (Menit)</label>
-                    <input type="number" id="cfg-duration" class="w-full bg-gray-700 p-2 rounded border border-gray-600 text-sm" value="10">
+                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">STATUS GERBANG ANTREAN</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button id="btn-gate-buka" onclick="setGate('Buka')" class="py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-gray-700 text-gray-400">BUKA</button>
+                        <button id="btn-gate-tutup" onclick="setGate('Tutup')" class="py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-gray-700 text-gray-400">TUTUP</button>
+                    </div>
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-400 mb-1">Jam Dimulai Pelayanan</label>
-                    <input type="time" id="cfg-start" class="w-full bg-gray-700 p-2 rounded border border-gray-600 text-sm" value="08:00">
+                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Estimasi Durasi per Berkas (Menit)</label>
+                    <input type="number" id="cfg-duration" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 font-bold text-sm text-white focus:border-amber-400 outline-none" value="10">
                 </div>
-                <button onclick="saveConfig()" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded text-xs font-bold transition">Simpan Fitur & Konfigurasi</button>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Jam Mulai Operasional Loket</label>
+                    <input type="time" id="cfg-start" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 font-bold text-sm text-white focus:border-amber-400 outline-none" value="08:00">
+                </div>
+                <button onclick="saveConfig()" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg text-xs font-black uppercase tracking-wider transition">
+                    SIMPAN PARAMETER UTAMA
+                </button>
             </div>
 
-            <!-- LIVE ACTIVITY LOG -->
-            <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 md:col-span-2 space-y-3">
-                <h3 class="text-sm font-bold text-gray-200 border-b border-gray-700 pb-2 flex justify-between items-center">
-                    <span>Audit Log Aktivitas Terkini (Hari Ini)</span>
-                    <span class="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
-                </h3>
-                <div class="overflow-y-auto max-h-[220px] font-mono text-xs text-gray-300 space-y-1.5" id="admin-logs">
-                    <!-- Log entries filled by system -->
-                    <div>[SYSTEM] Menunggu respon data server...</div>
+            <!-- MANAGEMENT INFORMASI (TEXT TICKER & FLASH POPUP) -->
+            <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 space-y-4 md:col-span-2">
+                <h3 class="text-sm font-black text-amber-400 border-b border-gray-700 pb-2 uppercase tracking-wider">MANAJEMEN PENGUMUMAN REALTIME</h3>
+                
+                <!-- TEXT TICKER UPDATE -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">ISI TEXT TICKER BERJALAN</label>
+                    <textarea id="cfg-ticker" rows="2" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 text-sm font-semibold text-white focus:border-amber-400 outline-none" placeholder="Ketik pengumuman berjalan disini..."></textarea>
                 </div>
+
+                <!-- FLASH POPUP UPDATE -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">KIRIM NOTIFIKASI FLASH POP-UP OTOMATIS (MUNCUL DI HALAMAN DEPAN)</label>
+                    <textarea id="cfg-flash" rows="2" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 text-sm font-semibold text-white focus:border-amber-400 outline-none" placeholder="Ketik pesan darurat yang langsung memotong layar pendaftar..."></textarea>
+                </div>
+
+                <button onclick="broadcastAnnouncement()" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 py-3 rounded-lg text-xs font-black uppercase tracking-wider transition">
+                    PERBARUI DAN BROADCAST PENGUMUMAN SEKARANG
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- FOOTER APLIKASI STANDAR -->
+    <footer class="bg-gray-950 border-t border-gray-800 py-4 text-center text-xs text-gray-500 mt-auto w-full">
+        <span class="font-bold tracking-wide uppercase">
+            Aplikasi Sivera V 1.2 by MB [PANEL ADMIN]
+        </span>
+    </footer>
+
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzA0xQfsUmrVWGTI1WQFauY3UZ2HIV5u7WZRKJ39bpKM1V9cScV-PfRj-n8gZ6Emk9uvw/exec";
+        let activeAdminPin = "";
+        let selectedGateStatus = "Buka";
 
-        window.onload = function() {
-            loadAdminAudit();
-        };
-
-        function loadAdminAudit() {
-            fetch(`${APPS_SCRIPT_URL}?action=getAdminLogs`)
+        function verifyAdminPin() {
+            const pin = document.getElementById('admin-pin').value;
+            fetch(`${APPS_SCRIPT_URL}?action=loginAdmin&pin=${pin}`)
             .then(res => res.json())
             .then(data => {
-                const container = document.getElementById('admin-logs');
-                container.innerHTML = "";
-                data.logs.forEach(log => {
-                    container.innerHTML += `<div class="border-b border-gray-700/50 pb-1 text-gray-400"><span class="text-amber-500">[${log.timestamp}]</span> ${log.message} <span class="text-blue-400">(${log.device_info})</span></div>`;
-                });
+                if(data.status === "authorized") {
+                    activeAdminPin = pin;
+                    document.getElementById('admin-auth').classList.add('hidden');
+                    document.getElementById('admin-dashboard').classList.remove('hidden');
+                    loadCurrentConfig();
+                } else {
+                    alert("PIN KODE ADMIN SALAH! AKSES DITOLAK.");
+                }
             });
+        }
+
+        function loadCurrentConfig() {
+            fetch(`${APPS_SCRIPT_URL}?action=getAdminConfigData`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('cfg-duration').value = data.duration;
+                document.getElementById('cfg-start').value = data.startTime;
+                document.getElementById('cfg-ticker').value = data.ticker;
+                document.getElementById('cfg-flash').value = data.flashMsg;
+                setGate(data.gateStatus);
+            });
+        }
+
+        function setGate(status) {
+            selectedGateStatus = status;
+            const btnBuka = document.getElementById('btn-gate-buka');
+            const btnTutup = document.getElementById('btn-gate-tutup');
+            if(status === "Buka") {
+                btnBuka.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-emerald-600 text-white shadow";
+                btnTutup.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-gray-700 text-gray-400";
+            } else {
+                btnTutup.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-red-600 text-white shadow";
+                btnBuka.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-gray-700 text-gray-400";
+            }
         }
 
         function saveConfig() {
             const duration = document.getElementById('cfg-duration').value;
             const startTime = document.getElementById('cfg-start').value;
-            
             fetch(APPS_SCRIPT_URL, {
                 method: "POST",
-                body: JSON.stringify({ action: "saveConfig", duration: duration, startTime: startTime })
+                body: JSON.stringify({ action: "saveConfig", pin: activeAdminPin, duration, startTime, gateStatus: selectedGateStatus })
             })
             .then(res => res.json())
-            .then(data => { if(data.status === 'success') alert('Parameter konfigurasi baru berhasil ditambahkan!'); });
+            .then(data => { if(data.status === 'success') alert('Parameter operasional berhasil diubah!'); });
+        }
+
+        function broadcastAnnouncement() {
+            const ticker = document.getElementById('cfg-ticker').value;
+            const flash = document.getElementById('cfg-flash').value;
+            fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "broadcastAnnounce", pin: activeAdminPin, ticker, flashMsg: flash })
+            })
+            .then(res => res.json())
+            .then(data => { if(data.status === 'success') alert('Pengumuman & Flash Pop-up berhasil diperbarui secara realtime!'); });
         }
 
         function resetSystem() {
-            if(confirm("PERINGATAN: Anda akan menghapus seluruh rekapan antrean hari ini! Lanjutkan?")) {
-                fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "resetSystem" }) })
+            if(confirm("PERINGATAN KELAS TINGGI: Seluruh basis data antrean pendaftar hari ini akan dihapus permanen! Anda yakin?")) {
+                fetch(APPS_SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify({ action: "resetSystem", pin: activeAdminPin })
+                })
                 .then(res => res.json())
                 .then(data => { if(data.status === 'success') location.reload(); });
             }
