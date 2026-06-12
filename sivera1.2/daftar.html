@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sivera V 1.2 - SMP N 1 Moga</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .bg-smp-blue { background-color: #004687; }
+        .text-smp-blue { color: #004687; }
+        .bg-osis-yellow { background-color: #FFD700; }
+        .text-osis-yellow { color: #FFD700; }
+        .border-smp-blue { border-color: #004687; }
+        .popup-animate { transform: scale(0.9); opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .popup-active { transform: scale(1); opacity: 1; }
+
+        @keyframes customPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(0, 70, 135, 0.3)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(0, 70, 135, 0.6)); }
+        }
+        .animate-logo-popup { animation: customPulse 3s ease-in-out infinite; }
+
+        .ticker-vertical-container { height: 36px; display: flex; align-items: center; overflow: hidden; position: relative; }
+        .ticker-vertical-content { display: block; width: 100%; position: absolute; animation: slideUp 8s cubic-bezier(0.25, 1, 0.5, 1) infinite; }
+        @keyframes slideUp {
+            0%, 5% { transform: translateY(100%); opacity: 0; }
+            10%, 45% { transform: translateY(0); opacity: 1; }
+            50%, 55% { transform: translateY(-100%); opacity: 0; }
+            100% { transform: translateY(-100%); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans antialiased text-gray-800 flex flex-col min-h-screen">
+
+    <!-- HEADER -->
+    <header class="bg-smp-blue text-white shadow-md p-4 sticky top-0 z-40">
+        <div class="max-w-md mx-auto flex items-center gap-4">
+            <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo SMP" class="w-14 h-14 object-contain drop-shadow">
+            <div>
+                <h1 class="font-bold text-lg leading-tight tracking-wide">SMP NEGERI 1 MOGA</h1>
+                <p class="text-xs text-gray-200">Jl. Simpang Tiga Banyumudal, Kec. Moga</p>
+                <a href="https://smpn1moga.sch.id" target="_blank" class="text-xs text-osis-yellow hover:underline font-medium">smpn1moga.sch.id</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- LIVE NOTIFICATION -->
+    <div class="bg-amber-400 border-b border-amber-500 py-2.5 px-4 text-center shadow-sm">
+        <div class="max-w-md mx-auto flex flex-col items-center justify-center font-black text-blue-950 uppercase tracking-wide">
+            <div id="live-info-l1" class="text-xs text-blue-900 opacity-90 tracking-widest">Memuat info loket...</div>
+            <div id="live-info-l2" class="text-sm text-red-700 mt-0.5">Mencari data antrean aktif...</div>
+        </div>
+    </div>
+
+    <!-- TEXT TICKER VERTIKAL -->
+    <div class="bg-gray-900 text-osis-yellow text-xs px-4 border-b border-gray-800">
+        <div class="max-w-md mx-auto ticker-vertical-container">
+            <div id="text-ticker-container" class="ticker-vertical-content font-bold uppercase tracking-wide text-center whitespace-normal break-words leading-tight">
+                [PEMBERITAHUAN]: MEMUAT INFORMASI PENGUMUMAN KHUSUS...
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow p-4 max-w-md w-full mx-auto">
+        
+        <!-- TAB NAVIGATION -->
+        <div class="flex bg-gray-200 p-1 rounded-xl mb-4 shadow-inner">
+            <button onclick="switchTab('daftar')" id="btn-tab-daftar" class="flex-1 py-2 text-sm font-bold rounded-lg bg-white text-smp-blue shadow-sm transition">
+                AMBIL ANTREAN
+            </button>
+            <button onclick="switchTab('status')" id="btn-tab-status" class="flex-1 py-2 text-sm font-bold rounded-lg text-gray-600 transition">
+                CEK STATUS ANDA
+            </button>
+        </div>
+
+        <!-- TAB 1: FORM DAFTAR -->
+        <div id="tab-daftar" class="bg-white rounded-2xl p-5 shadow-md border border-gray-200">
+            <h2 class="text-lg font-black text-smp-blue mb-4 border-b pb-2 tracking-wide uppercase">
+                Form Pendaftaran Antrean
+            </h2>
+            <form id="formAntrean" onsubmit="submitForm(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Jalur SPMB</label>
+                    <select id="jalur" required class="w-full bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:border-smp-blue outline-none transition">
+                        <option value="">-- PILIH JALUR --</option>
+                        <option value="Domisili">ZONASI / DOMISILI</option>
+                        <option value="Prestasi">PRESTASI</option>
+                        <option value="Afirmasi">AFIRMASI</option>
+                        <option value="Mutasi">MUTASI / PERPINDAHAN TUGAS ORANG TUA</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Nama Lengkap</label>
+                    <input type="text" id="nama" required class="w-full bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:border-smp-blue outline-none transition" placeholder="Masukkan nama sesuai ijazah">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Jenis Kelamin</label>
+                    <div class="flex gap-6 mt-1 font-semibold text-sm">
+                        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="jk" value="L" required class="w-4 h-4 text-smp-blue"> Laki-laki</label>
+                        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="jk" value="P" required class="w-4 h-4 text-smp-blue"> Perempuan</label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">NISN</label>
+                    <input type="number" id="nisn" required class="w-full bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:border-smp-blue outline-none transition" placeholder="10 Digit Nomor Induk Siswa Nasional">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">No. HP / WhatsApp</label>
+                    <input type="tel" id="hp" required class="w-full bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:border-smp-blue outline-none transition" placeholder="Contoh: 081234567xxx">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Email</label>
+                    <input type="email" id="email" required class="w-full bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:border-smp-blue outline-none transition" placeholder="alamat@email.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Asal Sekolah</label>
+                    <input type="text" id="asal_sekolah" required class="w-full bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:border-smp-blue outline-none transition" placeholder="SD / MI asal">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Alamat Lengkap</label>
+                    <textarea id="alamat" required rows="2" class="w-full bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:border-smp-blue outline-none transition" placeholder="Nama desa, RT/RW, Kecamatan"></textarea>
+                </div>
+                
+                <div class="bg-gray-100 p-3 rounded-xl border border-gray-300">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Verifikasi Keamanan</label>
+                    <div class="flex items-center gap-3">
+                        <span id="captcha-question" class="bg-white px-4 py-2 rounded-lg border-2 font-black text-sm tracking-wider text-gray-700 select-none">5 + 3 =</span>
+                        <input type="number" id="captcha-answer" required class="w-24 bg-white border-2 border-gray-300 rounded-lg p-2 text-sm text-center font-bold focus:border-smp-blue outline-none" placeholder="Isi Hasil">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-smp-blue hover:bg-blue-900 text-white font-black py-3.5 px-4 rounded-xl transition shadow-md uppercase tracking-wider transform active:scale-95 text-sm">
+                    AMBIL ANTREAN SEKARANG
+                </button>
+            </form>
+        </div>
+
+        <!-- TAB 2: CEK STATUS & BUKTI SCREENSHOT -->
+        <div id="tab-status" class="bg-white rounded-2xl p-5 shadow-md border border-gray-200 hidden">
+            <h2 class="text-lg font-black text-smp-blue mb-4 border-b pb-2 tracking-wide uppercase">
+                Cek Realtime Antrean
+            </h2>
+            <div class="flex gap-2 mb-5">
+                <input type="number" id="search-nisn" class="flex-1 bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-bold focus:border-smp-blue outline-none" placeholder="Masukkan NISN Anda">
+                <button onclick="checkStatus()" class="bg-smp-blue text-white px-5 rounded-lg text-xs font-black uppercase hover:bg-blue-900 transition">CARI</button>
+            </div>
+            
+            <!-- Result Box -->
+            <div id="status-result" class="hidden space-y-4">
+                
+                <!-- LIVE STATUS MONITOR -->
+                <div class="grid grid-cols-2 gap-3 text-center">
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-300">
+                        <p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider">Antrean Sekarang</p>
+                        <p id="res-current" class="text-2xl font-black text-gray-800">--</p>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-300">
+                        <p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider">Sisa Antrean Lagi</p>
+                        <p id="res-sisa" class="text-2xl font-black text-red-600">--</p>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-300">
+                    <p class="text-[10px] uppercase text-amber-600 font-bold tracking-wider">Lokasi Ruang Verifikasi:</p>
+                    <p id="res-ruang" class="text-sm font-black text-amber-950 mt-0.5">Silakan menuju ke Ruang Verifikator --</p>
+                </div>
+
+                <div class="bg-emerald-50 p-3.5 rounded-xl border border-emerald-300 mb-2">
+                    <p class="text-[10px] uppercase text-emerald-600 font-bold tracking-wider">Estimasi Waktu Pelayanan:</p>
+                    <p id="res-jam" class="text-sm font-black text-emerald-950 mt-0.5">Pukul -- WIB</p>
+                </div>
+
+                <!-- KARTU ELEKTRONIK BUKTI NOMOR ANTREAN (SIAP SCREENSHOT) -->
+                <div class="border-2 border-dashed border-gray-400 p-2 rounded-2xl bg-gray-50">
+                    <div id="ticket-capture" class="bg-gradient-to-b from-blue-900 to-smp-blue rounded-xl p-5 text-white shadow-lg relative overflow-hidden">
+                        
+                        <!-- Watermark Ornamen Background -->
+                        <div class="absolute -right-6 -bottom-6 text-white/5 font-black text-9xl pointer-events-none select-none">SMP</div>
+                        
+                        <!-- Header Tiket -->
+                        <div class="flex items-center gap-3 border-b border-white/20 pb-3 mb-4">
+                            <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" class="w-9 h-9 object-contain" alt="Logo">
+                            <div class="text-left">
+                                <h4 class="text-xs font-black tracking-wider uppercase text-osis-yellow">BUKTI NOMOR ANTREAN</h4>
+                                <p class="text-[9px] text-gray-300 font-medium">Sivera V 1.2 • SMP Negeri 1 Moga</p>
+                            </div>
+                        </div>
+
+                        <!-- Blok Nomor Utama -->
+                        <div class="text-center my-4 bg-black/20 py-3 rounded-xl border border-white/10 shadow-inner">
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-blue-200">NOMOR ANTREAN</p>
+                            <p id="res-no-antrean" class="text-5xl font-black my-1 text-osis-yellow tracking-wider">000</p>
+                            <p id="res-ticket-jalur" class="text-[10px] font-extrabold uppercase bg-amber-500 text-blue-950 px-2.5 py-0.5 rounded-full inline-block mt-1 tracking-wide">JALUR --</p>
+                        </div>
+
+                        <!-- Biodata Detail Validasi Pendaftar -->
+                        <div class="space-y-2 text-xs border-t border-white/20 pt-4">
+                            <div class="flex justify-between border-b border-white/5 pb-1">
+                                <span class="text-gray-300">Nama Lengkap</span>
+                                <span id="res-nama" class="font-bold uppercase tracking-wide text-right truncate max-w-[200px]">--</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-1">
+                                <span class="text-gray-300">NISN</span>
+                                <span id="res-nisn" class="font-mono font-bold tracking-wider">--</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-1">
+                                <span class="text-gray-300">Jenis Kelamin</span>
+                                <span id="res-jk" class="font-semibold">--</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-1">
+                                <span class="text-gray-300">No. HP / WA</span>
+                                <span id="res-hp" class="font-mono font-semibold">--</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-1">
+                                <span class="text-gray-300">Email</span>
+                                <span id="res-email" class="font-semibold break-all text-right max-w-[180px]">--</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-1">
+                                <span class="text-gray-300">Asal Sekolah</span>
+                                <span id="res-asal" class="font-bold uppercase tracking-wide text-right truncate max-w-[180px]">--</span>
+                            </div>
+                            <div class="flex flex-col text-left pt-1">
+                                <span class="text-gray-300 text-[11px] mb-0.5">Alamat Rumah:</span>
+                                <span id="res-alamat" class="font-medium text-gray-100 leading-relaxed bg-black/10 p-2 rounded-lg border border-white/5 text-[11px]">--</span>
+                            </div>
+                        </div>
+
+                        <!-- Keterangan Footer Tiket -->
+                        <p class="text-[9px] text-center text-amber-300/80 font-semibold italic mt-4 tracking-wide">
+                            *Silakan screenshot layar ini sebagai bukti verifikasi fisik berkas.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t-2 border-gray-200 py-4 text-center text-xs text-gray-600 mt-auto shadow-inner">
+        <button onclick="toggleDevPopup(true)" class="hover:text-smp-blue font-bold tracking-wide uppercase focus:outline-none transition">
+            Aplikasi SIVERA V 1.2
+        </button>
+    </footer>
+
+    <!-- GLOBAL DYNAMIC POP-UP SYSTEM -->
+    <div id="global-alert-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="global-alert-box" class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-smp-blue">
+            <h3 id="global-alert-title" class="text-lg font-black text-gray-950 uppercase tracking-wide mb-2">NOTIFIKASI</h3>
+            <p id="global-alert-desc" class="text-sm font-semibold text-gray-600 mb-5 whitespace-pre-line">Pesan deskripsi pemberitahuan.</p>
+            <div id="global-alert-buttons" class="flex gap-3 justify-center">
+                <button id="global-alert-btn-close" class="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold text-xs py-3 rounded-xl uppercase tracking-wider transition">TUTUP</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLASH MESSAGE ALERT POP-UP -->
+    <div id="flash-popup" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="flash-box" class="bg-gradient-to-br from-amber-400 to-amber-300 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-4 border-blue-900">
+            <h3 class="text-lg font-black text-blue-950 uppercase tracking-widest mb-2">[ PENGUMUMAN KILAT PANITIA ]</h3>
+            <p id="flash-desc" class="text-sm font-bold text-gray-900 bg-white/80 p-4 rounded-xl border border-amber-500 shadow-inner mb-5">Memuat pengumuman penting...</p>
+            <button onclick="closeFlashPopup()" class="w-full bg-blue-900 hover:bg-blue-950 text-white font-black text-xs py-3 rounded-xl uppercase tracking-wider transition">SAYA MENGERTI</button>
+        </div>
+    </div>
+
+    <!-- POP-UP DEVELOPER -->
+    <div id="dev-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="dev-box" class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-smp-blue">
+            <div class="flex flex-col items-center mb-5">
+                <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-gray-100 shadow p-1 bg-white animate-logo-popup mb-3">
+                    <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Sivera Logo" class="w-full h-full object-cover rounded-full">
+                </div>
+                <h3 class="text-base font-black text-gray-900 uppercase tracking-wide">Sistem Verifikasi Antrean</h3>
+                <div class="flex items-center gap-3 mt-1 text-xs font-mono text-gray-500 bg-gray-100 px-3 py-1 rounded-full border">
+                    <span><strong>Dev:</strong> MB</span>
+                    <span class="text-gray-300">|</span>
+                    <span><strong>Version:</strong> 1.2</span>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 gap-2.5 text-left mb-6">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-xl border border-blue-100 flex items-center gap-3 shadow-sm">
+                    <div class="bg-smp-blue text-white p-2 rounded-lg text-xs font-bold tracking-tight">BUILD</div>
+                    <div class="text-xs font-black text-blue-950">12 Juni 2026</div>
+                </div>
+                <a href="mailto:yanuar.b@gmail.com" class="bg-gradient-to-r from-amber-50 to-orange-50 p-3 rounded-xl border border-amber-100 flex items-center gap-3 shadow-sm hover:scale-[1.01] transition block">
+                    <div class="bg-amber-500 text-white p-2 rounded-lg text-xs font-bold tracking-tight">CONTACT</div>
+                    <div class="text-xs font-black text-amber-950 underline break-all">yanuar.b@gmail.com</div>
+                </a>
+            </div>
+            <button onclick="toggleDevPopup(false)" class="w-full bg-gray-900 hover:bg-gray-800 text-white font-black text-xs py-3.5 rounded-xl uppercase tracking-wider transition shadow-md">
+                KEMBALI KE APLIKASI
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzA0xQfsUmrVWGTI1WQFauY3UZ2HIV5u7WZRKJ39bpKM1V9cScV-PfRj-n8gZ6Emk9uvw/exec";
+        let num1, num2, answer, systemStatus = "Buka", lastFlashId = "";
+
+        window.alert = function(message) {
+            const popup = document.getElementById('global-alert-popup');
+            const box = document.getElementById('global-alert-box');
+            box.className = "bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-smp-blue";
+            document.getElementById('global-alert-title').innerText = "INFORMASI SISTEM";
+            document.getElementById('global-alert-desc').innerText = message;
+            const btnContainer = document.getElementById('global-alert-buttons');
+            btnContainer.innerHTML = `<button onclick="closeGlobalPopup()" class="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold text-xs py-3 rounded-xl uppercase tracking-wider transition">TUTUP</button>`;
+            popup.classList.remove('pointer-events-none', 'opacity-0');
+            setTimeout(() => box.classList.add('popup-active'), 50);
+        };
+
+        function closeGlobalPopup() {
+            document.getElementById('global-alert-box').classList.remove('popup-active');
+            document.getElementById('global-alert-popup').classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        window.onload = function() {
+            generateCaptcha();
+            fetchLiveStatus();
+            setInterval(fetchLiveStatus, 10000);
+        };
+
+        function generateCaptcha() {
+            num1 = Math.floor(Math.random() * 10) + 1;
+            num2 = Math.floor(Math.random() * 10) + 1;
+            answer = num1 + num2;
+            document.getElementById('captcha-question').innerText = `${num1} + ${num2} =`;
+        }
+
+        function switchTab(tab) {
+            const dBtn = document.getElementById('btn-tab-daftar');
+            const sBtn = document.getElementById('btn-tab-status');
+            const dTab = document.getElementById('tab-daftar');
+            const sTab = document.getElementById('tab-status');
+            if(tab === 'daftar') {
+                dBtn.className = "flex-1 py-2 text-sm font-bold rounded-lg bg-white text-smp-blue shadow-sm transition";
+                sBtn.className = "flex-1 py-2 text-sm font-bold rounded-lg text-gray-600 transition";
+                dTab.classList.remove('hidden');
+                sTab.classList.add('hidden');
+            } else {
+                sBtn.className = "flex-1 py-2 text-sm font-bold rounded-lg bg-white text-smp-blue shadow-sm transition";
+                dBtn.className = "flex-1 py-2 text-sm font-bold rounded-lg text-gray-600 transition";
+                sTab.classList.remove('hidden');
+                dTab.classList.add('hidden');
+            }
+        }
+
+        function toggleDevPopup(show) {
+            const devPopup = document.getElementById('dev-popup');
+            const devBox = document.getElementById('dev-box');
+            if(!show) {
+                devBox.classList.remove('popup-active');
+                devPopup.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                devPopup.classList.remove('pointer-events-none', 'opacity-0');
+                setTimeout(() => devBox.classList.add('popup-active'), 50);
+            }
+        }
+
+        function closeFlashPopup() {
+            document.getElementById('flash-box').classList.remove('popup-active');
+            document.getElementById('flash-popup').classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        async function submitForm(e) {
+            e.preventDefault();
+            if (systemStatus === "Tutup") {
+                alert("Pendaftaran/pengambilan nomor antrean berkas belum dibuka atau telah ditutup oleh panitia.");
+                return;
+            }
+
+            const userAns = parseInt(document.getElementById('captcha-answer').value);
+            if(userAns !== answer) {
+                alert("Hasil perhitungan matematika verifikasi salah!");
+                generateCaptcha();
+                return;
+            }
+
+            let ip = "Unknown", location = "Akses Lokasi Mati", device = navigator.userAgent;
+            try {
+                const ipRes = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipRes.json();
+                ip = ipData.ip;
+            } catch(err){}
+
+            const payload = {
+                action: "register",
+                jalur: document.getElementById('jalur').value,
+                nama: document.getElementById('nama').value,
+                jk: document.querySelector('input[name="jk"]:checked').value,
+                nisn: document.getElementById('nisn').value,
+                hp: document.getElementById('hp').value,
+                email: document.getElementById('email').value,
+                asal_sekolah: document.getElementById('asal_sekolah').value,
+                alamat: document.getElementById('alamat').value,
+                ip: ip,
+                device: device,
+                location: location
+            };
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    payload.location = `${pos.coords.latitude}, ${pos.coords.longitude}`;
+                    sendData(payload);
+                }, () => { sendData(payload); });
+            } else {
+                sendData(payload);
+            }
+        }
+
+        function sendData(payload) {
+            fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === "success") {
+                    alert(`PENDAFTARAN BERHASIL!\n\nNomor antrean anda adalah: ${data.no_antrean}.\nSilakan simpan nomor ini dan cek tab status secara berkala.`);
+                    document.getElementById('formAntrean').reset();
+                    generateCaptcha();
+                } else {
+                    alert(`Sistem Error: ${data.message}`);
+                }
+            }).catch(() => alert("Koneksi Error. Gagal menghubungi server."));
+        }
+
+        /* PEMUTAKHIRAN PARSING DATA PROFIL LENGKAP PADA VIEW STATUS */
+        function checkStatus() {
+            const nisn = document.getElementById('search-nisn').value;
+            if(!nisn) return;
+            fetch(`${APPS_SCRIPT_URL}?action=checkStatus&nisn=${nisn}`)
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === "found") {
+                    document.getElementById('status-result').classList.remove('hidden');
+                    
+                    // Update Status Realtime Antrean Loket
+                    document.getElementById('res-current').innerText = data.current_serving || "Belum Mulai";
+                    let sisa = data.no_antrean - data.current_serving;
+                    document.getElementById('res-sisa').innerText = sisa > 0 ? `${sisa} Orang` : (sisa === 0 ? "GILIRAN ANDA!" : "SELESAI");
+                    document.getElementById('res-ruang').innerText = data.ruang ? `Silakan menuju ke Ruang Verifikator ${data.ruang}` : "Menunggu panggilan loket...";
+                    
+                    // Logic ISO Time Parser 
+                    if (data.estimasi_jam) {
+                        if (data.estimasi_jam.includes('T') && data.estimasi_jam.includes('Z')) {
+                            const dateObj = new Date(data.estimasi_jam);
+                            const jam = String(dateObj.getHours()).padStart(2, '0');
+                            const menit = String(dateObj.getMinutes()).padStart(2, '0');
+                            const detik = String(dateObj.getSeconds()).padStart(2, '0');
+                            document.getElementById('res-jam').innerText = `Pukul ${jam}:${menit}:${detik} WIB`;
+                        } else {
+                            document.getElementById('res-jam').innerText = `Pukul ${data.estimasi_jam} WIB`;
+                        }
+                    } else {
+                        document.getElementById('res-jam').innerText = "Pukul --:-- WIB";
+                    }
+
+                    // Pemetaan Data Profil ke Kartu E-Ticket (Siap Screenshot)
+                    document.getElementById('res-no-antrean').innerText = String(data.no_antrean).padStart(3, '0');
+                    document.getElementById('res-ticket-jalur').innerText = `JALUR ${data.jalur.toUpperCase()}`;
+                    document.getElementById('res-nama').innerText = data.nama;
+                    document.getElementById('res-nisn').innerText = data.nisn;
+                    document.getElementById('res-jk').innerText = data.jk;
+                    document.getElementById('res-hp').innerText = data.hp;
+                    document.getElementById('res-email').innerText = data.email;
+                    document.getElementById('res-asal').innerText = data.asal_sekolah;
+                    document.getElementById('res-alamat').innerText = data.alamat;
+
+                } else {
+                    alert("Nomor NISN tidak terdaftar.");
+                }
+            });
+        }
+
+        function fetchLiveStatus() {
+            fetch(`${APPS_SCRIPT_URL}?action=getLiveInfo`)
+            .then(res => res.json())
+            .then(data => {
+                if(data.rawActive) {
+                    document.getElementById('live-info-l1').innerText = `Verifikasi R ${data.rawActive.loket}`;
+                    document.getElementById('live-info-l2').innerText = `Sedang Verifikasi No Antrean ${data.rawActive.no} (a.n ${data.rawActive.nama})`;
+                } else {
+                    document.getElementById('live-info-l1').innerText = "STATUS VERIFIKATOR";
+                    document.getElementById('live-info-l2').innerText = "Belum Ada Antrean Aktif";
+                }
+
+                if(data.ticker) {
+                    const tickerContainer = document.getElementById('text-ticker-container');
+                    if (tickerContainer.innerText !== data.ticker.toUpperCase()) {
+                        tickerContainer.innerText = data.ticker.toUpperCase();
+                    }
+                }
+                systemStatus = data.gateStatus || "Buka";
+
+                if(data.flashMsg && data.flashId !== lastFlashId) {
+                    lastFlashId = data.flashId;
+                    document.getElementById('flash-desc').innerText = data.flashMsg;
+                    const fPopup = document.getElementById('flash-popup');
+                    const fBox = document.getElementById('flash-box');
+                    fPopup.classList.remove('pointer-events-none', 'opacity-0');
+                    setTimeout(() => fBox.classList.add('popup-active'), 50);
+                }
+            }).catch(()=>{});
+        }
+    </script>
+</body>
+</html>
