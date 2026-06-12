@@ -173,61 +173,63 @@
 
                 <!-- KARTU ELEKTRONIK BUKTI NOMOR ANTREAN (SIAP SCREENSHOT) -->
                 <div class="border-2 border-dashed border-gray-400 p-2 rounded-2xl bg-gray-50">
-                    <div id="ticket-capture" class="bg-gradient-to-b from-blue-900 to-smp-blue rounded-xl p-5 text-white shadow-lg relative overflow-hidden">
+                    <!-- Perbaikan: Mengunci gradasi ke kombinasi warna gelap (blue-950 ke blue-900) dan memastikan layer berada di atas -->
+                    <div id="ticket-capture" class="bg-gradient-to-b from-blue-950 to-blue-900 rounded-xl p-5 text-white shadow-lg relative overflow-hidden z-10">
                         
                         <!-- Watermark Ornamen Background -->
-                        <div class="absolute -right-6 -bottom-6 text-white/5 font-black text-9xl pointer-events-none select-none">SMP</div>
+                        <div class="absolute -right-6 -bottom-6 text-white/5 font-black text-9xl pointer-events-none select-none z-0">SMP</div>
                         
                         <!-- Header Tiket -->
-                        <div class="flex items-center gap-3 border-b border-white/20 pb-3 mb-4">
+                        <div class="flex items-center gap-3 border-b border-white/25 pb-3 mb-4 relative z-10">
                             <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" class="w-9 h-9 object-contain" alt="Logo">
                             <div class="text-left">
                                 <h4 class="text-xs font-black tracking-wider uppercase text-osis-yellow">BUKTI NOMOR ANTREAN</h4>
-                                <p class="text-[9px] text-gray-300 font-medium">Sivera V 1.2 • SMP Negeri 1 Moga</p>
+                                <p class="text-[9px] text-gray-200 font-medium">Sivera V 1.2 • SMP Negeri 1 Moga</p>
                             </div>
                         </div>
 
                         <!-- Blok Nomor Utama -->
-                        <div class="text-center my-4 bg-black/20 py-3 rounded-xl border border-white/10 shadow-inner">
+                        <div class="text-center my-4 bg-black/30 py-3 rounded-xl border border-white/10 shadow-inner relative z-10">
                             <p class="text-[10px] font-bold uppercase tracking-widest text-blue-200">NOMOR ANTREAN</p>
                             <p id="res-no-antrean" class="text-5xl font-black my-1 text-osis-yellow tracking-wider">000</p>
                             <p id="res-ticket-jalur" class="text-[10px] font-extrabold uppercase bg-amber-500 text-blue-950 px-2.5 py-0.5 rounded-full inline-block mt-1 tracking-wide">JALUR --</p>
                         </div>
 
-                        <!-- Biodata Detail Validasi Pendaftar -->
-                        <div class="space-y-2 text-xs border-t border-white/20 pt-4">
-                            <div class="flex justify-between border-b border-white/5 pb-1">
-                                <span class="text-gray-300">Nama Lengkap</span>
-                                <span id="res-nama" class="font-bold uppercase tracking-wide text-right truncate max-w-[200px]">--</span>
+                        <!-- Biodata Detail Validasi Pendaftar (Warna isi diubah ke text-white cerah murni) -->
+                        <div class="space-y-2.5 text-xs border-t border-white/25 pt-4 relative z-10">
+                            <div class="flex justify-between border-b border-white/10 pb-1.5">
+                                <span class="text-gray-300 font-medium">Nama Lengkap</span>
+                                <span id="res-nama" class="font-bold uppercase tracking-wide text-right text-white truncate max-w-[200px]">--</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-1">
-                                <span class="text-gray-300">NISN</span>
-                                <span id="res-nisn" class="font-mono font-bold tracking-wider">--</span>
+                            <div class="flex justify-between border-b border-white/10 pb-1.5">
+                                <span class="text-gray-300 font-medium">NISN</span>
+                                <span id="res-nisn" class="font-mono font-bold tracking-wider text-white">--</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-1">
-                                <span class="text-gray-300">Jenis Kelamin</span>
-                                <span id="res-jk" class="font-semibold">--</span>
+                            <div class="flex justify-between border-b border-white/10 pb-1.5">
+                                <span class="text-gray-300 font-medium">Jenis Kelamin</span>
+                                <span id="res-jk" class="font-semibold text-white">--</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-1">
-                                <span class="text-gray-300">No. HP / WA</span>
-                                <span id="res-hp" class="font-mono font-semibold">--</span>
+                            <div class="flex justify-between border-b border-white/10 pb-1.5">
+                                <span class="text-gray-300 font-medium">No. HP / WA</span>
+                                <span id="res-hp" class="font-mono font-semibold text-white">--</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-1">
-                                <span class="text-gray-300">Email</span>
-                                <span id="res-email" class="font-semibold break-all text-right max-w-[180px]">--</span>
+                            <div class="flex justify-between border-b border-white/10 pb-1.5">
+                                <span class="text-gray-300 font-medium">Email</span>
+                                <span id="res-email" class="font-semibold break-all text-right text-white max-w-[180px]">--</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-1">
-                                <span class="text-gray-300">Asal Sekolah</span>
-                                <span id="res-asal" class="font-bold uppercase tracking-wide text-right truncate max-w-[180px]">--</span>
+                            <div class="flex justify-between border-b border-white/10 pb-1.5">
+                                <span class="text-gray-300 font-medium">Asal Sekolah</span>
+                                <span id="res-asal" class="font-bold uppercase tracking-wide text-right text-white truncate max-w-[180px]">--</span>
                             </div>
                             <div class="flex flex-col text-left pt-1">
-                                <span class="text-gray-300 text-[11px] mb-0.5">Alamat Rumah:</span>
-                                <span id="res-alamat" class="font-medium text-gray-100 leading-relaxed bg-black/10 p-2 rounded-lg border border-white/5 text-[11px]">--</span>
+                                <span class="text-gray-300 text-[11px] mb-1 font-medium">Alamat Rumah:</span>
+                                <!-- Perbaikan box alamat: latar belakang semi transparan gelap agar teks putih menonjol -->
+                                <span id="res-alamat" class="font-semibold text-white leading-relaxed bg-black/25 p-2.5 rounded-lg border border-white/10 text-[11px] block whitespace-normal break-words min-h-[36px]">--</span>
                             </div>
                         </div>
 
                         <!-- Keterangan Footer Tiket -->
-                        <p class="text-[9px] text-center text-amber-300/80 font-semibold italic mt-4 tracking-wide">
+                        <p class="text-[10px] text-center text-amber-400 font-bold italic mt-5 tracking-wide relative z-10">
                             *Silakan screenshot layar ini sebagai bukti verifikasi fisik berkas.
                         </p>
                     </div>
@@ -423,7 +425,6 @@
             }).catch(() => alert("Koneksi Error. Gagal menghubungi server."));
         }
 
-        /* PEMUTAKHIRAN PARSING DATA PROFIL LENGKAP PADA VIEW STATUS */
         function checkStatus() {
             const nisn = document.getElementById('search-nisn').value;
             if(!nisn) return;
@@ -433,13 +434,11 @@
                 if(data.status === "found") {
                     document.getElementById('status-result').classList.remove('hidden');
                     
-                    // Update Status Realtime Antrean Loket
                     document.getElementById('res-current').innerText = data.current_serving || "Belum Mulai";
                     let sisa = data.no_antrean - data.current_serving;
                     document.getElementById('res-sisa').innerText = sisa > 0 ? `${sisa} Orang` : (sisa === 0 ? "GILIRAN ANDA!" : "SELESAI");
                     document.getElementById('res-ruang').innerText = data.ruang ? `Silakan menuju ke Ruang Verifikator ${data.ruang}` : "Menunggu panggilan loket...";
                     
-                    // Logic ISO Time Parser 
                     if (data.estimasi_jam) {
                         if (data.estimasi_jam.includes('T') && data.estimasi_jam.includes('Z')) {
                             const dateObj = new Date(data.estimasi_jam);
@@ -454,7 +453,6 @@
                         document.getElementById('res-jam').innerText = "Pukul --:-- WIB";
                     }
 
-                    // Pemetaan Data Profil ke Kartu E-Ticket (Siap Screenshot)
                     document.getElementById('res-no-antrean').innerText = String(data.no_antrean).padStart(3, '0');
                     document.getElementById('res-ticket-jalur').innerText = `JALUR ${data.jalur.toUpperCase()}`;
                     document.getElementById('res-nama').innerText = data.nama;
