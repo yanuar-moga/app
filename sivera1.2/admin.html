@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sivera - Super Admin Panel</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .popup-animate { transform: scale(0.9); opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .popup-active { transform: scale(1); opacity: 1; }
+    </style>
 </head>
 <body class="bg-gray-900 text-slate-100 font-sans flex flex-col min-h-screen p-4">
 
@@ -23,24 +27,22 @@
         </div>
     </div>
 
-    <!-- MAIN CONTROL PANEL (HIDDEN DEFAULT) -->
+    <!-- MAIN CONTROL PANEL -->
     <div id="admin-dashboard" class="max-w-5xl mx-auto space-y-6 w-full hidden">
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-800 p-4 rounded-xl border border-gray-700 shadow-xl gap-4">
             <div>
                 <h1 class="text-lg font-black text-amber-400 uppercase tracking-wide">Sivera Pusat Kendali Utama</h1>
                 <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">SMP NEGERI 1 MOGA</p>
             </div>
-            <button onclick="resetSystem()" class="bg-red-600 hover:bg-red-700 text-white font-black text-xs px-4 py-2.5 rounded-lg tracking-wider uppercase transition">
-                RESET SELURUH DATA ANTREAN
-            </button>
+            <div class="flex gap-2">
+                <button onclick="logoutAdmin()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold text-xs px-4 py-2.5 rounded-lg tracking-wider uppercase transition">LOGOUT</button>
+                <button onclick="resetSystem()" class="bg-red-600 hover:bg-red-700 text-white font-black text-xs px-4 py-2.5 rounded-lg tracking-wider uppercase transition">RESET DATA</button>
+            </div>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- PENGATURAN TEKNIS & GERBANG ANTREAN -->
             <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 space-y-4">
                 <h3 class="text-sm font-black text-amber-400 border-b border-gray-700 pb-2 uppercase tracking-wider">KONTROL PARAMETER</h3>
-                
-                <!-- GERBANG BUKA/TUTUP -->
                 <div>
                     <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">STATUS GERBANG ANTREAN</label>
                     <div class="grid grid-cols-2 gap-2">
@@ -50,51 +52,67 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Estimasi Durasi per Berkas (Menit)</label>
-                    <input type="number" id="cfg-duration" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 font-bold text-sm text-white focus:border-amber-400 outline-none" value="10">
+                    <input type="number" id="cfg-duration" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 font-bold text-sm text-white focus:border-amber-400 outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Jam Mulai Operasional Loket</label>
-                    <input type="time" id="cfg-start" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 font-bold text-sm text-white focus:border-amber-400 outline-none" value="08:00">
+                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Jam Mulai Operasional</label>
+                    <input type="time" id="cfg-start" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 font-bold text-sm text-white focus:border-amber-400 outline-none">
                 </div>
-                <button onclick="saveConfig()" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg text-xs font-black uppercase tracking-wider transition">
-                    SIMPAN PARAMETER UTAMA
-                </button>
+                <button onclick="saveConfig()" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg text-xs font-black uppercase tracking-wider transition">SIMPAN PARAMETER</button>
             </div>
 
-            <!-- MANAGEMENT INFORMASI (TEXT TICKER & FLASH POPUP) -->
             <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 space-y-4 md:col-span-2">
                 <h3 class="text-sm font-black text-amber-400 border-b border-gray-700 pb-2 uppercase tracking-wider">MANAJEMEN PENGUMUMAN REALTIME</h3>
-                
-                <!-- TEXT TICKER UPDATE -->
                 <div>
                     <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">ISI TEXT TICKER BERJALAN</label>
-                    <textarea id="cfg-ticker" rows="2" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 text-sm font-semibold text-white focus:border-amber-400 outline-none" placeholder="Ketik pengumuman berjalan disini..."></textarea>
+                    <textarea id="cfg-ticker" rows="2" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 text-sm font-semibold text-white focus:border-amber-400 outline-none"></textarea>
                 </div>
-
-                <!-- FLASH POPUP UPDATE -->
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">KIRIM NOTIFIKASI FLASH POP-UP OTOMATIS (MUNCUL DI HALAMAN DEPAN)</label>
-                    <textarea id="cfg-flash" rows="2" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 text-sm font-semibold text-white focus:border-amber-400 outline-none" placeholder="Ketik pesan darurat yang langsung memotong layar pendaftar..."></textarea>
+                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">KIRIM NOTIFIKASI FLASH POP-UP</label>
+                    <textarea id="cfg-flash" rows="2" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 text-sm font-semibold text-white focus:border-amber-400 outline-none" placeholder="Isi pesan popup otomatis..."></textarea>
                 </div>
-
-                <button onclick="broadcastAnnouncement()" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 py-3 rounded-lg text-xs font-black uppercase tracking-wider transition">
-                    PERBARUI DAN BROADCAST PENGUMUMAN SEKARANG
-                </button>
+                <button onclick="broadcastAnnouncement()" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 py-3 rounded-lg text-xs font-black uppercase tracking-wider transition">BROADCAST SEKARANG</button>
             </div>
         </div>
     </div>
 
-    <!-- FOOTER APLIKASI STANDAR -->
+    <!-- FOOTER REVISI -->
     <footer class="bg-gray-950 border-t border-gray-800 py-4 text-center text-xs text-gray-500 mt-auto w-full">
-        <span class="font-bold tracking-wide uppercase">
-            Aplikasi Sivera V 1.2 by MB [PANEL ADMIN]
-        </span>
+        <button onclick="toggleDevPopup(true)" class="hover:text-amber-400 font-bold tracking-wide uppercase focus:outline-none transition">
+            Aplikasi SIVERA V 1.2
+        </button>
     </footer>
+
+    <!-- POPUP DEVELOPER -->
+    <div id="dev-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="dev-box" class="bg-gray-800 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-amber-400">
+            <h3 class="text-xl font-black text-amber-400 tracking-wider mb-1">SIVERA V 1.2</h3>
+            <div class="w-12 h-1 bg-white mx-auto mb-4"></div>
+            <div class="text-left text-xs space-y-2 bg-gray-900 p-4 rounded-xl border border-gray-700 font-mono text-gray-300 mb-5">
+                <div><strong>Dev :</strong> MB</div>
+                <div><strong>Version :</strong> 1.2</div>
+                <div><strong>Build :</strong> 12 Juni 2026</div>
+                <div><strong>Contac :</strong> <a href="mailto:yanuar.b@gmail.com" class="text-amber-400 underline font-bold">yanuar.b@gmail.com</a></div>
+            </div>
+            <button onclick="toggleDevPopup(false)" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 font-bold text-xs py-3 rounded-xl uppercase tracking-wider transition">Tutup</button>
+        </div>
+    </div>
 
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzA0xQfsUmrVWGTI1WQFauY3UZ2HIV5u7WZRKJ39bpKM1V9cScV-PfRj-n8gZ6Emk9uvw/exec";
         let activeAdminPin = "";
         let selectedGateStatus = "Buka";
+
+        // ANTI MENTAL: Cek session simpanan di localStorage saat pertama kali dimuat
+        window.onload = function() {
+            const savedPin = localStorage.getItem('sivera_admin_pin');
+            if(savedPin) {
+                activeAdminPin = savedPin;
+                document.getElementById('admin-auth').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                loadCurrentConfig();
+            }
+        };
 
         function verifyAdminPin() {
             const pin = document.getElementById('admin-pin').value;
@@ -103,13 +121,17 @@
             .then(data => {
                 if(data.status === "authorized") {
                     activeAdminPin = pin;
+                    localStorage.setItem('sivera_admin_pin', pin); // Amankan Sesi
                     document.getElementById('admin-auth').classList.add('hidden');
                     document.getElementById('admin-dashboard').classList.remove('hidden');
                     loadCurrentConfig();
-                } else {
-                    alert("PIN KODE ADMIN SALAH! AKSES DITOLAK.");
-                }
+                } else { alert("PIN KODE ADMIN SALAH!"); }
             });
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('sivera_admin_pin');
+            location.reload();
         }
 
         function loadCurrentConfig() {
@@ -129,10 +151,10 @@
             const btnBuka = document.getElementById('btn-gate-buka');
             const btnTutup = document.getElementById('btn-gate-tutup');
             if(status === "Buka") {
-                btnBuka.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-emerald-600 text-white shadow";
+                btnBuka.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-emerald-600 text-white";
                 btnTutup.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-gray-700 text-gray-400";
             } else {
-                btnTutup.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-red-600 text-white shadow";
+                btnTutup.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-red-600 text-white";
                 btnBuka.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-gray-700 text-gray-400";
             }
         }
@@ -145,7 +167,7 @@
                 body: JSON.stringify({ action: "saveConfig", pin: activeAdminPin, duration, startTime, gateStatus: selectedGateStatus })
             })
             .then(res => res.json())
-            .then(data => { if(data.status === 'success') alert('Parameter operasional berhasil diubah!'); });
+            .then(data => { if(data.status === 'success') alert('Parameter berhasil disimpan!'); });
         }
 
         function broadcastAnnouncement() {
@@ -156,11 +178,11 @@
                 body: JSON.stringify({ action: "broadcastAnnounce", pin: activeAdminPin, ticker, flashMsg: flash })
             })
             .then(res => res.json())
-            .then(data => { if(data.status === 'success') alert('Pengumuman & Flash Pop-up berhasil diperbarui secara realtime!'); });
+            .then(data => { if(data.status === 'success') alert('Pengumuman berhasil di-broadcast!'); });
         }
 
         function resetSystem() {
-            if(confirm("PERINGATAN KELAS TINGGI: Seluruh basis data antrean pendaftar hari ini akan dihapus permanen! Anda yakin?")) {
+            if(confirm("Hapus seluruh data antrean peserta hari ini?")) {
                 fetch(APPS_SCRIPT_URL, {
                     method: "POST",
                     body: JSON.stringify({ action: "resetSystem", pin: activeAdminPin })
@@ -168,6 +190,13 @@
                 .then(res => res.json())
                 .then(data => { if(data.status === 'success') location.reload(); });
             }
+        }
+
+        function toggleDevPopup(show) {
+            const p = document.getElementById('dev-popup');
+            const b = document.getElementById('dev-box');
+            if(show) { p.classList.remove('pointer-events-none','opacity-0'); setTimeout(()=>b.classList.add('popup-active'),50); }
+            else { b.classList.remove('popup-active'); p.classList.add('opacity-0','pointer-events-none'); }
         }
     </script>
 </body>
