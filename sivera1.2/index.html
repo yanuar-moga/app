@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sivera V 1.2 - SMP N 1 Moga</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @keyframes marquee {
             0% { transform: translateX(100%); }
@@ -16,11 +15,12 @@
         .text-smp-blue { color: #004687; }
         .bg-osis-yellow { background-color: #FFD700; }
         .text-osis-yellow { color: #FFD700; }
+        .border-smp-blue { border-color: #004687; }
         .popup-animate { transform: scale(0.9); opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .popup-active { transform: scale(1); opacity: 1; }
     </style>
 </head>
-<body class="bg-gray-50 font-sans antialiased text-gray-800 flex flex-col min-h-screen">
+<body class="bg-gray-100 font-sans antialiased text-gray-800 flex flex-col min-h-screen">
 
     <!-- HEADER -->
     <header class="bg-smp-blue text-white shadow-md p-4 sticky top-0 z-40">
@@ -34,187 +34,188 @@
         </div>
     </header>
 
-    <!-- LIVE NOTIFICATION FLASH -->
-    <div class="bg-amber-50 border-b border-amber-200 py-2 px-4 text-xs font-semibold text-amber-900 shadow-sm">
+    <!-- LIVE NOTIFICATION FLASH (INFO KILAT VEREFIKATOR) -->
+    <div class="bg-amber-400 border-b border-amber-500 py-2 px-4 text-xs font-bold text-blue-900 shadow-sm">
         <div class="max-w-md mx-auto flex items-center gap-2">
             <span class="flex h-2 w-2 relative">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
             </span>
             <div id="live-info">Memuat informasi antrean terkini...</div>
         </div>
     </div>
 
-    <!-- TEXT TICKER -->
-    <div class="bg-gray-900 text-osis-yellow text-xs py-1.5 overflow-hidden whitespace-nowrap border-b border-gray-800">
-        <div class="inline-block animate-marquee font-medium">
-            📢 PEMBERITAHUAN KHUSUS: Pastikan membawa berkas asli (KK, Akta Kelahiran, Ijazah/Surat Keterangan Lulus, dan Piagam Prestasi jika ada) saat menuju ruang verifikasi. Harap datang 15 menit sebelum estimasi waktu Anda.
+    <!-- TEXT TICKER (DAPAT DIUBAH DARI ADMIN) -->
+    <div class="bg-gray-900 text-osis-yellow text-xs py-2 overflow-hidden whitespace-nowrap border-b border-gray-800">
+        <div id="text-ticker-container" class="inline-block animate-marquee font-bold uppercase tracking-wide">
+            [PEMBERITAHUAN]: Memuat informasi pengumuman khusus...
         </div>
     </div>
 
-    <!-- MAIN CONTENT (Responsive Portrait Target) -->
+    <!-- MAIN CONTENT -->
     <main class="flex-grow p-4 max-w-md w-full mx-auto">
         
         <!-- TAB NAVIGATION -->
         <div class="flex bg-gray-200 p-1 rounded-xl mb-4 shadow-inner">
-            <button onclick="switchTab('daftar')" id="btn-tab-daftar" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-white text-smp-blue shadow-sm transition">
-                <i class="fa-solid fa-user-plus mr-1"></i> Ambil Antrean
+            <button onclick="switchTab('daftar')" id="btn-tab-daftar" class="flex-1 py-2 text-sm font-bold rounded-lg bg-white text-smp-blue shadow-sm transition">
+                AMBIL ANTREAN
             </button>
-            <button onclick="switchTab('status')" id="btn-tab-status" class="flex-1 py-2 text-sm font-semibold rounded-lg text-gray-600 transition">
-                <i class="fa-solid fa-ticket mr-1"></i> Cek Status Anda
+            <button onclick="switchTab('status')" id="btn-tab-status" class="flex-1 py-2 text-sm font-bold rounded-lg text-gray-600 transition">
+                CEK STATUS ANDA
             </button>
         </div>
 
         <!-- TAB 1: FORM DAFTAR -->
-        <div id="tab-daftar" class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-            <h2 class="text-xl font-bold text-smp-blue mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-wpforms"></i> Form Pendaftaran Antrean
+        <div id="tab-daftar" class="bg-white rounded-2xl p-5 shadow-md border border-gray-200">
+            <h2 class="text-lg font-black text-smp-blue mb-4 border-b pb-2 tracking-wide uppercase">
+                Form Pendaftaran Antrean
             </h2>
             <form id="formAntrean" onsubmit="submitForm(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Jalur SPMB</label>
-                    <select id="jalur" required class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-smp-blue outline-none transition">
-                        <option value="">-- Pilih Jalur --</option>
-                        <option value="Domisili">Zonasi / Domisili</option>
-                        <option value="Prestasi">Prestasi</option>
-                        <option value="Afirmasi">Afirmasi</option>
-                        <option value="Mutasi">Mutasi / Perpindahan Tugas Orang Tua</option>
+                    <select id="jalur" required class="w-full bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:border-smp-blue outline-none transition">
+                        <option value="">-- PILIH JALUR --</option>
+                        <option value="Domisili">ZONASI / DOMISILI</option>
+                        <option value="Prestasi">PRESTASI</option>
+                        <option value="Afirmasi">AFIRMASI</option>
+                        <option value="Mutasi">MUTASI / PERPINDAHAN TUGAS ORANG TUA</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Nama Lengkap</label>
-                    <input type="text" id="nama" required class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-smp-blue outline-none transition" placeholder="Masukkan nama sesuai ijazah">
+                    <input type="text" id="nama" required class="w-full bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:border-smp-blue outline-none transition" placeholder="Masukkan nama sesuai ijazah">
                 </div>
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Jenis Kelamin</label>
-                    <div class="flex gap-4 mt-1">
-                        <label class="flex items-center text-sm gap-1.5"><input type="radio" name="jk" value="L" required class="text-smp-blue focus:ring-smp-blue"> Laki-laki</label>
-                        <label class="flex items-center text-sm gap-1.5"><input type="radio" name="jk" value="P" required class="text-smp-blue focus:ring-smp-blue"> Perempuan</label>
+                    <div class="flex gap-6 mt-1 font-semibold text-sm">
+                        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="jk" value="L" required class="w-4 h-4 text-smp-blue"> Laki-laki</label>
+                        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="jk" value="P" required class="w-4 h-4 text-smp-blue"> Perempuan</label>
                     </div>
                 </div>
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">NISN</label>
-                    <input type="number" id="nisn" required class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-smp-blue outline-none transition" placeholder="10 Digit nomor induk siswa nasional">
+                    <input type="number" id="nisn" required class="w-full bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:border-smp-blue outline-none transition" placeholder="10 Digit Nomor Induk Siswa Nasional">
                 </div>
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">No. HP / WhatsApp</label>
-                    <input type="tel" id="hp" required class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-smp-blue outline-none transition" placeholder="Contoh: 081234567xxx">
+                    <input type="tel" id="hp" required class="w-full bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:border-smp-blue outline-none transition" placeholder="Contoh: 081234567xxx">
                 </div>
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Email</label>
-                    <input type="email" id="email" required class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-smp-blue outline-none transition" placeholder="alamat@email.com">
+                    <input type="email" id="email" required class="w-full bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:border-smp-blue outline-none transition" placeholder="alamat@email.com">
                 </div>
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Asal Sekolah</label>
-                    <input type="text" id="asal_sekolah" required class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-smp-blue outline-none transition" placeholder="SD / MI asal">
+                    <input type="text" id="asal_sekolah" required class="w-full bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:border-smp-blue outline-none transition" placeholder="SD / MI asal">
                 </div>
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Alamat Lengkap</label>
-                    <textarea id="alamat" required rows="2" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-smp-blue outline-none transition" placeholder="Nama desa, RT/RW, Kecamatan"></textarea>
+                    <textarea id="alamat" required rows="2" class="w-full bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:border-smp-blue outline-none transition" placeholder="Nama desa, RT/RW, Kecamatan"></textarea>
                 </div>
                 
                 <!-- CAPTCHA SECURITY -->
-                <div class="bg-gray-100 p-3 rounded-lg border border-gray-200">
-                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Verifikasi Keamanan</label>
+                <div class="bg-gray-100 p-3 rounded-xl border border-gray-300">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Verifikasi Keamanan</label>
                     <div class="flex items-center gap-3">
-                        <span id="captcha-question" class="bg-white px-3 py-1.5 rounded border text-sm font-bold tracking-wider text-gray-700 select-none">5 + 3 =</span>
-                        <input type="number" id="captcha-answer" required class="w-20 bg-white border border-gray-300 rounded-lg p-1.5 text-sm text-center focus:ring-2 focus:ring-smp-blue outline-none" placeholder="?">
+                        <span id="captcha-question" class="bg-white px-4 py-2 rounded-lg border-2 font-black text-sm tracking-wider text-gray-700 select-none">5 + 3 =</span>
+                        <input type="number" id="captcha-answer" required class="w-24 bg-white border-2 border-gray-300 rounded-lg p-2 text-sm text-center font-bold focus:border-smp-blue outline-none" placeholder="Isi Hasil">
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-smp-blue hover:bg-blue-900 text-white font-bold py-3 px-4 rounded-xl transition shadow-md hover:shadow-lg flex items-center justify-center gap-2 transform active:scale-95">
-                    <i class="fa-solid fa-paper-plane"></i> Ambil Antrean Sekarang
+                <button type="submit" class="w-full bg-smp-blue hover:bg-blue-900 text-white font-black py-3.5 px-4 rounded-xl transition shadow-md uppercase tracking-wider transform active:scale-95 text-sm">
+                    AMBIL ANTREAN SEKARANG
                 </button>
             </form>
         </div>
 
         <!-- TAB 2: CEK STATUS -->
-        <div id="tab-status" class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hidden">
-            <h2 class="text-xl font-bold text-smp-blue mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-magnifying-glass"></i> Cek Realtime Antrean
+        <div id="tab-status" class="bg-white rounded-2xl p-5 shadow-md border border-gray-200 hidden">
+            <h2 class="text-lg font-black text-smp-blue mb-4 border-b pb-2 tracking-wide uppercase">
+                Cek Realtime Antrean
             </h2>
             <div class="flex gap-2 mb-4">
-                <input type="number" id="search-nisn" class="flex-1 bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-smp-blue outline-none" placeholder="Masukkan NISN Anda">
-                <button onclick="checkStatus()" class="bg-smp-blue text-white px-4 rounded-lg text-sm font-semibold hover:bg-blue-900 transition"><i class="fa-solid fa-search"></i></button>
+                <input type="number" id="search-nisn" class="flex-1 bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-bold focus:border-smp-blue outline-none" placeholder="Masukkan NISN Anda">
+                <button onclick="checkStatus()" class="bg-smp-blue text-white px-5 rounded-lg text-xs font-black uppercase hover:bg-blue-900 transition">CARI</button>
             </div>
             
             <!-- Result Box -->
             <div id="status-result" class="hidden space-y-4">
-                <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 text-center">
-                    <p class="text-xs font-bold text-blue-700 uppercase">Nomor Antrean Anda</p>
-                    <p id="res-no-antrean" class="text-4xl font-black text-smp-blue my-1">024</p>
-                    <p id="res-nama" class="text-sm font-semibold text-gray-700">Nama Siswa</p>
+                <div class="bg-blue-600 p-5 rounded-2xl text-center text-white shadow-inner">
+                    <p class="text-xs font-bold uppercase tracking-widest text-blue-200">Nomor Antrean Anda</p>
+                    <p id="res-no-antrean" class="text-5xl font-black my-1 text-osis-yellow">024</p>
+                    <p id="res-nama" class="text-base font-bold uppercase tracking-wide">Nama Siswa</p>
                 </div>
                 <div class="grid grid-cols-2 gap-3 text-center">
-                    <div class="bg-gray-50 p-3 rounded-lg border">
-                        <p class="text-[10px] uppercase text-gray-400 font-bold">Antrean Sekarang</p>
-                        <p id="res-current" class="text-xl font-bold text-gray-800">--</p>
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-300">
+                        <p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider">Antrean Sekarang</p>
+                        <p id="res-current" class="text-2xl font-black text-gray-800">--</p>
                     </div>
-                    <div class="bg-gray-50 p-3 rounded-lg border">
-                        <p class="text-[10px] uppercase text-gray-400 font-bold">Sisa Antrean Lagi</p>
-                        <p id="res-sisa" class="text-xl font-bold text-red-600">--</p>
-                    </div>
-                </div>
-                <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 flex items-center gap-3">
-                    <i class="fa-solid fa-door-open text-amber-600 text-xl"></i>
-                    <div>
-                        <p class="text-xs text-gray-500">Arah Ruang Verifikasi:</p>
-                        <p id="res-ruang" class="text-sm font-bold text-amber-900">Silakan menuju ke Ruang Verifikator --</p>
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-300">
+                        <p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider">Sisa Antrean Lagi</p>
+                        <p id="res-sisa" class="text-2xl font-black text-red-600">--</p>
                     </div>
                 </div>
-                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200 flex items-center gap-3">
-                    <i class="fa-solid fa-clock text-emerald-600 text-xl"></i>
-                    <div>
-                        <p class="text-xs text-gray-500">Estimasi Pelayanan:</p>
-                        <p id="res-jam" class="text-sm font-bold text-emerald-900">Pukul -- WIB</p>
-                    </div>
+                <div class="bg-amber-50 p-4 rounded-xl border-2 border-amber-300">
+                    <p class="text-[10px] uppercase text-amber-600 font-bold tracking-wider">Lokasi Ruang Verifikasi:</p>
+                    <p id="res-ruang" class="text-sm font-black text-amber-950 mt-0.5">Silakan menuju ke Ruang Verifikator --</p>
+                </div>
+                <div class="bg-emerald-50 p-4 rounded-xl border-2 border-emerald-300">
+                    <p class="text-[10px] uppercase text-emerald-600 font-bold tracking-wider">Estimasi Waktu Pelayanan:</p>
+                    <p id="res-jam" class="text-sm font-black text-emerald-950 mt-0.5">Pukul -- WIB</p>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer class="bg-gray-100 border-t border-gray-200 py-3 text-center text-xs text-gray-500 mt-auto">
-        <button onclick="togglePopup(true)" class="hover:text-smp-blue font-semibold focus:outline-none transition">
-            Aplikasi Sivera V 1.2 by MB <i class="fa-solid fa-circle-info text-[10px]"></i>
+    <!-- FOOTER APLIKASI STANDAR -->
+    <footer class="bg-white border-t-2 border-gray-200 py-4 text-center text-xs text-gray-600 mt-auto shadow-inner">
+        <button onclick="toggleDevPopup(true)" class="hover:text-smp-blue font-bold tracking-wide uppercase focus:outline-none transition">
+            Aplikasi Sivera V 1.2 by MB [INFO DEVELOPER]
         </button>
     </footer>
 
     <!-- DYNAMIC ALERTS / MODAL POPUP -->
-    <div id="popup" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div id="popup-box" class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate">
-            <div id="popup-icon" class="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full text-2xl"></div>
-            <h3 id="popup-title" class="text-lg font-bold text-gray-900 mb-2">Title</h3>
-            <p id="popup-desc" class="text-sm text-gray-600 mb-5">Description message.</p>
-            <button onclick="togglePopup(false)" class="bg-gray-900 hover:bg-gray-800 text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition">Tutup</button>
+    <div id="popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="popup-box" class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-smp-blue">
+            <h3 id="popup-title" class="text-lg font-black text-gray-950 uppercase tracking-wide mb-2">STATUS</h3>
+            <p id="popup-desc" class="text-sm font-semibold text-gray-600 mb-5">Pesan deskripsi pemberitahuan.</p>
+            <button onclick="togglePopup(false)" class="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold text-xs py-3 rounded-xl uppercase tracking-wider transition">TUTUP</button>
+        </div>
+    </div>
+
+    <!-- FLASH MESSAGE ALERT POP-UP (OTOMATIS DIKONTROL ADMIN) -->
+    <div id="flash-popup" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="flash-box" class="bg-gradient-to-br from-amber-400 to-amber-300 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-4 border-blue-900">
+            <h3 class="text-lg font-black text-blue-950 uppercase tracking-widest mb-2">[ PENGUMUMAN KILAT PANITIA ]</h3>
+            <p id="flash-desc" class="text-sm font-bold text-gray-900 bg-white/80 p-4 rounded-xl border border-amber-500 shadow-inner mb-5">Memuat pengumuman penting...</p>
+            <button onclick="closeFlashPopup()" class="w-full bg-blue-900 hover:bg-blue-950 text-white font-black text-xs py-3 rounded-xl uppercase tracking-wider transition">SAYA MENGERTI</button>
         </div>
     </div>
 
     <!-- DEV INFO MODAL -->
-    <div id="dev-popup" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div id="dev-box" class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate">
-            <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Developer Logo" class="w-20 h-20 mx-auto rounded-full object-cover border-4 border-osis-yellow shadow mb-3">
-            <h3 class="text-lg font-bold text-smp-blue">Sivera V 1.2</h3>
-            <p class="text-xs text-gray-400 mb-4">Sistem Verifikasi Berkas Antrean</p>
-            <div class="text-left text-xs space-y-2 bg-gray-50 p-3 rounded-xl border border-gray-200 mb-4 font-mono">
-                <div><strong>Developer:</strong> MB Collaboration</div>
-                <div><strong>Version:</strong> 1.2.0-Build2026</div>
-                <div><strong>Build Date:</strong> Juni 2026</div>
-                <div><strong>Contact:</strong> <a href="mailto:yanuar.b@gmail.com" class="text-blue-600 underline">yanuar.b@gmail.com</a></div>
+    <div id="dev-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="dev-box" class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-amber-400">
+            <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Developer Logo" class="w-20 h-20 mx-auto rounded-full object-cover border-4 border-smp-blue shadow-md mb-3">
+            <h3 class="text-lg font-black text-smp-blue uppercase">Sivera V 1.2</h3>
+            <p class="text-[10px] text-gray-400 font-bold tracking-wider uppercase mb-4">Sistem Verifikasi Berkas Antrean</p>
+            <div class="text-left text-xs space-y-2 bg-gray-50 p-4 rounded-xl border font-mono text-gray-700 mb-4">
+                <div><strong>DEVELOPER:</strong> MB Collaboration</div>
+                <div><strong>VERSION:</strong> 1.2.0-Build2026</div>
+                <div><strong>BUILD:</strong> Juni 2026</div>
+                <div><strong>CONTACT EMAIL:</strong> <a href="mailto:yanuar.b@gmail.com" class="text-blue-600 underline font-bold">yanuar.b@gmail.com</a></div>
             </div>
-            <button onclick="togglePopup(false)" class="w-full bg-smp-blue hover:bg-blue-900 text-white font-semibold text-sm py-2 rounded-xl transition">Mengerti</button>
+            <button onclick="toggleDevPopup(false)" class="w-full bg-smp-blue hover:bg-blue-900 text-white font-black text-xs py-3 rounded-xl uppercase tracking-wider transition">KEMBALI</button>
         </div>
     </div>
 
-    <!-- CLIENT SCRIPT LOGIC -->
     <script>
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzA0xQfsUmrVWGTI1WQFauY3UZ2HIV5u7WZRKJ39bpKM1V9cScV-PfRj-n8gZ6Emk9uvw/exec"; // Ganti dengan URL deployment Web App Anda
-        let num1, num2, answer;
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzA0xQfsUmrVWGTI1WQFauY3UZ2HIV5u7WZRKJ39bpKM1V9cScV-PfRj-n8gZ6Emk9uvw/exec";
+        let num1, num2, answer, systemStatus = "Buka", lastFlashId = "";
 
         window.onload = function() {
             generateCaptcha();
             fetchLiveStatus();
-            setInterval(fetchLiveStatus, 15000); // refresh info tiap 15 detik
+            setInterval(fetchLiveStatus, 10000); // Sinkronisasi berkala tiap 10 detik
         };
 
         function generateCaptcha() {
@@ -229,76 +230,74 @@
             const sBtn = document.getElementById('btn-tab-status');
             const dTab = document.getElementById('tab-daftar');
             const sTab = document.getElementById('tab-status');
-
             if(tab === 'daftar') {
-                dBtn.className = "flex-1 py-2 text-sm font-semibold rounded-lg bg-white text-smp-blue shadow-sm transition";
-                sBtn.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-gray-600 transition";
+                dBtn.className = "flex-1 py-2 text-sm font-bold rounded-lg bg-white text-smp-blue shadow-sm transition";
+                sBtn.className = "flex-1 py-2 text-sm font-bold rounded-lg text-gray-600 transition";
                 dTab.classList.remove('hidden');
                 sTab.classList.add('hidden');
             } else {
-                sBtn.className = "flex-1 py-2 text-sm font-semibold rounded-lg bg-white text-smp-blue shadow-sm transition";
-                dBtn.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-gray-600 transition";
+                sBtn.className = "flex-1 py-2 text-sm font-bold rounded-lg bg-white text-smp-blue shadow-sm transition";
+                dBtn.className = "flex-1 py-2 text-sm font-bold rounded-lg text-gray-600 transition";
                 sTab.classList.remove('hidden');
                 dTab.classList.add('hidden');
             }
         }
 
-        function showAlert(title, desc, type="success") {
+        function showAlert(title, desc, isError=false) {
             const popup = document.getElementById('popup');
             const box = document.getElementById('popup-box');
-            const icon = document.getElementById('popup-icon');
-            
-            if(type === "success") {
-                icon.className = "w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full text-2xl bg-emerald-100 text-emerald-600";
-                icon.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
-            } else {
-                icon.className = "w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full text-2xl bg-red-100 text-red-600";
-                icon.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
-            }
-            
+            box.className = `bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 ${isError ? 'border-red-600' : 'border-smp-blue'}`;
             document.getElementById('popup-title').innerText = title;
             document.getElementById('popup-desc').innerText = desc;
-            
             popup.classList.remove('pointer-events-none', 'opacity-0');
             setTimeout(() => box.classList.add('popup-active'), 50);
         }
 
         function togglePopup(show) {
+            if(!show) {
+                document.getElementById('popup-box').classList.remove('popup-active');
+                document.getElementById('popup').add('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        function toggleDevPopup(show) {
             const devPopup = document.getElementById('dev-popup');
             const devBox = document.getElementById('dev-box');
-            const popup = document.getElementById('popup');
-            const box = document.getElementById('popup-box');
-
             if(!show) {
                 devBox.classList.remove('popup-active');
-                box.classList.remove('popup-active');
                 devPopup.classList.add('opacity-0', 'pointer-events-none');
-                popup.classList.add('opacity-0', 'pointer-events-none');
             } else {
                 devPopup.classList.remove('pointer-events-none', 'opacity-0');
                 setTimeout(() => devBox.classList.add('popup-active'), 50);
             }
         }
 
+        function closeFlashPopup() {
+            document.getElementById('flash-box').classList.remove('popup-active');
+            document.getElementById('flash-popup').classList.add('opacity-0', 'pointer-events-none');
+        }
+
         async function submitForm(e) {
             e.preventDefault();
+            if (systemStatus === "Tutup") {
+                showAlert("ANTREAN DITUTUP", "Maaf, jam pendaftaran/pengambilan nomor antrean berkas belum dibuka atau telah ditutup oleh panitia.", true);
+                return;
+            }
+
             const userAns = parseInt(document.getElementById('captcha-answer').value);
             if(userAns !== answer) {
-                showAlert("Gagal Keamanan", "Hasil verifikasi matematika salah!", "error");
+                showAlert("VERIFIKASI GAGAL", "Hasil perhitungan matematika verifikasi salah!", true);
                 generateCaptcha();
                 return;
             }
 
-            // Dapatkan Data Metadata Metadata Perangkat melalui Web API
-            let ip = "Unknown", location = "Access Denied / GPS Off", device = navigator.userAgent;
-            
+            let ip = "Unknown", location = "Akses Lokasi Mati", device = navigator.userAgent;
             try {
                 const ipRes = await fetch('https://api.ipify.org?format=json');
                 const ipData = await ipRes.json();
                 ip = ipData.ip;
-            } catch(e){}
+            } catch(err){}
 
-            // Mapping form data
             const payload = {
                 action: "register",
                 jalur: document.getElementById('jalur').value,
@@ -314,10 +313,9 @@
                 location: location
             };
 
-            // Dapatkan kordinat lokasi jika diizinkan
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(async (position) => {
-                    payload.location = `${position.coords.latitude}, ${position.coords.longitude}`;
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    payload.location = `${pos.coords.latitude}, ${pos.coords.longitude}`;
                     sendData(payload);
                 }, () => { sendData(payload); });
             } else {
@@ -326,26 +324,22 @@
         }
 
         function sendData(payload) {
-            fetch(APPS_SCRIPT_URL, {
-                method: "POST",
-                body: JSON.stringify(payload)
-            })
+            fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) })
             .then(res => res.json())
             .then(data => {
                 if(data.status === "success") {
-                    showAlert("Pendaftaran Berhasil!", `Nomor antrean anda adalah: ${data.no_antrean}. Silahkan cek tab status secara berkala.`, "success");
+                    showAlert("PENDAFTARAN BERHASIL", `Nomor antrean anda adalah: ${data.no_antrean}. Silakan simpan nomor ini dan cek tab status secara berkala.`);
                     document.getElementById('formAntrean').reset();
                     generateCaptcha();
                 } else {
-                    showAlert("Pendaftaran Gagal", data.message, "error");
+                    showAlert("SISTEM ERROR", data.message, true);
                 }
-            }).catch(() => showAlert("Error", "Gagal menghubungi server.", "error"));
+            }).catch(() => showAlert("KONEKSI ERROR", "Gagal menghubungi server basis data.", true));
         }
 
         function checkStatus() {
             const nisn = document.getElementById('search-nisn').value;
             if(!nisn) return;
-
             fetch(`${APPS_SCRIPT_URL}?action=checkStatus&nisn=${nisn}`)
             .then(res => res.json())
             .then(data => {
@@ -354,13 +348,12 @@
                     document.getElementById('res-no-antrean').innerText = String(data.no_antrean).padStart(3, '0');
                     document.getElementById('res-nama').innerText = data.nama;
                     document.getElementById('res-current').innerText = data.current_serving || "Belum Mulai";
-                    
                     let sisa = data.no_antrean - data.current_serving;
-                    document.getElementById('res-sisa').innerText = sisa > 0 ? `${sisa} Orang lagi` : (sisa === 0 ? "Sekarang Giliran Anda!" : "Selesai");
+                    document.getElementById('res-sisa').innerText = sisa > 0 ? `${sisa} Orang` : (sisa === 0 ? "GILIRAN ANDA!" : "SELESAI");
                     document.getElementById('res-ruang').innerText = data.ruang ? `Silakan menuju ke Ruang Verifikator ${data.ruang}` : "Menunggu panggilan loket...";
                     document.getElementById('res-jam').innerText = data.estimasi_jam ? `Pukul ${data.estimasi_jam} WIB` : "--:--";
                 } else {
-                    showAlert("Tidak Ditemukan", "Data NISN tidak terdaftar dalam sistem antrean.", "error");
+                    showAlert("DATA TIDAK ADA", "Nomor NISN tidak terdaftar dalam sistem data antrean.", true);
                 }
             });
         }
@@ -369,8 +362,18 @@
             fetch(`${APPS_SCRIPT_URL}?action=getLiveInfo`)
             .then(res => res.json())
             .then(data => {
-                if(data.msg) {
-                    document.getElementById('live-info').innerText = data.msg;
+                if(data.msg) document.getElementById('live-info').innerText = data.msg;
+                if(data.ticker) document.getElementById('text-ticker-container').innerText = data.ticker.toUpperCase();
+                systemStatus = data.gateStatus || "Buka";
+
+                // Pemicu Otomatis Flash Pop-up Menu dari halaman Admin
+                if(data.flashMsg && data.flashId !== lastFlashId) {
+                    lastFlashId = data.flashId;
+                    document.getElementById('flash-desc').innerText = data.flashMsg;
+                    const fPopup = document.getElementById('flash-popup');
+                    const fBox = document.getElementById('flash-box');
+                    fPopup.classList.remove('pointer-events-none', 'opacity-0');
+                    setTimeout(() => fBox.classList.add('popup-active'), 50);
                 }
             }).catch(()=>{});
         }
