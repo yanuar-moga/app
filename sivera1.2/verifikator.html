@@ -5,33 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sivera - Panel Verifikator</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .popup-animate { transform: scale(0.9); opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .popup-active { transform: scale(1); opacity: 1; }
+    </style>
 </head>
 <body class="bg-gray-100 min-h-screen text-gray-800 flex flex-col">
 
-    <!-- Auth Area -->
+    <!-- LOGIN PANEL -->
     <div id="auth-panel" class="max-w-md mx-auto mt-20 p-6 bg-white rounded-2xl shadow-md border mx-4 w-full">
         <h2 class="text-xl font-black text-center text-blue-900 mb-4 uppercase tracking-wider">LOGIN LOKET VERIFIKATOR</h2>
         <div class="space-y-4">
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Nomor Ruang/Loket Petugas</label>
-                <input type="number" id="v-loket" class="w-full border-2 p-2.5 rounded-lg font-bold" placeholder="Contoh: 1">
+                <input type="number" id="v-loket" class="w-full border-2 p-2.5 rounded-lg font-bold">
             </div>
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">PIN Autentikasi Petugas</label>
-                <input type="password" id="v-pin" class="w-full border-2 p-2.5 rounded-lg text-center font-bold tracking-widest" placeholder="••••">
+                <input type="password" id="v-pin" class="w-full border-2 p-2.5 rounded-lg text-center font-bold tracking-widest">
             </div>
             <button onclick="loginVerifikator()" class="w-full bg-blue-800 text-white py-3 rounded-xl font-black uppercase tracking-wider hover:bg-blue-900 transition">MASUK SISTEM</button>
         </div>
     </div>
 
-    <!-- Main Panel Verifikator -->
+    <!-- MAIN DASHBOARD -->
     <div id="main-panel" class="max-w-4xl mx-auto p-4 w-full hidden flex-grow">
         <header class="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm mb-4 border-2">
             <div>
                 <h1 class="font-black text-lg text-blue-900 uppercase">Sivera Petugas Panel</h1>
                 <p id="label-loket" class="text-xs text-amber-600 font-black uppercase tracking-wide">Ruang Loket: -</p>
             </div>
-            <button onclick="location.reload()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg text-xs font-black uppercase border border-red-200">LOGOUT</button>
+            <button onclick="logoutVerifikator()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg text-xs font-black uppercase border border-red-200">LOGOUT</button>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -67,16 +71,55 @@
         </div>
     </div>
 
-    <!-- FOOTER APLIKASI STANDAR -->
+    <!-- FOOTER REVISI -->
     <footer class="bg-white border-t-2 border-gray-200 py-4 text-center text-xs text-gray-600 mt-auto shadow-inner w-full">
-        <span class="font-bold tracking-wide uppercase">
-            Aplikasi Sivera V 1.2 by MB [PANEL LOKET]
-        </span>
+        <button onclick="toggleDevPopup(true)" class="hover:text-blue-900 font-bold tracking-wide uppercase focus:outline-none transition">
+            Aplikasi SIVERA V 1.2
+        </button>
     </footer>
+
+    <!-- POPUP DEVELOPER -->
+    <div id="dev-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="dev-box" class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-blue-900">
+            <h3 class="text-xl font-black text-blue-900 tracking-wider mb-1">SIVERA V 1.2</h3>
+            <div class="w-12 h-1 bg-amber-400 mx-auto mb-4"></div>
+            <div class="text-left text-xs space-y-2 bg-gray-50 p-4 rounded-xl border font-mono text-gray-700 mb-5">
+                <div><strong>Dev :</strong> MB</div>
+                <div><strong>Version :</strong> 1.2</div>
+                <div><strong>Build :</strong> 12 Juni 2026</div>
+                <div><strong>Contac :</strong> <a href="mailto:yanuar.b@gmail.com" class="text-blue-600 underline font-bold">yanuar.b@gmail.com</a></div>
+            </div>
+            <button onclick="toggleDevPopup(false)" class="w-full bg-blue-900 hover:bg-blue-950 text-white font-bold text-xs py-3 rounded-xl uppercase tracking-wider transition">Tutup</button>
+        </div>
+    </div>
 
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzA0xQfsUmrVWGTI1WQFauY3UZ2HIV5u7WZRKJ39bpKM1V9cScV-PfRj-n8gZ6Emk9uvw/exec";
         let sessionLoket = "", sessionPin = "";
+
+        // ANTI MENTAL: Cek session simpanan di localStorage saat pertama kali dimuat
+        window.onload = function() {
+            const savedLoket = localStorage.getItem('sivera_loket');
+            const savedPin = localStorage.getItem('sivera_loket_pin');
+            if(savedLoket && savedPin) {
+                sessionLoket = savedLoket;
+                sessionPin = savedPin;
+                autoSessionLogin();
+            }
+        };
+
+        function autoSessionLogin() {
+            fetch(`${APPS_SCRIPT_URL}?action=loginVerifikator&loket=${sessionLoket}&pin=${sessionPin}`)
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === "authorized") {
+                    document.getElementById('auth-panel').classList.add('hidden');
+                    document.getElementById('main-panel').classList.remove('hidden');
+                    document.getElementById('label-loket').innerText = `Ruang Loket: ${sessionLoket} (${data.nama_petugas})`;
+                    loadQueueTable();
+                }
+            });
+        }
 
         function loginVerifikator() {
             const loket = document.getElementById('v-loket').value;
@@ -86,12 +129,20 @@
             .then(data => {
                 if(data.status === "authorized") {
                     sessionLoket = loket; sessionPin = pin;
+                    localStorage.setItem('sivera_loket', loket);
+                    localStorage.setItem('sivera_loket_pin', pin); // Amankan Sesi
                     document.getElementById('auth-panel').classList.add('hidden');
                     document.getElementById('main-panel').classList.remove('hidden');
                     document.getElementById('label-loket').innerText = `Ruang Loket: ${loket} (${data.nama_petugas})`;
                     loadQueueTable();
-                } else { alert("KODE PIN ATAU NOMOR LOKET SALAH!"); }
+                } else { alert("PIN ATAU NOMOR LOKET SALAH!"); }
             });
+        }
+
+        function logoutVerifikator() {
+            localStorage.removeItem('sivera_loket');
+            localStorage.removeItem('sivera_loket_pin');
+            location.reload();
         }
 
         function loadQueueTable() {
@@ -119,7 +170,7 @@
         }
 
         function validasiAntrean(no, nama) {
-            if(!confirm(`Konfirmasi melayani nomor antrean ${no} atas nama ${nama}?`)) return;
+            if(!confirm(`Layani nomor antrean ${no}?`)) return;
             fetch(APPS_SCRIPT_URL, {
                 method: "POST",
                 body: JSON.stringify({ action: "serveQueue", no_antrean: no, loket: sessionLoket, pin: sessionPin })
@@ -145,8 +196,15 @@
                     document.getElementById('active-num').innerText = String(data.no_antrean).padStart(3, '0');
                     document.getElementById('active-name').innerText = data.nama;
                     loadQueueTable();
-                } else { alert("Selesai! Tidak ada lagi data antrean pendaftar tersisa."); }
+                } else { alert("Antrean hari ini selesai/kosong!"); }
             });
+        }
+
+        function toggleDevPopup(show) {
+            const p = document.getElementById('dev-popup');
+            const b = document.getElementById('dev-box');
+            if(show) { p.classList.remove('pointer-events-none','opacity-0'); setTimeout(()=>b.classList.add('popup-active'),50); }
+            else { b.classList.remove('popup-active'); p.classList.add('opacity-0','pointer-events-none'); }
         }
     </script>
 </body>
