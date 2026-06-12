@@ -6,11 +6,6 @@
     <title>Sivera V 1.2 - SMP N 1 Moga</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        .animate-marquee { animation: marquee 25s linear infinite; }
         .bg-smp-blue { background-color: #004687; }
         .text-smp-blue { color: #004687; }
         .bg-osis-yellow { background-color: #FFD700; }
@@ -18,6 +13,27 @@
         .border-smp-blue { border-color: #004687; }
         .popup-animate { transform: scale(0.9); opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .popup-active { transform: scale(1); opacity: 1; }
+
+        /* EFEK SLIDE TEXT TICKER KE ATAS */
+        .ticker-vertical-container {
+            height: 36px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .ticker-vertical-content {
+            display: block;
+            width: 100%;
+            position: absolute;
+            animation: slideUp 8s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+        }
+        @keyframes slideUp {
+            0%, 5% { transform: translateY(100%); opacity: 0; }
+            10%, 45% { transform: translateY(0); opacity: 1; }
+            50%, 55% { transform: translateY(-100%); opacity: 0; }
+            100% { transform: translateY(-100%); opacity: 0; }
+        }
     </style>
 </head>
 <body class="bg-gray-100 font-sans antialiased text-gray-800 flex flex-col min-h-screen">
@@ -34,21 +50,20 @@
         </div>
     </header>
 
-    <!-- LIVE NOTIFICATION FLASH (INFO KILAT VEREFIKATOR) -->
-    <div class="bg-amber-400 border-b border-amber-500 py-2 px-4 text-xs font-bold text-blue-900 shadow-sm">
-        <div class="max-w-md mx-auto flex items-center gap-2">
-            <span class="flex h-2 w-2 relative">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
-            </span>
-            <div id="live-info">Memuat informasi antrean terkini...</div>
+    <!-- LIVE NOTIFICATION 2 BARIS & TEKS DISINGKAT -->
+    <div class="bg-amber-400 border-b border-amber-500 py-2.5 px-4 text-center shadow-sm">
+        <div class="max-w-md mx-auto flex flex-col items-center justify-center font-black text-blue-950 uppercase tracking-wide">
+            <div id="live-info-l1" class="text-xs text-blue-900 opacity-90 tracking-widest">Memuat info loket...</div>
+            <div id="live-info-l2" class="text-sm text-red-700 mt-0.5">Mencari data antrean aktif...</div>
         </div>
     </div>
 
-    <!-- TEXT TICKER (DAPAT DIUBAH DARI ADMIN) -->
-    <div class="bg-gray-900 text-osis-yellow text-xs py-2 overflow-hidden whitespace-nowrap border-b border-gray-800">
-        <div id="text-ticker-container" class="inline-block animate-marquee font-bold uppercase tracking-wide">
-            [PEMBERITAHUAN]: Memuat informasi pengumuman khusus...
+    <!-- TEXT TICKER VERTIKAL (SLIDE KE ATAS & RESPONSIF HP) -->
+    <div class="bg-gray-900 text-osis-yellow text-xs px-4 border-b border-gray-800">
+        <div class="max-w-md mx-auto ticker-vertical-container">
+            <div id="text-ticker-container" class="ticker-vertical-content font-bold uppercase tracking-wide text-center whitespace-normal break-words leading-tight">
+                [PEMBERITAHUAN]: MEMUAT INFORMASI PENGUMUMAN KHUSUS...
+            </div>
         </div>
     </div>
 
@@ -167,10 +182,10 @@
         </div>
     </main>
 
-    <!-- FOOTER APLIKASI STANDAR -->
+    <!-- FOOTER REVISI -->
     <footer class="bg-white border-t-2 border-gray-200 py-4 text-center text-xs text-gray-600 mt-auto shadow-inner">
         <button onclick="toggleDevPopup(true)" class="hover:text-smp-blue font-bold tracking-wide uppercase focus:outline-none transition">
-            Aplikasi Sivera V 1.2 by MB [INFO DEVELOPER]
+            Aplikasi SIVERA V 1.2
         </button>
     </footer>
 
@@ -183,7 +198,7 @@
         </div>
     </div>
 
-    <!-- FLASH MESSAGE ALERT POP-UP (OTOMATIS DIKONTROL ADMIN) -->
+    <!-- FLASH MESSAGE ALERT POP-UP -->
     <div id="flash-popup" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
         <div id="flash-box" class="bg-gradient-to-br from-amber-400 to-amber-300 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-4 border-blue-900">
             <h3 class="text-lg font-black text-blue-950 uppercase tracking-widest mb-2">[ PENGUMUMAN KILAT PANITIA ]</h3>
@@ -192,19 +207,20 @@
         </div>
     </div>
 
-    <!-- DEV INFO MODAL -->
+    <!-- REVISI DEV INFO POP-UP SENSOR-COMPLIANT -->
     <div id="dev-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div id="dev-box" class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-amber-400">
-            <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Developer Logo" class="w-20 h-20 mx-auto rounded-full object-cover border-4 border-smp-blue shadow-md mb-3">
-            <h3 class="text-lg font-black text-smp-blue uppercase">Sivera V 1.2</h3>
-            <p class="text-[10px] text-gray-400 font-bold tracking-wider uppercase mb-4">Sistem Verifikasi Berkas Antrean</p>
-            <div class="text-left text-xs space-y-2 bg-gray-50 p-4 rounded-xl border font-mono text-gray-700 mb-4">
-                <div><strong>DEVELOPER:</strong> MB Collaboration</div>
-                <div><strong>VERSION:</strong> 1.2.0-Build2026</div>
-                <div><strong>BUILD:</strong> Juni 2026</div>
-                <div><strong>CONTACT EMAIL:</strong> <a href="mailto:yanuar.b@gmail.com" class="text-blue-600 underline font-bold">yanuar.b@gmail.com</a></div>
+        <div id="dev-box" class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-blue-900">
+            <div class="mb-4">
+                <h3 class="text-xl font-black text-blue-900 tracking-wider">SIVERA V 1.2</h3>
+                <div class="w-12 h-1 bg-amber-400 mx-auto mt-1"></div>
             </div>
-            <button onclick="toggleDevPopup(false)" class="w-full bg-smp-blue hover:bg-blue-900 text-white font-black text-xs py-3 rounded-xl uppercase tracking-wider transition">KEMBALI</button>
+            <div class="text-left text-xs space-y-2 bg-gray-50 p-4 rounded-xl border font-mono text-gray-700 mb-5">
+                <div><strong>Dev :</strong> MB</div>
+                <div><strong>Version :</strong> 1.2</div>
+                <div><strong>Build :</strong> 12 Juni 2026</div>
+                <div><strong>Contac :</strong> <a href="mailto:yanuar.b@gmail.com" class="text-blue-600 underline font-bold">yanuar.b@gmail.com</a></div>
+            </div>
+            <button onclick="toggleDevPopup(false)" class="w-full bg-blue-900 hover:bg-blue-950 text-white font-bold text-xs py-3 rounded-xl uppercase tracking-wider transition">Tutup</button>
         </div>
     </div>
 
@@ -215,7 +231,7 @@
         window.onload = function() {
             generateCaptcha();
             fetchLiveStatus();
-            setInterval(fetchLiveStatus, 10000); // Sinkronisasi berkala tiap 10 detik
+            setInterval(fetchLiveStatus, 10000);
         };
 
         function generateCaptcha() {
@@ -256,7 +272,7 @@
         function togglePopup(show) {
             if(!show) {
                 document.getElementById('popup-box').classList.remove('popup-active');
-                document.getElementById('popup').add('opacity-0', 'pointer-events-none');
+                document.getElementById('popup').classList.add('opacity-0', 'pointer-events-none');
             }
         }
 
@@ -334,7 +350,7 @@
                 } else {
                     showAlert("SISTEM ERROR", data.message, true);
                 }
-            }).catch(() => showAlert("KONEKSI ERROR", "Gagal menghubungi server basis data.", true));
+            }).catch(() => showAlert("KONEKSI ERROR", "Gagal menghubungi server.", true));
         }
 
         function checkStatus() {
@@ -353,7 +369,7 @@
                     document.getElementById('res-ruang').innerText = data.ruang ? `Silakan menuju ke Ruang Verifikator ${data.ruang}` : "Menunggu panggilan loket...";
                     document.getElementById('res-jam').innerText = data.estimasi_jam ? `Pukul ${data.estimasi_jam} WIB` : "--:--";
                 } else {
-                    showAlert("DATA TIDAK ADA", "Nomor NISN tidak terdaftar dalam sistem data antrean.", true);
+                    showAlert("DATA TIDAK ADA", "Nomor NISN tidak terdaftar.", true);
                 }
             });
         }
@@ -362,11 +378,24 @@
             fetch(`${APPS_SCRIPT_URL}?action=getLiveInfo`)
             .then(res => res.json())
             .then(data => {
-                if(data.msg) document.getElementById('live-info').innerText = data.msg;
-                if(data.ticker) document.getElementById('text-ticker-container').innerText = data.ticker.toUpperCase();
+                // REVISI DATA LIVE INFO 2 BARIS DISINGKAT
+                if(data.rawActive) {
+                    document.getElementById('live-info-l1').innerText = `Verivikator R ${data.rawActive.loket}`;
+                    document.getElementById('live-info-l2').innerText = `Sedang Verivikasi No Antrean ${data.rawActive.no} (a.n ${data.rawActive.nama})`;
+                } else {
+                    document.getElementById('live-info-l1').innerText = "STATUS VERIFIKATOR";
+                    document.getElementById('live-info-l2').innerText = "Belum Ada Antrean Aktif";
+                }
+
+                // REVISI JALUR REFRESH TEXT TICKER SLIDE
+                if(data.ticker) {
+                    const tickerContainer = document.getElementById('text-ticker-container');
+                    if (tickerContainer.innerText !== data.ticker.toUpperCase()) {
+                        tickerContainer.innerText = data.ticker.toUpperCase();
+                    }
+                }
                 systemStatus = data.gateStatus || "Buka";
 
-                // Pemicu Otomatis Flash Pop-up Menu dari halaman Admin
                 if(data.flashMsg && data.flashId !== lastFlashId) {
                     lastFlashId = data.flashId;
                     document.getElementById('flash-desc').innerText = data.flashMsg;
