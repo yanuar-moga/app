@@ -14,29 +14,14 @@
         .popup-animate { transform: scale(0.9); opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .popup-active { transform: scale(1); opacity: 1; }
 
-        /* ANIMASI LOGO POPUP */
         @keyframes customPulse {
             0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(0, 70, 135, 0.3)); }
             50% { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(0, 70, 135, 0.6)); }
         }
-        .animate-logo-popup {
-            animation: customPulse 3s ease-in-out infinite;
-        }
+        .animate-logo-popup { animation: customPulse 3s ease-in-out infinite; }
 
-        /* EFEK SLIDE TEXT TICKER KE ATAS */
-        .ticker-vertical-container {
-            height: 36px;
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-        }
-        .ticker-vertical-content {
-            display: block;
-            width: 100%;
-            position: absolute;
-            animation: slideUp 8s cubic-bezier(0.25, 1, 0.5, 1) infinite;
-        }
+        .ticker-vertical-container { height: 36px; display: flex; align-items: center; overflow: hidden; position: relative; }
+        .ticker-vertical-content { display: block; width: 100%; position: absolute; animation: slideUp 8s cubic-bezier(0.25, 1, 0.5, 1) infinite; }
         @keyframes slideUp {
             0%, 5% { transform: translateY(100%); opacity: 0; }
             10%, 45% { transform: translateY(0); opacity: 1; }
@@ -149,17 +134,13 @@
             <h2 class="text-lg font-black text-smp-blue mb-4 border-b pb-2 tracking-wide uppercase">
                 Cek Realtime Antrean
             </h2>
-            <div class="flex gap-2 mb-4">
+            <div class="flex gap-2 mb-5">
                 <input type="number" id="search-nisn" class="flex-1 bg-gray-50 border-2 border-gray-300 rounded-lg p-2.5 text-sm font-bold focus:border-smp-blue outline-none" placeholder="Masukkan NISN Anda">
                 <button onclick="checkStatus()" class="bg-smp-blue text-white px-5 rounded-lg text-xs font-black uppercase hover:bg-blue-900 transition">CARI</button>
             </div>
             
             <div id="status-result" class="hidden space-y-4">
-                <div class="bg-blue-600 p-5 rounded-2xl text-center text-white shadow-inner">
-                    <p class="text-xs font-bold uppercase tracking-widest text-blue-200">Nomor Antrean Anda</p>
-                    <p id="res-no-antrean" class="text-5xl font-black my-1 text-osis-yellow">024</p>
-                    <p id="res-nama" class="text-base font-bold uppercase tracking-wide">Nama Siswa</p>
-                </div>
+                
                 <div class="grid grid-cols-2 gap-3 text-center">
                     <div class="bg-gray-50 p-3 rounded-xl border border-gray-300">
                         <p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider">Antrean Sekarang</p>
@@ -170,14 +151,73 @@
                         <p id="res-sisa" class="text-2xl font-black text-red-600">--</p>
                     </div>
                 </div>
-                <div class="bg-amber-50 p-4 rounded-xl border-2 border-amber-300">
+
+                <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-300">
                     <p class="text-[10px] uppercase text-amber-600 font-bold tracking-wider">Lokasi Ruang Verifikasi:</p>
                     <p id="res-ruang" class="text-sm font-black text-amber-950 mt-0.5">Silakan menuju ke Ruang Verifikator --</p>
                 </div>
-                <div class="bg-emerald-50 p-4 rounded-xl border-2 border-emerald-300">
+
+                <div class="bg-emerald-50 p-3.5 rounded-xl border border-emerald-300 mb-2">
                     <p class="text-[10px] uppercase text-emerald-600 font-bold tracking-wider">Estimasi Waktu Pelayanan:</p>
                     <p id="res-jam" class="text-sm font-black text-emerald-950 mt-0.5">Pukul -- WIB</p>
                 </div>
+
+                <div class="border-2 border-dashed border-gray-400 p-2 rounded-2xl bg-gray-50">
+                    <div id="ticket-capture" class="bg-gradient-to-b from-blue-950 to-blue-900 rounded-xl p-5 text-white shadow-lg relative overflow-hidden z-10">
+                        
+                        <div class="absolute -right-6 -bottom-6 text-white/5 font-black text-9xl pointer-events-none select-none z-0">SMP</div>
+                        
+                        <div class="flex items-center gap-3 border-b border-white/25 pb-3 mb-4 relative z-10">
+                            <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" class="w-9 h-9 object-contain" alt="Logo">
+                            <div class="text-left">
+                                <h4 class="text-xs font-black tracking-wider uppercase text-osis-yellow">BUKTI NOMOR ANTREAN</h4>
+                                <p class="text-[9px] text-gray-200 font-medium">Sivera V 1.2 • SMP Negeri 1 Moga</p>
+                            </div>
+                        </div>
+
+                        <div class="text-center my-4 bg-black/30 py-3 rounded-xl border border-white/10 shadow-inner relative z-10">
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-blue-200">NOMOR ANTREAN</p>
+                            <p id="res-no-antrean" class="text-5xl font-black my-1 text-osis-yellow tracking-wider">000</p>
+                            <p id="res-ticket-jalur" class="text-[10px] font-extrabold uppercase bg-amber-500 text-blue-950 px-2.5 py-0.5 rounded-full inline-block mt-1 tracking-wide">JALUR --</p>
+                        </div>
+
+                        <div class="space-y-2.5 text-xs border-t border-white/25 pt-4 relative z-10">
+                            <div class="flex justify-between border-b border-white/10 pb-1.5">
+                                <span class="text-gray-300 font-medium">Nama Lengkap</span>
+                                <span id="res-nama" class="font-bold uppercase tracking-wide text-right text-white truncate max-w-[200px]">--</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/10 pb-1.5">
+                                <span class="text-gray-300 font-medium">NISN</span>
+                                <span id="res-nisn" class="font-mono font-bold tracking-wider text-white">--</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/10 pb-1.5">
+                                <span class="text-gray-300 font-medium">Jenis Kelamin</span>
+                                <span id="res-jk" class="font-semibold text-white">--</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/10 pb-1.5">
+                                <span class="text-gray-300 font-medium">No. HP / WA</span>
+                                <span id="res-hp" class="font-mono font-semibold text-white">--</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/10 pb-1.5">
+                                <span class="text-gray-300 font-medium">Email</span>
+                                <span id="res-email" class="font-semibold break-all text-right text-white max-w-[180px]">--</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/10 pb-1.5">
+                                <span class="text-gray-300 font-medium">Asal Sekolah</span>
+                                <span id="res-asal" class="font-bold uppercase tracking-wide text-right text-white truncate max-w-[180px]">--</span>
+                            </div>
+                            <div class="flex flex-col text-left pt-1">
+                                <span class="text-gray-300 text-[11px] mb-1 font-medium">Alamat Rumah:</span>
+                                <span id="res-alamat" class="font-semibold text-white leading-relaxed bg-black/25 p-2.5 rounded-lg border border-white/10 text-[11px] block whitespace-normal break-words min-h-[36px]">--</span>
+                            </div>
+                        </div>
+
+                        <p class="text-[10px] text-center text-amber-400 font-bold italic mt-5 tracking-wide relative z-10">
+                            *Silakan screenshot layar ini sebagai bukti verifikasi fisik berkas.
+                        </p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </main>
@@ -208,7 +248,6 @@
 
     <div id="dev-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
         <div id="dev-box" class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-smp-blue">
-            
             <div class="flex flex-col items-center mb-5">
                 <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-gray-100 shadow p-1 bg-white animate-logo-popup mb-3">
                     <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Sivera Logo" class="w-full h-full object-cover rounded-full">
@@ -220,7 +259,6 @@
                     <span><strong>Version:</strong> 1.2</span>
                 </div>
             </div>
-
             <div class="grid grid-cols-1 gap-2.5 text-left mb-6">
                 <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-xl border border-blue-100 flex items-center gap-3 shadow-sm">
                     <div class="bg-smp-blue text-white p-2 rounded-lg text-xs font-bold tracking-tight">BUILD</div>
@@ -231,7 +269,6 @@
                     <div class="text-xs font-black text-amber-950 underline break-all">yanuar.b@gmail.com</div>
                 </a>
             </div>
-
             <button onclick="toggleDevPopup(false)" class="w-full bg-gray-900 hover:bg-gray-800 text-white font-black text-xs py-3.5 rounded-xl uppercase tracking-wider transition shadow-md">
                 KEMBALI KE APLIKASI
             </button>
@@ -262,7 +299,7 @@
         window.onload = function() {
             generateCaptcha();
             fetchLiveStatus();
-            setInterval(fetchLiveStatus, 10000);
+            setInterval(fetchLiveStatus, 10000); // Sinkronisasi realtime tiap 10 detik
         };
 
         function generateCaptcha() {
@@ -309,6 +346,7 @@
 
         async function submitForm(e) {
             e.preventDefault();
+            // Validasi client-side berdasarkan systemStatus hasil sinkronisasi database terbaru
             if (systemStatus === "Tutup") {
                 alert("Pendaftaran/pengambilan nomor antrean berkas belum dibuka atau telah ditutup oleh panitia.");
                 return;
@@ -367,7 +405,6 @@
             }).catch(() => alert("Koneksi Error. Gagal menghubungi server."));
         }
 
-        /* REVISI PARSING ESTIMASI JAM DI SINI */
         function checkStatus() {
             const nisn = document.getElementById('search-nisn').value;
             if(!nisn) return;
@@ -376,22 +413,18 @@
             .then(data => {
                 if(data.status === "found") {
                     document.getElementById('status-result').classList.remove('hidden');
-                    document.getElementById('res-no-antrean').innerText = String(data.no_antrean).padStart(3, '0');
-                    document.getElementById('res-nama').innerText = data.nama;
-                    document.getElementById('res-current').innerText = data.current_serving || "Belum Mulai";
                     
+                    document.getElementById('res-current').innerText = data.current_serving || "Belum Mulai";
                     let sisa = data.no_antrean - data.current_serving;
                     document.getElementById('res-sisa').innerText = sisa > 0 ? `${sisa} Orang` : (sisa === 0 ? "GILIRAN ANDA!" : "SELESAI");
                     document.getElementById('res-ruang').innerText = data.ruang ? `Silakan menuju ke Ruang Verifikator ${data.ruang}` : "Menunggu panggilan loket...";
                     
-                    // Logic Konversi Epoch Date String (1899-12-30T...) ke Jam Lokal WIB
                     if (data.estimasi_jam) {
                         if (data.estimasi_jam.includes('T') && data.estimasi_jam.includes('Z')) {
                             const dateObj = new Date(data.estimasi_jam);
                             const jam = String(dateObj.getHours()).padStart(2, '0');
                             const menit = String(dateObj.getMinutes()).padStart(2, '0');
                             const detik = String(dateObj.getSeconds()).padStart(2, '0');
-                            
                             document.getElementById('res-jam').innerText = `Pukul ${jam}:${menit}:${detik} WIB`;
                         } else {
                             document.getElementById('res-jam').innerText = `Pukul ${data.estimasi_jam} WIB`;
@@ -399,6 +432,16 @@
                     } else {
                         document.getElementById('res-jam').innerText = "Pukul --:-- WIB";
                     }
+
+                    document.getElementById('res-no-antrean').innerText = String(data.no_antrean).padStart(3, '0');
+                    document.getElementById('res-ticket-jalur').innerText = `JALUR ${data.jalur.toUpperCase()}`;
+                    document.getElementById('res-nama').innerText = data.nama;
+                    document.getElementById('res-nisn').innerText = data.nisn;
+                    document.getElementById('res-jk').innerText = data.jk;
+                    document.getElementById('res-hp').innerText = data.hp;
+                    document.getElementById('res-email').innerText = data.email;
+                    document.getElementById('res-asal').innerText = data.asal_sekolah;
+                    document.getElementById('res-alamat').innerText = data.alamat;
 
                 } else {
                     alert("Nomor NISN tidak terdaftar.");
@@ -415,7 +458,7 @@
                     document.getElementById('live-info-l2').innerText = `Sedang Verifikasi No Antrean ${data.rawActive.no} (a.n ${data.rawActive.nama})`;
                 } else {
                     document.getElementById('live-info-l1').innerText = "STATUS VERIFIKATOR";
-                    document.getElementById('live-info-l2').innerText = "Belum there Antrean Aktif";
+                    document.getElementById('live-info-l2').innerText = "Belum Ada Antrean Aktif";
                 }
 
                 if(data.ticker) {
@@ -424,6 +467,8 @@
                         tickerContainer.innerText = data.ticker.toUpperCase();
                     }
                 }
+                
+                // Menyelaraskan status gerbang secara realtime dari properti gateStatus yang dikirim oleh doGet baru
                 systemStatus = data.gateStatus || "Buka";
 
                 if(data.flashMsg && data.flashId !== lastFlashId) {
@@ -434,7 +479,7 @@
                     fPopup.classList.remove('pointer-events-none', 'opacity-0');
                     setTimeout(() => fBox.classList.add('popup-active'), 50);
                 }
-            }).catch(()=>{});
+            }).catch(() => console.log("Gagal sinkronisasi data live info dari server."));
         }
     </script>
 </body>
