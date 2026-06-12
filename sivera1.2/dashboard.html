@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sivera - Monitor Display Antrean</title>
+    <title>Sivera - Dashboard Monitoring</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .bg-smp-blue { background-color: #004687; }
         .text-smp-blue { color: #004687; }
-        .bg-osis-yellow { background-color: #FFD700; }
-        .text-osis-yellow { color: #FFD700; }
         .popup-animate { transform: scale(0.9); opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .popup-active { transform: scale(1); opacity: 1; }
 
@@ -21,209 +20,146 @@
         .animate-logo-popup {
             animation: dashPulse 3s ease-in-out infinite;
         }
-
-        /* RUNNING TEXT HORIZONTAL */
-        .marquee-container {
-            overflow: hidden;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-        }
-        .marquee-content {
-            display: inline-block;
-            padding-left: 100%;
-            animation: marqueeLinear 25s linear infinite;
-        }
-        @keyframes marqueeLinear {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
-        }
     </style>
 </head>
-<body class="bg-slate-950 text-white font-sans flex flex-col min-h-screen">
+<body class="bg-slate-50 p-4 font-sans text-gray-800 flex flex-col min-h-screen">
 
-    <header class="bg-smp-blue p-4 shadow-xl border-b-4 border-osis-yellow flex flex-col md:flex-row justify-between items-center gap-4">
-        <div class="flex items-center gap-4">
-            <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo SMP" class="w-16 h-16 object-contain drop-shadow-md">
+    <div class="max-w-5xl mx-auto space-y-5 w-full flex-grow">
+        <header class="bg-white p-4 rounded-2xl shadow-sm border-2 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
             <div>
-                <h1 class="font-black text-xl md:text-2xl tracking-wide uppercase leading-tight">SMP NEGERI 1 MOGA</h1>
-                <p class="text-xs md:text-sm text-gray-200 uppercase font-semibold tracking-wider">Display Monitor Sistem Verifikasi Antrean Berkas (Sivera)</p>
+                <h1 class="text-xl font-black text-blue-900 uppercase tracking-wide">EXECUTIVE MONITORING DASHBOARD</h1>
+                <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">PANTAU DATA SPMB SMP NEGERI 1 MOGA</p>
+            </div>
+            <span class="bg-blue-900 text-white text-xs px-4 py-1.5 rounded-lg font-black tracking-widest" id="live-time">JUNI 2026</span>
+        </header>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white p-4 rounded-xl shadow-sm border-2 text-center">
+                <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Total Pendaftar</p>
+                <p id="kpi-total" class="text-3xl font-black text-gray-800 mt-1">0</p>
+            </div>
+            <div class="bg-amber-400 p-4 rounded-xl shadow-sm text-center text-blue-950">
+                <p class="text-[10px] font-black uppercase tracking-wider opacity-80">Sedang Antre</p>
+                <p id="kpi-wait" class="text-3xl font-black mt-1">0</p>
+            </div>
+            <div class="bg-blue-600 p-4 rounded-xl shadow-sm text-center text-white">
+                <p class="text-[10px] font-black uppercase tracking-wider opacity-80">Sedang Diproses</p>
+                <p id="kpi-process" class="text-3xl font-black mt-1">0</p>
+            </div>
+            <div class="bg-emerald-600 p-4 rounded-xl shadow-sm text-center text-white">
+                <p class="text-[10px] font-black uppercase tracking-wider opacity-80">Selesai Validasi</p>
+                <p id="kpi-done" class="text-3xl font-black mt-1">0</p>
             </div>
         </div>
-        <div class="bg-slate-900/60 px-5 py-2.5 rounded-xl border border-blue-400/30 text-center min-w-[150px]">
-            <div id="clock-date" class="text-[10px] font-bold text-osis-yellow tracking-widest uppercase">MEMUAT...</div>
-            <div id="clock-time" class="text-xl font-black font-mono mt-0.5 tracking-wider">00:00:00</div>
-        </div>
-    </header>
 
-    <main class="flex-grow p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl w-full mx-auto">
-        
-        <div class="lg:col-span-2 flex flex-col gap-6">
-            <div class="bg-gradient-to-b from-blue-900 to-slate-900 p-6 rounded-3xl border-2 border-blue-500/30 shadow-2xl text-center flex flex-col justify-center items-center flex-grow min-h-[300px]">
-                <h2 class="text-sm font-black text-osis-yellow uppercase tracking-widest bg-blue-950 px-4 py-1.5 rounded-full border border-blue-700">PANGGILAN LOKET AKTIF</h2>
-                <div id="monitor-active-num" class="text-8xl md:text-9xl font-black text-white my-4 tracking-tighter drop-shadow-[0_4px_12px_rgba(255,255,255,0.2)]">--</div>
-                <div id="monitor-active-name" class="text-lg md:text-xl font-bold uppercase tracking-wide text-gray-300 truncate max-w-full">TIDAK ADA AKTIVITAS</div>
-                <div id="monitor-active-loket" class="mt-4 bg-emerald-600 text-white font-black text-base md:text-lg px-8 py-2.5 rounded-xl uppercase tracking-widest border-2 border-emerald-400 shadow-lg">SILAKAN MENUJU RUANG LOKET --</div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white p-4 rounded-2xl shadow-sm border-2">
+                <h3 class="text-xs font-black text-gray-400 uppercase tracking-wider mb-2">Komposisi Jalur Pendaftaran</h3>
+                <div class="max-h-[240px] flex justify-center"><canvas id="chartJalur"></canvas></div>
             </div>
-        </div>
-
-        <div class="bg-slate-900 p-5 rounded-3xl border border-gray-800 flex flex-col shadow-2xl">
-            <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest border-b border-gray-800 pb-3 mb-4">DAFTAR MONITORING SELURUH RUANG</h3>
-            
-            <div id="loket-grid-container" class="space-y-3 flex-grow overflow-y-auto max-h-[400px] pr-1">
-                <div class="text-center text-xs font-bold text-gray-500 py-8 uppercase">Menghubungkan data loket...</div>
-            </div>
-        </div>
-    </main>
-
-    <div class="bg-gray-900 border-t border-gray-800 py-3 px-4 shadow-2xl">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 items-center gap-2">
-            <div class="md:col-span-2 bg-red-600 text-white font-black text-[11px] py-1.5 px-3 rounded text-center uppercase tracking-wider shadow">PENGUMUMAN</div>
-            <div class="md:col-span-10 marquee-container bg-slate-950 p-1.5 rounded border border-gray-800">
-                <div id="marquee-text" class="marquee-content font-bold text-osis-yellow uppercase tracking-wide text-xs">
-                    [MEMUAT INFORMASI MAKLUMAT LIVE DARI PANITIA PPDB SMP NEGERI 1 MOGA...]
-                </div>
+            <div class="bg-white p-4 rounded-2xl shadow-sm border-2">
+                <h3 class="text-xs font-black text-gray-400 uppercase tracking-wider mb-2">Produktivitas Ruang Verifikator</h3>
+                <div class="max-h-[240px]"><canvas id="chartLoket"></canvas></div>
             </div>
         </div>
     </div>
 
-    <footer class="bg-slate-950 border-t border-gray-900 py-3.5 text-center text-xs text-gray-600">
-        <button onclick="toggleDevPopup(true)" class="hover:text-smp-blue font-bold tracking-wide uppercase focus:outline-none transition">
-            Aplikasi SIVERA V 1.2
+    <footer class="bg-white border-t-2 border-gray-200 py-4 text-center text-xs text-gray-600 mt-5 shadow-inner w-full">
+        <button onclick="toggleDevPopup(true)" class="font-bold tracking-wide uppercase hover:text-blue-900 transition focus:outline-none">
+            Aplikasi Sivera V 1.2 by MB [MONITORING DASHBOARD]
         </button>
     </footer>
 
-    <div id="dev-popup" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div id="dev-box" class="bg-slate-900 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-smp-blue">
+    <div id="dev-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="dev-box" class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-smp-blue">
             
             <div class="flex flex-col items-center mb-5">
-                <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-slate-800 shadow p-1 bg-slate-950 animate-logo-popup mb-3">
+                <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-gray-100 shadow p-1 bg-white animate-logo-popup mb-3">
                     <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Sivera Logo" class="w-full h-full object-cover rounded-full">
                 </div>
-                <h3 class="text-base font-black text-white uppercase tracking-wide">Sistem Verivikasi Antrean</h3>
-                <div class="flex items-center gap-3 mt-1 text-xs font-mono text-gray-400 bg-slate-950 px-3 py-1 rounded-full border border-slate-800">
+                <h3 class="text-base font-black text-gray-900 uppercase tracking-wide">Sistem Verivikasi Antrean</h3>
+                <div class="flex items-center gap-3 mt-1 text-xs font-mono text-gray-500 bg-gray-100 px-3 py-1 rounded-full border">
                     <span><strong>Dev:</strong> MB</span>
-                    <span class="text-slate-700">|</span>
+                    <span class="text-gray-300">|</span>
                     <span><strong>Version:</strong> 1.2</span>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 gap-2.5 text-left mb-6">
-                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex items-center gap-3 shadow-inner">
-                    <div class="bg-smp-blue text-white p-2 rounded-lg text-xs font-black tracking-tight shadow">BUILD</div>
-                    <div class="text-xs font-black text-blue-100">12 Juni 2026</div>
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-xl border border-blue-100 flex items-center gap-3 shadow-sm">
+                    <div class="bg-smp-blue text-white p-2 rounded-lg text-xs font-bold tracking-tight shadow-sm">BUILD</div>
+                    <div class="text-xs font-black text-blue-950">12 Juni 2026</div>
                 </div>
-                <a href="mailto:yanuar.b@gmail.com" class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex items-center gap-3 shadow-inner hover:border-blue-500/50 transition block">
-                    <div class="bg-slate-800 text-osis-yellow p-2 rounded-lg text-xs font-black tracking-tight border border-slate-700">CONTACT</div>
-                    <div class="text-xs font-black text-gray-300 underline break-all">yanuar.b@gmail.com</div>
+                <a href="mailto:yanuar.b@gmail.com" class="bg-gradient-to-r from-amber-50 to-orange-50 p-3 rounded-xl border border-amber-100 flex items-center gap-3 shadow-sm hover:scale-[1.01] transition block">
+                    <div class="bg-amber-500 text-white p-2 rounded-lg text-xs font-bold tracking-tight shadow-sm">CONTACT</div>
+                    <div class="text-xs font-black text-amber-950 underline break-all">yanuar.b@gmail.com</div>
                 </a>
             </div>
 
-            <button onclick="toggleDevPopup(false)" class="w-full bg-smp-blue hover:bg-blue-800 text-white font-black text-xs py-3.5 rounded-xl uppercase tracking-wider transition shadow-md">
-                KEMBALI KE MONITOR
+            <button onclick="toggleDevPopup(false)" class="w-full bg-gray-900 hover:bg-gray-800 text-white font-black text-xs py-3.5 rounded-xl uppercase tracking-wider transition shadow-md">
+                KEMBALI KE DASHBOARD
             </button>
         </div>
     </div>
 
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzA0xQfsUmrVWGTI1WQFauY3UZ2HIV5u7WZRKJ39bpKM1V9cScV-PfRj-n8gZ6Emk9uvw/exec";
-        let lastKnownActiveNo = null;
+        let jalurChart, loketChart;
 
         window.onload = function() {
-            updateClock();
-            setInterval(updateClock, 1000);
-            
-            fetchDisplayData();
-            setInterval(fetchDisplayData, 6000); // Sinkronisasi setiap 6 detik
-        };
-
-        function updateClock() {
-            const now = new Date();
-            const days = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
-            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP', 'OKT', 'NOV', 'DES'];
-            
-            document.getElementById('clock-date').innerText = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
-            document.getElementById('clock-time').innerText = now.toTimeString().split(' ')[0];
+            renderCharts(); 
+            fetchDashboardData();
+            setInterval(fetchDashboardData, 15000); // Sinkronisasi otomatis berkala setiap 15 detik
         }
 
-        function fetchDisplayData() {
-            fetch(`${APPS_SCRIPT_URL}?action=getLiveInfo`)
+        function renderCharts() {
+            jalurChart = new Chart(document.getElementById('chartJalur').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Domisili', 'Prestasi', 'Afirmasi', 'Mutasi'],
+                    datasets: [{ data: [0, 0, 0, 0], backgroundColor: ['#004687', '#FFD700', '#10B981', '#EF4444'] }]
+                },
+                options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+            });
+
+            loketChart = new Chart(document.getElementById('chartLoket').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Loket 1', 'Loket 2', 'Loket 3', 'Loket 4', 'Loket 5', 'Loket 6'],
+                    datasets: [{ label: 'Berkas Selesai', data: [0, 0, 0, 0, 0, 0], backgroundColor: '#004687' }]
+                },
+                options: { responsive: true, scales: { y: { beginAtZero: true } } }
+            });
+        }
+
+        function fetchDashboardData() {
+            fetch(`${APPS_SCRIPT_URL}?action=getDashboardData`)
             .then(res => res.json())
             .then(data => {
-                // Update Main Active Callout
-                if(data.rawActive) {
-                    document.getElementById('monitor-active-num').innerText = String(data.rawActive.no).padStart(3, '0');
-                    document.getElementById('monitor-active-name').innerText = data.rawActive.nama;
-                    document.getElementById('monitor-active-loket').innerText = `SILAKAN MENUJU RUANG LOKET ${data.rawActive.loket}`;
-                    document.getElementById('monitor-active-loket').classList.remove('hidden');
-
-                    // Audio Trigger internal jika ada pergerakan nomor baru
-                    if(lastKnownActiveNo !== data.rawActive.no) {
-                        lastKnownActiveNo = data.rawActive.no;
-                        playChime();
-                    }
-                } else {
-                    document.getElementById('monitor-active-num').innerText = "--";
-                    document.getElementById('monitor-active-name').innerText = "BELUM ADA ANTREAN AKTIF";
-                    document.getElementById('monitor-active-loket').classList.add('hidden');
-                }
-
-                // Update Running Text / Ticker
-                if(data.ticker) {
-                    const elMarquee = document.getElementById('marquee-text');
-                    if (elMarquee.innerText !== data.ticker.toUpperCase()) {
-                        elMarquee.innerText = data.ticker.toUpperCase();
-                    }
-                }
-
-                // Update Side Loket Matrix Grid
-                const container = document.getElementById('loket-grid-container');
-                container.innerHTML = "";
+                document.getElementById('kpi-total').innerText = data.kpi.total;
+                document.getElementById('kpi-wait').innerText = data.kpi.wait;
+                document.getElementById('kpi-process').innerText = data.kpi.process;
+                document.getElementById('kpi-done').innerText = data.kpi.done;
                 
-                if(data.allLoketStatus && data.allLoketStatus.length > 0) {
-                    data.allLoketStatus.forEach(lk => {
-                        container.innerHTML += `
-                            <div class="bg-slate-950 p-3.5 rounded-xl border border-gray-800 flex justify-between items-center shadow-inner">
-                                <div>
-                                    <h4 class="text-xs font-black text-gray-300 uppercase tracking-wide">RUANG LOKET ${lk.loket}</h4>
-                                    <p class="text-[10px] text-gray-500 font-bold uppercase mt-0.5 truncate max-w-[150px]">${lk.petugas || 'Petugas'}</p>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-xs font-bold uppercase tracking-wider block text-gray-400 text-[9px]">NO. ANTREAN</span>
-                                    <span class="text-xl font-black text-amber-400 font-mono">${String(lk.current_no || '-').padStart(3, '0')}</span>
-                                </div>
-                            </div>
-                        `;
-                    });
-                } else {
-                    container.innerHTML = `<div class="text-center text-xs font-bold text-gray-600 py-8 uppercase">Belum ada loket berdinas</div>`;
-                }
+                jalurChart.data.datasets[0].data = [data.jalur.domisili, data.jalur.prestasi, data.jalur.afirmasi, data.jalur.mutasi];
+                jalurChart.update();
+                
+                loketChart.data.datasets[0].data = data.loket;
+                loketChart.update();
             }).catch(()=>{});
         }
 
-        function playChime() {
-            try {
-                // Sound notification chime alternatif ringan berbasis AudioContext API browser browser
-                const context = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = context.createOscillator();
-                const gain = context.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, context.currentTime); // D5
-                osc.frequency.setValueAtTime(880, context.currentTime + 0.15); // A5
-                gain.gain.setValueAtTime(0.3, context.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 0.4);
-                osc.connect(gain);
-                gain.connect(context.destination);
-                osc.start();
-                osc.stop(context.currentTime + 0.4);
-            } catch(e){}
-        }
-
+        // Fungsi kontrol buka/tutup Pop-up Informasi Developer
         function toggleDevPopup(show) {
             const p = document.getElementById('dev-popup');
             const b = document.getElementById('dev-box');
-            if(show) { p.classList.remove('pointer-events-none','opacity-0'); setTimeout(()=>b.classList.add('popup-active'),50); }
-            else { b.classList.remove('popup-active'); p.classList.add('opacity-0','pointer-events-none'); }
+            if(show) { 
+                p.classList.remove('pointer-events-none','opacity-0'); 
+                setTimeout(() => b.classList.add('popup-active'), 50); 
+            } else { 
+                b.classList.remove('popup-active'); 
+                p.classList.add('opacity-0','pointer-events-none'); 
+            }
         }
     </script>
 </body>
