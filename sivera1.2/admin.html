@@ -8,6 +8,15 @@
     <style>
         .popup-animate { transform: scale(0.9); opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .popup-active { transform: scale(1); opacity: 1; }
+        
+        /* ANIMASI LOGO POPUP */
+        @keyframes adminPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.3)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.6)); }
+        }
+        .animate-logo-popup {
+            animation: adminPulse 3s ease-in-out infinite;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-slate-100 font-sans flex flex-col min-h-screen p-4">
@@ -36,7 +45,7 @@
             </div>
             <div class="flex gap-2">
                 <button onclick="logoutAdmin()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold text-xs px-4 py-2.5 rounded-lg tracking-wider uppercase transition">LOGOUT</button>
-                <button onclick="resetSystem()" class="bg-red-600 hover:bg-red-700 text-white font-black text-xs px-4 py-2.5 rounded-lg tracking-wider uppercase transition">RESET DATA</button>
+                <button onclick="resetSystemClick()" class="bg-red-600 hover:bg-red-700 text-white font-black text-xs px-4 py-2.5 rounded-lg tracking-wider uppercase transition">RESET DATA</button>
             </div>
         </header>
 
@@ -76,25 +85,54 @@
         </div>
     </div>
 
-    <!-- FOOTER REVISI -->
+    <!-- FOOTER -->
     <footer class="bg-gray-950 border-t border-gray-800 py-4 text-center text-xs text-gray-500 mt-auto w-full">
         <button onclick="toggleDevPopup(true)" class="hover:text-amber-400 font-bold tracking-wide uppercase focus:outline-none transition">
             Aplikasi SIVERA V 1.2
         </button>
     </footer>
 
-    <!-- POPUP DEVELOPER -->
+    <!-- GLOBAL POP-UP SUBSTITUSI ALERT & CONFIRM -->
+    <div id="global-alert-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="global-alert-box" class="bg-gray-800 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-amber-400">
+            <h3 id="global-alert-title" class="text-lg font-black text-amber-400 uppercase tracking-wide mb-2">SISTEM NOTIFIKASI</h3>
+            <p id="global-alert-desc" class="text-sm font-semibold text-gray-300 mb-5 whitespace-pre-line">Pesan modal.</p>
+            <div id="global-alert-buttons" class="flex gap-3 justify-center"></div>
+        </div>
+    </div>
+
+    <!-- REVISI: RE-DESIGN POP-UP DEVELOPER ADMIN PANEL -->
     <div id="dev-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
         <div id="dev-box" class="bg-gray-800 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-amber-400">
-            <h3 class="text-xl font-black text-amber-400 tracking-wider mb-1">SIVERA V 1.2</h3>
-            <div class="w-12 h-1 bg-white mx-auto mb-4"></div>
-            <div class="text-left text-xs space-y-2 bg-gray-900 p-4 rounded-xl border border-gray-700 font-mono text-gray-300 mb-5">
-                <div><strong>Dev :</strong> MB</div>
-                <div><strong>Version :</strong> 1.2</div>
-                <div><strong>Build :</strong> 12 Juni 2026</div>
-                <div><strong>Contac :</strong> <a href="mailto:yanuar.b@gmail.com" class="text-amber-400 underline font-bold">yanuar.b@gmail.com</a></div>
+            
+            <!-- Identitas & Logo Bergerak -->
+            <div class="flex flex-col items-center mb-5">
+                <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-gray-700 shadow p-1 bg-gray-900 animate-logo-popup mb-3">
+                    <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Sivera Logo" class="w-full h-full object-cover rounded-full">
+                </div>
+                <h3 class="text-base font-black text-white uppercase tracking-wide">Sistem Verivikasi Antrean</h3>
+                <div class="flex items-center gap-3 mt-1 text-xs font-mono text-gray-400 bg-gray-900 px-3 py-1 rounded-full border border-gray-700">
+                    <span><strong>Dev:</strong> MB</span>
+                    <span class="text-gray-600">|</span>
+                    <span><strong>Version:</strong> 1.2</span>
+                </div>
             </div>
-            <button onclick="toggleDevPopup(false)" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 font-bold text-xs py-3 rounded-xl uppercase tracking-wider transition">Tutup</button>
+
+            <!-- Menu Grid Informasi Terstruktur Jelas -->
+            <div class="grid grid-cols-1 gap-2.5 text-left mb-6">
+                <div class="bg-gray-900 p-3 rounded-xl border border-gray-700 flex items-center gap-3 shadow-inner">
+                    <div class="bg-amber-400 text-gray-950 p-2 rounded-lg text-xs font-black tracking-tight">BUILD</div>
+                    <div class="text-xs font-black text-amber-100">12 Juni 2026</div>
+                </div>
+                <a href="mailto:yanuar.b@gmail.com" class="bg-gray-900 p-3 rounded-xl border border-gray-700 flex items-center gap-3 shadow-inner hover:border-amber-400 transition block">
+                    <div class="bg-gray-700 text-amber-400 p-2 rounded-lg text-xs font-black tracking-tight border border-gray-600">CONTACT</div>
+                    <div class="text-xs font-black text-slate-300 underline break-all">yanuar.b@gmail.com</div>
+                </a>
+            </div>
+
+            <button onclick="toggleDevPopup(false)" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 font-black text-xs py-3.5 rounded-xl uppercase tracking-wider transition shadow-lg">
+                KEMBALI KE PANEL
+            </button>
         </div>
     </div>
 
@@ -102,8 +140,44 @@
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzA0xQfsUmrVWGTI1WQFauY3UZ2HIV5u7WZRKJ39bpKM1V9cScV-PfRj-n8gZ6Emk9uvw/exec";
         let activeAdminPin = "";
         let selectedGateStatus = "Buka";
+        let confirmCallback = null;
 
-        // ANTI MENTAL: Cek session simpanan di localStorage saat pertama kali dimuat
+        window.alert = function(message) {
+            const popup = document.getElementById('global-alert-popup');
+            const box = document.getElementById('global-alert-box');
+            document.getElementById('global-alert-title').innerText = "KENDALI PUSAT";
+            document.getElementById('global-alert-desc').innerText = message;
+            document.getElementById('global-alert-buttons').innerHTML = `
+                <button onclick="closeGlobalPopup()" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 font-black text-xs py-3 rounded-xl uppercase tracking-wider transition">OK</button>
+            `;
+            popup.classList.remove('pointer-events-none', 'opacity-0');
+            setTimeout(() => box.classList.add('popup-active'), 50);
+        };
+
+        window.customConfirm = function(message, callback) {
+            confirmCallback = callback;
+            const popup = document.getElementById('global-alert-popup');
+            const box = document.getElementById('global-alert-box');
+            document.getElementById('global-alert-title').innerText = "KONFIRMASI TINDAKAN";
+            document.getElementById('global-alert-desc').innerText = message;
+            document.getElementById('global-alert-buttons').innerHTML = `
+                <button onclick="triggerConfirm(false)" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold text-xs py-3 rounded-xl uppercase tracking-wider transition">BATAL</button>
+                <button onclick="triggerConfirm(true)" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-black text-xs py-3 rounded-xl uppercase tracking-wider transition">YA, PROSES</button>
+            `;
+            popup.classList.remove('pointer-events-none', 'opacity-0');
+            setTimeout(() => box.classList.add('popup-active'), 50);
+        };
+
+        function triggerConfirm(value) {
+            closeGlobalPopup();
+            if(confirmCallback) confirmCallback(value);
+        }
+
+        function closeGlobalPopup() {
+            document.getElementById('global-alert-box').classList.remove('popup-active');
+            document.getElementById('global-alert-popup').classList.add('opacity-0', 'pointer-events-none');
+        }
+
         window.onload = function() {
             const savedPin = localStorage.getItem('sivera_admin_pin');
             if(savedPin) {
@@ -121,7 +195,7 @@
             .then(data => {
                 if(data.status === "authorized") {
                     activeAdminPin = pin;
-                    localStorage.setItem('sivera_admin_pin', pin); // Amankan Sesi
+                    localStorage.setItem('sivera_admin_pin', pin);
                     document.getElementById('admin-auth').classList.add('hidden');
                     document.getElementById('admin-dashboard').classList.remove('hidden');
                     loadCurrentConfig();
@@ -181,15 +255,17 @@
             .then(data => { if(data.status === 'success') alert('Pengumuman berhasil di-broadcast!'); });
         }
 
-        function resetSystem() {
-            if(confirm("Hapus seluruh data antrean peserta hari ini?")) {
-                fetch(APPS_SCRIPT_URL, {
-                    method: "POST",
-                    body: JSON.stringify({ action: "resetSystem", pin: activeAdminPin })
-                })
-                .then(res => res.json())
-                .then(data => { if(data.status === 'success') location.reload(); });
-            }
+        function resetSystemClick() {
+            window.customConfirm("Hapus seluruh data antrean peserta hari ini?", function(isYes) {
+                if(isYes) {
+                    fetch(APPS_SCRIPT_URL, {
+                        method: "POST",
+                        body: JSON.stringify({ action: "resetSystem", pin: activeAdminPin })
+                    })
+                    .then(res => res.json())
+                    .then(data => { if(data.status === 'success') location.reload(); });
+                }
+            });
         }
 
         function toggleDevPopup(show) {
