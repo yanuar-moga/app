@@ -17,83 +17,94 @@
         .animate-logo-popup {
             animation: adminPulse 3s ease-in-out infinite;
         }
+        /* Loading Spinner */
+        .spinner {
+            border: 2px solid transparent;
+            border-radius: 50%;
+            border-top-color: currentColor;
+            border-right-color: currentColor;
+            width: 1rem;
+            height: 1rem;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="bg-gray-900 text-slate-100 font-sans flex flex-col min-h-screen p-4">
 
-    <!-- SECURITY LOGIN PANEL -->
-    <div id="admin-auth" class="max-w-md mx-auto mt-20 p-6 bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 w-full">
+    <div id="admin-auth" class="max-w-md mx-auto mt-20 p-6 bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 w-full transition-all duration-300">
         <h2 class="text-xl font-black text-center text-amber-400 mb-2 uppercase tracking-wider">SECURITY LOGIN ADMIN</h2>
         <p class="text-center text-xs text-gray-400 mb-6 uppercase font-bold">Aplikasi Sivera V 1.2</p>
         <div class="space-y-4">
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Masukkan PIN Kode Admin</label>
-                <input type="password" id="admin-pin" class="w-full bg-gray-700 border-2 border-gray-600 rounded-lg p-3 text-center tracking-widest font-black text-white focus:border-amber-400 outline-none" placeholder="••••••••">
+                <input type="password" id="admin-pin" minlength="4" class="w-full bg-gray-700 border-2 border-gray-600 rounded-lg p-3 text-center tracking-widest font-black text-white focus:border-amber-400 outline-none transition" placeholder="••••••••" onkeyup="if(event.key === 'Enter') verifyAdminPin()">
             </div>
-            <button onclick="verifyAdminPin()" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 py-3 rounded-xl font-black uppercase tracking-wider transition text-sm">
-                BUKA AKSES SISTEM
+            <button id="btn-login" onclick="verifyAdminPin()" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 py-3 rounded-xl font-black uppercase tracking-wider transition text-sm flex items-center justify-center gap-2 cursor-pointer">
+                <span>BUKA AKSES SISTEM</span>
             </button>
         </div>
     </div>
 
-    <!-- MAIN CONTROL PANEL -->
     <div id="admin-dashboard" class="max-w-5xl mx-auto space-y-6 w-full hidden">
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-800 p-4 rounded-xl border border-gray-700 shadow-xl gap-4">
             <div>
                 <h1 class="text-lg font-black text-amber-400 uppercase tracking-wide">Sivera Pusat Kendali Utama</h1>
                 <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">SMP NEGERI 1 MOGA</p>
             </div>
-            <div class="flex gap-2">
-                <button onclick="logoutAdmin()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold text-xs px-4 py-2.5 rounded-lg tracking-wider uppercase transition">LOGOUT</button>
-                <button onclick="resetSystemClick()" class="bg-red-600 hover:bg-red-700 text-white font-black text-xs px-4 py-2.5 rounded-lg tracking-wider uppercase transition">RESET DATA</button>
+            <div class="flex gap-2 w-full sm:w-auto">
+                <button onclick="logoutAdmin()" class="flex-1 sm:flex-initial bg-gray-700 hover:bg-gray-600 text-white font-bold text-xs px-4 py-2.5 rounded-lg tracking-wider uppercase transition cursor-pointer">LOGOUT</button>
+                <button id="btn-reset-sys" onclick="resetSystemClick()" class="flex-1 sm:flex-initial bg-red-600 hover:bg-red-700 text-white font-black text-xs px-4 py-2.5 rounded-lg tracking-wider uppercase transition flex items-center justify-center gap-1 cursor-pointer">RESET DATA</button>
             </div>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 space-y-4">
+            <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 space-y-4 shadow-xl">
                 <h3 class="text-sm font-black text-amber-400 border-b border-gray-700 pb-2 uppercase tracking-wider">KONTROL PARAMETER</h3>
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">STATUS GERBANG ANTREAN</label>
+                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide">STATUS GERBANG ANTREAN</label>
                     <div class="grid grid-cols-2 gap-2">
-                        <button id="btn-gate-buka" onclick="setGate('Buka')" class="py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-gray-700 text-gray-400">BUKA</button>
-                        <button id="btn-gate-tutup" onclick="setGate('Tutup')" class="py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-gray-700 text-gray-400">TUTUP</button>
+                        <button id="btn-gate-buka" onclick="setGate('Buka')" class="py-2 rounded-lg font-black text-xs uppercase tracking-wider transition cursor-pointer bg-gray-700 text-gray-400">BUKA</button>
+                        <button id="btn-gate-tutup" onclick="setGate('Tutup')" class="py-2 rounded-lg font-black text-xs uppercase tracking-wider transition cursor-pointer bg-gray-700 text-gray-400">TUTUP</button>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Estimasi Durasi per Berkas (Menit)</label>
-                    <input type="number" id="cfg-duration" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 font-bold text-sm text-white focus:border-amber-400 outline-none">
+                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide">Estimasi Durasi per Berkas (Menit)</label>
+                    <input type="number" id="cfg-duration" min="1" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 font-bold text-sm text-white focus:border-amber-400 outline-none transition">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Jam Mulai Operasional</label>
-                    <input type="time" id="cfg-start" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 font-bold text-sm text-white focus:border-amber-400 outline-none">
+                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide">Jam Mulai Operasional</label>
+                    <input type="time" id="cfg-start" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 font-bold text-sm text-white focus:border-amber-400 outline-none transition">
                 </div>
-                <button onclick="saveConfig()" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg text-xs font-black uppercase tracking-wider transition">SIMPAN PARAMETER</button>
+                <button id="btn-save-cfg" onclick="saveConfig()" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg text-xs font-black uppercase tracking-wider transition flex items-center justify-center gap-2 cursor-pointer">
+                    <span>SIMPAN PARAMETER</span>
+                </button>
             </div>
 
-            <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 space-y-4 md:col-span-2">
+            <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 space-y-4 md:col-span-2 shadow-xl">
                 <h3 class="text-sm font-black text-amber-400 border-b border-gray-700 pb-2 uppercase tracking-wider">MANAJEMEN PENGUMUMAN REALTIME</h3>
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">ISI TEXT TICKER BERJALAN</label>
-                    <textarea id="cfg-ticker" rows="2" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 text-sm font-semibold text-white focus:border-amber-400 outline-none"></textarea>
+                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide">ISI TEXT TICKER BERJALAN</label>
+                    <textarea id="cfg-ticker" rows="2" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 text-sm font-semibold text-white focus:border-amber-400 outline-none transition" placeholder="Ketik pengumuman berjalan di sini..."></textarea>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">KIRIM NOTIFIKASI FLASH POP-UP</label>
-                    <textarea id="cfg-flash" rows="2" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 text-sm font-semibold text-white focus:border-amber-400 outline-none" placeholder="Isi pesan popup otomatis..."></textarea>
+                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide">KIRIM NOTIFIKASI FLASH POP-UP</label>
+                    <textarea id="cfg-flash" rows="2" class="w-full bg-gray-700 p-2.5 rounded border-2 border-gray-600 text-sm font-semibold text-white focus:border-amber-400 outline-none transition" placeholder="Isi pesan popup otomatis untuk mengejutkan layar client..."></textarea>
                 </div>
-                <button onclick="broadcastAnnouncement()" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 py-3 rounded-lg text-xs font-black uppercase tracking-wider transition">BROADCAST SEKARANG</button>
+                <button id="btn-broadcast" onclick="broadcastAnnouncement()" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 py-3 rounded-lg text-xs font-black uppercase tracking-wider transition flex items-center justify-center gap-2 cursor-pointer">
+                    <span>BROADCAST SEKARANG</span>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- FOOTER -->
     <footer class="bg-gray-950 border-t border-gray-800 py-4 text-center text-xs text-gray-500 mt-auto w-full">
-        <button onclick="toggleDevPopup(true)" class="hover:text-amber-400 font-bold tracking-wide uppercase focus:outline-none transition">
+        <button onclick="toggleDevPopup(true)" class="hover:text-amber-400 font-bold tracking-wide uppercase focus:outline-none transition cursor-pointer">
             Aplikasi SIVERA V 1.2
         </button>
     </footer>
 
-    <!-- GLOBAL POP-UP SUBSTITUSI ALERT & CONFIRM -->
-    <div id="global-alert-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="global-alert-popup" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
         <div id="global-alert-box" class="bg-gray-800 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-amber-400">
             <h3 id="global-alert-title" class="text-lg font-black text-amber-400 uppercase tracking-wide mb-2">SISTEM NOTIFIKASI</h3>
             <p id="global-alert-desc" class="text-sm font-semibold text-gray-300 mb-5 whitespace-pre-line">Pesan modal.</p>
@@ -101,16 +112,14 @@
         </div>
     </div>
 
-    <!-- REVISI: RE-DESIGN POP-UP DEVELOPER ADMIN PANEL -->
-    <div id="dev-popup" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="dev-popup" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
         <div id="dev-box" class="bg-gray-800 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl popup-animate border-t-8 border-amber-400">
             
-            <!-- Identitas & Logo Bergerak -->
             <div class="flex flex-col items-center mb-5">
                 <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-gray-700 shadow p-1 bg-gray-900 animate-logo-popup mb-3">
                     <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Sivera Logo" class="w-full h-full object-cover rounded-full">
                 </div>
-                <h3 class="text-base font-black text-white uppercase tracking-wide">Sistem Verivikasi Antrean</h3>
+                <h3 class="text-base font-black text-white uppercase tracking-wide">Sistem Verifikasi Antrean</h3>
                 <div class="flex items-center gap-3 mt-1 text-xs font-mono text-gray-400 bg-gray-900 px-3 py-1 rounded-full border border-gray-700">
                     <span><strong>Dev:</strong> MB</span>
                     <span class="text-gray-600">|</span>
@@ -118,7 +127,6 @@
                 </div>
             </div>
 
-            <!-- Menu Grid Informasi Terstruktur Jelas -->
             <div class="grid grid-cols-1 gap-2.5 text-left mb-6">
                 <div class="bg-gray-900 p-3 rounded-xl border border-gray-700 flex items-center gap-3 shadow-inner">
                     <div class="bg-amber-400 text-gray-950 p-2 rounded-lg text-xs font-black tracking-tight">BUILD</div>
@@ -130,7 +138,7 @@
                 </a>
             </div>
 
-            <button onclick="toggleDevPopup(false)" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 font-black text-xs py-3.5 rounded-xl uppercase tracking-wider transition shadow-lg">
+            <button onclick="toggleDevPopup(false)" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 font-black text-xs py-3.5 rounded-xl uppercase tracking-wider transition shadow-lg cursor-pointer">
                 KEMBALI KE PANEL
             </button>
         </div>
@@ -142,18 +150,20 @@
         let selectedGateStatus = "Buka";
         let confirmCallback = null;
 
-        window.alert = function(message) {
+        // Custom Alert modal pengganti alert native browser
+        window.alert = function(message, title = "KENDALI PUSAT") {
             const popup = document.getElementById('global-alert-popup');
             const box = document.getElementById('global-alert-box');
-            document.getElementById('global-alert-title').innerText = "KENDALI PUSAT";
+            document.getElementById('global-alert-title').innerText = title;
             document.getElementById('global-alert-desc').innerText = message;
             document.getElementById('global-alert-buttons').innerHTML = `
-                <button onclick="closeGlobalPopup()" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 font-black text-xs py-3 rounded-xl uppercase tracking-wider transition">OK</button>
+                <button onclick="closeGlobalPopup()" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 font-black text-xs py-3 rounded-xl uppercase tracking-wider transition cursor-pointer">OK</button>
             `;
             popup.classList.remove('pointer-events-none', 'opacity-0');
             setTimeout(() => box.classList.add('popup-active'), 50);
         };
 
+        // Custom Confirm modal pengganti confirm native browser
         window.customConfirm = function(message, callback) {
             confirmCallback = callback;
             const popup = document.getElementById('global-alert-popup');
@@ -161,8 +171,8 @@
             document.getElementById('global-alert-title').innerText = "KONFIRMASI TINDAKAN";
             document.getElementById('global-alert-desc').innerText = message;
             document.getElementById('global-alert-buttons').innerHTML = `
-                <button onclick="triggerConfirm(false)" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold text-xs py-3 rounded-xl uppercase tracking-wider transition">BATAL</button>
-                <button onclick="triggerConfirm(true)" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-black text-xs py-3 rounded-xl uppercase tracking-wider transition">YA, PROSES</button>
+                <button onclick="triggerConfirm(false)" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold text-xs py-3 rounded-xl uppercase tracking-wider transition cursor-pointer">BATAL</button>
+                <button onclick="triggerConfirm(true)" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-black text-xs py-3 rounded-xl uppercase tracking-wider transition cursor-pointer">YA, PROSES</button>
             `;
             popup.classList.remove('pointer-events-none', 'opacity-0');
             setTimeout(() => box.classList.add('popup-active'), 50);
@@ -178,6 +188,21 @@
             document.getElementById('global-alert-popup').classList.add('opacity-0', 'pointer-events-none');
         }
 
+        // Helper fungsi Loading UI State
+        function toggleLoading(buttonId, isLoading, defaultText) {
+            const btn = document.getElementById(buttonId);
+            if (!btn) return;
+            if (isLoading) {
+                btn.disabled = true;
+                btn.classList.add('opacity-75', 'cursor-not-allowed');
+                btn.innerHTML = `<div class="spinner"></div> <span>MEMPROSES...</span>`;
+            } else {
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                btn.innerHTML = `<span>${defaultText}</span>`;
+            }
+        }
+
         window.onload = function() {
             const savedPin = localStorage.getItem('sivera_admin_pin');
             if(savedPin) {
@@ -189,9 +214,21 @@
         };
 
         function verifyAdminPin() {
-            const pin = document.getElementById('admin-pin').value;
-            fetch(`${APPS_SCRIPT_URL}?action=loginAdmin&pin=${pin}`)
-            .then(res => res.json())
+            const pinField = document.getElementById('admin-pin');
+            const pin = pinField.value.trim();
+            
+            if(!pin) {
+                alert("PIN tidak boleh kosong!", "PEMBERITAHUAN");
+                return;
+            }
+
+            toggleLoading('btn-login', true, 'BUKA AKSES SISTEM');
+
+            fetch(`${APPS_SCRIPT_URL}?action=loginAdmin&pin=${encodeURIComponent(pin)}`)
+            .then(res => {
+                if (!res.ok) throw new Error("Network error / Apps Script bermasalah");
+                return res.json();
+            })
             .then(data => {
                 if(data.status === "authorized") {
                     activeAdminPin = pin;
@@ -199,7 +236,18 @@
                     document.getElementById('admin-auth').classList.add('hidden');
                     document.getElementById('admin-dashboard').classList.remove('hidden');
                     loadCurrentConfig();
-                } else { alert("PIN KODE ADMIN SALAH!"); }
+                } else { 
+                    alert("PIN KODE ADMIN SALAH!", "AKSES DITOLAK"); 
+                    pinField.value = "";
+                    pinField.focus();
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Gagal terhubung ke server database. Silakan periksa koneksi internet Anda.", "ERROR SISTEM");
+            })
+            .finally(() => {
+                toggleLoading('btn-login', false, 'BUKA AKSES SISTEM');
             });
         }
 
@@ -210,13 +258,19 @@
 
         function loadCurrentConfig() {
             fetch(`${APPS_SCRIPT_URL}?action=getAdminConfigData`)
-            .then(res => res.json())
+            .then(res => {
+                if(!res.ok) throw new Error();
+                return res.json();
+            })
             .then(data => {
-                document.getElementById('cfg-duration').value = data.duration;
-                document.getElementById('cfg-start').value = data.startTime;
-                document.getElementById('cfg-ticker').value = data.ticker;
-                document.getElementById('cfg-flash').value = data.flashMsg;
-                setGate(data.gateStatus);
+                document.getElementById('cfg-duration').value = data.duration || 5;
+                document.getElementById('cfg-start').value = data.startTime || "07:30";
+                document.getElementById('cfg-ticker').value = data.ticker || "";
+                document.getElementById('cfg-flash').value = data.flashMsg || "";
+                setGate(data.gateStatus || "Buka");
+            })
+            .catch(() => {
+                console.log("Gagal memuat konfigurasi awal secara realtime.");
             });
         }
 
@@ -225,45 +279,83 @@
             const btnBuka = document.getElementById('btn-gate-buka');
             const btnTutup = document.getElementById('btn-gate-tutup');
             if(status === "Buka") {
-                btnBuka.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-emerald-600 text-white";
-                btnTutup.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-gray-700 text-gray-400";
+                btnBuka.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition cursor-pointer bg-emerald-600 text-white shadow-md shadow-emerald-900/50";
+                btnTutup.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition cursor-pointer bg-gray-700 text-gray-400";
             } else {
-                btnTutup.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-red-600 text-white";
-                btnBuka.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition bg-gray-700 text-gray-400";
+                btnTutup.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition cursor-pointer bg-red-600 text-white shadow-md shadow-red-900/50";
+                btnBuka.className = "py-2 rounded-lg font-black text-xs uppercase tracking-wider transition cursor-pointer bg-gray-700 text-gray-400";
             }
         }
 
         function saveConfig() {
             const duration = document.getElementById('cfg-duration').value;
             const startTime = document.getElementById('cfg-start').value;
+            
+            if(!duration || duration < 1) {
+                alert("Estimasi durasi harus valid (minimal 1 menit).", "VALIDASI");
+                return;
+            }
+            if(!startTime) {
+                alert("Jam operasional tidak boleh kosong.", "VALIDASI");
+                return;
+            }
+
+            toggleLoading('btn-save-cfg', true, 'SIMPAN PARAMETER');
+
             fetch(APPS_SCRIPT_URL, {
                 method: "POST",
                 body: JSON.stringify({ action: "saveConfig", pin: activeAdminPin, duration, startTime, gateStatus: selectedGateStatus })
             })
             .then(res => res.json())
-            .then(data => { if(data.status === 'success') alert('Parameter berhasil disimpan!'); });
+            .then(data => { 
+                if(data.status === 'success') {
+                    alert('Parameter operasional berhasil diperbarui!', 'SUKSES'); 
+                } else {
+                    alert('Gagal menyimpan parameter. Token kedaluwarsa.', 'GAGAL');
+                }
+            })
+            .catch(() => alert('Terjadi kesalahan jaringan saat menyimpan konfigurasi.', 'ERROR'))
+            .finally(() => toggleLoading('btn-save-cfg', false, 'SIMPAN PARAMETER'));
         }
 
         function broadcastAnnouncement() {
-            const ticker = document.getElementById('cfg-ticker').value;
-            const flash = document.getElementById('cfg-flash').value;
+            const ticker = document.getElementById('cfg-ticker').value.trim();
+            const flash = document.getElementById('cfg-flash').value.trim();
+            
+            toggleLoading('btn-broadcast', true, 'BROADCAST SEKARANG');
+
             fetch(APPS_SCRIPT_URL, {
                 method: "POST",
                 body: JSON.stringify({ action: "broadcastAnnounce", pin: activeAdminPin, ticker, flashMsg: flash })
             })
             .then(res => res.json())
-            .then(data => { if(data.status === 'success') alert('Pengumuman berhasil di-broadcast!'); });
+            .then(data => { 
+                if(data.status === 'success') {
+                    alert('Pengumuman teks berjalan & flash popup berhasil disinkronkan ke client!', 'BROADCAST BERHASIL'); 
+                }
+            })
+            .catch(() => alert('Gagal mengirimkan broadcast data.', 'ERROR'))
+            .finally(() => toggleLoading('btn-broadcast', false, 'BROADCAST SEKARANG'));
         }
 
         function resetSystemClick() {
-            window.customConfirm("Hapus seluruh data antrean peserta hari ini?", function(isYes) {
+            window.customConfirm("Apakah Anda yakin ingin menghapus seluruh database antrean hari ini?\nTindakan ini permanen dan tidak bisa dikembalikan.", function(isYes) {
                 if(isYes) {
+                    toggleLoading('btn-reset-sys', true, 'RESET DATA');
                     fetch(APPS_SCRIPT_URL, {
                         method: "POST",
                         body: JSON.stringify({ action: "resetSystem", pin: activeAdminPin })
                     })
                     .then(res => res.json())
-                    .then(data => { if(data.status === 'success') location.reload(); });
+                    .then(data => { 
+                        if(data.status === 'success') {
+                            location.reload();
+                        } else {
+                            alert("Gagal melakukan reset sistem. PIN tidak diizinkan.", "DITOLAK");
+                        }
+                    })
+                    .catch(() => alert('Terjadi kesalahan koneksi server.', 'ERROR'))
+                    .finally(() => toggleLoading('btn-reset-sys', false, 'RESET DATA'));
                 }
             });
         }
@@ -271,8 +363,13 @@
         function toggleDevPopup(show) {
             const p = document.getElementById('dev-popup');
             const b = document.getElementById('dev-box');
-            if(show) { p.classList.remove('pointer-events-none','opacity-0'); setTimeout(()=>b.classList.add('popup-active'),50); }
-            else { b.classList.remove('popup-active'); p.classList.add('opacity-0','pointer-events-none'); }
+            if(show) { 
+                p.classList.remove('pointer-events-none','opacity-0'); 
+                setTimeout(()=>b.classList.add('popup-active'),50); 
+            } else { 
+                b.classList.remove('popup-active'); 
+                p.classList.add('opacity-0','pointer-events-none'); 
+            }
         }
     </script>
 </body>
