@@ -101,6 +101,14 @@
         </div>
         <button type="submit" id="btnSubmit" class="w-full bg-blue-900 hover:bg-blue-800 text-amber-400 p-3.5 rounded-xl font-black text-xs uppercase tracking-widest cursor-pointer transition shadow-md flex items-center justify-center gap-2 mt-2">Ambil Nomor Antrean</button>
       </form>
+      
+      <div class="mt-8 pt-6 border-t border-zinc-200">
+        <label class="block text-xs font-bold text-zinc-500 mb-2 uppercase text-center">Lupa download tiket? Cari di sini:</label>
+        <div class="flex gap-2">
+            <input type="number" id="searchNisn" placeholder="Masukkan NISN..." class="w-full bg-zinc-50 border border-zinc-300 p-3 text-sm rounded-xl focus:outline-none focus:border-blue-900 font-mono">
+            <button onclick="cariTiket()" class="bg-zinc-700 hover:bg-zinc-800 text-white px-5 rounded-xl font-black text-xs uppercase tracking-wider shadow-md">CARI</button>
+        </div>
+      </div>
     </div>
 
     <div id="ticketSection" class="hidden space-y-4 animate-fade-in">
@@ -149,6 +157,34 @@
       correctAnswer = num1 + num2;
       document.getElementById('captchaQuestion').innerText = String(num1) + " + " + String(num2) + " =";
       document.getElementById('captchaAnswer').value = "";
+    }
+
+    // FUNGSI CARI TIKET (FUNGSI BARU)
+    function cariTiket() {
+      var nisn = document.getElementById('searchNisn').value;
+      if (!nisn) { showAlert("Error", "Masukkan NISN terlebih dahulu", "error"); return; }
+      
+      fetch(API_URL, { 
+        method: "POST", 
+        body: JSON.stringify({ action: "cariTiket", nisn: nisn }) 
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(res) {
+        if (res.success) {
+          document.getElementById('t_no').innerText = String(res.noAntrean).padStart(3, '0');
+          document.getElementById('t_nama').innerText = res.nama;
+          document.getElementById('t_nisn').innerText = res.nisn;
+          document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
+          document.getElementById('t_tgl').innerText = res.tanggalVerif;
+          document.getElementById('t_loket').innerText = res.loket.toUpperCase();
+          document.getElementById('t_jam').innerText = res.jam;
+          
+          document.getElementById('formSection').classList.add('hidden');
+          document.getElementById('ticketSection').classList.remove('hidden');
+        } else {
+          showAlert("Gagal", res.error, "error");
+        }
+      });
     }
 
     window.onload = function() {
@@ -218,7 +254,6 @@
       canvas.width = 500; canvas.height = 680;
       ctx.fillStyle = "#020617"; ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.strokeStyle = "#d97706"; ctx.lineWidth = 6; ctx.strokeRect(3, 3, canvas.width - 6, canvas.height - 6);
-      
       ctx.fillStyle = "#fbbf24"; ctx.font = "bold 22px Arial, sans-serif"; ctx.textAlign = "center";
       ctx.fillText("SMP NEGERI 1 MOGA", canvas.width / 2, 50);
       ctx.fillStyle = "#94a3b8"; ctx.font = "bold 13px Arial, sans-serif"; ctx.fillText("BUKTI RESMI NOMOR ANTREAN PPDB", canvas.width / 2, 75);
@@ -252,6 +287,7 @@
       }
       ctx.fillStyle = "#f59e0b"; ctx.font = "italic bold 12px Arial, sans-serif"; ctx.textAlign = "center";
       ctx.fillText("*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Fisik", canvas.width / 2, 590);
+      ctx.fillStyle = "#475569"; ctx.font = "900 11px Arial, sans-serif"; ctx.fillText("SIVERA WEB AUTOMATION SYSTEM v2.0", canvas.width / 2, 640);
       
       var link = document.createElement('a');
       link.download = 'TIKET_SPMB_' + document.getElementById('t_nisn').innerText + '.png';
