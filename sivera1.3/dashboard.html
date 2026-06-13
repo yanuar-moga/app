@@ -32,6 +32,10 @@
     td { padding: 12px 10px; font-size: 0.9rem; font-weight: 600; border-bottom: 1px solid #f1f5f9; }
     .btn-logout { background: #dc2626; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 700; }
     .hidden { display: none; }
+    
+    /* Animation Styles */
+    @keyframes floatAnim { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    .animate-float { animation: floatAnim 3s ease-in-out infinite; }
   </style>
 </head>
 <body>
@@ -83,10 +87,18 @@
 <footer onclick="bukaModalDeveloper()">APLIKASI SIVERA V 1.3 - SMP NEGERI 1 MOGA</footer>
 
 <div id="developerModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-  <div class="panel" style="max-width:300px; text-align:center;" id="devModalContent">
-      <h3 style="color:#1e3a8a;">Sistem Verifikasi Antrean</h3>
-      <p style="font-size:0.8rem; font-weight:bold;">SIVERA V 1.3</p>
-      <button onclick="tutupModalDeveloper()" style="width:100%; background:#334155; color:white; border:none; padding:10px; border-radius:8px; cursor:pointer; margin-top:15px;">Tutup</button>
+  <div class="panel transform scale-95 transition-all duration-300" style="max-width:300px; text-align:center; border-top:8px solid #1e3a8a;" id="devModalContent">
+      <div class="relative w-20 h-20 mx-auto mb-4 group">
+        <div class="absolute inset-0 bg-blue-900 rounded-full blur-md opacity-40 animate-ping"></div>
+        <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Logo Dev" class="relative w-20 h-20 rounded-full object-cover shadow-md border-2 border-amber-400 transform transition-all duration-700 group-hover:rotate-[360deg] group-hover:scale-110 ease-out animate-float">
+      </div>
+      <h3 style="color:#1e3a8a; font-weight:900;">Sistem Verifikasi Antrean</h3>
+      <p style="font-size:0.8rem; font-weight:bold; color:#64748b;">SIVERA V 1.3</p>
+      <div class="my-4 bg-zinc-50 p-2.5 rounded-xl border border-zinc-200">
+        <span style="display:block; font-size:0.6rem; color:#94a3b8; font-weight:bold; text-transform:uppercase;">Build Version</span>
+        <span style="font-size:0.75rem; font-family:monospace; font-weight:bold; color:#374151;">12 Juni 2026</span>
+      </div>
+      <button onclick="tutupModalDeveloper()" style="width:100%; background:#334155; color:white; border:none; padding:10px; border-radius:8px; cursor:pointer; font-weight:bold; text-transform:uppercase; font-size:0.75rem;">Tutup Informasi</button>
   </div>
 </div>
 
@@ -100,14 +112,22 @@
 
   function bukaModalDeveloper() {
     const m = document.getElementById('developerModal');
+    const c = document.getElementById('devModalContent');
     m.classList.remove('hidden');
-    setTimeout(() => m.classList.remove('opacity-0'), 10);
+    setTimeout(() => {
+      m.classList.remove('opacity-0');
+      c.classList.remove('scale-95');
+    }, 10);
   }
 
   function tutupModalDeveloper() {
     const m = document.getElementById('developerModal');
+    const c = document.getElementById('devModalContent');
     m.classList.add('opacity-0');
-    setTimeout(() => m.classList.add('hidden'), 300);
+    c.classList.add('scale-95');
+    setTimeout(() => {
+      m.classList.add('hidden');
+    }, 300);
   }
 
   function prosesLogin() {
