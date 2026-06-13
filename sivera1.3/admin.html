@@ -54,29 +54,37 @@
 </div>
 
 <script>
-  // GANTI DENGAN URL WEB APP DEPLOYMENT (AKHIRAN /exec) ANDA YANG BARU
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz_XXXXXXXXX/exec";
+  // 🛑 MASUKKAN URL WEB APP GOOGLE APPS SCRIPT ANDA YANG BARU DI SINI
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
 
   const loading = document.getElementById('loading');
 
   // 1. Ambil data konfigurasi saat ini saat halaman dimuat
   window.addEventListener('DOMContentLoaded', () => {
+    if (WEB_APP_URL.includes("XXXXXXXXX")) {
+      Swal.fire('Konfigurasi Belum Selesai', 'Silakan ganti WEB_APP_URL di dalam script terlebih dahulu!', 'warning');
+      return;
+    }
+    
     loading.style.display = 'flex';
     fetch(`${WEB_APP_URL}?action=getAdminConfig`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Respon jaringan server bermasalah.');
+        return res.json();
+      })
       .then(data => {
         document.getElementById('broadcast').value = data.broadcast || "";
         document.getElementById('jamOperasional').value = data.jamOperasional || "08:00 - 12:00 WIB";
         
-        // Atur tanggal, potong teks jika format datetime penuh
         if(data.tanggalMulai) {
+          // Normalisasi string tanggal agar cocok dengan input type="date"
           document.getElementById('tanggalMulai').value = data.tanggalMulai.split('T')[0];
         }
         loading.style.display = 'none';
       })
       .catch(err => {
         loading.style.display = 'none';
-        Swal.fire('Gagal Memuat Data', err.toString(), 'error');
+        Swal.fire('Gagal Memuat Data', 'Tidak bisa mengambil konfigurasi awal. Pastikan akses deployment disetel ke "Anyone". <br><br>Detail: ' + err.toString(), 'error');
       });
   });
 
@@ -92,22 +100,38 @@
       jamOperasional: document.getElementById('jamOperasional').value
     };
 
+    // Menggunakan integrasi fetch standar yang kompatibel dengan CORS redirection Google Apps Script
     fetch(WEB_APP_URL, {
       method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
       body: JSON.stringify(payload)
     })
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error('Gagal mendapatkan respon sukses dari server.');
+      return res.json();
+    })
     .then(res => {
       loading.style.display = 'none';
       if(res.success) {
         Swal.fire('Berhasil!', res.message, 'success');
       } else {
-        Swal.fire('Gagal!', res.error, 'error');
+        Swal.fire('Gagal Menyimpan!', res.error, 'error');
       }
     })
     .catch(err => {
       loading.style.display = 'none';
-      Swal.fire('Error Koneksi', err.toString(), 'error');
+      
+      // Mengingat kendala redirect GAS, jika data sukses masuk ke Sheets tapi browser membaca sebagai error cors fetch,
+      // kita berikan opsi pengecekan langsung ke user.
+      Swal.fire({
+        title: 'Respons Terputus / Selesai?',
+        html: 'Terjadi hambatan jalur data browser (CORS/Failed to fetch). <br><br><b>Silakan periksa lembar kerja Google Sheets Anda.</b> Jika data di tab <i>config</i> sudah berubah, abaikan pesan ini.',
+        icon: 'info',
+        confirmButtonText: 'Siap, Dipahami'
+      });
     });
   });
 </script>
