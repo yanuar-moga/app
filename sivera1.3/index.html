@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPMB SMP Negeri 1 Moga</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulseSoft {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    .animate-pulse-soft { animation: pulseSoft 3s ease-in-out infinite; }
+  </style>
+</head>
+<body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col justify-between selection:bg-amber-400 selection:text-blue-900">
+
+  <nav class="bg-blue-900 text-white p-4 shadow-md border-b-4 border-amber-400 sticky top-0 z-40">
+    <div class="container mx-auto flex justify-between items-center px-2">
+      <div class="flex items-center gap-2.5">
+        <div class="bg-white p-1.5 rounded-full shadow-inner">
+          <i class="fa-solid : school text-blue-900 text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-sm font-black tracking-wide uppercase leading-tight">SMP Negeri 1 Moga</h1>
+          <p class="text-[10px] text-amber-300 font-bold tracking-widest uppercase">Loket Antrean Online</p>
+        </div>
+      </div>
+      <span class="text-[10px] bg-amber-400 text-blue-950 px-2.5 py-1 rounded-full font-black uppercase tracking-wider animate-pulse-soft">SPMB 2026</span>
+    </div>
+  </nav>
+
+  <main class="container mx-auto p-4 flex-grow max-w-md flex flex-col justify-center">
+    
+    <div id="broadcastBox" class="hidden bg-amber-50 border-2 border-amber-400 p-4 rounded-xl mb-5 shadow-sm flex items-start gap-3 animate-fade-in">
+      <div class="bg-amber-400 p-1.5 rounded-lg text-blue-950 shadow-sm mt-0.5">
+        <i class="fa-solid : bullhorn text-xs"></i>
+      </div>
+      <div>
+        <h4 class="font-black text-xs text-blue-950 uppercase tracking-wider">Pengumuman:</h4>
+        <p id="broadcastText" class="text-xs text-zinc-700 mt-0.5 leading-relaxed"></p>
+      </div>
+    </div>
+
+    <div id="customAlert" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-all duration-300">
+      <div class="bg-white rounded-2xl max-w-xs w-full p-5 text-center shadow-2xl border-t-8 border-blue-900 transform scale-95 transition-transform duration-300">
+        <div id="alertIcon" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center text-xl mb-3 shadow-md"></div>
+        <h3 id="alertTitle" class="text-sm font-black text-blue-900 uppercase"></h3>
+        <p id="alertMessage" class="text-xs text-zinc-600 mt-2 mb-4 leading-relaxed"></p>
+        <button onclick="closeAlert()" class="w-full bg-blue-900 hover:bg-blue-800 text-amber-400 font-black text-xs py-2.5 rounded-xl cursor-pointer transition uppercase tracking-wider shadow-md">OK, Mengerti</button>
+      </div>
+    </div>
+
+    <div id="formSection" class="bg-white rounded-2xl p-5 shadow-xl border border-zinc-200 animate-fade-in">
+      <div class="text-center mb-5">
+        <h2 class="text-base font-black text-blue-900 uppercase tracking-wide">Isi Formulir Verifikasi</h2>
+        <div class="h-1 w-12 bg-amber-400 mx-auto mt-1.5 rounded-full"></div>
+      </div>
+      
+      <form id="formDaftar" onsubmit="submitForm(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-zinc-600 mb-1 uppercase tracking-wider">Nama Lengkap Calon Siswa</label>
+          <input type="text" id="nama" required placeholder="Contoh: Budi Santoso" class="w-full bg-zinc-50 border border-zinc-300 p-3 text-sm rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white transition-all font-semibold">
+        </div>
+        
+        <div>
+          <label class="block text-xs font-bold text-zinc-600 mb-1 uppercase tracking-wider">NISN (10 Digit)</label>
+          <input type="number" id="nisn" required placeholder="Contoh: 0123456789" class="w-full bg-zinc-50 border border-zinc-300 p-3 text-sm rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white transition-all font-mono font-semibold">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-zinc-600 mb-2 uppercase tracking-wider">Jenis Kelamin</label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="flex items-center justify-center gap-2 border p-3 rounded-xl bg-zinc-50 hover:bg-zinc-100 cursor-pointer transition font-medium text-sm border-zinc-200 checked-sibling:bg-blue-50">
+              <input type="radio" name="jk" value="L" class="w-4 h-4 text-blue-900 focus:ring-blue-900"> Laki-laki
+            </label>
+            <label class="flex items-center justify-center gap-2 border p-3 rounded-xl bg-zinc-50 hover:bg-zinc-100 cursor-pointer transition font-medium text-sm border-zinc-200">
+              <input type="radio" name="jk" value="P" class="w-4 h-4 text-blue-900 focus:ring-blue-900"> Perempuan
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" id="btnSubmit" class="w-full bg-blue-900 hover:bg-blue-800 text-amber-400 p-3.5 rounded-xl font-black text-xs uppercase tracking-widest cursor-pointer transition shadow-md active:scale-98 flex items-center justify-center gap-2 mt-2">
+          <i class="fa-solid : ticket text-sm"></i> Ambil Nomor Antrean
+        </button>
+      </form>
+    </div>
+
+    <div id="ticketSection" class="hidden space-y-4 animate-fade-in">
+      <div id="ticketCard" class="bg-white rounded-2xl shadow-xl border-2 border-dashed border-zinc-300 p-5 overflow-hidden relative">
+        <div class="absolute -left-4 top-40 w-8 h-8 bg-zinc-100 rounded-full border-r-2 border-dashed border-zinc-300"></div>
+        <div class="absolute -right-4 top-40 w-8 h-8 bg-zinc-100 rounded-full border-l-2 border-dashed border-zinc-300"></div>
+        
+        <div class="text-center border-b border-zinc-200 pb-4 mb-4 flex flex-col items-center">
+          <div class="bg-blue-900 text-amber-400 px-3 py-1 text-[9px] font-black rounded-full uppercase tracking-widest mb-1.5 shadow-sm">SPMB SPENSAMO</div>
+          <h2 class="text-sm font-black text-blue-900 tracking-wide uppercase">BUKTI NOMOR ANTREAN</h2>
+          <p class="text-[10px] text-zinc-400 font-medium">Simpan berkas digital ini dengan baik</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-blue-900 to-blue-950 rounded-xl p-4 text-center mb-4 border-b-4 border-amber-400 shadow-md">
+          <span class="text-[10px] font-bold text-amber-400 tracking-widest block uppercase opacity-80">Nomor Antrean Anda</span>
+          <span id="t_no" class="text-5xl font-black text-white block my-1 tracking-tight">000</span>
+          <span id="t_loket" class="text-xs font-black bg-amber-400 text-blue-950 px-4 py-1 rounded-full inline-block uppercase shadow-sm">LOKET -</span>
+        </div>
+
+        <div class="space-y-2.5 text-xs border-b border-zinc-100 pb-4 mb-4 px-1">
+          <div class="flex justify-between items-center"><span class="text-zinc-400 font-medium">Nama Pendaftar</span><span id="t_nama" class="font-bold text-blue-950 text-right max-w-[180px] truncate"></span></div>
+          <div class="flex justify-between items-center"><span class="text-zinc-400 font-medium">Nomor NISN</span><span id="t_nisn" class="font-mono font-bold text-zinc-700"></span></div>
+          <div class="flex justify-between items-center"><span class="text-zinc-400 font-medium">Jenis Kelamin</span><span id="t_jk" class="font-bold text-zinc-700"></span></div>
+        </div>
+
+        <div class="bg-zinc-50 border border-zinc-200 rounded-xl p-3 text-xs space-y-1.5 shadow-inner">
+          <div class="flex items-center gap-1.5 text-blue-900 font-bold uppercase text-[10px] tracking-wider"><i class="fa-solid : calendar-day text-amber-500"></i> Tanggal Verifikasi:</div>
+          <div id="t_tgl" class="font-black text-sm pl-4.5 text-zinc-800"></div>
+          <div class="flex items-center gap-1.5 text-blue-900 font-bold uppercase text-[10px] tracking-wider pt-1"><i class="fa-solid : clock text-amber-500"></i> Jam Operasional:</div>
+          <div id="t_jam" class="font-bold text-zinc-700 pl-4.5"></div>
+        </div>
+        
+        <p class="text-[9px] text-center text-zinc-400 mt-4 italic font-medium">*Tunjukkan screenshot halaman ini kepada petugas loket.</p>
+      </div>
+
+      <div class="flex gap-3">
+        <button onclick="takeScreenshot()" class="flex-1 bg-amber-400 hover:bg-amber-500 text-blue-950 p-3 rounded-xl font-black text-xs uppercase tracking-wider cursor-pointer text-center shadow-md transition active:scale-95">
+          <i class="fa-solid : camera mr-1"></i> Screenshot
+        </button>
+        <button onclick="keluarKeIndex()" class="flex-1 bg-zinc-700 hover:bg-zinc-800 text-white p-3 rounded-xl font-black text-xs uppercase tracking-wider cursor-pointer text-center shadow-md transition active:scale-95">
+          <i class="fa-solid : right-from-bracket mr-1"></i> Keluar
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="text-center p-3 bg-zinc-200 text-zinc-500 text-[10px] font-bold tracking-wider uppercase border-t border-zinc-300">
+    &copy; 2026 SMP Negeri 1 Moga
+  </footer>
+
+  <script>
+    window.onload = function() {
+      google.script.run.withSuccessHandler(function(msg) {
+        if(msg && msg.trim() !== "") {
+          document.getElementById('broadcastText').innerText = msg;
+          document.getElementById('broadcastBox').classList.remove('hidden');
+        }
+      }).getBroadcastMessage();
+    };
+
+    function showAlert(title, msg, type) {
+      const box = document.getElementById('customAlert');
+      const icon = document.getElementById('alertIcon');
+      document.getElementById('alertTitle').innerText = title;
+      document.getElementById('alertMessage').innerText = msg;
+      
+      if(type === 'success') {
+        icon.className = "w-12 h-12 rounded-full mx-auto flex items-center justify-center text-xl mb-3 shadow-md bg-emerald-100 text-emerald-600";
+        icon.innerHTML = '<i class="fa-solid : circle-check"></i>';
+      } else {
+        icon.className = "w-12 h-12 rounded-full mx-auto flex items-center justify-center text-xl mb-3 shadow-md bg-red-100 text-red-600";
+        icon.innerHTML = '<i class="fa-solid : circle-xmark"></i>';
+      }
+      box.classList.remove('hidden');
+    }
+
+    function closeAlert() {
+      document.getElementById('customAlert').classList.add('hidden');
+    }
+
+    function submitForm(e) {
+      e.preventDefault();
+      document.getElementById('btnSubmit').disabled = true;
+      document.getElementById('btnSubmit').innerText = "Memproses Antrean...";
+
+      var jkVal = document.querySelector('input[name="jk"]:checked');
+      var payload = {
+        nama: document.getElementById('nama').value,
+        nisn: document.getElementById('nisn').value,
+        jk: jkVal ? jkVal.value : '-',
+        ip: "192.168.10.21", 
+        provider: "Telkomsel Flash",
+        lokasi: "Moga, Pemalang"
+      };
+
+      google.script.run.withSuccessHandler(function(res) {
+        if(res.success) {
+          document.getElementById('t_no').innerText = res.noAntrean;
+          document.getElementById('t_nama').innerText = res.nama;
+          document.getElementById('t_nisn').innerText = res.nisn;
+          document.getElementById('t_jk').innerText = res.jk === 'L' ? 'Laki-laki' : (res.jk === 'P' ? 'Perempuan' : '-');
+          document.getElementById('t_tgl').innerText = res.tanggalVerif;
+          document.getElementById('t_loket').innerText = res.loket.toUpperCase();
+          document.getElementById('t_jam').innerText = res.jam;
+
+          showAlert("Sukses!", "Nomor antrean berhasil diterbitkan.", "success");
+          document.getElementById('formSection').classList.add('hidden');
+          document.getElementById('ticketSection').classList.remove('hidden');
+        } else {
+          showAlert("Gagal!", "Gegenang sistem: " + res.error, "error");
+          document.getElementById('btnSubmit').disabled = false;
+        }
+      }).daftarAntrean(payload);
+    }
+
+    function takeScreenshot() {
+      const element = document.getElementById('ticketCard');
+      html2canvas(element, { scale: 3 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'Tiket_SPMB_' + document.getElementById('t_nisn').innerText + '.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+
+    function keluarKeIndex() {
+      document.getElementById('formDaftar').reset();
+      document.getElementById('ticketSection').classList.add('hidden');
+      document.getElementById('formSection').classList.remove('hidden');
+      document.getElementById('btnSubmit').disabled = false;
+      document.getElementById('btnSubmit').innerHTML = '<i class="fa-solid : ticket text-sm"></i> Ambil Nomor Antrean';
+    }
+  </script>
+</body>
+</html>
