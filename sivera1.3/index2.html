@@ -19,13 +19,16 @@
     }
     .animate-float { animation: floatAnim 3s ease-in-out infinite; }
 
-    /* PERBAIKAN UTAMA: Animasi tanpa jeda statis agar ngeroll halus tanpa henti */
-    @keyframes slideUpContinuous {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-75%); } /* Bergeser tepat ke batas sebelum elemen duplikat */
+    /* PERBAIKAN ANIMASI: Jalur ngeroll mulus untuk 4 baris (3 konten asli + 1 kloning) */
+    @keyframes slideUp {
+      0%, 20% { transform: translateY(0); }
+      25%, 45% { transform: translateY(-25%); }
+      50%, 70% { transform: translateY(-50%); }
+      75%, 95% { transform: translateY(-75%); }
+      100% { transform: translateY(0); }
     }
     .animate-ticker {
-      animation: slideUpContinuous 12s linear infinite;
+      animation: slideUp 16s linear infinite; /* Menggunakan linear agar transisi perputaran konstan */
     }
     .animate-ticker:hover {
       animation-play-state: paused;
@@ -62,7 +65,7 @@
             Calon murid wajib sudah melakukan pembuatan akun
           </div>
           <div class="h-1/4 flex items-center justify-center text-amber-300 truncate">
-            Antrian berlaku 1 hari untuk 1 nomor NISN
+            Antrian berlaku 1 hari. 1 Antrian untuk 1 Nomor NISN
           </div>
           <div class="h-1/4 flex items-center justify-center text-zinc-100 truncate">
             Pengambilan antrean online dimulai hari Selasa, 16 Juni 2026
