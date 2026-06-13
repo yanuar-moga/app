@@ -80,7 +80,7 @@
         <div>
           <label class="block text-xs font-bold text-zinc-600 mb-2 uppercase tracking-wider">Jenis Kelamin</label>
           <div class="grid grid-cols-2 gap-3">
-            <label class="flex items-center justify-center gap-2 border p-3 rounded-xl bg-zinc-50 hover:bg-zinc-100 cursor-pointer transition font-medium text-sm border-zinc-200 checked-sibling:bg-blue-50">
+            <label class="flex items-center justify-center gap-2 border p-3 rounded-xl bg-zinc-50 hover:bg-zinc-100 cursor-pointer transition font-medium text-sm border-zinc-200">
               <input type="radio" name="jk" value="L" class="w-4 h-4 text-blue-900 focus:ring-blue-900"> Laki-laki
             </label>
             <label class="flex items-center justify-center gap-2 border p-3 rounded-xl bg-zinc-50 hover:bg-zinc-100 cursor-pointer transition font-medium text-sm border-zinc-200">
@@ -89,7 +89,7 @@
           </div>
         </div>
 
-        <button type="submit" id="btnSubmit" class="w-full bg-blue-900 hover:bg-blue-800 text-amber-400 p-3.5 rounded-xl font-black text-xs uppercase tracking-widest cursor-pointer transition shadow-md active:scale-98 flex items-center justify-center gap-2 mt-2">
+        <button type="submit" id="btnSubmit" class="w-full bg-blue-900 hover:bg-blue-800 text-amber-400 p-3.5 rounded-xl font-black text-xs uppercase tracking-widest cursor-pointer transition shadow-md flex items-center justify-center gap-2 mt-2">
           <i class="fa-solid : ticket text-sm"></i> Ambil Nomor Antrean
         </button>
       </form>
@@ -101,7 +101,7 @@
         <div class="absolute -right-4 top-40 w-8 h-8 bg-zinc-100 rounded-full border-l-2 border-dashed border-zinc-300"></div>
         
         <div class="text-center border-b border-zinc-200 pb-4 mb-4 flex flex-col items-center">
-          <div class="bg-blue-900 text-amber-400 px-3 py-1 text-[9px] font-black rounded-full uppercase tracking-widest mb-1.5 shadow-sm">SPMB SPENSAMO</div>
+          <div class="bg-blue-900 text-amber-400 px-3 py-1 text-[9px] font-black rounded-full uppercase tracking-widest mb-1.5 shadow-sm">SPMB BUKTI</div>
           <h2 class="text-sm font-black text-blue-900 tracking-wide uppercase">BUKTI NOMOR ANTREAN</h2>
           <p class="text-[10px] text-zinc-400 font-medium">Simpan berkas digital ini dengan baik</p>
         </div>
@@ -129,10 +129,10 @@
       </div>
 
       <div class="flex gap-3">
-        <button onclick="takeScreenshot()" class="flex-1 bg-amber-400 hover:bg-amber-500 text-blue-950 p-3 rounded-xl font-black text-xs uppercase tracking-wider cursor-pointer text-center shadow-md transition active:scale-95">
+        <button onclick="takeScreenshot()" class="flex-1 bg-amber-400 hover:bg-amber-500 text-blue-950 p-3 rounded-xl font-black text-xs uppercase tracking-wider cursor-pointer text-center shadow-md transition">
           <i class="fa-solid : camera mr-1"></i> Screenshot
         </button>
-        <button onclick="keluarKeIndex()" class="flex-1 bg-zinc-700 hover:bg-zinc-800 text-white p-3 rounded-xl font-black text-xs uppercase tracking-wider cursor-pointer text-center shadow-md transition active:scale-95">
+        <button onclick="keluarKeIndex()" class="flex-1 bg-zinc-700 hover:bg-zinc-800 text-white p-3 rounded-xl font-black text-xs uppercase tracking-wider cursor-pointer text-center shadow-md transition">
           <i class="fa-solid : right-from-bracket mr-1"></i> Keluar
         </button>
       </div>
@@ -145,13 +145,17 @@
   </footer>
 
   <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
+
     window.onload = function() {
-      google.script.run.withSuccessHandler(function(msg) {
-        if(msg && msg.trim() !== "") {
-          document.getElementById('broadcastText').innerText = msg;
-          document.getElementById('broadcastBox').classList.remove('hidden');
-        }
-      }).getBroadcastMessage();
+      fetch(`${API_URL}?action=getBroadcast`)
+        .then(res => res.json())
+        .then(data => {
+          if(data.message && data.message.trim() !== "") {
+            document.getElementById('broadcastText').innerText = data.message;
+            document.getElementById('broadcastBox').classList.remove('hidden');
+          }
+        }).catch(err => console.log("Gagal memuat broadcast:", err));
     };
 
     function showAlert(title, msg, type) {
@@ -189,7 +193,12 @@
         lokasi: "Moga, Pemalang"
       };
 
-      google.script.run.withSuccessHandler(function(res) {
+      fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "daftar", data: payload })
+      })
+      .then(res => res.json())
+      .then(res => {
         if(res.success) {
           document.getElementById('t_no').innerText = res.noAntrean;
           document.getElementById('t_nama').innerText = res.nama;
@@ -203,10 +212,16 @@
           document.getElementById('formSection').classList.add('hidden');
           document.getElementById('ticketSection').classList.remove('hidden');
         } else {
-          showAlert("Gagal!", "Gegenang sistem: " + res.error, "error");
+          showAlert("Gagal!", "Sistem sibuk: " + res.error, "error");
           document.getElementById('btnSubmit').disabled = false;
+          document.getElementById('btnSubmit').innerText = "Ambil Nomor Antrean";
         }
-      }).daftarAntrean(payload);
+      })
+      .catch(err => {
+        showAlert("Error!", "Koneksi terputus.", "error");
+        document.getElementById('btnSubmit').disabled = false;
+        document.getElementById('btnSubmit').innerText = "Ambil Nomor Antrean";
+      });
     }
 
     function takeScreenshot() {
