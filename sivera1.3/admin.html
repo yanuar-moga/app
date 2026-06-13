@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Super Admin - SPENSAMO</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link class="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen font-sans">
+
+  <nav class="bg-zinc-900 p-4 border-b-4 border-amber-400 sticky top-0 z-40">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid : user-gear text-amber-400 text-lg animate-spin-slow"></i>
+        <h1 class="text-sm font-black tracking-widest uppercase text-white">SUPER ADMIN PANEL</h1>
+      </div>
+      <span class="text-[9px] bg-red-600 text-white font-black px-2 py-0.5 rounded uppercase tracking-wider">Full Access</span>
+    </div>
+  </nav>
+
+  <div class="container mx-auto p-4 max-w-md space-y-4">
+    
+    <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800 shadow-xl">
+      <h3 class="text-xs font-black text-amber-400 uppercase tracking-wider mb-2"><i class="fa-solid : bullhorn mr-1"></i> Master Broadcast Control</h3>
+      <div class="space-y-2">
+        <input type="text" id="bcAdmin" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 text-xs text-white rounded-xl focus:outline-none focus:border-amber-400 font-medium">
+        <button onclick="sendAdminBroadcast()" class="w-full bg-amber-400 hover:bg-amber-500 font-black text-[10px] uppercase tracking-widest text-zinc-950 py-2.5 rounded-xl cursor-pointer transition shadow-md">
+          Update Global Broadcast
+        </button>
+      </div>
+    </div>
+
+    <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800 shadow-xl">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="text-xs font-black text-zinc-200 uppercase tracking-wider"><i class="fa-solid : database text-blue-400 mr-1"></i> Spreadsheet Database Tracker</h3>
+        <button onclick="loadAdminData()" class="text-[10px] bg-zinc-800 hover:bg-zinc-700 px-2.5 py-1 rounded-lg font-bold text-zinc-300 border border-zinc-700 transition"><i class="fa-solid : rotate"></i> Sync</button>
+      </div>
+
+      <div id="adminCardContainer" class="space-y-3 max-h-[450px] overflow-y-auto pr-1">
+        <p class="text-center text-xs text-zinc-600 py-4">Menghubungkan ke server cloud...</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    window.onload = function() {
+      loadAdminData();
+      google.script.run.withSuccessHandler(function(msg) {
+        document.getElementById('bcAdmin').value = msg;
+      }).getBroadcastMessage();
+    };
+
+    function loadAdminData() {
+      google.script.run.withSuccessHandler(function(data) {
+        var container = document.getElementById('adminCardContainer');
+        if(data.length === 0) {
+          container.innerHTML = '<p class="text-center text-xs text-zinc-600 py-4">Database Log Kosong.</p>';
+          return;
+        }
+        container.innerHTML = "";
+        data.forEach(function(item) {
+          var box = document.createElement('div');
+          box.className = "p-3 bg-zinc-950 border border-zinc-800 rounded-xl space-y-2 text-xs relative overflow-hidden";
+          box.innerHTML = `
+            <div class="flex justify-between items-start border-b border-zinc-800 pb-1.5">
+              <div>
+                <span class="text-[9px] font-mono text-zinc-500 font-bold">LOG #${item.no}</span>
+                <h4 class="font-black text-white text-xs mt-0.5">${item.nama} (${item.jk})</h4>
+              </div>
+              <div class="text-right">
+                <span class="text-sm font-black text-emerald-400 block">${item.noAntrean}</span>
+                <span class="text-[8px] font-black bg-blue-900 text-amber-300 px-1 rounded uppercase">${item.loket}</span>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-y-1 gap-x-2 text-[10px] text-zinc-400 font-medium">
+              <div>NISN: <span class="font-mono text-amber-400 font-bold">${item.nisn}</span></div>
+              <div class="truncate">IP: <span class="font-mono text-zinc-300">${item.ip}</span></div>
+              <div class="truncate">ISP: <span class="text-zinc-300">${item.provider}</span></div>
+              <div class="truncate">Loc: <span class="text-zinc-300">${item.lokasi}</span></div>
+            </div>
+            
+            <div class="text-[9px] bg-zinc-900 text-zinc-500 p-1.5 rounded border border-zinc-800/50 font-bold">
+              <i class="fa-solid : calendar text-amber-500/70 mr-1"></i>Jadwal: ${item.tglVerif}
+            </div>
+          `;
+          container.appendChild(box);
+        });
+      }).getPendaftarData();
+    }
+
+    function sendAdminBroadcast() {
+      var msg = document.getElementById('bcAdmin').value;
+      google.script.run.withSuccessHandler(function(res) {
+        alert("Sistem Admin: " + res);
+      }).setBroadcastMessage(msg);
+    }
+  </script>
+</body>
+</html>
