@@ -18,6 +18,7 @@
 </head>
 <body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col justify-between select-none">
 
+  <!-- Header Sekolah -->
   <header class="bg-blue-900 border-b-4 border-amber-400 p-4 shadow-md">
     <div class="container mx-auto max-w-md flex items-center gap-3.5 px-1">
       <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo SMPN 1 Moga" class="w-14 h-14 object-contain shrink-0 bg-white p-1 rounded-full shadow-sm">
@@ -30,6 +31,7 @@
   </header>
 
   <main class="container mx-auto p-4 flex-grow max-w-md flex flex-col justify-center">
+    <!-- Broadcast Box -->
     <div id="broadcastBox" class="hidden bg-amber-50 border-2 border-amber-400 p-4 rounded-xl mb-4 shadow-sm flex items-start gap-3 animate-fade-in">
       <img src="https://yanuar-moga.github.io/app/sivera1.3/assets/info.png" alt="Info" class="w-8 h-8 object-contain mt-0.5 shrink-0">
       <div>
@@ -38,6 +40,7 @@
       </div>
     </div>
 
+    <!-- Custom Alert -->
     <div id="customAlert" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div class="bg-white rounded-2xl max-w-xs w-full p-5 text-center shadow-2xl border-t-8 border-blue-900 transform scale-95 transition-all">
         <div id="alertIcon" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center text-xl mb-3 shadow-md"></div>
@@ -47,6 +50,7 @@
       </div>
     </div>
 
+    <!-- Modal Developer -->
     <div id="developerModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
       <div class="bg-white rounded-2xl max-w-xs w-full p-6 text-center shadow-2xl border-t-8 border-blue-900 transform scale-95 transition-all duration-300" id="devModalContent">
         <div class="relative w-20 h-20 mx-auto mb-4 group">
@@ -59,14 +63,11 @@
           <span class="block text-[10px] text-zinc-400 font-bold uppercase">Build Version</span>
           <span class="text-xs font-mono font-bold text-zinc-700">12 Juni 2026</span>
         </div>
-        <div class="mb-5 flex items-center justify-center gap-1.5 text-xs text-zinc-600 font-medium">
-          <i class="fa-solid fa-envelope text-amber-500 text-xs"></i>
-          <span>Contact: <a href="mailto:yanuar.b@gmail.com" class="text-blue-900 font-bold hover:underline">yanuar.b@gmail.com</a></span>
-        </div>
         <button onclick="tutupModalDeveloper()" class="w-full bg-zinc-700 hover:bg-zinc-800 text-white font-black text-xs py-2.5 rounded-xl cursor-pointer transition uppercase tracking-wider shadow-md">Tutup Informasi</button>
       </div>
     </div>
 
+    <!-- Form Section -->
     <div id="formSection" class="bg-white rounded-2xl p-5 shadow-xl border border-zinc-200 animate-fade-in">
       <div class="text-center mb-5">
         <h2 class="text-base font-black text-blue-900 uppercase tracking-wide">Formulir Loket Antrean</h2>
@@ -103,6 +104,7 @@
       </form>
     </div>
 
+    <!-- Ticket Section -->
     <div id="ticketSection" class="hidden space-y-4 animate-fade-in">
       <div id="ticketCard" class="bg-blue-950 rounded-2xl shadow-2xl p-5 border-2 border-blue-900 text-white relative">
         <div class="flex items-center gap-3 border-b border-blue-800 pb-4 mb-4">
@@ -221,6 +223,14 @@
       ctx.fillText("SMP NEGERI 1 MOGA", canvas.width / 2, 50);
       ctx.fillStyle = "#94a3b8"; ctx.font = "bold 13px Arial, sans-serif";
       ctx.fillText("BUKTI RESMI NOMOR ANTREAN PPDB", canvas.width / 2, 75);
+      
+      // LOGIKA KONVERSI TANGGAL BAHASA INDONESIA
+      let rawTgl = document.getElementById('t_tgl').innerText;
+      let tglIndo = rawTgl.replace(/June/gi, 'Juni').replace(/January/gi, 'Januari').replace(/February/gi, 'Februari')
+                          .replace(/March/gi, 'Maret').replace(/April/gi, 'April').replace(/May/gi, 'Mei')
+                          .replace(/July/gi, 'Juli').replace(/August/gi, 'Agustus').replace(/September/gi, 'September')
+                          .replace(/October/gi, 'Oktober').replace(/November/gi, 'November').replace(/December/gi, 'Desember');
+
       ctx.strokeStyle = "#1e3a8a"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(30, 95); ctx.lineTo(470, 95); ctx.stroke();
       ctx.fillStyle = "rgba(30, 58, 138, 0.4)"; ctx.fillRect(50, 120, 400, 160);
       ctx.strokeStyle = "#2563eb"; ctx.strokeRect(50, 120, 400, 160);
@@ -231,7 +241,7 @@
         { label: "Nama Lengkap:", val: document.getElementById('t_nama').innerText },
         { label: "Nomor NISN:", val: document.getElementById('t_nisn').innerText },
         { label: "Jenis Kelamin:", val: document.getElementById('t_jk').innerText },
-        { label: "Tanggal Verif:", val: document.getElementById('t_tgl').innerText },
+        { label: "Tanggal Verif:", val: tglIndo },
         { label: "Jam Pelayanan:", val: document.getElementById('t_jam').innerText }
       ];
       let letakY = 330; ctx.font = "15px Arial, sans-serif";
