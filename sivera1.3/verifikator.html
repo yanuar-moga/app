@@ -3,116 +3,167 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verifikator - SPENSAMO</title>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link class="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Panel Verifikator SIVERA</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
+    body { background: #f0f2f5; padding: 20px; }
+    .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .header-panel { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1e3a8a; padding-bottom: 15px; margin-bottom: 20px; }
+    h2 { color: #1e3a8a; }
+    .user-info { font-weight: 600; color: #4b5563; background: #e5e7eb; padding: 6px 15px; border-radius: 20px; font-size: 13px;}
+    .btn-logout { background: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; margin-left: 10px;}
+    .login-box { max-width: 400px; margin: 100px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-center }
+    .login-box h3 { margin-bottom: 20px; color: #1e3a8a;}
+    input[type="password"], input[type="text"] { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; }
+    .btn-primary { background: #1e3a8a; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 600;}
+    .table-container { width: 100%; overflow-x: auto; margin-top: 20px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;}
+    th, td { padding: 12px; border-bottom: 1px solid #e5e7eb; }
+    th { background: #f3f4f6; color: #1e3a8a; font-weight: 600; }
+    .btn-verify { background: #10b981; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: 600;}
+    .btn-verify:hover { background: #059669;}
   </style>
 </head>
-<body class="bg-zinc-100 text-zinc-800 min-h-screen flex flex-col justify-between select-none">
+<body>
 
-  <header class="bg-white border-b-4 border-amber-400 p-4 shadow-sm">
-    <div class="container mx-auto max-w-md flex items-center gap-3.5 px-1">
-      <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo" class="w-14 h-14 object-contain shrink-0">
-      <div class="leading-tight">
-        <h1 class="text-sm font-black text-blue-900 tracking-wide uppercase">SMP Negeri 1 Moga</h1>
-        <p class="text-[10px] text-zinc-500 font-bold">Panel Verifikator Berkas Antrean</p>
-        <span class="text-[9px] bg-zinc-700 text-white px-2 py-0.2 rounded font-black uppercase">PETUGAS LOKET</span>
-      </div>
-    </div>
-  </header>
+<div id="loginSection" class="login-box">
+  <h3>🔒 Login Verifikator SIVERA</h3>
+  <input type="password" id="verifierPin" placeholder="Masukkan PIN Verifikator Anda" maxlength="6">
+  <button class="btn-primary" onclick="prosesLogin()">Masuk Sistem</button>
+</div>
 
-  <div class="container mx-auto p-4 max-w-md space-y-4 flex-grow">
-    <div class="bg-white p-4 rounded-xl shadow-md border border-zinc-200">
-      <h3 class="text-xs font-black text-blue-900 uppercase tracking-wider mb-2"><i class="fa-solid : bullhorn text-amber-500 mr-1"></i> Broadcast Pengumuman</h3>
-      <div class="space-y-2">
-        <input type="text" id="bcInput" placeholder="Ketik info penting untuk halaman depan..." class="w-full text-xs border border-zinc-300 p-2.5 rounded-xl focus:outline-none focus:border-blue-900 bg-zinc-50 font-medium">
-        <button onclick="sendBroadcast()" id="btnBC" class="w-full bg-amber-400 hover:bg-amber-500 font-black text-[10px] uppercase tracking-wider text-blue-950 py-2.5 rounded-xl cursor-pointer transition shadow-sm">Perbarui & Siarkan</button>
-      </div>
-    </div>
-
-    <div class="bg-white p-4 rounded-xl shadow-md border border-zinc-200">
-      <div class="flex justify-between items-center mb-3">
-        <h3 class="text-xs font-black text-blue-900 uppercase tracking-wider"><i class="fa-solid : list-ol text-amber-500 mr-1"></i> Urutan Antrean</h3>
-        <button onclick="loadDataVerif()" class="text-[10px] bg-zinc-200 hover:bg-zinc-300 px-2 py-1 rounded-lg font-bold text-zinc-600 transition"><i class="fa-solid : rotate mr-0.5"></i> Sync</button>
-      </div>
-      <div id="mobileList" class="space-y-3 max-h-[350px] overflow-y-auto pr-1">
-        <p class="text-center text-xs text-zinc-400 py-4">Sinkronisasi basis data...</p>
-      </div>
+<div id="mainSection" class="container" style="display: none;">
+  <div class="header-panel">
+    <h2>📋 Meja Kerja Verifikasi Berkas</h2>
+    <div>
+      <span class="user-info" id="displayUser">Verifikator</span>
+      <button class="btn-logout" onclick="prosesLogout()">Keluar</button>
     </div>
   </div>
 
-  <div id="devModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-zinc-900 text-zinc-100 rounded-2xl max-w-xs w-full p-5 border border-zinc-800 shadow-2xl text-center animate-fade-in">
-      <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Logo Dev" class="w-20 h-20 rounded-full mx-auto border-2 border-amber-400 object-cover mb-3">
-      <h3 class="text-sm font-black text-amber-400 uppercase tracking-widest">SIVERA</h3>
-      <p class="text-[10px] text-zinc-400 font-medium mb-4">Sistem Verifikasi Antrean</p>
-      <div class="text-left space-y-2 text-xs bg-zinc-950 p-3 rounded-xl border border-zinc-800 mb-4 font-medium">
-        <div class="flex justify-between"><span class="text-zinc-500">Developer:</span><span class="font-bold text-white">MB</span></div>
-        <div class="flex justify-between"><span class="text-zinc-500">Build Version:</span><span class="font-mono text-zinc-300">1.3 (13 Juni 2026)</span></div>
-        <div class="flex justify-between items-center"><span class="text-zinc-500">Contact:</span><a href="mailto:yanuar.b@gmail.com" class="text-amber-400 font-bold">yanuar.b@gmail.com</a></div>
-      </div>
-      <button onclick="closeDevModal()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-black text-xs py-2.5 rounded-xl cursor-pointer transition uppercase tracking-wider">Tutup</button>
-    </div>
+  <p style="color:#666; margin-bottom:15px;">Daftar antrean calon pendaftar yang membutuhkan validasi dokumen fisik:</p>
+  
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>No. Antrean</th>
+          <th>NISN</th>
+          <th>Nama Calon Siswa</th>
+          <th>JK</th>
+          <th>Aksi Verifikasi</th>
+        </tr>
+      </thead>
+      <tbody id="antreanTableBody">
+        <tr>
+          <td colspan="5" style="text-align:center; color:#999;">Memuat data antrean dari server...</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+</div>
 
-  <footer onclick="openDevModal()" class="text-center p-3.5 bg-zinc-200 hover:bg-zinc-300 text-zinc-600 text-[10px] font-black tracking-widest uppercase border-t border-zinc-300 cursor-pointer transition">
-    Aplikasi SIVERA V 1.3 <i class="fa-solid : circle-info text-blue-900 ml-0.5"></i>
-  </footer>
+<script>
+  const API_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
+  
+  // Mapping PIN Akun Verifikator
+  const PIN_MAP = {
+    "1111": "Verifikator 1",
+    "2222": "Verifikator 2",
+    "3333": "Verifikator 3",
+    "4444": "Verifikator 4",
+    "5555": "Verifikator 5"
+  };
 
-  <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
-    window.onload = function() {
-      loadDataVerif();
-      fetch(`${API_URL}?action=getBroadcast`).then(res => res.json()).then(data => { document.getElementById('bcInput').value = data.message || ''; });
-    };
-    function openDevModal() { document.getElementById('devModal').classList.remove('hidden'); }
-    function closeDevModal() { document.getElementById('devModal').classList.add('hidden'); }
+  // Cek Status Login Saat Reload (Persistensi Kerja)
+  window.addEventListener('DOMContentLoaded', () => {
+    const isLoggedIn = localStorage.getItem('sivera_logged_in');
+    const userRole = localStorage.getItem('sivera_user_role');
+    
+    if (isLoggedIn === 'true' && userRole && userRole.startsWith('Verifikator')) {
+      tampilkanHalamanUtama(userRole);
+    }
+  });
 
-    function loadDataVerif() {
-      fetch(`${API_URL}?action=getPendaftar`)
+  function prosesLogin() {
+    const pinInput = document.getElementById('verifierPin').value;
+    if (PIN_MAP[pinInput]) {
+      const namaPetugas = PIN_MAP[pinInput];
+      localStorage.setItem('sivera_logged_in', 'true');
+      localStorage.setItem('sivera_user_role', namaPetugas);
+      tampilkanHalamanUtama(namaPetugas);
+    } else {
+      Swal.fire('Akses Ditolak', 'PIN Verifikator yang Anda masukkan salah!', 'error');
+    }
+  }
+
+  function tampilkanHalamanUtama(role) {
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('mainSection').style.display = 'block';
+    document.getElementById('displayUser').innerText = `👤 ${role}`;
+    loadDataAntrean();
+  }
+
+  function prosesLogout() {
+    localStorage.clear();
+    location.reload();
+  }
+
+  function loadDataAntrean() {
+    fetch(`${API_URL}?action=getUnverifiedData`)
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.getElementById('antreanTableBody');
+        tbody.innerHTML = "";
+        if(data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Tidak ada antrean tersisa yang perlu diverifikasi.</td></tr>`;
+          return;
+        }
+        data.forEach(row => {
+          tbody.innerHTML += `
+            <tr>
+              <td style="font-weight:bold; color:#1e3a8a;">${String(row.noAntrean).padStart(3,'0')}</td>
+              <td>${row.nisn}</td>
+              <td style="text-transform:uppercase; font-weight:600;">${row.nama}</td>
+              <td>${row.jk}</td>
+              <td><button class="btn-verify" onclick="eksekusiVerifikasi('${row.nisn}')">Setujui & Verif</button></td>
+            </tr>`;
+        });
+      }).catch(() => {
+        document.getElementById('antreanTableBody').innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Gagal terhubung ke database cloud.</td></tr>`;
+      });
+  }
+
+  function eksekusiVerifikasi(nisnTarget) {
+    const petugas = localStorage.getItem('sivera_user_role');
+    Swal.fire({
+      title: 'Verifikasi Berkas?',
+      text: "Pastikan berkas fisik siswa sesuai dengan data entri digital.",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#10b981',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, Valid!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "verifikasiSiswa", nisn: nisnTarget, verifikator: petugas })
+        })
         .then(res => res.json())
-        .then(data => {
-          var listContainer = document.getElementById('mobileList');
-          if(!data || data.length === 0) {
-            listContainer.innerHTML = '<p class="text-center text-xs text-zinc-400 py-4">Belum ada antrean masuk.</p>';
-            return;
+        .then(res => {
+          if(res.success) {
+            Swal.fire('Berhasil!', 'Siswa berhasil diverifikasi oleh ' + petugas, 'success');
+            loadDataAntrean();
+          } else {
+            Swal.fire('Gagal!', res.error, 'error');
           }
-          listContainer.innerHTML = "";
-          data.forEach(function(item) {
-            var card = document.createElement('div');
-            card.className = "p-3 bg-zinc-50 border border-zinc-200 rounded-xl flex items-center justify-between gap-2 shadow-inner animate-fade-in";
-            card.innerHTML = `
-              <div class="truncate">
-                <div class="flex items-center gap-1.5">
-                  <span class="text-[10px] font-bold text-zinc-400 font-mono">#${item.no}</span>
-                  <span class="text-xs font-black text-blue-950 truncate">${item.nama}</span>
-                  <span class="text-[9px] px-1.5 py-0.2 font-black rounded ${item.jk==='L'?'bg-blue-100 text-blue-700':'bg-pink-100 text-pink-700'}">${item.jk}</span>
-                </div>
-                <p class="text-[10px] text-zinc-500 font-mono mt-0.5">NISN: ${item.nisn}</p>
-                <p class="text-[9px] text-zinc-400 font-medium mt-1"><i class="fa-solid : clock mr-0.5"></i> ${item.tglVerif}</p>
-              </div>
-              <div class="text-right shrink-0 flex flex-col items-end">
-                <span class="text-lg font-black text-blue-900 leading-none">${item.noAntrean}</span>
-                <span class="text-[9px] font-black bg-amber-400 text-blue-950 px-1.5 py-0.5 rounded uppercase mt-1 shadow-sm">${item.loket}</span>
-              </div>
-            `;
-            listContainer.appendChild(card);
-          });
-        }).catch(() => {  document.getElementById('mobileList').innerHTML = '<p class="text-center text-xs text-red-500 py-4">Gagal rekap data.</p>'; });
-    }
-
-    function sendBroadcast() {
-      var msg = document.getElementById('bcInput').value;
-      document.getElementById('btnBC').disabled = true;
-      fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "setBroadcast", message: msg }) })
-      .then(res => res.json()).then(res => {
-        alert(res.status);
-        document.getElementById('btnBC').disabled = false;
-      }).catch(() => { alert("Error"); document.getElementById('btnBC').disabled = false; });
-    }
-  </script>
+        });
+      }
+    });
+  }
+</script>
 </body>
 </html>
