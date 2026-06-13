@@ -3,111 +3,114 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Super Admin - SPENSAMO</title>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link class="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Panel Admin SIVERA v1.3</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
+    body { background: #f0f2f5; padding: 20px; }
+    .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    h2 { color: #1e3a8a; margin-bottom: 20px; border-bottom: 2px solid #1e3a8a; padding-bottom: 10px; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-weight: 600; margin-bottom: 8px; color: #333; }
+    input[type="text"], input[type="date"], textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+    textarea { height: 100px; resize: vertical; }
+    button { background: #1e3a8a; color: white; border: none; padding: 12px 25px; font-size: 16px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: 0.3s; width: 100%; }
+    button:hover { background: #152a66; }
+    .loading-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index:9999; justify-content:center; align-items:center; flex-direction:column; }
+    .spinner { border: 6px solid #f3f3f3; border-top: 6px solid #1e3a8a; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
 </head>
-<body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col justify-between select-none">
+<body>
 
-  <header class="bg-zinc-900 border-b-4 border-amber-400 p-4 shadow-md">
-    <div class="container mx-auto max-w-md flex items-center gap-3.5 px-1">
-      <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo" class="w-14 h-14 object-contain shrink-0">
-      <div class="leading-tight">
-        <h1 class="text-sm font-black text-amber-400 tracking-wide uppercase">SMP Negeri 1 Moga</h1>
-        <p class="text-[10px] text-zinc-400 font-bold">Cloud Tracker Database Super Admin</p>
-        <span class="text-[8px] bg-red-600 text-white font-black px-1.5 py-0.5 rounded uppercase tracking-wider">FULL ACCESS</span>
-      </div>
-    </div>
-  </header>
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <p style="margin-top: 15px; font-weight: 600; color: #1e3a8a;">Memproses ke Server Google...</p>
+</div>
 
-  <div class="container mx-auto p-4 max-w-md space-y-4 flex-grow">
-    <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800 shadow-xl">
-      <h3 class="text-xs font-black text-amber-400 uppercase tracking-wider mb-2"><i class="fa-solid : bullhorn mr-1"></i> Master Broadcast Control</h3>
-      <div class="space-y-2">
-        <input type="text" id="bcAdmin" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 text-xs text-white rounded-xl focus:outline-none focus:border-amber-400 font-medium">
-        <button onclick="sendAdminBroadcast()" id="btnBCAdmin" class="w-full bg-amber-400 hover:bg-amber-500 font-black text-[10px] uppercase tracking-widest text-zinc-950 py-2.5 rounded-xl cursor-pointer transition shadow-md">Update Global Broadcast</button>
-      </div>
+<div class="container">
+  <h2>⚙️ Pengaturan Sistem Antrean (SIVERA v1.3)</h2>
+  
+  <form id="adminForm">
+    <div class="form-group">
+      <label for="tanggalMulai">Tanggal Mulai Verifikasi:</label>
+      <input type="date" id="tanggalMulai" required>
+      <small style="color: #666;">Sistem otomatis menjadwalkan 150 pendaftar per hari kerja sejak tanggal ini (Hari Minggu libur).</small>
     </div>
 
-    <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800 shadow-xl">
-      <div class="flex justify-between items-center mb-3">
-        <h3 class="text-xs font-black text-zinc-200 uppercase tracking-wider"><i class="fa-solid : database text-blue-400 mr-1"></i> Spreadsheet Database Tracker</h3>
-        <button onclick="loadAdminData()" class="text-[10px] bg-zinc-800 hover:bg-zinc-700 px-2.5 py-1 rounded-lg font-bold text-zinc-300 border border-zinc-700 transition"><i class="fa-solid : rotate"></i> Sync</button>
-      </div>
-      <div id="adminCardContainer" class="space-y-3 max-h-[380px] overflow-y-auto pr-1">
-        <p class="text-center text-xs text-zinc-600 py-4">Menghubungkan ke server cloud...</p>
-      </div>
+    <div class="form-group">
+      <label for="jamOperasional">Jam Operasional Verifikasi:</label>
+      <input type="text" id="jamOperasional" placeholder="Contoh: 08:00 - 12:00 WIB" required>
     </div>
-  </div>
 
-  <div id="devModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-zinc-900 text-zinc-100 rounded-2xl max-w-xs w-full p-5 border border-zinc-800 shadow-2xl text-center animate-fade-in">
-      <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Logo Dev" class="w-20 h-20 rounded-full mx-auto border-2 border-amber-400 object-cover mb-3">
-      <h3 class="text-sm font-black text-amber-400 uppercase tracking-widest">SIVERA</h3>
-      <p class="text-[10px] text-zinc-400 font-medium mb-4">Sistem Verifikasi Antrean</p>
-      <div class="text-left space-y-2 text-xs bg-zinc-950 p-3 rounded-xl border border-zinc-800 mb-4 font-medium">
-        <div class="flex justify-between"><span class="text-zinc-500">Developer:</span><span class="font-bold text-white">MB</span></div>
-        <div class="flex justify-between"><span class="text-zinc-500">Build Version:</span><span class="font-mono text-zinc-300">1.3 (13 Juni 2026)</span></div>
-        <div class="flex justify-between items-center"><span class="text-zinc-500">Contact:</span><a href="mailto:yanuar.b@gmail.com" class="text-amber-400 font-bold">yanuar.b@gmail.com</a></div>
-      </div>
-      <button onclick="closeDevModal()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-black text-xs py-2.5 rounded-xl cursor-pointer transition uppercase tracking-wider">Tutup</button>
+    <div class="form-group">
+      <label for="broadcast">Pesan Pengumuman (Broadcast Running Text):</label>
+      <textarea id="broadcast" placeholder="Tulis pengumuman penting di sini..." required></textarea>
     </div>
-  </div>
 
-  <footer onclick="openDevModal()" class="text-center p-3.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border-t border-zinc-800 text-[10px] font-black tracking-widest uppercase cursor-pointer transition">
-    Aplikasi SIVERA V 1.3 <i class="fa-solid : circle-info text-amber-400 ml-0.5"></i>
-  </footer>
+    <button type="submit">Simpan Semua Perubahan</button>
+  </form>
+</div>
 
-  <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
-    window.onload = function() {
-      loadAdminData();
-      fetch(`${API_URL}?action=getBroadcast`).then(res => res.json()).then(data => { document.getElementById('bcAdmin').value = data.message || ''; });
+<script>
+  // GANTI DENGAN URL WEB APP DEPLOYMENT (AKHIRAN /exec) ANDA YANG BARU
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz_XXXXXXXXX/exec";
+
+  const loading = document.getElementById('loading');
+
+  // 1. Ambil data konfigurasi saat ini saat halaman dimuat
+  window.addEventListener('DOMContentLoaded', () => {
+    loading.style.display = 'flex';
+    fetch(`${WEB_APP_URL}?action=getAdminConfig`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('broadcast').value = data.broadcast || "";
+        document.getElementById('jamOperasional').value = data.jamOperasional || "08:00 - 12:00 WIB";
+        
+        // Atur tanggal, potong teks jika format datetime penuh
+        if(data.tanggalMulai) {
+          document.getElementById('tanggalMulai').value = data.tanggalMulai.split('T')[0];
+        }
+        loading.style.display = 'none';
+      })
+      .catch(err => {
+        loading.style.display = 'none';
+        Swal.fire('Gagal Memuat Data', err.toString(), 'error');
+      });
+  });
+
+  // 2. Simpan Perubahan saat Form Di-submit
+  document.getElementById('adminForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    loading.style.display = 'flex';
+
+    const payload = {
+      action: "updateAdminConfig",
+      broadcast: document.getElementById('broadcast').value,
+      tanggalMulai: document.getElementById('tanggalMulai').value,
+      jamOperasional: document.getElementById('jamOperasional').value
     };
-    function openDevModal() { document.getElementById('devModal').classList.remove('hidden'); }
-    function closeDevModal() { document.getElementById('devModal').classList.add('hidden'); }
 
-    function loadAdminData() {
-      fetch(`${API_URL}?action=getPendaftar`)
-        .then(res => res.json())
-        .then(data => {
-          var container = document.getElementById('adminCardContainer');
-          if(!data || data.length === 0) { container.innerHTML = '<p class="text-center text-xs text-zinc-600 py-4">Database Log Kosong.</p>'; return; }
-          container.innerHTML = "";
-          data.forEach(function(item) {
-            var box = document.createElement('div');
-            box.className = "p-3 bg-zinc-950 border border-zinc-800 rounded-xl space-y-2 text-xs animate-fade-in";
-            box.innerHTML = `
-              <div class="flex justify-between items-start border-b border-zinc-800 pb-1.5">
-                <div><span class="text-[9px] font-mono text-zinc-500 font-bold">LOG #${item.no}</span><h4 class="font-black text-white text-xs mt-0.5">${item.nama} (${item.jk})</h4></div>
-                <div class="text-right"><span class="text-sm font-black text-emerald-400 block">${item.noAntrean}</span><span class="text-[8px] font-black bg-blue-900 text-amber-300 px-1 rounded uppercase">${item.loket}</span></div>
-              </div>
-              <div class="grid grid-cols-2 gap-y-1 gap-x-2 text-[10px] text-zinc-400 font-medium">
-                <div>NISN: <span class="font-mono text-amber-400 font-bold">${item.nisn}</span></div>
-                <div class="truncate">IP: <span class="font-mono text-zinc-300">${item.ip}</span></div>
-                <div class="truncate">ISP: <span class="text-zinc-300">${item.provider}</span></div>
-                <div class="truncate">Loc: <span class="text-zinc-300">${item.lokasi}</span></div>
-              </div>
-              <div class="text-[9px] bg-zinc-900 text-zinc-500 p-1.5 rounded border border-zinc-800/50 font-bold"><i class="fa-solid : calendar text-amber-500/70 mr-1"></i>Jadwal: ${item.tglVerif}</div>
-            `;
-            container.appendChild(box);
-          });
-        }).catch(() => { document.getElementById('adminCardContainer').innerHTML = '<p class="text-center text-xs text-red-500 py-4">Error Cloud.</p>'; });
-    }
+    fetch(WEB_APP_URL, {
+      method: "POST",
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(res => {
+      loading.style.display = 'none';
+      if(res.success) {
+        Swal.fire('Berhasil!', res.message, 'success');
+      } else {
+        Swal.fire('Gagal!', res.error, 'error');
+      }
+    })
+    .catch(err => {
+      loading.style.display = 'none';
+      Swal.fire('Error Koneksi', err.toString(), 'error');
+    });
+  });
+</script>
 
-    function sendAdminBroadcast() {
-      var msg = document.getElementById('bcAdmin').value;
-      document.getElementById('btnBCAdmin').disabled = true;
-      fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "setBroadcast", message: msg }) })
-      .then(res => res.json()).then(res => {
-        alert("Admin Cloud: " + res.status);
-        document.getElementById('btnBCAdmin').disabled = false;
-      }).catch(() => { alert("Error"); document.getElementById('btnBCAdmin').disabled = false; });
-    }
-  </script>
 </body>
 </html>
