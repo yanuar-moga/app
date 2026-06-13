@@ -8,27 +8,50 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
-    body { background: #f0f2f5; padding: 20px; }
-    .container { max-width: 850px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    body { background: #f0f2f5; padding: 20px; display: flex; flex-direction: column; min-height: 100vh; }
+    
+    /* Layout Login Wrapper */
+    .login-wrapper { max-width: 450px; width: 100%; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; }
+    .login-header { background: #1e3a8a; color: white; padding: 25px 20px; text-align: center; border-bottom: 4px solid #d4af37; }
+    .login-header h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+    .login-header p { font-size: 12px; color: #f3f4f6; margin-top: 4px; }
+    .login-box { padding: 30px; text-align: center; }
+    .login-box h3 { font-size: 15px; color: #1e3a8a; margin-bottom: 15px; text-transform: uppercase; font-weight: 700; }
+    .login-footer { background: #f8fafc; text-align: center; padding: 15px; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0; font-weight: 600; }
+    
+    /* Layout Utama Setelah Login */
+    .container { max-width: 850px; margin: 20px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; }
     .header-panel { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1e3a8a; padding-bottom: 10px; margin-bottom: 20px; }
-    h2 { color: #1e3a8a; } .section-box { border: 1px solid #e5e7eb; padding: 20px; border-radius: 8px; margin-bottom: 20px; background: #fbfbfb;}
-    h3 { font-size:15px; color:#1e3a8a; margin-bottom:15px; text-transform:uppercase; font-weight:700;}
-    .form-group { margin-bottom: 15px; } label { display: block; font-weight: 600; margin-bottom: 6px; color: #333; font-size:13px; }
+    h2 { color: #1e3a8a; } 
+    .section-box { border: 1px solid #e5e7eb; padding: 20px; border-radius: 8px; margin-bottom: 20px; background: #fbfbfb;}
+    h3 { font-size:14px; color:#1e3a8a; margin-bottom:15px; text-transform:uppercase; font-weight:700;}
+    .form-group { margin-bottom: 15px; } 
+    label { display: block; font-weight: 600; margin-bottom: 6px; color: #333; font-size:13px; }
     input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
     button { background: #1e3a8a; color: white; border: none; padding: 10px 20px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; width: 100%; }
-    button:hover { background: #152a66; } .btn-logout { background: #dc2626; max-width: 80px; }
-    .login-box { max-width: 400px; margin: 100px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
+    button:hover { background: #152a66; } 
+    .btn-logout { background: #dc2626; max-width: 80px; }
     .grid-2 { display:grid; grid-template-cols: 1fr 1fr; gap:15px; }
     table { width:100%; border-collapse:collapse; margin-top:10px; font-size:13px;} th, td { padding:10px; border:1px solid #eee; text-align:left;}
-    th { background:#f4f4f4; color:#1e3a8a;} .btn-del { background:#dc2626; padding:4px 8px; font-size:11px; width:auto;}
+    th { background:#f4f4f4; color:#1e3a8a;} 
+    .btn-del { background:#dc2626; padding:4px 8px; font-size:11px; width:auto;}
   </style>
 </head>
 <body>
 
-<div id="loginSection" class="login-box">
-  <h3>⚙️ Login Admin Utama</h3>
-  <input type="password" id="adminPin" placeholder="Masukkan PIN Kontrol Utama" maxlength="6" style="margin-bottom:15px; text-align:center;">
-  <button onclick="prosesLogin()">Masuk Aplikasi</button>
+<div id="loginWrapper" class="login-wrapper">
+  <div class="login-header">
+    <h1>SMP NEGERI 1 MOGA</h1>
+    <p>Sistem Informasi Verifikasi Antrean Berkas Fisik</p>
+  </div>
+  <div class="login-box">
+    <h3>⚙️ LOGIN ADMIN UTAMA</h3>
+    <input type="password" id="adminPin" placeholder="Masukkan PIN Kontrol Utama" maxlength="6" style="margin-bottom:15px; text-align:center;">
+    <button onclick="prosesLogin()">Masuk Aplikasi</button>
+  </div>
+  <div class="login-footer">
+    SIVERA v2.0 &copy; 2026 - SMP Negeri 1 Moga
+  </div>
 </div>
 
 <div id="mainSection" class="container" style="display: none;">
@@ -75,7 +98,7 @@
 </div>
 
 <script>
-  const WEB_APP_URL = "URL_WEB_APP_GAS_ANDA"; // Ganti dengan URL /exec Anda
+  const WEB_APP_URL = "1PT_T80rf7d2oCqzeRI72gjCE6tGTfd-_rOcJxQnMrm0"; // Pastikan diganti URL /exec pengetesan Anda
 
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('sivera_logged_in') === 'true' && localStorage.getItem('sivera_user_role') === 'admin') {
@@ -102,7 +125,7 @@
   }
 
   function tampilkanHalamanAdmin() {
-    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('loginWrapper').style.display = 'none';
     document.getElementById('mainSection').style.display = 'block';
     loadConfigData();
     loadAllUsers();
