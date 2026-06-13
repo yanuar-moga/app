@@ -26,7 +26,7 @@
       <h3 class="text-xs font-black text-blue-900 uppercase tracking-wider mb-2"><i class="fa-solid : bullhorn text-amber-500 mr-1"></i> Broadcast Pengumuman</h3>
       <div class="space-y-2">
         <input type="text" id="bcInput" placeholder="Ketik info penting untuk halaman depan..." class="w-full text-xs border border-zinc-300 p-2.5 rounded-xl focus:outline-none focus:border-blue-900 bg-zinc-50 font-medium">
-        <button onclick="sendBroadcast()" class="w-full bg-amber-400 hover:bg-amber-500 font-black text-[10px] uppercase tracking-wider text-blue-950 py-2.5 rounded-xl cursor-pointer transition shadow-sm">
+        <button onclick="sendBroadcast()" id="btnBC" class="w-full bg-amber-400 hover:bg-amber-500 font-black text-[10px] uppercase tracking-wider text-blue-950 py-2.5 rounded-xl cursor-pointer transition shadow-sm">
           Perbarui & Siarkan
         </button>
       </div>
@@ -46,49 +46,70 @@
   </div>
 
   <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
+
     window.onload = function() {
       loadDataVerif();
-      google.script.run.withSuccessHandler(function(msg) {
-        document.getElementById('bcInput').value = msg;
-      }).getBroadcastMessage();
+      fetch(`${API_URL}?action=getBroadcast`)
+        .then(res => res.json())
+        .then(data => { document.getElementById('bcInput').value = data.message || ''; });
     };
 
     function loadDataVerif() {
-      google.script.run.withSuccessHandler(function(data) {
-        var listContainer = document.getElementById('mobileList');
-        if(data.length === 0) {
-          listContainer.innerHTML = '<p class="text-center text-xs text-zinc-400 py-4">Belum ada antrean masuk.</p>';
-          return;
-        }
-        listContainer.innerHTML = "";
-        data.forEach(function(item) {
-          var card = document.createElement('div');
-          card.className = "p-3 bg-zinc-50 border border-zinc-200 rounded-xl flex items-center justify-between gap-2 shadow-inner";
-          card.innerHTML = `
-            <div class="truncate">
-              <div class="flex items-center gap-1.5">
-                <span class="text-[10px] font-bold text-zinc-400 font-mono">#${item.no}</span>
-                <span class="text-xs font-black text-blue-950 truncate">${item.nama}</span>
-                <span class="text-[9px] px-1.5 py-0.2 font-black rounded ${item.jk==='L'?'bg-blue-100 text-blue-700':'bg-pink-100 text-pink-700'}">${item.jk}</span>
+      fetch(`${API_URL}?action=getPendaftar`)
+        .then(res => res.json())
+        .then(data => {
+          var listContainer = document.getElementById('mobileList');
+          if(!data || data.length === 0) {
+            listContainer.innerHTML = '<p class="text-center text-xs text-zinc-400 py-4">Belum ada antrean masuk.</p>';
+            return;
+          }
+          listContainer.innerHTML = "";
+          data.forEach(function(item) {
+            var card = document.createElement('div');
+            card.className = "p-3 bg-zinc-50 border border-zinc-200 rounded-xl flex items-center justify-between gap-2 shadow-inner animate-fade-in";
+            card.innerHTML = `
+              <div class="truncate">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] font-bold text-zinc-400 font-mono">#${item.no}</span>
+                  <span class="text-xs font-black text-blue-950 truncate">${item.nama}</span>
+                  <span class="text-[9px] px-1.5 py-0.2 font-black rounded ${item.jk==='L'?'bg-blue-100 text-blue-700':'bg-pink-100 text-pink-700'}">${item.jk}</span>
+                </div>
+                <p class="text-[10px] text-zinc-500 font-mono mt-0.5">NISN: ${item.nisn}</p>
+                <p class="text-[9px] text-zinc-400 font-medium mt-1"><i class="fa-solid : clock mr-0.5"></i> ${item.tglVerif}</p>
               </div>
-              <p class="text-[10px] text-zinc-500 font-mono mt-0.5">NISN: ${item.nisn}</p>
-              <p class="text-[9px] text-zinc-400 font-medium mt-1"><i class="fa-solid : clock mr-0.5"></i> ${item.tglVerif}</p>
-            </div>
-            <div class="text-right shrink-0 flex flex-col items-end">
-              <span class="text-lg font-black text-blue-900 leading-none">${item.noAntrean}</span>
-              <span class="text-[9px] font-black bg-amber-400 text-blue-950 px-1.5 py-0.5 rounded uppercase mt-1 shadow-sm">${item.loket}</span>
-            </div>
-          `;
-          listContainer.appendChild(card);
+              <div class="text-right shrink-0 flex flex-col items-end">
+                <span class="text-lg font-black text-blue-900 leading-none">${item.noAntrean}</span>
+                <span class="text-[9px] font-black bg-amber-400 text-blue-950 px-1.5 py-0.5 rounded uppercase mt-1 shadow-sm">${item.loket}</span>
+              </div>
+            `;
+            listContainer.appendChild(card);
+          });
+        }).catch(err => {
+          document.getElementById('mobileList').innerHTML = '<p class="text-center text-xs text-red-500 py-4">Gagal sinkronisasi data.</p>';
         });
-      }).getPendaftarData();
     }
 
     function sendBroadcast() {
       var msg = document.getElementById('bcInput').value;
-      google.script.run.withSuccessHandler(function(res) {
-        alert("Sistem: " + res);
-      }).setBroadcastMessage(msg);
+      document.getElementById('btnBC').disabled = true;
+      document.getElementById('btnBC').innerText = "Mengirim...";
+
+      fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "setBroadcast", message: msg })
+      })
+      .then(res => res.json())
+      .then(res => {
+        alert(res.status);
+        document.getElementById('btnBC').disabled = false;
+        document.getElementById('btnBC').innerText = "Perbarui & Siarkan";
+      })
+      .catch(err => {
+        alert("Gagal memperbarui broadcast.");
+        document.getElementById('btnBC').disabled = false;
+        document.getElementById('btnBC').innerText = "Perbarui & Siarkan";
+      });
     }
   </script>
 </body>
