@@ -71,7 +71,7 @@
   </main>
 
   <footer onclick="bukaModalDeveloper()" class="text-center p-3.5 bg-zinc-200 hover:bg-zinc-300 text-zinc-600 text-[10px] font-black tracking-widest uppercase border-t border-zinc-300 cursor-pointer transition-colors duration-200">
-    Aplikasi SIVERA V 1.3 <span class="text-blue-900 block mt-0.5 text-[8px] font-bold normal-case tracking-normal animate-pulse">(Klik untuk info developer)</span>
+    Aplikasi SIVERA V 1.3 
   </footer>
 
   <script>
@@ -84,6 +84,7 @@
       .then(res => res.json()).then(res => {
         Swal.close();
         if (res.success) {
+          localStorage.setItem('username', res.username); // Simpan nama petugas
           document.getElementById('loginWrapper').classList.add('hidden');
           document.getElementById('mainSection').classList.remove('hidden');
           document.getElementById('displayUser').innerText = `👤 ${res.username}`;
@@ -116,8 +117,21 @@
       Swal.fire({ title: 'Konfirmasi', input: status === 'Tunda' ? 'text' : null, inputPlaceholder: 'Alasan penundaan...', showCancelButton: true, confirmButtonColor: status === 'Tunda' ? '#f59e0b' : '#059669', confirmButtonText: 'Kirim' })
       .then(res => {
         if(res.isConfirmed) {
-          fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "verifikasiSiswa", nisn, status, catatan: res.value }) })
-          .then(() => { Swal.fire('Berhasil', 'Data diperbarui', 'success'); loadDataAntrean(); });
+          fetch(API_URL, { 
+            method: "POST", 
+            body: JSON.stringify({ 
+              action: "verifikasiSiswa", 
+              nisn: nisn, 
+              status: status, 
+              catatan: res.value || "", 
+              verifikator: localStorage.getItem('username') 
+            }) 
+          })
+          .then(res => res.json())
+          .then(data => {
+            if(data.success) { Swal.fire('Berhasil', 'Data diperbarui', 'success'); loadDataAntrean(); }
+            else { Swal.fire('Gagal', data.error, 'error'); }
+          });
         }
       });
     }
