@@ -19,16 +19,13 @@
     }
     .animate-float { animation: floatAnim 3s ease-in-out infinite; }
 
-    /* PERBAIKAN ANIMASI: Jalur ngeroll mulus untuk 4 baris (3 konten asli + 1 kloning) */
-    @keyframes slideUp {
-      0%, 20% { transform: translateY(0); }
-      25%, 45% { transform: translateY(-25%); }
-      50%, 70% { transform: translateY(-50%); }
-      75%, 95% { transform: translateY(-75%); }
-      100% { transform: translateY(0); }
+    /* PERBAIKAN UTAMA: Animasi tanpa jeda statis agar ngeroll halus tanpa henti */
+    @keyframes slideUpContinuous {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-75%); } /* Bergeser tepat ke batas sebelum elemen duplikat */
     }
     .animate-ticker {
-      animation: slideUp 16s linear infinite; /* Menggunakan linear agar transisi perputaran konstan */
+      animation: slideUpContinuous 12s linear infinite;
     }
     .animate-ticker:hover {
       animation-play-state: paused;
