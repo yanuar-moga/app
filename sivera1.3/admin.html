@@ -10,7 +10,6 @@
     * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
     body { background: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; color: #334155; }
     
-    /* Login Styling */
     .login-wrapper { max-width: 400px; width: 90%; margin: auto; background: white; border-radius: 24px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #e2e8f0; }
     .login-header { background: #1e3a8a; color: white; padding: 30px; text-align: center; border-bottom: 6px solid #d4af37; }
     .login-box { padding: 30px; }
@@ -18,7 +17,6 @@
     button { background: #1e3a8a; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; }
     button:hover { background: #152a66; }
 
-    /* Dashboard Styling */
     .container { max-width: 900px; margin: 20px auto; background: white; padding: 30px; border-radius: 24px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); width: 90%; }
     .header-panel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #f1f5f9; }
     .section-box { border: 1px solid #e2e8f0; padding: 25px; border-radius: 16px; margin-bottom: 25px; background: #f8fafc; }
@@ -27,7 +25,6 @@
     label { font-size: 12px; font-weight: 700; color: #64748b; margin-bottom: 5px; display: block; }
     .btn-logout { background: #dc2626; max-width: 100px; font-size: 12px; }
     
-    /* Footer Styling */
     footer { text-align: center; padding: 20px; font-size: 0.75rem; color: #94a3b8; font-weight: 600; margin-top: auto; border-top: 1px solid #e2e8f0; background: #f8fafc; }
     
     table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
@@ -56,15 +53,22 @@
   </div>
   
   <div class="section-box">
-    <h3>📌 Sinkronisasi & Info</h3>
-    <form id="adminForm">
+    <h3>📅 Konfigurasi Sistem</h3>
+    <form id="configForm">
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px;">
         <div><label>TANGGAL MULAI:</label><input type="date" id="tanggalMulai" required style="margin: 5px 0 15px 0;"></div>
         <div><label>JAM OPERASIONAL:</label><input type="text" id="jamOperasional" required style="margin: 5px 0 15px 0;"></div>
       </div>
+      <button type="submit" style="background:#1e3a8a;">SIMPAN PENGATURAN WAKTU</button>
+    </form>
+  </div>
+
+  <div class="section-box">
+    <h3>📢 Broadcast Pengumuman</h3>
+    <form id="broadcastForm">
       <label>ISI PENGUMUMAN:</label>
-      <textarea id="broadcast" style="width:100%; padding:10px; border-radius:12px; border:2px solid #e2e8f0; margin-bottom:15px; font-size:14px;"></textarea>
-      <button type="submit">UPDATE KONFIGURASI</button>
+      <textarea id="broadcast" style="width:100%; padding:10px; border-radius:12px; border:2px solid #e2e8f0; margin-bottom:15px; font-size:14px;" rows="2"></textarea>
+      <button type="submit" style="background:#f59e0b;">KIRIM BROADCAST SEKARANG</button>
     </form>
   </div>
 
@@ -144,10 +148,18 @@
     fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", username: u, pin: p }) }).then(() => { Swal.fire('Terhapus', '', 'info'); loadAllUsers(); });
   }
 
-  document.getElementById('adminForm').addEventListener('submit', function(e) {
+  // Update Waktu Saja
+  document.getElementById('configForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const payload = { action: "updateAdminConfig", broadcast: document.getElementById('broadcast').value, tanggalMulai: document.getElementById('tanggalMulai').value, jamOperasional: document.getElementById('jamOperasional').value };
-    fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) }).then(() => Swal.fire('Berhasil', 'Data diperbarui', 'success'));
+    fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) }).then(() => Swal.fire('Berhasil', 'Pengaturan waktu tersimpan', 'success'));
+  });
+
+  // Update Broadcast Saja
+  document.getElementById('broadcastForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const payload = { action: "updateAdminConfig", broadcast: document.getElementById('broadcast').value, tanggalMulai: document.getElementById('tanggalMulai').value, jamOperasional: document.getElementById('jamOperasional').value };
+    fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) }).then(() => Swal.fire('Berhasil', 'Pengumuman diperbarui', 'success'));
   });
 
   function prosesLogout() { localStorage.clear(); location.reload(); }
