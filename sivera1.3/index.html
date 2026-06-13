@@ -14,7 +14,6 @@
 </head>
 <body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col justify-between select-none">
 
-  <!-- Header Sekolah: Warna Biru SMP -->
   <header class="bg-blue-900 border-b-4 border-amber-400 p-4 shadow-md">
     <div class="container mx-auto max-w-md flex items-center gap-3.5 px-1">
       <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo SMPN 1 Moga" class="w-14 h-14 object-contain shrink-0 bg-white p-1 rounded-full shadow-sm">
@@ -27,8 +26,6 @@
   </header>
 
   <main class="container mx-auto p-4 flex-grow max-w-md flex flex-col justify-center">
-    
-    <!-- Broadcast Box -->
     <div id="broadcastBox" class="hidden bg-amber-50 border-2 border-amber-400 p-4 rounded-xl mb-4 shadow-sm flex items-start gap-3 animate-fade-in">
       <div class="bg-amber-400 p-1.5 rounded-lg text-blue-950 shadow-sm mt-0.5"><i class="fa-solid fa-bullhorn text-xs"></i></div>
       <div>
@@ -37,7 +34,6 @@
       </div>
     </div>
 
-    <!-- Custom Alert -->
     <div id="customAlert" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div class="bg-white rounded-2xl max-w-xs w-full p-5 text-center shadow-2xl border-t-8 border-blue-900 transform scale-95 transition-all">
         <div id="alertIcon" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center text-xl mb-3 shadow-md"></div>
@@ -47,7 +43,6 @@
       </div>
     </div>
 
-    <!-- Form Section -->
     <div id="formSection" class="bg-white rounded-2xl p-5 shadow-xl border border-zinc-200 animate-fade-in">
       <div class="text-center mb-5">
         <h2 class="text-base font-black text-blue-900 uppercase tracking-wide">Formulir Loket Antrean</h2>
@@ -91,11 +86,8 @@
       </form>
     </div>
 
-    <!-- TICKET SECTION (Kombinasi Warna Sesuai Screenshot_8.png) -->
     <div id="ticketSection" class="hidden space-y-4 animate-fade-in">
       <div id="ticketCard" class="bg-blue-950 rounded-2xl shadow-2xl p-5 border-2 border-blue-900 text-white relative">
-        
-        <!-- Header Tiket -->
         <div class="flex items-center gap-3 border-b border-blue-800 pb-4 mb-4">
           <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo" class="w-10 h-10 object-contain shrink-0">
           <div>
@@ -104,73 +96,33 @@
           </div>
         </div>
 
-        <!-- Box Besar Nomor Antrean -->
         <div class="bg-blue-900/50 border border-blue-800 rounded-xl p-5 text-center mb-5 shadow-inner">
           <span class="text-[10px] font-bold text-blue-300 tracking-widest block uppercase">NOMOR ANTREAN</span>
           <span id="t_no" class="text-5xl font-black text-amber-400 block my-2 tracking-wide font-mono">000</span>
           <span id="t_loket" class="text-[10px] font-black bg-amber-500 text-blue-950 px-5 py-1 rounded-full inline-block uppercase tracking-wider shadow">LOKET -</span>
         </div>
 
-        <!-- Detail Informasi Data Pendaftar dengan Garis Tipis -->
         <div class="space-y-3 text-xs mb-5 px-1">
-          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2">
-            <span class="text-zinc-400 font-medium">Nama Lengkap</span>
-            <span id="t_nama" class="font-black text-white uppercase text-right max-w-[190px] truncate"></span>
-          </div>
-          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2">
-            <span class="text-zinc-400 font-medium">NISN</span>
-            <span id="t_nisn" class="font-mono font-bold text-white"></span>
-          </div>
-          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2">
-            <span class="text-zinc-400 font-medium">Jenis Kelamin</span>
-            <span id="t_jk" class="font-bold text-white"></span>
-          </div>
-          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2">
-            <span class="text-zinc-400 font-medium">Tanggal Verifikasi</span>
-            <span id="t_tgl" class="font-bold text-white text-right"></span>
-          </div>
-          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2">
-            <span class="text-zinc-400 font-medium">Jam Operasional</span>
-            <span id="t_jam" class="font-bold text-amber-400"></span>
-          </div>
+          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Nama Lengkap</span><span id="t_nama" class="font-black text-white uppercase text-right max-w-[190px] truncate"></span></div>
+          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">NISN</span><span id="t_nisn" class="font-mono font-bold text-white"></span></div>
+          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Jenis Kelamin</span><span id="t_jk" class="font-bold text-white"></span></div>
+          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Tanggal Verifikasi</span><span id="t_tgl" class="font-bold text-white text-right"></span></div>
+          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Jam Operasional</span><span id="t_jam" class="font-bold text-amber-400"></span></div>
         </div>
 
-        <!-- Catatan Kaki Kuning/Miring -->
         <div class="text-center pt-2 border-t border-blue-900">
-          <p class="text-[10px] font-bold text-amber-400 italic leading-relaxed">
-            *Silakan screenshot layar ini sebagai bukti verifikasi fisik berkas.
-          </p>
+          <p class="text-[10px] font-bold text-amber-400 italic leading-relaxed">*Silakan screenshot layar ini sebagai bukti verifikasi fisik berkas.</p>
         </div>
       </div>
 
-      <!-- Tombol Aksi Tiket -->
       <div class="flex gap-3">
-        <button onclick="takeScreenshot()" class="flex-1 bg-amber-400 hover:bg-amber-500 text-blue-950 p-3 rounded-xl font-black text-xs uppercase tracking-wider cursor-pointer text-center shadow-md transition">
-          <i class="fa-solid fa-camera mr-1"></i> Screenshot
-        </button>
-        <button onclick="keluarKeIndex()" class="flex-1 bg-zinc-700 hover:bg-zinc-800 text-white p-3 rounded-xl font-black text-xs uppercase tracking-wider cursor-pointer text-center shadow-md transition">
-          <i class="fa-solid fa-right-from-bracket mr-1"></i> Keluar
-        </button>
+        <button onclick="takeScreenshot()" class="flex-1 bg-amber-400 hover:bg-amber-500 text-blue-950 p-3 rounded-xl font-black text-xs uppercase tracking-wider cursor-pointer text-center shadow-md transition"><i class="fa-solid fa-camera mr-1"></i> Screenshot</button>
+        <button onclick="keluarKeIndex()" class="flex-1 bg-zinc-700 hover:bg-zinc-800 text-white p-3 rounded-xl font-black text-xs uppercase tracking-wider cursor-pointer text-center shadow-md transition"><i class="fa-solid fa-right-from-bracket mr-1"></i> Keluar</button>
       </div>
     </div>
   </main>
 
-  <!-- Developer Modal -->
-  <div id="devModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-zinc-900 text-zinc-100 rounded-2xl max-w-xs w-full p-5 border border-zinc-800 shadow-2xl relative animate-fade-in text-center">
-      <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Logo Dev" class="w-20 h-20 rounded-full mx-auto border-2 border-amber-400 object-cover shadow-md mb-3">
-      <h3 class="text-sm font-black text-amber-400 uppercase tracking-widest">SIVERA</h3>
-      <p class="text-[10px] text-zinc-400 font-medium mb-4">Sistem Verifikasi Antrean</p>
-      <div class="text-left space-y-2 text-xs bg-zinc-950 p-3 rounded-xl border border-zinc-800 mb-4 font-medium">
-        <div class="flex justify-between"><span class="text-zinc-500">Developer:</span><span class="font-bold text-white">MB</span></div>
-        <div class="flex justify-between"><span class="text-zinc-500">Build Version:</span><span class="font-mono text-zinc-300">1.3 (13 Juni 2026)</span></div>
-        <div class="flex justify-between items-center"><span class="text-zinc-500">Contact:</span><a href="mailto:yanuar.b@gmail.com" class="text-amber-400 text-[11px] font-bold hover:underline">yanuar.b@gmail.com</a></div>
-      </div>
-      <button onclick="closeDevModal()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-black text-xs py-2.5 rounded-xl cursor-pointer transition uppercase tracking-wider shadow-md">Tutup</button>
-    </div>
-  </div>
-
-  <footer onclick="openDevModal()" class="text-center p-3.5 bg-zinc-200 hover:bg-zinc-300 text-zinc-600 text-[10px] font-black tracking-widest uppercase border-t border-zinc-300 cursor-pointer shadow-inner transition duration-200">
+  <footer class="text-center p-3.5 bg-zinc-200 text-zinc-600 text-[10px] font-black tracking-widest uppercase border-t border-zinc-300">
     Aplikasi SIVERA V 1.3 <i class="fa-solid fa-circle-info text-blue-900 ml-0.5"></i>
   </footer>
 
@@ -178,7 +130,6 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
     var num1, num2, correctAnswer;
 
-    // Fungsi Captcha Baru (Variatif & Tidak Selalu Berjumlah 10)
     function generateCaptcha() {
       num1 = Math.floor(Math.random() * 10) + 6; 
       num2 = Math.floor(Math.random() * 5) + 1;  
@@ -209,15 +160,12 @@
       box.classList.remove('hidden');
     }
     function closeAlert() { document.getElementById('customAlert').classList.add('hidden'); }
-    function openDevModal() { document.getElementById('devModal').classList.remove('hidden'); }
-    function closeDevModal() { document.getElementById('devModal').classList.add('hidden'); }
 
     function submitForm(e) {
       e.preventDefault();
       var userAnswer = parseInt(document.getElementById('captchaAnswer').value);
-      
       if (userAnswer !== correctAnswer) {
-        showAlert("Verifikasi Gagal!", "Hasil perhitungan matematika salah. Silakan coba lagi.", "error");
+        showAlert("Verifikasi Gagal!", "Hasil perhitungan matematika salah.", "error");
         generateCaptcha();
         return;
       }
@@ -229,18 +177,14 @@
       var payload = {
         nama: document.getElementById('nama').value,
         nisn: document.getElementById('nisn').value,
-        jk: jkVal ? jkVal.value : '-',
-        ip: "192.168.10.21", provider: "Telkomsel Flash", lokasi: "Moga, Pemalang"
+        jk: jkVal ? jkVal.value : '-'
       };
 
       fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "daftar", data: payload }) })
       .then(res => res.json())
       .then(res => {
         if(res.success) {
-          // Format No Urut agar selalu 3 digit (Contoh: 001, 012, 115)
-          let paddedNo = String(res.noAntrean).padStart(3, '0');
-          
-          document.getElementById('t_no').innerText = paddedNo;
+          document.getElementById('t_no').innerText = String(res.noAntrean).padStart(3, '0');
           document.getElementById('t_nama').innerText = res.nama;
           document.getElementById('t_nisn').innerText = res.nisn;
           document.getElementById('t_jk').innerText = res.jk === 'L' ? 'Laki-laki' : 'Perempuan';
@@ -253,13 +197,11 @@
         } else {
           showAlert("Gagal!", res.error, "error");
           document.getElementById('btnSubmit').disabled = false;
-          document.getElementById('btnSubmit').innerText = "Ambil Nomor Antrean";
           generateCaptcha();
         }
       }).catch(() => {
         showAlert("Error!", "Koneksi terputus.", "error");
         document.getElementById('btnSubmit').disabled = false;
-        generateCaptcha();
       });
     }
 
