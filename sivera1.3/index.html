@@ -1,58 +1,42 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <base target="_top">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SPMB SMP Negeri 1 Moga</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  
   <style>
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulseSoft {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.02); }
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
-    .animate-pulse-soft { animation: pulseSoft 3s ease-in-out infinite; }
   </style>
 </head>
-<body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col justify-between selection:bg-amber-400 selection:text-blue-900">
+<body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col justify-between select-none">
 
-  <nav class="bg-blue-900 text-white p-4 shadow-md border-b-4 border-amber-400 sticky top-0 z-40">
-    <div class="container mx-auto flex justify-between items-center px-2">
-      <div class="flex items-center gap-2.5">
-        <div class="bg-white p-1.5 rounded-full shadow-inner">
-          <i class="fa-solid : school text-blue-900 text-lg"></i>
-        </div>
-        <div>
-          <h1 class="text-sm font-black tracking-wide uppercase leading-tight">SMP Negeri 1 Moga</h1>
-          <p class="text-[10px] text-amber-300 font-bold tracking-widest uppercase">Loket Antrean Online</p>
-        </div>
+  <header class="bg-white border-b-4 border-amber-400 p-4 shadow-sm">
+    <div class="container mx-auto max-w-md flex items-center gap-3.5 px-1">
+      <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo SMPN 1 Moga" class="w-14 h-14 object-contain shrink-0">
+      <div class="leading-tight">
+        <h1 class="text-sm font-black text-blue-900 tracking-wide uppercase">SMP Negeri 1 Moga</h1>
+        <p class="text-[10px] text-zinc-500 font-bold">Jl. Simpang Tiga Banyumudal, Kec. Moga</p>
+        <a href="https://smpn1moga.sch.id" target="_blank" class="text-[10px] text-amber-500 font-black hover:underline">smpn1moga.sch.id</a>
       </div>
-      <span class="text-[10px] bg-amber-400 text-blue-950 px-2.5 py-1 rounded-full font-black uppercase tracking-wider animate-pulse-soft">SPMB 2026</span>
     </div>
-  </nav>
+  </header>
 
   <main class="container mx-auto p-4 flex-grow max-w-md flex flex-col justify-center">
     
-    <div id="broadcastBox" class="hidden bg-amber-50 border-2 border-amber-400 p-4 rounded-xl mb-5 shadow-sm flex items-start gap-3 animate-fade-in">
-      <div class="bg-amber-400 p-1.5 rounded-lg text-blue-950 shadow-sm mt-0.5">
-        <i class="fa-solid : bullhorn text-xs"></i>
-      </div>
+    <div id="broadcastBox" class="hidden bg-amber-50 border-2 border-amber-400 p-4 rounded-xl mb-4 shadow-sm flex items-start gap-3 animate-fade-in">
+      <div class="bg-amber-400 p-1.5 rounded-lg text-blue-950 shadow-sm mt-0.5"><i class="fa-solid : bullhorn text-xs"></i></div>
       <div>
         <h4 class="font-black text-xs text-blue-950 uppercase tracking-wider">Pengumuman:</h4>
         <p id="broadcastText" class="text-xs text-zinc-700 mt-0.5 leading-relaxed"></p>
       </div>
     </div>
 
-    <div id="customAlert" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-all duration-300">
-      <div class="bg-white rounded-2xl max-w-xs w-full p-5 text-center shadow-2xl border-t-8 border-blue-900 transform scale-95 transition-transform duration-300">
+    <div id="customAlert" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl max-w-xs w-full p-5 text-center shadow-2xl border-t-8 border-blue-900 transform scale-95 transition-all">
         <div id="alertIcon" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center text-xl mb-3 shadow-md"></div>
         <h3 id="alertTitle" class="text-sm font-black text-blue-900 uppercase"></h3>
         <p id="alertMessage" class="text-xs text-zinc-600 mt-2 mb-4 leading-relaxed"></p>
@@ -62,7 +46,7 @@
 
     <div id="formSection" class="bg-white rounded-2xl p-5 shadow-xl border border-zinc-200 animate-fade-in">
       <div class="text-center mb-5">
-        <h2 class="text-base font-black text-blue-900 uppercase tracking-wide">Isi Formulir Verifikasi</h2>
+        <h2 class="text-base font-black text-blue-900 uppercase tracking-wide">Formulir Loket Antrean</h2>
         <div class="h-1 w-12 bg-amber-400 mx-auto mt-1.5 rounded-full"></div>
       </div>
       
@@ -77,14 +61,22 @@
           <input type="number" id="nisn" required placeholder="Contoh: 0123456789" class="w-full bg-zinc-50 border border-zinc-300 p-3 text-sm rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white transition-all font-mono font-semibold">
         </div>
 
+        <div class="bg-zinc-50 p-3.5 rounded-xl border border-zinc-200">
+          <label class="block text-xs font-bold text-blue-900 mb-1.5 uppercase tracking-wider"><i class="fa-solid : shield-halved text-amber-500 mr-1"></i> Verifikasi Keamanan</label>
+          <div class="flex items-center gap-3">
+            <div class="bg-blue-900 text-amber-400 px-3 py-2 rounded-xl text-sm font-black tracking-widest font-mono shadow-inner shrink-0" id="captchaQuestion">0 + 0 =</div>
+            <input type="number" id="captchaAnswer" required placeholder="Hasil?" class="w-full bg-white border border-zinc-300 p-2.5 text-sm rounded-xl focus:outline-none focus:border-blue-900 font-mono font-bold text-center">
+          </div>
+        </div>
+
         <div>
           <label class="block text-xs font-bold text-zinc-600 mb-2 uppercase tracking-wider">Jenis Kelamin</label>
           <div class="grid grid-cols-2 gap-3">
             <label class="flex items-center justify-center gap-2 border p-3 rounded-xl bg-zinc-50 hover:bg-zinc-100 cursor-pointer transition font-medium text-sm border-zinc-200">
-              <input type="radio" name="jk" value="L" class="w-4 h-4 text-blue-900 focus:ring-blue-900"> Laki-laki
+              <input type="radio" name="jk" value="L" required class="w-4 h-4 text-blue-900 focus:ring-blue-900"> Laki-laki
             </label>
             <label class="flex items-center justify-center gap-2 border p-3 rounded-xl bg-zinc-50 hover:bg-zinc-100 cursor-pointer transition font-medium text-sm border-zinc-200">
-              <input type="radio" name="jk" value="P" class="w-4 h-4 text-blue-900 focus:ring-blue-900"> Perempuan
+              <input type="radio" name="jk" value="P" required class="w-4 h-4 text-blue-900 focus:ring-blue-900"> Perempuan
             </label>
           </div>
         </div>
@@ -124,8 +116,6 @@
           <div class="flex items-center gap-1.5 text-blue-900 font-bold uppercase text-[10px] tracking-wider pt-1"><i class="fa-solid : clock text-amber-500"></i> Jam Operasional:</div>
           <div id="t_jam" class="font-bold text-zinc-700 pl-4.5"></div>
         </div>
-        
-        <p class="text-[9px] text-center text-zinc-400 mt-4 italic font-medium">*Tunjukkan screenshot halaman ini kepada petugas loket.</p>
       </div>
 
       <div class="flex gap-3">
@@ -137,17 +127,40 @@
         </button>
       </div>
     </div>
-
   </main>
 
-  <footer class="text-center p-3 bg-zinc-200 text-zinc-500 text-[10px] font-bold tracking-wider uppercase border-t border-zinc-300">
-    &copy; 2026 SMP Negeri 1 Moga
+  <div id="devModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-zinc-900 text-zinc-100 rounded-2xl max-w-xs w-full p-5 border border-zinc-800 shadow-2xl relative animate-fade-in text-center">
+      <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Logo Dev" class="w-20 h-20 rounded-full mx-auto border-2 border-amber-400 object-cover shadow-md mb-3">
+      <h3 class="text-sm font-black text-amber-400 uppercase tracking-widest">SIVERA</h3>
+      <p class="text-[10px] text-zinc-400 font-medium mb-4">Sistem Verifikasi Antrean</p>
+      <div class="text-left space-y-2 text-xs bg-zinc-950 p-3 rounded-xl border border-zinc-800 mb-4 font-medium">
+        <div class="flex justify-between"><span class="text-zinc-500">Developer:</span><span class="font-bold text-white">MB</span></div>
+        <div class="flex justify-between"><span class="text-zinc-500">Build Version:</span><span class="font-mono text-zinc-300">1.3 (13 Juni 2026)</span></div>
+        <div class="flex justify-between items-center"><span class="text-zinc-500">Contact:</span><a href="mailto:yanuar.b@gmail.com" class="text-amber-400 text-[11px] font-bold hover:underline">yanuar.b@gmail.com</a></div>
+      </div>
+      <button onclick="closeDevModal()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-black text-xs py-2.5 rounded-xl cursor-pointer transition uppercase tracking-wider shadow-md">Tutup</button>
+    </div>
+  </div>
+
+  <footer onclick="openDevModal()" class="text-center p-3.5 bg-zinc-200 hover:bg-zinc-300 text-zinc-600 text-[10px] font-black tracking-widest uppercase border-t border-zinc-300 cursor-pointer shadow-inner transition duration-200">
+    Aplikasi SIVERA V 1.3 <i class="fa-solid : circle-info text-blue-900 ml-0.5"></i>
   </footer>
 
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
+    var num1, num2, correctAnswer;
+
+    function generateCaptcha() {
+      num1 = Math.floor(Math.random() * 9) + 1;
+      num2 = Math.floor(Math.random() * 9) + 1;
+      correctAnswer = num1 + num2;
+      document.getElementById('captchaQuestion').innerText = `${num1} + ${num2} =`;
+      document.getElementById('captchaAnswer').value = "";
+    }
 
     window.onload = function() {
+      generateCaptcha();
       fetch(`${API_URL}?action=getBroadcast`)
         .then(res => res.json())
         .then(data => {
@@ -155,7 +168,7 @@
             document.getElementById('broadcastText').innerText = data.message;
             document.getElementById('broadcastBox').classList.remove('hidden');
           }
-        }).catch(err => console.log("Gagal memuat broadcast:", err));
+        }).catch(err => console.log(err));
     };
 
     function showAlert(title, msg, type) {
@@ -163,23 +176,24 @@
       const icon = document.getElementById('alertIcon');
       document.getElementById('alertTitle').innerText = title;
       document.getElementById('alertMessage').innerText = msg;
-      
-      if(type === 'success') {
-        icon.className = "w-12 h-12 rounded-full mx-auto flex items-center justify-center text-xl mb-3 shadow-md bg-emerald-100 text-emerald-600";
-        icon.innerHTML = '<i class="fa-solid : circle-check"></i>';
-      } else {
-        icon.className = "w-12 h-12 rounded-full mx-auto flex items-center justify-center text-xl mb-3 shadow-md bg-red-100 text-red-600";
-        icon.innerHTML = '<i class="fa-solid : circle-xmark"></i>';
-      }
+      icon.className = "w-12 h-12 rounded-full mx-auto flex items-center justify-center text-xl mb-3 shadow-md " + (type === 'success' ? "bg-emerald-100 text-emerald-600" : "bg-red-100 text-red-600");
+      icon.innerHTML = type === 'success' ? '<i class="fa-solid : circle-check"></i>' : '<i class="fa-solid : circle-xmark"></i>';
       box.classList.remove('hidden');
     }
-
-    function closeAlert() {
-      document.getElementById('customAlert').classList.add('hidden');
-    }
+    function closeAlert() { document.getElementById('customAlert').classList.add('hidden'); }
+    function openDevModal() { document.getElementById('devModal').classList.remove('hidden'); }
+    function closeDevModal() { document.getElementById('devModal').classList.add('hidden'); }
 
     function submitForm(e) {
       e.preventDefault();
+      var userAnswer = parseInt(document.getElementById('captchaAnswer').value);
+      
+      if (userAnswer !== correctAnswer) {
+        showAlert("Verifikasi Gagal!", "Hasil perhitungan matematika salah. Silakan coba lagi.", "error");
+        generateCaptcha();
+        return;
+      }
+
       document.getElementById('btnSubmit').disabled = true;
       document.getElementById('btnSubmit').innerText = "Memproses Antrean...";
 
@@ -188,58 +202,51 @@
         nama: document.getElementById('nama').value,
         nisn: document.getElementById('nisn').value,
         jk: jkVal ? jkVal.value : '-',
-        ip: "192.168.10.21", 
-        provider: "Telkomsel Flash",
-        lokasi: "Moga, Pemalang"
+        ip: "192.168.10.21", provider: "Telkomsel Flash", lokasi: "Moga, Pemalang"
       };
 
-      fetch(API_URL, {
-        method: "POST",
-        body: JSON.stringify({ action: "daftar", data: payload })
-      })
+      fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "daftar", data: payload }) })
       .then(res => res.json())
       .then(res => {
         if(res.success) {
           document.getElementById('t_no').innerText = res.noAntrean;
           document.getElementById('t_nama').innerText = res.nama;
           document.getElementById('t_nisn').innerText = res.nisn;
-          document.getElementById('t_jk').innerText = res.jk === 'L' ? 'Laki-laki' : (res.jk === 'P' ? 'Perempuan' : '-');
+          document.getElementById('t_jk').innerText = res.jk === 'L' ? 'Laki-laki' : 'Perempuan';
           document.getElementById('t_tgl').innerText = res.tanggalVerif;
           document.getElementById('t_loket').innerText = res.loket.toUpperCase();
           document.getElementById('t_jam').innerText = res.jam;
-
           showAlert("Sukses!", "Nomor antrean berhasil diterbitkan.", "success");
           document.getElementById('formSection').classList.add('hidden');
           document.getElementById('ticketSection').classList.remove('hidden');
         } else {
-          showAlert("Gagal!", "Sistem sibuk: " + res.error, "error");
+          showAlert("Gagal!", res.error, "error");
           document.getElementById('btnSubmit').disabled = false;
           document.getElementById('btnSubmit').innerText = "Ambil Nomor Antrean";
+          generateCaptcha();
         }
-      })
-      .catch(err => {
+      }).catch(() => {
         showAlert("Error!", "Koneksi terputus.", "error");
         document.getElementById('btnSubmit').disabled = false;
-        document.getElementById('btnSubmit').innerText = "Ambil Nomor Antrean";
+        generateCaptcha();
       });
     }
 
     function takeScreenshot() {
-      const element = document.getElementById('ticketCard');
-      html2canvas(element, { scale: 3 }).then(canvas => {
+      html2canvas(document.getElementById('ticketCard'), { scale: 3 }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'Tiket_SPMB_' + document.getElementById('t_nisn').innerText + '.png';
         link.href = canvas.toDataURL();
         link.click();
       });
     }
-
     function keluarKeIndex() {
       document.getElementById('formDaftar').reset();
       document.getElementById('ticketSection').classList.add('hidden');
       document.getElementById('formSection').classList.remove('hidden');
       document.getElementById('btnSubmit').disabled = false;
       document.getElementById('btnSubmit').innerHTML = '<i class="fa-solid : ticket text-sm"></i> Ambil Nomor Antrean';
+      generateCaptcha();
     }
   </script>
 </body>
