@@ -97,6 +97,13 @@
 <script>
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
 
+  // Deteksi status login saat halaman di-load
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('sivera_logged_in') === 'true') {
+      tampilkanHalamanAdmin();
+    }
+  });
+
   function prosesLogin() {
     const pin = document.getElementById('adminPin').value;
     Swal.fire({ title: 'Memvalidasi...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
@@ -106,7 +113,6 @@
       Swal.close();
       if(res.success) {
         localStorage.setItem('sivera_logged_in', 'true');
-        localStorage.setItem('sivera_user_role', 'admin');
         tampilkanHalamanAdmin();
       } else { Swal.fire('Akses Ditolak', res.error, 'error'); }
     });
@@ -148,17 +154,15 @@
     fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", username: u, pin: p }) }).then(() => { Swal.fire('Terhapus', '', 'info'); loadAllUsers(); });
   }
 
-  // Update Waktu Saja
   document.getElementById('configForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const payload = { action: "updateAdminConfig", broadcast: document.getElementById('broadcast').value, tanggalMulai: document.getElementById('tanggalMulai').value, jamOperasional: document.getElementById('jamOperasional').value };
-    fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) }).then(() => Swal.fire('Berhasil', 'Pengaturan waktu tersimpan', 'success'));
+    const payload = { action: "updateAdminConfig", tanggalMulai: document.getElementById('tanggalMulai').value, jamOperasional: document.getElementById('jamOperasional').value };
+    fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) }).then(() => Swal.fire('Berhasil', 'Konfigurasi waktu tersimpan', 'success'));
   });
 
-  // Update Broadcast Saja
   document.getElementById('broadcastForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const payload = { action: "updateAdminConfig", broadcast: document.getElementById('broadcast').value, tanggalMulai: document.getElementById('tanggalMulai').value, jamOperasional: document.getElementById('jamOperasional').value };
+    const payload = { action: "updateAdminConfig", broadcast: document.getElementById('broadcast').value };
     fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) }).then(() => Swal.fire('Berhasil', 'Pengumuman diperbarui', 'success'));
   });
 
