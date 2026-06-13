@@ -5,148 +5,116 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel Pengendali Utama SIVERA</title>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
-    body { background: #f0f2f5; padding: 20px; display: flex; flex-direction: column; min-height: 100vh; }
+    body { background: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; color: #334155; }
     
-    /* Layout Login Wrapper */
-    .login-wrapper { max-width: 450px; width: 100%; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; }
-    .login-header { background: #1e3a8a; color: white; padding: 25px 20px; text-align: center; border-bottom: 4px solid #d4af37; }
-    .login-header h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
-    .login-header p { font-size: 12px; color: #f3f4f6; margin-top: 4px; }
-    .login-box { padding: 30px; text-align: center; }
-    .login-box h3 { font-size: 15px; color: #1e3a8a; margin-bottom: 15px; text-transform: uppercase; font-weight: 700; }
-    .login-footer { background: #f8fafc; text-align: center; padding: 15px; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0; font-weight: 600; }
+    /* Login Styling */
+    .login-wrapper { max-width: 400px; width: 90%; margin: auto; background: white; border-radius: 24px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #e2e8f0; }
+    .login-header { background: #1e3a8a; color: white; padding: 30px; text-align: center; border-bottom: 6px solid #d4af37; }
+    .login-box { padding: 30px; }
+    input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; margin: 15px 0; text-align: center; font-weight: 600; }
+    button { background: #1e3a8a; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; }
+    button:hover { background: #152a66; }
+
+    /* Dashboard Styling */
+    .container { max-width: 900px; margin: 20px auto; background: white; padding: 30px; border-radius: 24px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); width: 90%; }
+    .header-panel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #f1f5f9; }
+    .section-box { border: 1px solid #e2e8f0; padding: 25px; border-radius: 16px; margin-bottom: 25px; background: #f8fafc; }
+    h2 { color: #1e3a8a; font-weight: 900; }
+    h3 { font-size: 14px; color: #1e3a8a; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+    label { font-size: 12px; font-weight: 700; color: #64748b; margin-bottom: 5px; display: block; }
+    .btn-logout { background: #dc2626; max-width: 100px; font-size: 12px; }
     
-    /* Layout Utama Setelah Login */
-    .container { max-width: 850px; margin: 20px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; }
-    .header-panel { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1e3a8a; padding-bottom: 10px; margin-bottom: 20px; }
-    h2 { color: #1e3a8a; } 
-    .section-box { border: 1px solid #e5e7eb; padding: 20px; border-radius: 8px; margin-bottom: 20px; background: #fbfbfb;}
-    h3 { font-size:14px; color:#1e3a8a; margin-bottom:15px; text-transform:uppercase; font-weight:700;}
-    .form-group { margin-bottom: 15px; } 
-    label { display: block; font-weight: 600; margin-bottom: 6px; color: #333; font-size:13px; }
-    input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
-    button { background: #1e3a8a; color: white; border: none; padding: 10px 20px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; width: 100%; }
-    button:hover { background: #152a66; } 
-    .btn-logout { background: #dc2626; max-width: 80px; }
-    .grid-2 { display:grid; grid-template-cols: 1fr 1fr; gap:15px; }
-    table { width:100%; border-collapse:collapse; margin-top:10px; font-size:13px;} th, td { padding:10px; border:1px solid #eee; text-align:left;}
-    th { background:#f4f4f4; color:#1e3a8a;} 
-    .btn-del { background:#dc2626; color: white; padding:4px 8px; font-size:11px; width:auto; border-radius: 4px; border: none; cursor: pointer; }
-    .btn-del:hover { background: #b91c1c; }
+    /* Footer Styling */
+    footer { text-align: center; padding: 20px; font-size: 0.75rem; color: #94a3b8; font-weight: 600; margin-top: auto; border-top: 1px solid #e2e8f0; background: #f8fafc; }
+    
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+    th { text-align: left; padding: 12px; background: #e2e8f0; color: #1e3a8a; }
+    td { padding: 12px; border-bottom: 1px solid #e2e8f0; }
+    .btn-del { background: #ef4444; color: white; padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
   </style>
 </head>
 <body>
 
 <div id="loginWrapper" class="login-wrapper">
   <div class="login-header">
-    <h1>SMP NEGERI 1 MOGA</h1>
-    <p>Sistem Informasi Verifikasi Antrean Berkas Fisik</p>
+    <h1 style="font-size: 1.2rem;">SMP NEGERI 1 MOGA</h1>
+    <p style="font-size: 0.7rem; color: #d4af37; margin-top:5px;">PANEL ADMIN SIVERA</p>
   </div>
   <div class="login-box">
-    <h3>⚙️ LOGIN ADMIN UTAMA</h3>
-    <input type="password" id="adminPin" placeholder="Masukkan PIN Kontrol Utama" maxlength="6" style="margin-bottom:15px; text-align:center;">
-    <button onclick="prosesLogin()">Masuk Aplikasi</button>
-  </div>
-  <div class="login-footer">
-    SIVERA v2.0 &copy; 2026 - SMP Negeri 1 Moga
+    <input type="password" id="adminPin" placeholder="Masukkan PIN Utama" maxlength="6">
+    <button onclick="prosesLogin()">LOGIN APLIKASI</button>
   </div>
 </div>
 
 <div id="mainSection" class="container" style="display: none;">
   <div class="header-panel">
-    <h2>⚙️ Control Panel SIVERA</h2>
-    <button class="btn-logout" onclick="prosesLogout()">Keluar</button>
+    <h2>Control Panel</h2>
+    <button class="btn-logout" onclick="prosesLogout()">KELUAR</button>
   </div>
   
   <div class="section-box">
-    <h3>📌 Sinkronisasi & Info Pengumuman</h3>
+    <h3>📌 Sinkronisasi & Info</h3>
     <form id="adminForm">
-      <div class="grid-2">
-        <div class="form-group"><label>Tanggal Mulai Berkas:</label><input type="date" id="tanggalMulai" required></div>
-        <div class="form-group"><label>Jam Kerja Operasional:</label><input type="text" id="jamOperasional" required></div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div><label>TANGGAL MULAI:</label><input type="date" id="tanggalMulai" required style="margin: 5px 0 15px 0;"></div>
+        <div><label>JAM OPERASIONAL:</label><input type="text" id="jamOperasional" required style="margin: 5px 0 15px 0;"></div>
       </div>
-      <div class="form-group"><label>Isi Info Pengumuman:</label><textarea id="broadcast" style="height:60px;" required></textarea></div>
-      <button type="submit">Update Info Sistem</button>
+      <label>ISI PENGUMUMAN:</label>
+      <textarea id="broadcast" style="width:100%; padding:10px; border-radius:12px; border:2px solid #e2e8f0; margin-bottom:15px; font-size:14px;"></textarea>
+      <button type="submit">UPDATE KONFIGURASI</button>
     </form>
   </div>
 
   <div class="section-box">
-    <h3>👥 Pengendali Hak Akses Petugas (Verifikator)</h3>
-    <form id="userForm" onsubmit="tambahUser(event)" style="margin-bottom:20px; background:#fff; padding:15px; border:1px solid #eee; border-radius:6px;">
-      <div class="grid-2">
-        <div class="form-group"><label>Nama Petugas / Label:</label><input type="text" id="newUsername" placeholder="Contoh: Verifikator 1" required></div>
-        <div class="form-group"><label>PIN Masuk Akses:</label><input type="text" id="newPin" placeholder="Angka Bebas" required></div>
-      </div>
-      <div class="form-group">
-        <label>Role / Otoritas Halaman:</label>
-        <select id="newRole">
-          <option value="verifier">Verifikator (Meja Berkas Fisik)</option>
-          <option value="dashboard">Dashboard (Pemantau Grafik Monitor)</option>
+    <h3>👥 Manajemen Verifikator</h3>
+    <form id="userForm" onsubmit="tambahUser(event)">
+      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom:15px;">
+        <input type="text" id="newUsername" placeholder="Nama Petugas" required style="margin:0;">
+        <input type="text" id="newPin" placeholder="PIN" required style="margin:0;">
+        <select id="newRole" style="padding:10px; border-radius:12px; border:2px solid #e2e8f0;">
+          <option value="verifier">Verifikator</option>
+          <option value="dashboard">Dashboard</option>
         </select>
       </div>
-      <button type="submit" style="background:#10b981;">+ Daftarkan Akun Baru</button>
+      <button type="submit" style="background:#059669;">TAMBAH USER BARU</button>
     </form>
-
-    <h4 style="color: #1e3a8a; margin-bottom: 5px;">Daftar Petugas Aktif Saat Ini</h4>
     <table>
-      <thead><tr><th>Nama Akun</th><th>PIN</th><th>Hak Akses</th><th>Tindakan</th></tr></thead>
+      <thead><tr><th>Nama</th><th>PIN</th><th>Akses</th><th>Aksi</th></tr></thead>
       <tbody id="usersTableBody"></tbody>
     </table>
   </div>
 </div>
 
+<footer>APLIKASI SIVERA V 1.3 - © 2026 Dev by MB</footer>
+
 <script>
-  // Variabel penampung URL Aplikasi Web Google Apps Script Anda asli berakhiran /exec
-  const BASE_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec"; // <- Tempel URL Web App Lengkap Anda di Sini jika pengetesan lokal dilakukan
-
-  // Menggunakan ID SPREADSHEET internal yang tertera pada prompt lama untuk fallback cadangan otomatis
-  const SPREAD_ID = "1PT_T80rf7d2oCqzeRI72gjCE6tGTfd-_rOcJxQnMrm0"; 
-  const WEB_APP_URL = BASE_URL.includes("macros/s/") ? BASE_URL : `https://script.google.com/macros/s/${SPREAD_ID}/exec`;
-
-  window.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('sivera_logged_in') === 'true' && localStorage.getItem('sivera_user_role') === 'admin') {
-      tampilkanHalamanAdmin();
-    }
-  });
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
 
   function prosesLogin() {
-    const pinVal = document.getElementById('adminPin').value;
-    
-    Swal.fire({ title: 'Memvalidasi PIN...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-
-    fetch(WEB_APP_URL, {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify({ action: "loginValidation", pin: pinVal, expectedRole: "admin" })
-    })
+    const pin = document.getElementById('adminPin').value;
+    Swal.fire({ title: 'Memvalidasi...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+    fetch(WEB_APP_URL, { method: "POST", mode: "cors", body: JSON.stringify({ action: "loginValidation", pin: pin, expectedRole: "admin" }) })
     .then(res => res.json())
     .then(res => {
       Swal.close();
-      if(res.success){
+      if(res.success) {
         localStorage.setItem('sivera_logged_in', 'true');
         localStorage.setItem('sivera_user_role', 'admin');
         tampilkanHalamanAdmin();
-      } else {
-        Swal.fire('Akses Ditolak', res.error, 'error');
-      }
-    })
-    .catch(err => {
-      Swal.close();
-      Swal.fire('Sistem Error', 'Gagal terhubung dengan server GAS. Pastikan URL Web App valid dan statusnya ter-deploy untuk Anyone.', 'error');
+      } else { Swal.fire('Akses Ditolak', res.error, 'error'); }
     });
   }
 
   function tampilkanHalamanAdmin() {
     document.getElementById('loginWrapper').style.display = 'none';
     document.getElementById('mainSection').style.display = 'block';
-    loadConfigData();
-    loadAllUsers();
+    loadData();
   }
 
-  function loadConfigData() {
+  function loadData() {
     fetch(`${WEB_APP_URL}?action=getAdminConfig`)
       .then(res => res.json())
       .then(data => {
@@ -154,6 +122,7 @@
         document.getElementById('jamOperasional').value = data.jamOperasional || "";
         if(data.tanggalMulai) document.getElementById('tanggalMulai').value = data.tanggalMulai.split('T')[0];
       });
+    loadAllUsers();
   }
 
   function loadAllUsers() {
@@ -161,89 +130,24 @@
       .then(res => res.json())
       .then(data => {
         const tbody = document.getElementById('usersTableBody');
-        tbody.innerHTML = "";
-        data.forEach(u => {
-          tbody.innerHTML += `<tr>
-            <td style="font-weight:600;">${u.username}</td>
-            <td style="font-family:mono;">${u.pin}</td>
-            <td><span style="background:#e5e7eb; padding:2px 6px; border-radius:4px; font-size:11px;">${u.role.toUpperCase()}</span></td>
-            <td><button class="btn-del" onclick="hapusUser('${u.username}','${u.pin}')">Hapus</button></td>
-          </tr>`;
-        });
+        tbody.innerHTML = data.map(u => `<tr><td>${u.username}</td><td>${u.pin}</td><td>${u.role}</td><td><button class="btn-del" onclick="hapusUser('${u.username}','${u.pin}')">Hapus</button></td></tr>`).join('');
       });
   }
 
   function tambahUser(e) {
     e.preventDefault();
-    const payload = {
-      action: "addUser",
-      username: document.getElementById('newUsername').value,
-      pin: document.getElementById('newPin').value,
-      role: document.getElementById('newRole').value
-    };
-
-    Swal.fire({ title: 'Menyimpan Akun...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-
-    fetch(WEB_APP_URL, { method: "POST", mode: "cors", body: JSON.stringify(payload) })
-    .then(res => res.json())
-    .then(res => {
-      Swal.close();
-      if(res.success) {
-        Swal.fire('Berhasil', res.message, 'success');
-        document.getElementById('userForm').reset();
-        loadAllUsers();
-      } else { Swal.fire('Gagal', res.error, 'error'); }
-    });
+    const payload = { action: "addUser", username: document.getElementById('newUsername').value, pin: document.getElementById('newPin').value, role: document.getElementById('newRole').value };
+    fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) }).then(() => { Swal.fire('Berhasil', 'User ditambah', 'success'); loadAllUsers(); });
   }
 
-  function hapusUser(username, pin) {
-    Swal.fire({
-      title: 'Hapus Akun Ini?',
-      text: `Akun ${username} tidak akan bisa digunakan login lagi.`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#dc2626',
-      confirmButtonText: 'Ya, Hapus!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({ title: 'Menghapus...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-        
-        fetch(WEB_APP_URL, { 
-          method: "POST", 
-          mode: "cors",
-          body: JSON.stringify({ action: "deleteUser", username: username, pin: pin }) 
-        })
-        .then(res => res.json())
-        .then(res => {
-          Swal.close();
-          if(res.success) { 
-            Swal.fire('Terhapus!', res.message, 'success'); 
-            loadAllUsers(); 
-          } else { 
-            Swal.fire('Gagal', res.error, 'error'); 
-          }
-        });
-      }
-    });
+  function hapusUser(u, p) {
+    fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", username: u, pin: p }) }).then(() => { Swal.fire('Terhapus', '', 'info'); loadAllUsers(); });
   }
 
   document.getElementById('adminForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const payload = {
-      action: "updateAdminConfig",
-      broadcast: document.getElementById('broadcast').value,
-      tanggalMulai: document.getElementById('tanggalMulai').value,
-      jamOperasional: document.getElementById('jamOperasional').value
-    };
-
-    Swal.fire({ title: 'Memperbarui Konfigurasi...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-
-    fetch(WEB_APP_URL, { method: "POST", mode: "cors", body: JSON.stringify(payload) })
-    .then(res => res.json())
-    .then(res => { 
-      Swal.close();
-      if(res.success) Swal.fire('Berhasil!', res.message, 'success'); 
-    });
+    const payload = { action: "updateAdminConfig", broadcast: document.getElementById('broadcast').value, tanggalMulai: document.getElementById('tanggalMulai').value, jamOperasional: document.getElementById('jamOperasional').value };
+    fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) }).then(() => Swal.fire('Berhasil', 'Data diperbarui', 'success'));
   });
 
   function prosesLogout() { localStorage.clear(); location.reload(); }
