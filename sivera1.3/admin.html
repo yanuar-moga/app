@@ -3,133 +3,191 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Admin SIVERA v1.3</title>
+  <title>Panel Pengendali Utama SIVERA</title>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
     body { background: #f0f2f5; padding: 20px; }
-    .container { max-width: 700px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .container { max-width: 850px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
     .header-panel { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1e3a8a; padding-bottom: 10px; margin-bottom: 20px; }
-    h2 { color: #1e3a8a; }
-    .form-group { margin-bottom: 20px; }
-    label { display: block; font-weight: 600; margin-bottom: 8px; color: #333; }
-    input[type="text"], input[type="date"], input[type="password"], textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
-    textarea { height: 100px; resize: vertical; }
-    button { background: #1e3a8a; color: white; border: none; padding: 12px 25px; font-size: 16px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: 0.3s; width: 100%; }
-    button:hover { background: #152a66; }
+    h2 { color: #1e3a8a; } .section-box { border: 1px solid #e5e7eb; padding: 20px; border-radius: 8px; margin-bottom: 20px; background: #fbfbfb;}
+    h3 { font-size:15px; color:#1e3a8a; margin-bottom:15px; text-transform:uppercase; font-weight:700;}
+    .form-group { margin-bottom: 15px; } label { display: block; font-weight: 600; margin-bottom: 6px; color: #333; font-size:13px; }
+    input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+    button { background: #1e3a8a; color: white; border: none; padding: 10px 20px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; width: 100%; }
+    button:hover { background: #152a66; } .btn-logout { background: #dc2626; max-width: 80px; }
     .login-box { max-width: 400px; margin: 100px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
-    .login-box h3 { margin-bottom: 20px; color: #1e3a8a;}
-    .loading-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index:9999; justify-content:center; align-items:center; flex-direction:column; }
-    .spinner { border: 6px solid #f3f3f3; border-top: 6px solid #1e3a8a; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .btn-logout { background: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;}
+    .grid-2 { display:grid; grid-template-cols: 1fr 1fr; gap:15px; }
+    table { width:100%; border-collapse:collapse; margin-top:10px; font-size:13px;} th, td { padding:10px; border:1px solid #eee; text-align:left;}
+    th { background:#f4f4f4; color:#1e3a8a;} .btn-del { background:#dc2626; padding:4px 8px; font-size:11px; width:auto;}
   </style>
 </head>
 <body>
 
-<div class="loading-overlay" id="loading">
-  <div class="spinner"></div>
-  <p style="margin-top: 15px; font-weight: 600; color: #1e3a8a;">Memproses ke Server Google...</p>
-</div>
-
 <div id="loginSection" class="login-box">
-  <h3>⚙️ Login Admin SIVERA</h3>
-  <input type="password" id="adminPin" placeholder="Masukkan PIN Konfigurasi Admin" maxlength="6">
-  <button onclick="prosesLogin()" style="background:#1e3a8a; color:white; border:none; padding:12px; width:100%; border-radius:6px; font-weight:600; cursor:pointer;">Masuk</button>
+  <h3>⚙️ Login Admin Utama</h3>
+  <input type="password" id="adminPin" placeholder="Masukkan PIN Kontrol Utama" maxlength="6" style="margin-bottom:15px; text-align:center;">
+  <button onclick="prosesLogin()">Masuk Aplikasi</button>
 </div>
 
 <div id="mainSection" class="container" style="display: none;">
   <div class="header-panel">
-    <h2>⚙️ Pengaturan Utama Sistem</h2>
+    <h2>⚙️ Control Panel SIVERA</h2>
     <button class="btn-logout" onclick="prosesLogout()">Keluar</button>
   </div>
   
-  <form id="adminForm">
-    <div class="form-group">
-      <label for="tanggalMulai">Tanggal Mulai Verifikasi:</label>
-      <input type="date" id="tanggalMulai" required>
-    </div>
-    <div class="form-group">
-      <label for="jamOperasional">Jam Operasional Verifikasi:</label>
-      <input type="text" id="jamOperasional" placeholder="Contoh: 08:00 - 12:00 WIB" required>
-    </div>
-    <div class="form-group">
-      <label for="broadcast">Pesan Pengumuman (Broadcast Running Text):</label>
-      <textarea id="broadcast" placeholder="Tulis pengumuman penting di sini..." required></textarea>
-    </div>
-    <button type="submit">Simpan Semua Perubahan</button>
-  </form>
+  <div class="section-box">
+    <h3>📌 Sinkronisasi & Info Pengumuman</h3>
+    <form id="adminForm">
+      <div class="grid-2">
+        <div class="form-group"><label>Tanggal Mulai Berkas:</label><input type="date" id="tanggalMulai" required></div>
+        <div class="form-group"><label>Jam Kerja Operasional:</label><input type="text" id="jamOperasional" required></div>
+      </div>
+      <div class="form-group"><label>Isi Info Pengumuman:</label><textarea id="broadcast" style="height:60px;" required></textarea></div>
+      <button type="submit">Update Info Sistem</button>
+    </form>
+  </div>
+
+  <div class="section-box">
+    <h3>👥 Pengendali Hak Akses Petugas (Verifikator)</h3>
+    <form id="userForm" onsubmit="tambahUser(event)" style="margin-bottom:20px; background:#fff; padding:15px; border:1px solid #eee; border-radius:6px;">
+      <div class="grid-2">
+        <div class="form-group"><label>Nama Petugas / Label:</label><input type="text" id="newUsername" placeholder="Contoh: Verifikator 1" required></div>
+        <div class="form-group"><label>PIN Masuk Akses:</label><input type="text" id="newPin" placeholder="Angka Bebas" required></div>
+      </div>
+      <div class="form-group">
+        <label>Role / Otoritas Halaman:</label>
+        <select id="newRole">
+          <option value="verifier">Verifikator (Meja Berkas Fisik)</option>
+          <option value="dashboard">Dashboard (Pemantau Grafik Monitor)</option>
+        </select>
+      </div>
+      <button type="submit" style="background:#10b981;">+ Daftarkan Akun Baru</button>
+    </form>
+
+    <h4>Daftar Petugas Aktif Saat Ini</h4>
+    <table>
+      <thead><tr><th>Nama Akun</th><th>PIN</th><th>Hak Akses</th><th>Tindakan</th></tr></thead>
+      <tbody id="usersTableBody"></tbody>
+    </table>
+  </div>
 </div>
 
 <script>
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
-  const loading = document.getElementById('loading');
+  const WEB_APP_URL = "URL_WEB_APP_GAS_ANDA"; // Ganti dengan URL /exec Anda
 
   window.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('sivera_logged_in') === 'true' && localStorage.getItem('sivera_user_role') === 'Admin Utama') {
+    if (localStorage.getItem('sivera_logged_in') === 'true' && localStorage.getItem('sivera_user_role') === 'admin') {
       tampilkanHalamanAdmin();
     }
   });
 
   function prosesLogin() {
-    const pin = document.getElementById('adminPin').value;
-    if (pin === "9999") { // PIN Super Admin
-      localStorage.setItem('sivera_logged_in', 'true');
-      localStorage.setItem('sivera_user_role', 'Admin Utama');
-      tampilkanHalamanAdmin();
-    } else {
-      Swal.fire('Akses Ditolak', 'PIN Admin salah!', 'error');
-    }
+    const pinVal = document.getElementById('adminPin').value;
+    fetch(WEB_APP_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: "loginValidation", pin: pinVal, expectedRole: "admin" })
+    })
+    .then(res => res.json())
+    .then(res => {
+      if(res.success){
+        localStorage.setItem('sivera_logged_in', 'true');
+        localStorage.setItem('sivera_user_role', 'admin');
+        tampilkanHalamanAdmin();
+      } else {
+        Swal.fire('Akses Ditolak', res.error, 'error');
+      }
+    });
   }
 
   function tampilkanHalamanAdmin() {
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('mainSection').style.display = 'block';
     loadConfigData();
-  }
-
-  function prosesLogout() {
-    localStorage.clear();
-    location.reload();
+    loadAllUsers();
   }
 
   function loadConfigData() {
-    loading.style.display = 'flex';
     fetch(`${WEB_APP_URL}?action=getAdminConfig`)
       .then(res => res.json())
       .then(data => {
         document.getElementById('broadcast').value = data.broadcast || "";
-        document.getElementById('jamOperasional').value = data.jamOperasional || "08:00 - 12:00 WIB";
-        if(data.tanggalMulai) {
-          document.getElementById('tanggalMulai').value = data.tanggalMulai.split('T')[0];
-        }
-        loading.style.display = 'none';
-      })
-      .catch(() => { loading.style.display = 'none'; });
+        document.getElementById('jamOperasional').value = data.jamOperasional || "";
+        if(data.tanggalMulai) document.getElementById('tanggalMulai').value = data.tanggalMulai.split('T')[0];
+      });
+  }
+
+  function loadAllUsers() {
+    fetch(`${WEB_APP_URL}?action=getAllUsers`)
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.getElementById('usersTableBody');
+        tbody.innerHTML = "";
+        data.forEach(u => {
+          tbody.innerHTML += `<tr>
+            <td style="font-weight:600;">${u.username}</td>
+            <td style="font-family:mono;">${u.pin}</td>
+            <td><span style="background:#e5e7eb; padding:2px 6px; border-radius:4px; font-size:11px;">${u.role.toUpperCase()}</span></td>
+            <td><button class="btn-del" onclick="hapusUser('${u.username}','${u.pin}')">Hapus</button></td>
+          </tr>`;
+        });
+      });
+  }
+
+  function tambahUser(e) {
+    e.preventDefault();
+    const payload = {
+      action: "addUser",
+      username: document.getElementById('newUsername').value,
+      pin: document.getElementById('newPin').value,
+      role: document.getElementById('newRole').value
+    };
+    fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) })
+    .then(res => res.json())
+    .then(res => {
+      if(res.success) {
+        Swal.fire('Berhasil', res.message, 'success');
+        document.getElementById('userForm').reset();
+        loadAllUsers();
+      } else { Swal.fire('Gagal', res.error, 'error'); }
+    });
+  }
+
+  function hapusUser(username, pin) {
+    Swal.fire({
+      title: 'Hapus Akun Ini?',
+      text: `Akun ${username} tidak akan bisa digunakan login lagi.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc2626',
+      confirmButtonText: 'Ya, Hapus!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", username: username, pin: pin }) })
+        .then(res => res.json())
+        .then(res => {
+          if(res.success) { Swal.fire('Terhapus!', res.message, 'success'); loadAllUsers(); }
+          else { Swal.fire('Gagal', res.error, 'error'); }
+        });
+      }
+    });
   }
 
   document.getElementById('adminForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    loading.style.display = 'flex';
     const payload = {
       action: "updateAdminConfig",
       broadcast: document.getElementById('broadcast').value,
       tanggalMulai: document.getElementById('tanggalMulai').value,
       jamOperasional: document.getElementById('jamOperasional').value
     };
-
     fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) })
     .then(res => res.json())
-    .then(res => {
-      loading.style.display = 'none';
-      if(res.success) Swal.fire('Berhasil!', res.message, 'success');
-    })
-    .catch(() => {
-      loading.style.display = 'none';
-      Swal.fire('Info', 'Data dikirim. Silakan cek berkala di Google Sheets Anda.', 'info');
-    });
+    .then(res => { if(res.success) Swal.fire('Berhasil!', res.message, 'success'); });
   });
+
+  function prosesLogout() { localStorage.clear(); location.reload(); }
 </script>
 </body>
 </html>
