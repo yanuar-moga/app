@@ -57,17 +57,17 @@
           <div class="absolute inset-0 bg-blue-900 rounded-full blur-md opacity-40 animate-ping"></div>
           <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Logo Dev" class="relative w-20 h-20 rounded-full object-cover shadow-md border-2 border-amber-400 transform transition-all duration-700 group-hover:rotate-[360deg] group-hover:scale-110 ease-out animate-float">
         </div>
-        <h3 class="text-sm font-black text-blue-900 uppercase tracking-wide">Sistem Verifikasi Antrean</h3>
+        <h3 class="text-sm font-black text-blue-900 uppercase tracking-wide">SISTEM VERIVIKASI ANTREAN</h3>
         <p class="text-[11px] font-bold text-zinc-500 mt-0.5 tracking-wider uppercase">SIVERA V 1.3</p>
         
         <div class="my-3 bg-blue-50/60 p-3 rounded-xl border border-blue-100 text-left space-y-1.5">
           <div class="flex items-center gap-2 text-zinc-700 text-xs font-semibold">
             <i class="fa-solid fa-code text-blue-900 w-4 text-center"></i>
-            <span>Dev by <span class="font-bold text-blue-950">Mb</span></span>
+            <span>Dev by <span class="font-bold text-blue-950">MB</span></span>
           </div>
           <div class="flex items-center gap-2 text-zinc-700 text-xs font-semibold">
             <i class="fa-solid fa-envelope text-blue-900 w-4 text-center"></i>
-            <a href="mailto:yanuar.b@gmail.com" class="hover:underline text-blue-800 break-all">yanuar.b@gmail.com</a>
+            <span>Contac : <a href="mailto:yanuar.b@gmail.com" class="hover:underline text-blue-800 break-all font-bold">yanuar.b@gmail.com</a></span>
           </div>
         </div>
 
@@ -75,7 +75,7 @@
           <span class="block text-[10px] text-zinc-400 font-bold uppercase">Build Version</span>
           <span class="text-xs font-mono font-bold text-zinc-700">12 Juni 2026</span>
         </div>
-        <button onclick="tutupModalDeveloper()" class="w-full bg-zinc-700 hover:bg-zinc-800 text-white font-black text-xs py-2.5 rounded-xl cursor-pointer transition uppercase tracking-wider shadow-md">Tutup Informasi</button>
+        <button onclick="tutupModalDeveloper()" class="w-full bg-zinc-700 hover:bg-zinc-800 text-white font-black text-xs py-2.5 rounded-xl cursor-pointer transition uppercase tracking-wider shadow-md">Tutup</button>
       </div>
     </div>
 
@@ -163,7 +163,6 @@
     var API_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
     var num1, num2, correctAnswer;
 
-    // Fungsi Interseptor Global untuk Menjamin Bahasa Indonesia di Layar Tiket Web
     function ubahKeBulanIndo(teksTanggal) {
       if (!teksTanggal) return "";
       var daftarBulan = { 
@@ -201,10 +200,7 @@
           document.getElementById('t_nama').innerText = res.nama;
           document.getElementById('t_nisn').innerText = res.nisn;
           document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
-          
-          // Memastikan konversi ke format Indonesia saat melakukan pencarian data lama
           document.getElementById('t_tgl').innerText = ubahKeBulanIndo(res.tanggalVerif);
-          
           document.getElementById('t_loket').innerText = res.loket.toUpperCase();
           document.getElementById('t_jam').innerText = res.jam;
           
@@ -262,10 +258,7 @@
             document.getElementById('t_nama').innerText = res.nama;
             document.getElementById('t_nisn').innerText = res.nisn;
             document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
-            
-            // Memastikan konversi ke format Indonesia langsung setelah pendaftaran berhasil
             document.getElementById('t_tgl').innerText = ubahKeBulanIndo(res.tanggalVerif);
-            
             document.getElementById('t_loket').innerText = res.loket.toUpperCase();
             document.getElementById('t_jam').innerText = res.jam;
             showAlert("Sukses!", "Nomor antrean berhasil diterbitkan.", "success");
