@@ -7,11 +7,15 @@
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { 
+        from { opacity: 0; transform: translateY(15px); } 
+        to { opacity: 1; transform: translateY(0); } 
+    }
     .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
     @keyframes floatAnim {
-      0%, 100% { transform: translateY(0); }
+      0% { transform: translateY(0); }
       50% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
     }
     .animate-float { animation: floatAnim 3s ease-in-out infinite; }
   </style>
@@ -77,7 +81,6 @@
           <label class="block text-xs font-bold text-zinc-600 mb-1 uppercase tracking-wider">NISN (10 Digit)</label>
           <input type="number" id="nisn" required placeholder="Contoh: 0123456789" class="w-full bg-zinc-50 border border-zinc-300 p-3 text-sm rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white transition-all font-mono font-semibold">
         </div>
-        
         <div>
           <label class="block text-xs font-bold text-zinc-600 mb-2 uppercase tracking-wider">Jenis Kelamin</label>
           <div class="grid grid-cols-2 gap-3">
@@ -89,7 +92,6 @@
             </label>
           </div>
         </div>
-
         <div class="bg-zinc-50 p-3.5 rounded-xl border border-zinc-200">
           <label class="block text-xs font-bold text-blue-900 mb-1.5 uppercase tracking-wider"><i class="fa-solid fa-shield-halved text-amber-500 mr-1"></i> Verifikasi Keamanan</label>
           <div class="flex items-center gap-3">
@@ -97,7 +99,6 @@
             <input type="number" id="captchaAnswer" required placeholder="Hasil?" class="w-full bg-white border border-zinc-300 p-2.5 text-sm rounded-xl focus:outline-none focus:border-blue-900 font-mono font-bold text-center">
           </div>
         </div>
-
         <button type="submit" id="btnSubmit" class="w-full bg-blue-900 hover:bg-blue-800 text-amber-400 p-3.5 rounded-xl font-black text-xs uppercase tracking-widest cursor-pointer transition shadow-md flex items-center justify-center gap-2 mt-2">Ambil Nomor Antrean</button>
       </form>
     </div>
@@ -139,129 +140,252 @@
   </footer>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
+    var API_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
     var num1, num2, correctAnswer;
 
     function generateCaptcha() {
       num1 = Math.floor(Math.random() * 10) + 6; 
       num2 = Math.floor(Math.random() * 5) + 1;  
       correctAnswer = num1 + num2;
-      document.getElementById('captchaQuestion').innerText = `${num1} + ${num2} =`;
+      document.getElementById('captchaQuestion').innerText = String(num1) + " + " + String(num2) + " =";
       document.getElementById('captchaAnswer').value = "";
     }
 
     window.onload = function() {
       generateCaptcha();
-      fetch(`${API_URL}?action=getBroadcast`)
-        .then(res => res.json())
-        .then(data => {
-          if(data.message && data.message.trim() !== "") {
-            document.getElementById('broadcastText').innerText = data.message;
-            document.getElementById('broadcastBox').classList.remove('hidden');
+      fetch(API_URL + "?action=getBroadcast")
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+          if (data.message) {
+            if (data.message.trim() !== "") {
+                document.getElementById('broadcastText').innerText = data.message;
+                document.getElementById('broadcastBox').classList.remove('hidden');
+            }
           }
-        }).catch(err => console.log(err));
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
     };
 
     function showAlert(title, msg, type) {
-      const box = document.getElementById('customAlert');
-      const icon = document.getElementById('alertIcon');
+      var box = document.getElementById('customAlert');
+      var icon = document.getElementById('alertIcon');
       document.getElementById('alertTitle').innerText = title;
       document.getElementById('alertMessage').innerText = msg;
-      icon.className = "w-12 h-12 rounded-full mx-auto flex items-center justify-center text-xl mb-3 shadow-md " + (type === 'success' ? "bg-emerald-100 text-emerald-600" : "bg-red-100 text-red-600");
-      icon.innerHTML = type === 'success' ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-solid fa-circle-xmark"></i>';
+      
+      if (type === 'success') {
+          icon.className = "w-12 h-12 rounded-full mx-auto flex items-center justify-center text-xl mb-3 shadow-md bg-emerald-100 text-emerald-600";
+          icon.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+      } else {
+          icon.className = "w-12 h-12 rounded-full mx-auto flex items-center justify-center text-xl mb-3 shadow-md bg-red-100 text-red-600";
+          icon.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
+      }
       box.classList.remove('hidden');
     }
-    function closeAlert() { document.getElementById('customAlert').classList.add('hidden'); }
 
-    function submitForm(e) {
-      e.preventDefault();
+    function closeAlert() { 
+        document.getElementById('customAlert').classList.add('hidden'); 
+    }
+
+    function submitForm(event) {
+      event.preventDefault();
       var userAnswer = parseInt(document.getElementById('captchaAnswer').value);
+      
       if (userAnswer !== correctAnswer) {
         showAlert("Verifikasi Gagal!", "Hasil perhitungan matematika salah.", "error");
         generateCaptcha();
         return;
       }
-      document.getElementById('btnSubmit').disabled = true;
-      document.getElementById('btnSubmit').innerText = "Memproses Antrean...";
-      var jkVal = document.querySelector('input[name="jk"]:checked');
-      var payload = { nama: document.getElementById('nama').value, nisn: document.getElementById('nisn').value, jk: jkVal ? jkVal.value : '-' };
-      fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "daftar", data: payload }) })
-      .then(res => res.json())
-      .then(res => {
-        if(res.success) {
+      
+      var submitButton = document.getElementById('btnSubmit');
+      submitButton.disabled = true;
+      submitButton.innerText = "Memproses Antrean...";
+      
+      var jkElement = document.querySelector('input[name="jk"]:checked');
+      var jkValue = "";
+      if (jkElement) {
+          jkValue = jkElement.value;
+      } else {
+          jkValue = "-";
+      }
+
+      var payload = { 
+          nama: document.getElementById('nama').value, 
+          nisn: document.getElementById('nisn').value, 
+          jk: jkValue 
+      };
+
+      fetch(API_URL, { 
+          method: "POST", 
+          body: JSON.stringify({ action: "daftar", data: payload }) 
+      })
+      .then(function(response) {
+          return response.json();
+      })
+      .then(function(res) {
+        if (res.success === true) {
           document.getElementById('t_no').innerText = String(res.noAntrean).padStart(3, '0');
           document.getElementById('t_nama').innerText = res.nama;
           document.getElementById('t_nisn').innerText = res.nisn;
-          document.getElementById('t_jk').innerText = res.jk === 'L' ? 'Laki-laki' : 'Perempuan';
+          document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
           document.getElementById('t_tgl').innerText = res.tanggalVerif;
           document.getElementById('t_loket').innerText = res.loket.toUpperCase();
           document.getElementById('t_jam').innerText = res.jam;
+          
           showAlert("Sukses!", "Nomor antrean berhasil diterbitkan.", "success");
           document.getElementById('formSection').classList.add('hidden');
           document.getElementById('ticketSection').classList.remove('hidden');
         } else {
           showAlert("Gagal!", res.error, "error");
-          document.getElementById('btnSubmit').disabled = false;
+          submitButton.disabled = false;
+          submitButton.innerText = "Ambil Nomor Antrean";
           generateCaptcha();
         }
-      }).catch(() => {
+      })
+      .catch(function(error) {
         showAlert("Error!", "Koneksi terputus.", "error");
-        document.getElementById('btnSubmit').disabled = false;
+        submitButton.disabled = false;
+        submitButton.innerText = "Ambil Nomor Antrean";
       });
     }
 
     function downloadTiketGambar() {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = 500; canvas.height = 680;
-      ctx.fillStyle = "#020617"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.strokeStyle = "#d97706"; ctx.lineWidth = 6; ctx.strokeRect(3, 3, canvas.width - 6, canvas.height - 6);
-      ctx.fillStyle = "#fbbf24"; ctx.font = "bold 22px Arial, sans-serif"; ctx.textAlign = "center";
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      canvas.width = 500; 
+      canvas.height = 680;
+      
+      ctx.fillStyle = "#020617"; 
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = "#d97706"; 
+      ctx.lineWidth = 6; 
+      ctx.strokeRect(3, 3, canvas.width - 6, canvas.height - 6);
+      
+      ctx.fillStyle = "#fbbf24"; 
+      ctx.font = "bold 22px Arial, sans-serif"; 
+      ctx.textAlign = "center";
       ctx.fillText("SMP NEGERI 1 MOGA", canvas.width / 2, 50);
-      ctx.fillStyle = "#94a3b8"; ctx.font = "bold 13px Arial, sans-serif";
+      
+      ctx.fillStyle = "#94a3b8"; 
+      ctx.font = "bold 13px Arial, sans-serif";
       ctx.fillText("BUKTI RESMI NOMOR ANTREAN PPDB", canvas.width / 2, 75);
       
-      let rawTgl = document.getElementById('t_tgl').innerText;
-      let tglIndo = rawTgl.replace(/June/gi, 'Juni').replace(/January/gi, 'Januari').replace(/February/gi, 'Februari')
-                          .replace(/March/gi, 'Maret').replace(/April/gi, 'April').replace(/May/gi, 'Mei')
-                          .replace(/July/gi, 'Juli').replace(/August/gi, 'Agustus').replace(/September/gi, 'September')
-                          .replace(/October/gi, 'Oktober').replace(/November/gi, 'November').replace(/December/gi, 'Desember');
+      var rawTgl = document.getElementById('t_tgl').innerText;
+      var tglIndo = rawTgl.replace(/June/gi, 'Juni')
+                         .replace(/January/gi, 'Januari')
+                         .replace(/February/gi, 'Februari')
+                         .replace(/March/gi, 'Maret')
+                         .replace(/April/gi, 'April')
+                         .replace(/May/gi, 'Mei')
+                         .replace(/July/gi, 'Juli')
+                         .replace(/August/gi, 'Agustus')
+                         .replace(/September/gi, 'September')
+                         .replace(/October/gi, 'Oktober')
+                         .replace(/November/gi, 'November')
+                         .replace(/December/gi, 'Desember');
 
-      ctx.strokeStyle = "#1e3a8a"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(30, 95); ctx.lineTo(470, 95); ctx.stroke();
-      ctx.fillStyle = "rgba(30, 58, 138, 0.4)"; ctx.fillRect(50, 120, 400, 160);
-      ctx.strokeStyle = "#2563eb"; ctx.strokeRect(50, 120, 400, 160);
-      ctx.fillStyle = "#60a5fa"; ctx.font = "bold 14px Arial, sans-serif"; ctx.fillText("NOMOR ANTREAN ANDA", canvas.width / 2, 150);
-      ctx.fillStyle = "#fbbf24"; ctx.font = "900 70px monospace"; ctx.fillText(document.getElementById('t_no').innerText, canvas.width / 2, 220);
-      ctx.fillStyle = "#ffffff"; ctx.font = "bold 15px Arial, sans-serif"; ctx.fillText(document.getElementById('t_loket').innerText, canvas.width / 2, 260);
+      ctx.strokeStyle = "#1e3a8a"; 
+      ctx.lineWidth = 2; 
+      ctx.beginPath(); 
+      ctx.moveTo(30, 95); 
+      ctx.lineTo(470, 95); 
+      ctx.stroke();
       
-      const dataSiswa = [
+      ctx.fillStyle = "rgba(30, 58, 138, 0.4)"; 
+      ctx.fillRect(50, 120, 400, 160);
+      ctx.strokeStyle = "#2563eb"; 
+      ctx.strokeRect(50, 120, 400, 160);
+      
+      ctx.fillStyle = "#60a5fa"; 
+      ctx.font = "bold 14px Arial, sans-serif"; 
+      ctx.fillText("NOMOR ANTREAN ANDA", canvas.width / 2, 150);
+      
+      ctx.fillStyle = "#fbbf24"; 
+      ctx.font = "900 70px monospace"; 
+      ctx.fillText(document.getElementById('t_no').innerText, canvas.width / 2, 220);
+      
+      ctx.fillStyle = "#ffffff"; 
+      ctx.font = "bold 15px Arial, sans-serif"; 
+      ctx.fillText(document.getElementById('t_loket').innerText, canvas.width / 2, 260);
+      
+      var dataSiswa = [
         { label: "Nama Lengkap:", val: document.getElementById('t_nama').innerText },
         { label: "Nomor NISN:", val: document.getElementById('t_nisn').innerText },
         { label: "Jenis Kelamin:", val: document.getElementById('t_jk').innerText },
         { label: "Tanggal Verif:", val: tglIndo },
         { label: "Jam Pelayanan:", val: document.getElementById('t_jam').innerText }
       ];
-      let letakY = 330; ctx.font = "15px Arial, sans-serif";
-      dataSiswa.forEach(item => {
-        ctx.fillStyle = "#94a3b8"; ctx.textAlign = "left"; ctx.fillText(item.label, 50, letakY);
-        ctx.fillStyle = "#ffffff"; ctx.textAlign = "right";
+      
+      var letakY = 330; 
+      ctx.font = "15px Arial, sans-serif";
+      
+      for (var i = 0; i < dataSiswa.length; i++) {
+        var item = dataSiswa[i];
+        ctx.fillStyle = "#94a3b8"; 
+        ctx.textAlign = "left"; 
+        ctx.fillText(item.label, 50, letakY);
+        
+        ctx.fillStyle = "#ffffff"; 
+        ctx.textAlign = "right";
         ctx.fillText(item.val.toUpperCase(), 450, letakY);
-        ctx.strokeStyle = "rgba(30, 58, 138, 0.2)"; ctx.beginPath(); ctx.moveTo(50, letakY + 10); ctx.lineTo(450, letakY + 10); ctx.stroke();
-        letakY += 45;
-      });
-      ctx.fillStyle = "#f59e0b"; ctx.font = "italic bold 12px Arial, sans-serif"; ctx.textAlign = "center";
+        
+        ctx.strokeStyle = "rgba(30, 58, 138, 0.2)"; 
+        ctx.beginPath(); 
+        ctx.moveTo(50, letakY + 10); 
+        ctx.lineTo(450, letakY + 10); 
+        ctx.stroke();
+        
+        letakY = letakY + 45;
+      }
+      
+      ctx.fillStyle = "#f59e0b"; 
+      ctx.font = "italic bold 12px Arial, sans-serif"; 
+      ctx.textAlign = "center";
       ctx.fillText("*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Fisik", canvas.width / 2, 590);
-      ctx.fillStyle = "#475569"; ctx.font = "900 11px Arial, sans-serif";
+      
+      ctx.fillStyle = "#475569"; 
+      ctx.font = "900 11px Arial, sans-serif";
       ctx.fillText("SIVERA WEB AUTOMATION SYSTEM v2.0", canvas.width / 2, 640);
       
-      const tautanUnduh = document.createElement('a');
+      var tautanUnduh = document.createElement('a');
       tautanUnduh.download = 'TIKET_SPMB_' + document.getElementById('t_nisn').innerText + '.png';
       tautanUnduh.href = canvas.toDataURL('image/png');
-      document.body.appendChild(tautanUnduh); tautanUnduh.click(); document.body.removeChild(tautanUnduh);
+      document.body.appendChild(tautanUnduh); 
+      tautanUnduh.click(); 
+      document.body.removeChild(tautanUnduh);
     }
-    function bukaModalDeveloper() { document.getElementById('developerModal').classList.remove('hidden'); setTimeout(() => { document.getElementById('developerModal').classList.remove('opacity-0'); document.getElementById('devModalContent').classList.remove('scale-95'); }, 10); }
-    function tutupModalDeveloper() { document.getElementById('developerModal').classList.add('opacity-0'); document.getElementById('devModalContent').classList.add('scale-95'); setTimeout(() => { document.getElementById('developerModal').classList.add('hidden'); }, 300); }
-    function keluarKeIndex() { document.getElementById('formDaftar').reset(); document.getElementById('ticketSection').classList.add('hidden'); document.getElementById('formSection').classList.remove('hidden'); document.getElementById('btnSubmit').disabled = false; document.getElementById('btnSubmit').innerHTML = 'Ambil Nomor Antrean'; generateCaptcha(); }
+
+    function bukaModalDeveloper() { 
+      var modal = document.getElementById('developerModal');
+      var content = document.getElementById('devModalContent');
+      modal.classList.remove('hidden'); 
+      setTimeout(function() { 
+          modal.classList.remove('opacity-0'); 
+          content.classList.remove('scale-95'); 
+      }, 10); 
+    }
+
+    function tutupModalDeveloper() { 
+      var modal = document.getElementById('developerModal');
+      var content = document.getElementById('devModalContent');
+      modal.classList.add('opacity-0'); 
+      content.classList.add('scale-95'); 
+      setTimeout(function() { 
+          modal.classList.add('hidden'); 
+      }, 300); 
+    }
+
+    function keluarKeIndex() { 
+      document.getElementById('formDaftar').reset(); 
+      document.getElementById('ticketSection').classList.add('hidden'); 
+      document.getElementById('formSection').classList.remove('hidden'); 
+      document.getElementById('btnSubmit').disabled = false; 
+      document.getElementById('btnSubmit').innerHTML = 'Ambil Nomor Antrean'; 
+      generateCaptcha(); 
+    }
   </script>
 </body>
 </html>
