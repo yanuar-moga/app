@@ -18,6 +18,20 @@
       100% { transform: translateY(0); }
     }
     .animate-float { animation: floatAnim 3s ease-in-out infinite; }
+
+    /* Animasi Slide Up untuk Ticker */
+    @keyframes slideUp {
+      0%, 25% { transform: translateY(0); }
+      33%, 58% { transform: translateY(-33.33%); }
+      66%, 91% { transform: translateY(-66.66%); }
+      100% { transform: translateY(0); }
+    }
+    .animate-ticker {
+      animation: slideUp 12s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
+    }
+    .animate-ticker:hover {
+      animation-play-state: paused;
+    }
   </style>
 </head>
 <body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col justify-between select-none">
@@ -34,11 +48,31 @@
   </header>
 
   <main class="container mx-auto p-4 flex-grow max-w-md flex flex-col justify-center">
-    <div id="broadcastBox" class="hidden bg-amber-50 border-2 border-amber-400 p-4 rounded-xl mb-4 shadow-sm flex items-start gap-3 animate-fade-in">
+    
+    <div id="broadcastBox" class="hidden bg-amber-50 border-2 border-amber-400 p-4 rounded-xl mb-3 shadow-sm flex items-start gap-3 animate-fade-in">
       <img src="https://yanuar-moga.github.io/app/sivera1.3/assets/info.png" alt="Info" class="w-8 h-8 object-contain mt-0.5 shrink-0">
       <div>
         <h4 class="font-black text-xs text-blue-950 uppercase tracking-wider">Pengumuman:</h4>
         <p id="broadcastText" class="text-xs text-zinc-700 mt-0.5 leading-relaxed"></p>
+      </div>
+    </div>
+
+    <div class="bg-blue-900 text-white px-4 py-2.5 rounded-xl mb-4 border border-blue-950 shadow-sm flex items-center gap-3 overflow-hidden h-[42px] animate-fade-in">
+      <div class="flex items-center gap-1.5 shrink-0 bg-amber-400 text-blue-950 px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider shadow-sm">
+        <i class="fa-solid fa-bullhorn animate-pulse"></i> Info
+      </div>
+      <div class="relative flex-grow h-full overflow-hidden text-[11px] font-bold">
+        <div class="absolute top-0 left-0 w-full h-[300%] animate-ticker flex flex-col">
+          <div class="h-1/3 flex items-center text-zinc-100 truncate">
+            Pastikan calon murid sudah melakukan pembuatan akun sebelum mengambil antrian
+          </div>
+          <div class="h-1/3 flex items-center text-amber-300 truncate">
+            Antrian berlaku 1 hari. 1 Antrian untuk 1 Nomor NISN
+          </div>
+          <div class="h-1/3 flex items-center text-zinc-100 truncate">
+            Pengambilan antrean online dimulai hari Selasa, 16 Juni 2026
+          </div>
+        </div>
       </div>
     </div>
 
@@ -197,10 +231,7 @@
           document.getElementById('t_nama').innerText = res.nama;
           document.getElementById('t_nisn').innerText = res.nisn;
           document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
-          
-          // Merujuk ke tanggalVerif dari database Apps Script (B4 config)
           document.getElementById('t_tgl').innerText = ubahKeBulanIndo(res.tanggalVerif);
-          
           document.getElementById('t_loket').innerText = res.loket.toUpperCase();
           document.getElementById('t_jam').innerText = res.jam;
           
@@ -258,11 +289,7 @@
             document.getElementById('t_nama').innerText = res.nama;
             document.getElementById('t_nisn').innerText = res.nisn;
             document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
-            
-            // PERBAIKAN UTAMA: Mengambil nilai 'res.tanggalVerif' asli dari backend Apps Script (cell B4 Sheet config)
-            // Bukan lagi mengambil tanggal waktu sekarang buatan browser.
             document.getElementById('t_tgl').innerText = ubahKeBulanIndo(res.tanggalVerif);
-            
             document.getElementById('t_loket').innerText = res.loket.toUpperCase();
             document.getElementById('t_jam').innerText = res.jam;
             showAlert("Sukses!", "Nomor antrean berhasil diterbitkan.", "success");
@@ -309,7 +336,7 @@
       for (var i = 0; i < dataSiswa.length; i++) {
         ctx.fillStyle = "#94a3b8"; ctx.textAlign = "left"; ctx.fillText(dataSiswa[i].label, 50, letakY);
         ctx.fillStyle = "#ffffff"; ctx.textAlign = "right"; ctx.fillText(dataSiswa[i].val.toUpperCase(), 450, letakY);
-        ctx.strokeStyle = "rgba(30, 58, 138, 0.2)"; ctx.beginPath(); ctx.moveTo(50, letakY + 10); ctx.lineTo(450, letakY + 10); stroke();
+        ctx.strokeStyle = "rgba(30, 58, 138, 0.2)"; ctx.beginPath(); ctx.moveTo(50, letakY + 10); ctx.lineTo(450, letakY + 10); ctx.stroke();
         letakY += 45;
       }
       ctx.fillStyle = "#f59e0b"; ctx.font = "italic bold 12px Arial, sans-serif"; ctx.textAlign = "center";
