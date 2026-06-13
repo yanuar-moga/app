@@ -171,7 +171,7 @@
           <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Jenis Kelamin</span><span id="t_jk" class="font-bold text-white"></span></div>
           <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Tanggal Verifikasi Fisik</span><span id="t_tgl" class="font-bold text-white text-right"></span></div>
           <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Jam Operasional</span><span id="t_jam" class="font-bold text-amber-400"></span></div>
-          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Tanggal Pendaftaran</span><span id="t_tgl_daftar" class="font-bold text-zinc-300 text-right"></span></div>
+          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Tanggal Pendaftaran</span><span id="t_tgl_daftar" class="font-bold text-zinc-300 text-right text-[11px]"></span></div>
         </div>
         <div class="text-center pt-2 border-t border-blue-900">
           <p class="text-[10px] font-bold text-amber-400 italic leading-relaxed">*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Fisik</p>
@@ -191,6 +191,31 @@
   <script>
     var API_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
     var num1, num2, correctAnswer;
+    var jamOperasionalGlobal = "08:00 - 12:00 WIB"; // Fallback default jika backend bermasalah
+
+    function formatTanggalLengkap(inputData) {
+      if (!inputData) return "-";
+      
+      var d = new Date(inputData);
+      // Jika object Date tidak valid (misal karena format string dari backend tidak standar), gunakan waktu sekarang sebagai fallback
+      if (isNaN(d.getTime())) {
+        d = new Date();
+      }
+
+      var daftarHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      var daftarBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+      var hari = daftarHari[d.getDay()];
+      var tanggal = String(d.getDate()).padStart(2, '0');
+      var bulan = daftarBulan[d.getMonth()];
+      var tahun = d.getFullYear();
+      
+      var jam = String(d.getHours()).padStart(2, '0');
+      var menit = String(d.getMinutes()).padStart(2, '0');
+      var detik = String(d.getSeconds()).padStart(2, '0');
+
+      return hari + ", " + tanggal + " " + bulan + " " + tahun + " " + jam + ":" + menit + ":" + detik + " WIB";
+    }
 
     function ubahKeBulanIndo(teksTanggal) {
       if (!teksTanggal) return "";
@@ -214,36 +239,11 @@
       document.getElementById('captchaAnswer').value = "";
     }
 
-    function cariTiket() {
-      var nisn = document.getElementById('searchNisn').value;
-      if (!nisn) { showAlert("Error", "Masukkan NISN terlebih dahulu", "error"); return; }
-      
-      fetch(API_URL, { 
-        method: "POST", 
-        body: JSON.stringify({ action: "cariTiket", nisn: nisn }) 
-      })
-      .then(function(res) { return res.json(); })
-      .then(function(res) {
-        if (res.success) {
-          document.getElementById('t_no').innerText = String(res.noAntrean).padStart(3, '0');
-          document.getElementById('t_nama').innerText = res.nama;
-          document.getElementById('t_nisn').innerText = res.nisn;
-          document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
-          document.getElementById('t_tgl').innerText = ubahKeBulanIndo(res.tanggalVerif);
-          document.getElementById('t_jam').innerText = res.jam;
-          // Memasukkan data Tanggal Pendaftaran dari Log Sheet / Backend
-          document.getElementById('t_tgl_daftar').innerText = ubahKeBulanIndo(res.tanggalDaftar || res.tanggalVerif);
-          
-          document.getElementById('formSection').classList.add('hidden');
-          document.getElementById('ticketSection').classList.remove('hidden');
-        } else {
-          showAlert("Gagal", res.error, "error");
-        }
-      });
-    }
-
+    // Ambil data broadcast sekaligus data config Jam Operasional saat halaman dibuka
     window.onload = function() {
       generateCaptcha();
+      
+      // Ambil Pesan Broadcast
       fetch(API_URL + "?action=getBroadcast")
         .then(function(response) { return response.json(); })
         .then(function(data) {
@@ -251,8 +251,61 @@
             document.getElementById('broadcastText').innerText = data.message;
             document.getElementById('broadcastBox').classList.remove('hidden');
           }
-        });
+        }).catch(err => console.log("Gagal memuat broadcast"));
+
+      /* REKOMENDASI BACKEND SINKRONISASI: 
+        Pastikan di Google Apps Script doGet() Anda sudah mendukung parameter action=getConfig 
+        untuk mengambil cell B4 (Jam Operasional). Di bawah ini adalah handle otomatisnya.
+      */
+      fetch(API_URL + "?action=getConfig")
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+          if (data.jamOperasional) {
+            jamOperasionalGlobal = data.jamOperasional;
+          }
+        }).catch(err => console.log("Gagal memuat config jam operasional, menggunakan data default/fallback."));
     };
+
+    function cariTiket() {
+      var nisn = document.getElementById('searchNisn').value;
+      if (!nisn) { showAlert("Error", "Masukkan NISN terlebih dahulu", "error"); return; }
+      
+      var searchButton = document.querySelector("button[onclick='cariTiket()']");
+      searchButton.disabled = true;
+      searchButton.innerText = "...";
+
+      fetch(API_URL, { 
+        method: "POST", 
+        body: JSON.stringify({ action: "cariTiket", nisn: nisn }) 
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(res) {
+        searchButton.disabled = false;
+        searchButton.innerText = "CARI";
+
+        if (res.success) {
+          document.getElementById('t_no').innerText = String(res.noAntrean).padStart(3, '0');
+          document.getElementById('t_nama').innerText = res.nama;
+          document.getElementById('t_nisn').innerText = res.nisn;
+          document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
+          document.getElementById('t_tgl').innerText = ubahKeBulanIndo(res.tanggalVerif);
+          
+          // Mengambil jam dari config B4 jika disuplai oleh backend, jika tidak pake res.jam lama
+          document.getElementById('t_jam').innerText = res.jamConfig || res.jam || jamOperasionalGlobal;
+          
+          // Memasukkan data Tanggal Pendaftaran super lengkap
+          document.getElementById('t_tgl_daftar').innerText = formatTanggalLengkap(res.tanggalDaftar);
+          
+          document.getElementById('formSection').classList.add('hidden');
+          document.getElementById('ticketSection').classList.remove('hidden');
+        } else {
+          showAlert("Gagal", res.error, "error");
+        }
+      }).catch(() => {
+        searchButton.disabled = false;
+        searchButton.innerText = "CARI";
+      });
+    }
 
     function showAlert(title, msg, type) {
       var box = document.getElementById('customAlert');
@@ -290,9 +343,12 @@
             document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
             document.getElementById('t_tgl').innerText = ubahKeBulanIndo(res.tanggalVerif);
             document.getElementById('t_loket').innerText = res.loket.toUpperCase();
-            document.getElementById('t_jam').innerText = res.jam;
-            // Set Tanggal Pendaftaran saat submit sukses
-            document.getElementById('t_tgl_daftar').innerText = ubahKeBulanIndo(res.tanggalDaftar || res.tanggalVerif);
+            
+            // Prioritas jam operasional dari config B4 backend (res.jamConfig) atau data global local
+            document.getElementById('t_jam').innerText = res.jamConfig || jamOperasionalGlobal;
+            
+            // Set Tanggal Pendaftaran super lengkap saat submit sukses
+            document.getElementById('t_tgl_daftar').innerText = formatTanggalLengkap(res.tanggalDaftar || new Date());
             
             showAlert("Sukses!", "Nomor antrean berhasil diterbitkan.", "success");
             document.getElementById('formSection').classList.add('hidden');
@@ -303,26 +359,31 @@
             submitButton.innerText = "Ambil Nomor Antrean";
             generateCaptcha();
           }
+        }).catch(() => {
+          submitButton.disabled = false;
+          submitButton.innerText = "Ambil Nomor Antrean";
+          generateCaptcha();
         });
     }
 
     function downloadTiketGambar() {
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
-      // Tinggi kanvas disesuaikan menjadi 720 agar menampung baris tambahan pendaftaran dengan rapi
-      canvas.width = 500; canvas.height = 720; 
+      
+      canvas.width = 500; canvas.height = 740; // Ditinggikan sedikit agar teks tanggal pendaftaran yang panjang tidak berhimpitan
       ctx.fillStyle = "#020617"; ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.strokeStyle = "#d97706"; ctx.lineWidth = 6; ctx.strokeRect(3, 3, canvas.width - 6, canvas.height - 6);
-      ctx.fillStyle = "#fbbf24"; ctx.font = "bold 22px Arial, sans-serif"; ctx.textAlign = "center";
-      ctx.fillText("SMP NEGERI 1 MOGA", canvas.width / 2, 50);
-      ctx.fillStyle = "#94a3b8"; ctx.font = "bold 13px Arial, sans-serif"; ctx.fillText("BUKTI RESMI NOMOR ANTREAN PPDB", canvas.width / 2, 75);
+      ctx.fillStyle = "#fbbf24"; ctx.font = "bold 22px Arial, sans-serif"; ctx.textBaseline = "top"; ctx.textAlign = "center";
+      ctx.fillText("SMP NEGERI 1 MOGA", canvas.width / 2, 40);
+      ctx.fillStyle = "#94a3b8"; ctx.font = "bold 13px Arial, sans-serif"; ctx.fillText("BUKTI RESMI NOMOR ANTREAN PPDB", canvas.width / 2, 70);
 
       ctx.strokeStyle = "#1e3a8a"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(30, 95); ctx.lineTo(470, 95); ctx.stroke();
-      ctx.fillStyle = "rgba(30, 58, 138, 0.4)"; ctx.fillRect(50, 120, 400, 160);
-      ctx.strokeStyle = "#2563eb"; ctx.strokeRect(50, 120, 400, 160);
-      ctx.fillStyle = "#60a5fa"; ctx.font = "bold 14px Arial, sans-serif"; ctx.fillText("NOMOR ANTREAN ANDA", canvas.width / 2, 150);
-      ctx.fillStyle = "#fbbf24"; ctx.font = "900 70px monospace"; ctx.fillText(document.getElementById('t_no').innerText, canvas.width / 2, 220);
-      ctx.fillStyle = "#ffffff"; ctx.font = "bold 15px Arial, sans-serif"; ctx.fillText(document.getElementById('t_loket').innerText, canvas.width / 2, 260);
+      ctx.fillStyle = "rgba(30, 58, 138, 0.4)"; ctx.fillRect(50, 115, 400, 155);
+      ctx.strokeStyle = "#2563eb"; ctx.strokeRect(50, 115, 400, 155);
+      
+      ctx.fillStyle = "#60a5fa"; ctx.font = "bold 14px Arial, sans-serif"; ctx.fillText("NOMOR ANTREAN ANDA", canvas.width / 2, 130);
+      ctx.fillStyle = "#fbbf24"; ctx.font = "900 65px monospace"; ctx.fillText(document.getElementById('t_no').innerText, canvas.width / 2, 160);
+      ctx.fillStyle = "#ffffff"; ctx.font = "bold 15px Arial, sans-serif"; ctx.fillText(document.getElementById('t_loket').innerText, canvas.width / 2, 235);
 
       var dataSiswa = [
         { label: "Nama Lengkap:", val: document.getElementById('t_nama').innerText },
@@ -330,21 +391,27 @@
         { label: "Jenis Kelamin:", val: document.getElementById('t_jk').innerText },
         { label: "Tanggal Verif Fisik:", val: document.getElementById('t_tgl').innerText },
         { label: "Jam Pelayanan:", val: document.getElementById('t_jam').innerText },
-        { label: "Tanggal Pendaftaran:", val: document.getElementById('t_tgl_daftar').innerText } // Baris keterangan baru di canvas
+        { label: "Waktu Mendaftar:", val: document.getElementById('t_tgl_daftar').innerText }
       ];
       
-      var letakY = 330;
+      var letakY = 300;
+      ctx.textBaseline = "alphabetic";
       for (var i = 0; i < dataSiswa.length; i++) {
         ctx.fillStyle = "#94a3b8"; ctx.textAlign = "left"; ctx.font = "14px Arial, sans-serif";
         ctx.fillText(dataSiswa[i].label, 50, letakY);
-        ctx.fillStyle = i === 4 ? "#fbbf24" : "#ffffff"; ctx.textAlign = "right"; ctx.font = "bold 14px Arial, sans-serif";
+        
+        // Atur ukuran font khusus untuk waktu mendaftar jika terlalu panjang agar tidak keluar kanvas
+        ctx.fillStyle = (i === 4) ? "#fbbf24" : "#ffffff"; ctx.textAlign = "right"; 
+        ctx.font = (i === 5) ? "bold 11px Arial, sans-serif" : "bold 14px Arial, sans-serif";
+        
         ctx.fillText(dataSiswa[i].val.toUpperCase(), 450, letakY);
         ctx.strokeStyle = "rgba(30, 58, 138, 0.2)"; ctx.beginPath(); ctx.moveTo(50, letakY + 10); ctx.lineTo(450, letakY + 10); ctx.stroke();
         letakY += 45;
       }
+      
       ctx.fillStyle = "#f59e0b"; ctx.font = "italic bold 11px Arial, sans-serif"; ctx.textAlign = "center";
-      ctx.fillText("*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Fisik", canvas.width / 2, 635);
-      ctx.fillStyle = "#475569"; ctx.font = "900 11px Arial, sans-serif"; ctx.fillText("SIVERA WEB AUTOMATION SYSTEM v2.0", canvas.width / 2, 680);
+      ctx.fillText("*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Fisik", canvas.width / 2, 660);
+      ctx.fillStyle = "#475569"; ctx.font = "900 11px Arial, sans-serif"; ctx.fillText("SIVERA WEB AUTOMATION SYSTEM v2.0", canvas.width / 2, 700);
       
       var link = document.createElement('a');
       link.download = 'TIKET_SPMB_' + document.getElementById('t_nisn').innerText + '.png';
