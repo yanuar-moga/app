@@ -34,7 +34,8 @@
     .grid-2 { display:grid; grid-template-cols: 1fr 1fr; gap:15px; }
     table { width:100%; border-collapse:collapse; margin-top:10px; font-size:13px;} th, td { padding:10px; border:1px solid #eee; text-align:left;}
     th { background:#f4f4f4; color:#1e3a8a;} 
-    .btn-del { background:#dc2626; padding:4px 8px; font-size:11px; width:auto;}
+    .btn-del { background:#dc2626; color: white; padding:4px 8px; font-size:11px; width:auto; border-radius: 4px; border: none; cursor: pointer; }
+    .btn-del:hover { background: #b91c1c; }
   </style>
 </head>
 <body>
@@ -89,7 +90,7 @@
       <button type="submit" style="background:#10b981;">+ Daftarkan Akun Baru</button>
     </form>
 
-    <h4>Daftar Petugas Aktif Saat Ini</h4>
+    <h4 style="color: #1e3a8a; margin-bottom: 5px;">Daftar Petugas Aktif Saat Ini</h4>
     <table>
       <thead><tr><th>Nama Akun</th><th>PIN</th><th>Hak Akses</th><th>Tindakan</th></tr></thead>
       <tbody id="usersTableBody"></tbody>
@@ -98,7 +99,12 @@
 </div>
 
 <script>
-  const WEB_APP_URL = "1PT_T80rf7d2oCqzeRI72gjCE6tGTfd-_rOcJxQnMrm0"; // Pastikan diganti URL /exec pengetesan Anda
+  // Variabel penampung URL Aplikasi Web Google Apps Script Anda asli berakhiran /exec
+  const BASE_URL = "https://script.google.com/macros/s/AKfycbzQ7S9u_D0N18M8rM1y4P8wK8z3Z-gR8g_H7H_V2_v_H_D_U_N_E/exec"; // <- Tempel URL Web App Lengkap Anda di Sini jika pengetesan lokal dilakukan
+
+  // Menggunakan ID SPREADSHEET internal yang tertera pada prompt lama untuk fallback cadangan otomatis
+  const SPREAD_ID = "1PT_T80rf7d2oCqzeRI72gjCE6tGTfd-_rOcJxQnMrm0"; 
+  const WEB_APP_URL = BASE_URL.includes("macros/s/") ? BASE_URL : `https://script.google.com/macros/s/${SPREAD_ID}/exec`;
 
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('sivera_logged_in') === 'true' && localStorage.getItem('sivera_user_role') === 'admin') {
@@ -108,12 +114,17 @@
 
   function prosesLogin() {
     const pinVal = document.getElementById('adminPin').value;
+    
+    Swal.fire({ title: 'Memvalidasi PIN...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+
     fetch(WEB_APP_URL, {
       method: "POST",
+      mode: "cors",
       body: JSON.stringify({ action: "loginValidation", pin: pinVal, expectedRole: "admin" })
     })
     .then(res => res.json())
     .then(res => {
+      Swal.close();
       if(res.success){
         localStorage.setItem('sivera_logged_in', 'true');
         localStorage.setItem('sivera_user_role', 'admin');
@@ -121,6 +132,10 @@
       } else {
         Swal.fire('Akses Ditolak', res.error, 'error');
       }
+    })
+    .catch(err => {
+      Swal.close();
+      Swal.fire('Sistem Error', 'Gagal terhubung dengan server GAS. Pastikan URL Web App valid dan statusnya ter-deploy untuk Anyone.', 'error');
     });
   }
 
@@ -166,9 +181,13 @@
       pin: document.getElementById('newPin').value,
       role: document.getElementById('newRole').value
     };
-    fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) })
+
+    Swal.fire({ title: 'Menyimpan Akun...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+
+    fetch(WEB_APP_URL, { method: "POST", mode: "cors", body: JSON.stringify(payload) })
     .then(res => res.json())
     .then(res => {
+      Swal.close();
       if(res.success) {
         Swal.fire('Berhasil', res.message, 'success');
         document.getElementById('userForm').reset();
@@ -187,11 +206,22 @@
       confirmButtonText: 'Ya, Hapus!'
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", username: username, pin: pin }) })
+        Swal.fire({ title: 'Menghapus...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+        
+        fetch(WEB_APP_URL, { 
+          method: "POST", 
+          mode: "cors",
+          body: JSON.stringify({ action: "deleteUser", username: username, pin: pin }) 
+        })
         .then(res => res.json())
         .then(res => {
-          if(res.success) { Swal.fire('Terhapus!', res.message, 'success'); loadAllUsers(); }
-          else { Swal.fire('Gagal', res.error, 'error'); }
+          Swal.close();
+          if(res.success) { 
+            Swal.fire('Terhapus!', res.message, 'success'); 
+            loadAllUsers(); 
+          } else { 
+            Swal.fire('Gagal', res.error, 'error'); 
+          }
         });
       }
     });
@@ -205,9 +235,15 @@
       tanggalMulai: document.getElementById('tanggalMulai').value,
       jamOperasional: document.getElementById('jamOperasional').value
     };
-    fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) })
+
+    Swal.fire({ title: 'Memperbarui Konfigurasi...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+
+    fetch(WEB_APP_URL, { method: "POST", mode: "cors", body: JSON.stringify(payload) })
     .then(res => res.json())
-    .then(res => { if(res.success) Swal.fire('Berhasil!', res.message, 'success'); });
+    .then(res => { 
+      Swal.close();
+      if(res.success) Swal.fire('Berhasil!', res.message, 'success'); 
+    });
   });
 
   function prosesLogout() { localStorage.clear(); location.reload(); }
