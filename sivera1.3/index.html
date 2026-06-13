@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SPMB SMP Negeri 1 Moga</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link class="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @keyframes fadeIn { 
         from { opacity: 0; transform: translateY(15px); } 
@@ -18,6 +18,21 @@
       100% { transform: translateY(0); }
     }
     .animate-float { animation: floatAnim 3s ease-in-out infinite; }
+
+    /* PERBAIKAN ANIMASI: Jalur ngeroll mulus untuk 4 baris (3 konten asli + 1 kloning) */
+    @keyframes slideUp {
+      0%, 20% { transform: translateY(0); }
+      25%, 45% { transform: translateY(-25%); }
+      50%, 70% { transform: translateY(-50%); }
+      75%, 95% { transform: translateY(-75%); }
+      100% { transform: translateY(0); }
+    }
+    .animate-ticker {
+      animation: slideUp 16s linear infinite; /* Menggunakan linear agar transisi perputaran konstan */
+    }
+    .animate-ticker:hover {
+      animation-play-state: paused;
+    }
   </style>
 </head>
 <body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col justify-between select-none">
@@ -34,11 +49,31 @@
   </header>
 
   <main class="container mx-auto p-4 flex-grow max-w-md flex flex-col justify-center">
-    <div id="broadcastBox" class="hidden bg-amber-50 border-2 border-amber-400 p-4 rounded-xl mb-4 shadow-sm flex items-start gap-3 animate-fade-in">
+    
+    <div id="broadcastBox" class="hidden bg-amber-50 border-2 border-amber-400 p-4 rounded-xl mb-3 shadow-sm flex items-start gap-3 animate-fade-in">
       <img src="https://yanuar-moga.github.io/app/sivera1.3/assets/info.png" alt="Info" class="w-8 h-8 object-contain mt-0.5 shrink-0">
       <div>
         <h4 class="font-black text-xs text-blue-950 uppercase tracking-wider">Pengumuman:</h4>
         <p id="broadcastText" class="text-xs text-zinc-700 mt-0.5 leading-relaxed"></p>
+      </div>
+    </div>
+
+    <div class="bg-blue-900 text-white px-4 py-2.5 rounded-xl mb-4 border border-blue-950 shadow-sm overflow-hidden h-[42px] animate-fade-in flex items-center">
+      <div class="relative flex-grow h-full overflow-hidden text-[11px] font-bold text-center">
+        <div class="absolute top-0 left-0 w-full h-[400%] animate-ticker flex flex-col">
+          <div class="h-1/4 flex items-center justify-center text-zinc-100 truncate">
+            Calon murid wajib sudah melakukan pembuatan akun
+          </div>
+          <div class="h-1/4 flex items-center justify-center text-amber-300 truncate">
+            Antrian berlaku 1 hari. 1 Antrian untuk 1 Nomor NISN
+          </div>
+          <div class="h-1/4 flex items-center justify-center text-zinc-100 truncate">
+            Pengambilan antrean online dimulai hari Selasa, 16 Juni 2026
+          </div>
+          <div class="h-1/4 flex items-center justify-center text-zinc-100 truncate">
+            Calon murid wajib sudah melakukan pembuatan akun
+          </div>
+        </div>
       </div>
     </div>
 
@@ -53,17 +88,26 @@
 
     <div id="developerModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
       <div class="bg-white rounded-2xl max-w-xs w-full p-6 text-center shadow-2xl border-t-8 border-blue-900 transform scale-95 transition-all duration-300" id="devModalContent">
+        
         <div class="relative w-20 h-20 mx-auto mb-4 group">
           <div class="absolute inset-0 bg-blue-900 rounded-full blur-md opacity-40 animate-ping"></div>
           <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Logo Dev" class="relative w-20 h-20 rounded-full object-cover shadow-md border-2 border-amber-400 transform transition-all duration-700 group-hover:rotate-[360deg] group-hover:scale-110 ease-out animate-float">
         </div>
-        <h3 class="text-sm font-black text-blue-900 uppercase tracking-wide">Sistem Verifikasi Antrean</h3>
-        <p class="text-[11px] font-bold text-zinc-500 mt-0.5 tracking-wider uppercase">SIVERA V 1.3</p>
-        <div class="my-4 bg-zinc-50 p-2.5 rounded-xl border border-zinc-200">
-          <span class="block text-[10px] text-zinc-400 font-bold uppercase">Build Version</span>
-          <span class="text-xs font-mono font-bold text-zinc-700">12 Juni 2026</span>
+
+        <h3 class="text-sm font-black text-blue-900 uppercase tracking-wide">SISTEM VERIVIKASI ANTREAN</h3>
+        
+        <p class="text-[12px] font-bold text-zinc-700 mt-1 tracking-wider uppercase">SIVERA V 1.3</p>
+        
+        <div class="text-[11px] font-mono font-bold text-zinc-500 mt-0.5">Build 12 Juni 2026</div>
+        
+        <hr class="my-4 border-zinc-200">
+
+        <div class="text-left space-y-1 bg-zinc-50 p-3 rounded-xl border border-zinc-200 text-xs font-bold text-zinc-700">
+          <div>Dev by MB</div>
+          <div>Contac : <a href="mailto:yanuar.b@gmail.com" class="text-blue-800 hover:underline">yanuar.b@gmail.com</a></div>
         </div>
-        <button onclick="tutupModalDeveloper()" class="w-full bg-zinc-700 hover:bg-zinc-800 text-white font-black text-xs py-2.5 rounded-xl cursor-pointer transition uppercase tracking-wider shadow-md">Tutup Informasi</button>
+
+        <button onclick="tutupModalDeveloper()" class="w-full bg-zinc-750 hover:bg-zinc-800 text-white font-black text-xs py-2.5 rounded-xl cursor-pointer transition uppercase tracking-wider shadow-md mt-4">Tutup</button>
       </div>
     </div>
 
@@ -129,11 +173,12 @@
           <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Nama Lengkap</span><span id="t_nama" class="font-black text-white uppercase text-right max-w-[190px] truncate"></span></div>
           <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">NISN</span><span id="t_nisn" class="font-mono font-bold text-white"></span></div>
           <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Jenis Kelamin</span><span id="t_jk" class="font-bold text-white"></span></div>
-          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Tanggal Verifikasi</span><span id="t_tgl" class="font-bold text-white text-right"></span></div>
+          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Tanggal Verifikasi Berkas</span><span id="t_tgl" class="font-bold text-white text-right"></span></div>
           <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Jam Operasional</span><span id="t_jam" class="font-bold text-amber-400"></span></div>
+          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Tanggal Pendaftaran</span><span id="t_tgl_daftar" class="font-bold text-zinc-300 text-right text-[11px]"></span></div>
         </div>
         <div class="text-center pt-2 border-t border-blue-900">
-          <p class="text-[10px] font-bold text-amber-400 italic leading-relaxed">*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Fisik</p>
+          <p class="text-[10px] font-bold text-amber-400 italic leading-relaxed">*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Berkas</p>
         </div>
       </div>
       <div class="flex gap-3">
@@ -150,6 +195,27 @@
   <script>
     var API_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
     var num1, num2, correctAnswer;
+    var jamOperasionalGlobal = "08:00 - 12:00 WIB";
+
+    function formatTanggalLengkap(inputData) {
+      if (!inputData) return "-";
+      var d = new Date(inputData);
+      if (isNaN(d.getTime())) { d = new Date(); }
+
+      var daftarHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      var daftarBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+      var hari = daftarHari[d.getDay()];
+      var tanggal = String(d.getDate()).padStart(2, '0');
+      var bulan = daftarBulan[d.getMonth()];
+      var tahun = d.getFullYear();
+      
+      var jam = String(d.getHours()).padStart(2, '0');
+      var menit = String(d.getMinutes()).padStart(2, '0');
+      var detik = String(d.getSeconds()).padStart(2, '0');
+
+      return hari + ", " + tanggal + " " + bulan + " " + tahun + " " + jam + ":" + menit + ":" + detik + " WIB";
+    }
 
     function generateCaptcha() {
       num1 = Math.floor(Math.random() * 10) + 6; 
@@ -157,34 +223,6 @@
       correctAnswer = num1 + num2;
       document.getElementById('captchaQuestion').innerText = String(num1) + " + " + String(num2) + " =";
       document.getElementById('captchaAnswer').value = "";
-    }
-
-    // FUNGSI CARI TIKET (FUNGSI BARU)
-    function cariTiket() {
-      var nisn = document.getElementById('searchNisn').value;
-      if (!nisn) { showAlert("Error", "Masukkan NISN terlebih dahulu", "error"); return; }
-      
-      fetch(API_URL, { 
-        method: "POST", 
-        body: JSON.stringify({ action: "cariTiket", nisn: nisn }) 
-      })
-      .then(function(res) { return res.json(); })
-      .then(function(res) {
-        if (res.success) {
-          document.getElementById('t_no').innerText = String(res.noAntrean).padStart(3, '0');
-          document.getElementById('t_nama').innerText = res.nama;
-          document.getElementById('t_nisn').innerText = res.nisn;
-          document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
-          document.getElementById('t_tgl').innerText = res.tanggalVerif;
-          document.getElementById('t_loket').innerText = res.loket.toUpperCase();
-          document.getElementById('t_jam').innerText = res.jam;
-          
-          document.getElementById('formSection').classList.add('hidden');
-          document.getElementById('ticketSection').classList.remove('hidden');
-        } else {
-          showAlert("Gagal", res.error, "error");
-        }
-      });
     }
 
     window.onload = function() {
@@ -196,8 +234,43 @@
             document.getElementById('broadcastText').innerText = data.message;
             document.getElementById('broadcastBox').classList.remove('hidden');
           }
-        });
+        }).catch(err => console.log("Gagal memuat broadcast"));
+
+      fetch(API_URL + "?action=getConfig")
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+          if (data.jamOperasional) { jamOperasionalGlobal = data.jamOperasional; }
+        }).catch(err => console.log("Gagal memuat config jam operasional"));
     };
+
+    function cariTiket() {
+      var nisn = document.getElementById('searchNisn').value;
+      if (!nisn) { showAlert("Error", "Masukkan NISN terlebih dahulu", "error"); return; }
+      
+      var searchButton = document.querySelector("button[onclick='cariTiket()']");
+      searchButton.disabled = true; searchButton.innerText = "...";
+
+      fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "cariTiket", nisn: nisn }) })
+      .then(function(res) { return res.json(); })
+      .then(function(res) {
+        searchButton.disabled = false; searchButton.innerText = "CARI";
+
+        if (res.success) {
+          document.getElementById('t_no').innerText = String(res.noAntrean).padStart(3, '0');
+          document.getElementById('t_nama').innerText = res.nama;
+          document.getElementById('t_nisn').innerText = res.nisn;
+          document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
+          document.getElementById('t_tgl').innerText = res.tanggalVerif; 
+          document.getElementById('t_jam').innerText = res.jamConfig || res.jam || jamOperasionalGlobal;
+          document.getElementById('t_tgl_daftar').innerText = formatTanggalLengkap(res.tanggalDaftar);
+          
+          document.getElementById('formSection').classList.add('hidden');
+          document.getElementById('ticketSection').classList.remove('hidden');
+        } else {
+          showAlert("Gagal", res.error, "error");
+        }
+      }).catch(() => { searchButton.disabled = false; searchButton.innerText = "CARI"; });
+    }
 
     function showAlert(title, msg, type) {
       var box = document.getElementById('customAlert');
@@ -215,12 +288,10 @@
       event.preventDefault();
       if (parseInt(document.getElementById('captchaAnswer').value) !== correctAnswer) {
         showAlert("Verifikasi Gagal!", "Hasil perhitungan matematika salah.", "error");
-        generateCaptcha();
-        return;
+        generateCaptcha(); return;
       }
       var submitButton = document.getElementById('btnSubmit');
-      submitButton.disabled = true;
-      submitButton.innerText = "Memproses Antrean...";
+      submitButton.disabled = true; submitButton.innerText = "Memproses Antrean...";
       
       var jk = document.querySelector('input[name="jk"]:checked') ? document.querySelector('input[name="jk"]:checked').value : "-";
       var payload = { nama: document.getElementById('nama').value, nisn: document.getElementById('nisn').value, jk: jk };
@@ -233,61 +304,67 @@
             document.getElementById('t_nama').innerText = res.nama;
             document.getElementById('t_nisn').innerText = res.nisn;
             document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
-            document.getElementById('t_tgl').innerText = res.tanggalVerif;
+            document.getElementById('t_tgl').innerText = res.tanggalVerif; 
             document.getElementById('t_loket').innerText = res.loket.toUpperCase();
-            document.getElementById('t_jam').innerText = res.jam;
+            document.getElementById('t_jam').innerText = res.jamConfig || jamOperasionalGlobal;
+            document.getElementById('t_tgl_daftar').innerText = formatTanggalLengkap(res.tanggalDaftar || new Date());
+            
             showAlert("Sukses!", "Nomor antrean berhasil diterbitkan.", "success");
             document.getElementById('formSection').classList.add('hidden');
             document.getElementById('ticketSection').classList.remove('hidden');
           } else {
             showAlert("Gagal!", res.error, "error");
-            submitButton.disabled = false;
-            submitButton.innerText = "Ambil Nomor Antrean";
+            submitButton.disabled = false; submitButton.innerText = "Ambil Nomor Antrean";
             generateCaptcha();
           }
-        });
+        }).catch(() => { submitButton.disabled = false; submitButton.innerText = "Ambil Nomor Antrean"; generateCaptcha(); });
     }
 
     function downloadTiketGambar() {
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
-      canvas.width = 500; canvas.height = 680;
+      
+      canvas.width = 500; canvas.height = 740; 
       ctx.fillStyle = "#020617"; ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.strokeStyle = "#d97706"; ctx.lineWidth = 6; ctx.strokeRect(3, 3, canvas.width - 6, canvas.height - 6);
-      ctx.fillStyle = "#fbbf24"; ctx.font = "bold 22px Arial, sans-serif"; ctx.textAlign = "center";
-      ctx.fillText("SMP NEGERI 1 MOGA", canvas.width / 2, 50);
-      ctx.fillStyle = "#94a3b8"; ctx.font = "bold 13px Arial, sans-serif"; ctx.fillText("BUKTI RESMI NOMOR ANTREAN PPDB", canvas.width / 2, 75);
-
-      var rawTgl = document.getElementById('t_tgl').innerText;
-      var bulan = { "January": "Januari", "February": "Februari", "March": "Maret", "April": "April", "May": "Mei", "June": "Juni", "July": "Juli", "August": "Agustus", "September": "September", "October": "Oktober", "November": "November", "December": "Desember" };
-      var tglIndo = rawTgl;
-      for (var en in bulan) { tglIndo = tglIndo.replace(new RegExp(en, 'gi'), bulan[en]); }
+      ctx.fillStyle = "#fbbf24"; ctx.font = "bold 22px Arial, sans-serif"; ctx.textBaseline = "top"; ctx.textAlign = "center";
+      ctx.fillText("SMP NEGERI 1 MOGA", canvas.width / 2, 40);
+      ctx.fillStyle = "#94a3b8"; ctx.font = "bold 13px Arial, sans-serif"; ctx.fillText("BUKTI RESMI NOMOR ANTREAN PPDB", canvas.width / 2, 70);
 
       ctx.strokeStyle = "#1e3a8a"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(30, 95); ctx.lineTo(470, 95); ctx.stroke();
-      ctx.fillStyle = "rgba(30, 58, 138, 0.4)"; ctx.fillRect(50, 120, 400, 160);
-      ctx.strokeStyle = "#2563eb"; ctx.strokeRect(50, 120, 400, 160);
-      ctx.fillStyle = "#60a5fa"; ctx.font = "bold 14px Arial, sans-serif"; ctx.fillText("NOMOR ANTREAN ANDA", canvas.width / 2, 150);
-      ctx.fillStyle = "#fbbf24"; ctx.font = "900 70px monospace"; ctx.fillText(document.getElementById('t_no').innerText, canvas.width / 2, 220);
-      ctx.fillStyle = "#ffffff"; ctx.font = "bold 15px Arial, sans-serif"; ctx.fillText(document.getElementById('t_loket').innerText, canvas.width / 2, 260);
+      ctx.fillStyle = "rgba(30, 58, 138, 0.4)"; ctx.fillRect(50, 115, 400, 155);
+      ctx.strokeStyle = "#2563eb"; ctx.strokeRect(50, 115, 400, 155);
+      
+      ctx.fillStyle = "#60a5fa"; ctx.font = "bold 14px Arial, sans-serif"; ctx.fillText("NOMOR ANTREAN ANDA", canvas.width / 2, 130);
+      ctx.fillStyle = "#fbbf24"; ctx.font = "900 65px monospace"; ctx.fillText(document.getElementById('t_no').innerText, canvas.width / 2, 160);
+      ctx.fillStyle = "#ffffff"; ctx.font = "bold 15px Arial, sans-serif"; ctx.fillText(document.getElementById('t_loket').innerText, canvas.width / 2, 235);
 
       var dataSiswa = [
         { label: "Nama Lengkap:", val: document.getElementById('t_nama').innerText },
         { label: "Nomor NISN:", val: document.getElementById('t_nisn').innerText },
         { label: "Jenis Kelamin:", val: document.getElementById('t_jk').innerText },
-        { label: "Tanggal Verif:", val: tglIndo },
-        { label: "Jam Pelayanan:", val: document.getElementById('t_jam').innerText }
+        { label: "Tanggal Verif Berkas:", val: document.getElementById('t_tgl').innerText },
+        { label: "Jam Pelayanan:", val: document.getElementById('t_jam').innerText },
+        { label: "Waktu Mendaftar:", val: document.getElementById('t_tgl_daftar').innerText }
       ];
       
-      var letakY = 330;
+      var letakY = 300;
+      ctx.textBaseline = "alphabetic";
       for (var i = 0; i < dataSiswa.length; i++) {
-        ctx.fillStyle = "#94a3b8"; ctx.textAlign = "left"; ctx.fillText(dataSiswa[i].label, 50, letakY);
-        ctx.fillStyle = "#ffffff"; ctx.textAlign = "right"; ctx.fillText(dataSiswa[i].val.toUpperCase(), 450, letakY);
+        ctx.fillStyle = "#94a3b8"; ctx.textAlign = "left"; ctx.font = "14px Arial, sans-serif";
+        ctx.fillText(dataSiswa[i].label, 50, letakY);
+        
+        ctx.fillStyle = (i === 4) ? "#fbbf24" : "#ffffff"; ctx.textAlign = "right"; 
+        ctx.font = (i === 5) ? "bold 11px Arial, sans-serif" : "bold 14px Arial, sans-serif";
+        
+        ctx.fillText(dataSiswa[i].val.toUpperCase(), 450, letakY);
         ctx.strokeStyle = "rgba(30, 58, 138, 0.2)"; ctx.beginPath(); ctx.moveTo(50, letakY + 10); ctx.lineTo(450, letakY + 10); ctx.stroke();
         letakY += 45;
       }
-      ctx.fillStyle = "#f59e0b"; ctx.font = "italic bold 12px Arial, sans-serif"; ctx.textAlign = "center";
-      ctx.fillText("*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Fisik", canvas.width / 2, 590);
-      ctx.fillStyle = "#475569"; ctx.font = "900 11px Arial, sans-serif"; ctx.fillText("SIVERA WEB AUTOMATION SYSTEM v2.0", canvas.width / 2, 640);
+      
+      ctx.fillStyle = "#f59e0b"; ctx.font = "italic bold 11px Arial, sans-serif"; ctx.textAlign = "center";
+      ctx.fillText("*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Berkas", canvas.width / 2, 660);
+      ctx.fillStyle = "#475569"; ctx.font = "900 11px Arial, sans-serif"; ctx.fillText("SIVERA WEB AUTOMATION SYSTEM v2.0", canvas.width / 2, 700);
       
       var link = document.createElement('a');
       link.download = 'TIKET_SPMB_' + document.getElementById('t_nisn').innerText + '.png';
