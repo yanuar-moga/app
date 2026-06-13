@@ -8,42 +8,63 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
-    body { background: #f0f2f5; padding: 20px; }
-    .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    body { background: #f0f2f5; padding: 20px; display: flex; flex-direction: column; min-height: 100vh; }
+    
+    /* Layout Login Wrapper */
+    .login-wrapper { max-width: 450px; width: 100%; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; }
+    .login-header { background: #1e3a8a; color: white; padding: 25px 20px; text-align: center; border-bottom: 4px solid #d4af37; }
+    .login-header h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+    .login-header p { font-size: 12px; color: #f3f4f6; margin-top: 4px; }
+    .login-box { padding: 30px; text-align: center; }
+    .login-box h3 { font-size: 14px; color: #1e3a8a; margin-bottom: 15px; text-transform: uppercase; font-weight: 700; }
+    .login-footer { background: #f8fafc; text-align: center; padding: 15px; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0; font-weight: 600; }
+    
+    /* Layout Utama Setelah Login */
+    .container { max-width: 900px; margin: 20px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; }
     .header-panel { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1e3a8a; padding-bottom: 15px; margin-bottom: 20px; }
-    h2 { color: #1e3a8a; }
-    .user-info { font-weight: 600; color: #4b5563; background: #e5e7eb; padding: 6px 15px; border-radius: 20px; font-size: 13px;}
+    h2 { color: #1e3a8a; font-size: 20px; font-weight: 700; }
+    .user-info { font-weight: 600; color: #1e3a8a; background: #e8f0fe; padding: 6px 15px; border-radius: 20px; font-size: 13px; border: 1px solid #bfdbfe;}
     .btn-logout { background: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; margin-left: 10px;}
-    .login-box { max-width: 400px; margin: 100px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-center }
-    .login-box h3 { margin-bottom: 20px; color: #1e3a8a;}
-    input[type="password"], input[type="text"] { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; }
+    .btn-logout:hover { background: #b91c1c; }
+    input[type="password"] { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; text-align: center; font-size: 14px; }
     .btn-primary { background: #1e3a8a; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 600;}
+    .btn-primary:hover { background: #152a66; }
+    
     .table-container { width: 100%; overflow-x: auto; margin-top: 20px; }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;}
     th, td { padding: 12px; border-bottom: 1px solid #e5e7eb; }
-    th { background: #f3f4f6; color: #1e3a8a; font-weight: 600; }
+    th { background: #f8fafc; color: #1e3a8a; font-weight: 600; }
     .btn-verify { background: #10b981; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: 600;}
     .btn-verify:hover { background: #059669;}
   </style>
 </head>
 <body>
 
-<div id="loginSection" class="login-box">
-  <h3>🔒 Login Verifikator SIVERA</h3>
-  <input type="password" id="verifierPin" placeholder="Masukkan PIN Verifikator Anda" maxlength="6">
-  <button class="btn-primary" onclick="prosesLogin()">Masuk Sistem</button>
+<div id="loginWrapper" class="login-wrapper">
+  <div class="login-header">
+    <h1>SMP NEGERI 1 MOGA</h1>
+    <p>Sistem Informasi Verifikasi Antrean Berkas Fisik</p>
+  </div>
+  <div class="login-box">
+    <h3>🔒 LOGIN PETUGAS VERIFIKATOR</h3>
+    <input type="password" id="verifierPin" placeholder="Masukkan PIN Verifikator Anda" maxlength="6">
+    <button class="btn-primary" onclick="prosesLogin()">Masuk Sistem</button>
+  </div>
+  <div class="login-footer">
+    SIVERA v2.0 &copy; 2026 - SMP Negeri 1 Moga
+  </div>
 </div>
 
 <div id="mainSection" class="container" style="display: none;">
   <div class="header-panel">
     <h2>📋 Meja Kerja Verifikasi Berkas</h2>
     <div>
-      <span class="user-info" id="displayUser">Verifikator</span>
+      <span class="user-info" id="displayUser">👤 Verifikator</span>
       <button class="btn-logout" onclick="prosesLogout()">Keluar</button>
     </div>
   </div>
 
-  <p style="color:#666; margin-bottom:15px;">Daftar antrean calon pendaftar yang membutuhkan validasi dokumen fisik:</p>
+  <p style="color:#64748b; margin-bottom:15px; font-size: 14px;">Daftar antrean calon pendaftar yang membutuhkan validasi dokumen fisik:</p>
   
   <div class="table-container">
     <table>
@@ -58,7 +79,7 @@
       </thead>
       <tbody id="antreanTableBody">
         <tr>
-          <td colspan="5" style="text-align:center; color:#999;">Memuat data antrean dari server...</td>
+          <td colspan="5" style="text-align:center; color:#999;">Memuat data antrean dari server cloud...</td>
         </tr>
       </tbody>
     </table>
@@ -67,42 +88,57 @@
 
 <script>
   const API_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
-  
-  // Mapping PIN Akun Verifikator
-  const PIN_MAP = {
-    "1111": "Verifikator 1",
-    "2222": "Verifikator 2",
-    "3333": "Verifikator 3",
-    "4444": "Verifikator 4",
-    "5555": "Verifikator 5"
-  };
 
   // Cek Status Login Saat Reload (Persistensi Kerja)
   window.addEventListener('DOMContentLoaded', () => {
     const isLoggedIn = localStorage.getItem('sivera_logged_in');
-    const userRole = localStorage.getItem('sivera_user_role');
+    const savedName = localStorage.getItem('sivera_user_name');
+    const roleType = localStorage.getItem('sivera_role_type');
     
-    if (isLoggedIn === 'true' && userRole && userRole.startsWith('Verifikator')) {
-      tampilkanHalamanUtama(userRole);
+    if (isLoggedIn === 'true' && savedName && roleType === 'verifier') {
+      tampilkanHalamanUtama(savedName);
     }
   });
 
   function prosesLogin() {
     const pinInput = document.getElementById('verifierPin').value;
-    if (PIN_MAP[pinInput]) {
-      const namaPetugas = PIN_MAP[pinInput];
-      localStorage.setItem('sivera_logged_in', 'true');
-      localStorage.setItem('sivera_user_role', namaPetugas);
-      tampilkanHalamanUtama(namaPetugas);
-    } else {
-      Swal.fire('Akses Ditolak', 'PIN Verifikator yang Anda masukkan salah!', 'error');
+    
+    if (!pinInput) {
+      Swal.fire('Perhatian', 'Silakan isi PIN Akses Anda terlebih dahulu!', 'warning');
+      return;
     }
+
+    Swal.fire({ title: 'Memvalidasi Akun...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+
+    // Request Login Dinamis ke Spreadsheet via Cloud GAS
+    fetch(API_URL, {
+      method: "POST",
+      mode: "cors",
+      body: JSON.stringify({ action: "loginValidation", pin: pinInput, expectedRole: "verifier" })
+    })
+    .then(res => res.json())
+    .then(res => {
+      Swal.close();
+      if (res.success) {
+        // Menyimpan status login dan Nama Asli Verifikator secara dinamis dari sheet
+        localStorage.setItem('sivera_logged_in', 'true');
+        localStorage.setItem('sivera_user_name', res.username); 
+        localStorage.setItem('sivera_role_type', 'verifier');
+        tampilkanHalamanUtama(res.username);
+      } else {
+        Swal.fire('Akses Ditolak', res.error, 'error');
+      }
+    })
+    .catch(err => {
+      Swal.close();
+      Swal.fire('Sistem Error', 'Gagal memvalidasi ke server. Pastikan Web App Anda aktif dan ter-deploy.', 'error');
+    });
   }
 
-  function tampilkanHalamanUtama(role) {
-    document.getElementById('loginSection').style.display = 'none';
+  function tampilkanHalamanUtama(namaPetugas) {
+    document.getElementById('loginWrapper').style.display = 'none';
     document.getElementById('mainSection').style.display = 'block';
-    document.getElementById('displayUser').innerText = `👤 ${role}`;
+    document.getElementById('displayUser').innerText = `👤 ${namaPetugas}`;
     loadDataAntrean();
   }
 
@@ -118,48 +154,58 @@
         const tbody = document.getElementById('antreanTableBody');
         tbody.innerHTML = "";
         if(data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Tidak ada antrean tersisa yang perlu diverifikasi.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 30px; color: #64748b;">Tidak ada antrean tersisa yang perlu diverifikasi.</td></tr>`;
           return;
         }
         data.forEach(row => {
           tbody.innerHTML += `
             <tr>
-              <td style="font-weight:bold; color:#1e3a8a;">${String(row.noAntrean).padStart(3,'0')}</td>
-              <td>${row.nisn}</td>
-              <td style="text-transform:uppercase; font-weight:600;">${row.nama}</td>
-              <td>${row.jk}</td>
-              <td><button class="btn-verify" onclick="eksekusiVerifikasi('${row.nisn}')">Setujui & Verif</button></td>
+              <td style="font-weight:700; color:#1e3a8a;">${String(row.noAntrean).padStart(3,'0')}</td>
+              <td style="font-family: mono;">${row.nisn}</td>
+              <td style="text-transform:uppercase; font-weight:600; color:#334155;">${row.nama}</td>
+              <td><span style="background: #f1f5f9; padding: 2px 8px; border-radius: 4px; font-weight: 600;">${row.jk}</span></td>
+              <td><button class="btn-verify" onclick="eksekusiVerifikasi('${row.nisn}', '${row.nama}')">Setujui & Verif</button></td>
             </tr>`;
         });
-      }).catch(() => {
-        document.getElementById('antreanTableBody').innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Gagal terhubung ke database cloud.</td></tr>`;
+      }).catch((err) => {
+        console.error(err);
+        document.getElementById('antreanTableBody').innerHTML = `<tr><td colspan="5" style="text-align:center; color:#dc2626; font-weight:600; padding:20px;">Gagal terhubung ke database cloud. Hubungi Admin Utama.</td></tr>`;
       });
   }
 
-  function eksekusiVerifikasi(nisnTarget) {
-    const petugas = localStorage.getItem('sivera_user_role');
+  function eksekusiVerifikasi(nisnTarget, namaSiswa) {
+    const petugasAktif = localStorage.getItem('sivera_user_name');
+    
     Swal.fire({
       title: 'Verifikasi Berkas?',
-      text: "Pastikan berkas fisik siswa sesuai dengan data entri digital.",
+      text: `Setujui keabsahan berkas fisik dari ${namaSiswa}? Tindakan ini akan dicatat atas nama petugas: ${petugasAktif}`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#10b981',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Ya, Valid!'
+      cancelButtonColor: '#64748b',
+      confirmButtonText: 'Ya, Cocok & Valid!'
     }).then((result) => {
       if (result.isConfirmed) {
+        Swal.fire({ title: 'Menyimpan Verifikasi...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+
         fetch(API_URL, {
           method: "POST",
-          body: JSON.stringify({ action: "verifikasiSiswa", nisn: nisnTarget, verifikator: petugas })
+          mode: "cors",
+          body: JSON.stringify({ action: "verifikasiSiswa", nisn: nisnTarget, verifikator: petugasAktif })
         })
         .then(res => res.json())
         .then(res => {
+          Swal.close();
           if(res.success) {
-            Swal.fire('Berhasil!', 'Siswa berhasil diverifikasi oleh ' + petugas, 'success');
+            Swal.fire('Berhasil!', `Berkas ${namaSiswa} telah sah diverifikasi oleh ${petugasAktif}.`, 'success');
             loadDataAntrean();
           } else {
             Swal.fire('Gagal!', res.error, 'error');
           }
+        })
+        .catch(err => {
+          Swal.close();
+          Swal.fire('Sistem Error', 'Gagal mengirimkan instruksi verifikasi ke server cloud.', 'error');
         });
       }
     });
