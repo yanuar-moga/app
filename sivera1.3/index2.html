@@ -53,29 +53,26 @@
 
     <div id="developerModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
       <div class="bg-white rounded-2xl max-w-xs w-full p-6 text-center shadow-2xl border-t-8 border-blue-900 transform scale-95 transition-all duration-300" id="devModalContent">
+        
         <div class="relative w-20 h-20 mx-auto mb-4 group">
           <div class="absolute inset-0 bg-blue-900 rounded-full blur-md opacity-40 animate-ping"></div>
           <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Logo Dev" class="relative w-20 h-20 rounded-full object-cover shadow-md border-2 border-amber-400 transform transition-all duration-700 group-hover:rotate-[360deg] group-hover:scale-110 ease-out animate-float">
         </div>
+
         <h3 class="text-sm font-black text-blue-900 uppercase tracking-wide">SISTEM VERIVIKASI ANTREAN</h3>
-        <p class="text-[11px] font-bold text-zinc-500 mt-0.5 tracking-wider uppercase">SIVERA V 1.3</p>
         
-        <div class="my-3 bg-blue-50/60 p-3 rounded-xl border border-blue-100 text-left space-y-1.5">
-          <div class="flex items-center gap-2 text-zinc-700 text-xs font-semibold">
-            <i class="fa-solid fa-code text-blue-900 w-4 text-center"></i>
-            <span>Dev by <span class="font-bold text-blue-950">MB</span></span>
-          </div>
-          <div class="flex items-center gap-2 text-zinc-700 text-xs font-semibold">
-            <i class="fa-solid fa-envelope text-blue-900 w-4 text-center"></i>
-            <span>Contac : <a href="mailto:yanuar.b@gmail.com" class="hover:underline text-blue-800 break-all font-bold">yanuar.b@gmail.com</a></span>
-          </div>
+        <p class="text-[12px] font-bold text-zinc-700 mt-1 tracking-wider uppercase">SIVERA V 1.3</p>
+        
+        <div class="text-[11px] font-mono font-bold text-zinc-500 mt-0.5">Build 12 Juni 2026</div>
+        
+        <hr class="my-4 border-zinc-200">
+
+        <div class="text-left space-y-1 bg-zinc-50 p-3 rounded-xl border border-zinc-200 text-xs font-bold text-zinc-700">
+          <div>Dev by MB</div>
+          <div>Contac : <a href="mailto:yanuar.b@gmail.com" class="text-blue-800 hover:underline">yanuar.b@gmail.com</a></div>
         </div>
 
-        <div class="my-3 bg-zinc-50 p-2.5 rounded-xl border border-zinc-200">
-          <span class="block text-[10px] text-zinc-400 font-bold uppercase">Build Version</span>
-          <span class="text-xs font-mono font-bold text-zinc-700">12 Juni 2026</span>
-        </div>
-        <button onclick="tutupModalDeveloper()" class="w-full bg-zinc-700 hover:bg-zinc-800 text-white font-black text-xs py-2.5 rounded-xl cursor-pointer transition uppercase tracking-wider shadow-md">Tutup</button>
+        <button onclick="tutupModalDeveloper()" class="w-full bg-zinc-750 hover:bg-zinc-800 text-white font-black text-xs py-2.5 rounded-xl cursor-pointer transition uppercase tracking-wider shadow-md mt-4">Tutup</button>
       </div>
     </div>
 
@@ -200,7 +197,10 @@
           document.getElementById('t_nama').innerText = res.nama;
           document.getElementById('t_nisn').innerText = res.nisn;
           document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
+          
+          // Merujuk ke tanggalVerif dari database Apps Script (B4 config)
           document.getElementById('t_tgl').innerText = ubahKeBulanIndo(res.tanggalVerif);
+          
           document.getElementById('t_loket').innerText = res.loket.toUpperCase();
           document.getElementById('t_jam').innerText = res.jam;
           
@@ -258,7 +258,11 @@
             document.getElementById('t_nama').innerText = res.nama;
             document.getElementById('t_nisn').innerText = res.nisn;
             document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
+            
+            // PERBAIKAN UTAMA: Mengambil nilai 'res.tanggalVerif' asli dari backend Apps Script (cell B4 Sheet config)
+            // Bukan lagi mengambil tanggal waktu sekarang buatan browser.
             document.getElementById('t_tgl').innerText = ubahKeBulanIndo(res.tanggalVerif);
+            
             document.getElementById('t_loket').innerText = res.loket.toUpperCase();
             document.getElementById('t_jam').innerText = res.jam;
             showAlert("Sukses!", "Nomor antrean berhasil diterbitkan.", "success");
@@ -305,7 +309,7 @@
       for (var i = 0; i < dataSiswa.length; i++) {
         ctx.fillStyle = "#94a3b8"; ctx.textAlign = "left"; ctx.fillText(dataSiswa[i].label, 50, letakY);
         ctx.fillStyle = "#ffffff"; ctx.textAlign = "right"; ctx.fillText(dataSiswa[i].val.toUpperCase(), 450, letakY);
-        ctx.strokeStyle = "rgba(30, 58, 138, 0.2)"; ctx.beginPath(); ctx.moveTo(50, letakY + 10); ctx.lineTo(450, letakY + 10); ctx.stroke();
+        ctx.strokeStyle = "rgba(30, 58, 138, 0.2)"; ctx.beginPath(); ctx.moveTo(50, letakY + 10); ctx.lineTo(450, letakY + 10); stroke();
         letakY += 45;
       }
       ctx.fillStyle = "#f59e0b"; ctx.font = "italic bold 12px Arial, sans-serif"; ctx.textAlign = "center";
