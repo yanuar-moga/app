@@ -13,7 +13,7 @@
     }
     .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
     
-    /* Animasi Baru Transisi Slide Up Per Baris untuk Ticker Text */
+    /* Animasi Transisi Slide Up Per Baris untuk Ticker Text */
     .ticker-item {
       opacity: 0;
       transform: translateY(20px);
@@ -58,14 +58,12 @@
       </div>
     </div>
 
-    <!-- Ticker Box Dengan Desain Sempurna Di Tengah -->
     <div class="bg-blue-900 text-white px-4 rounded-xl mb-4 border border-blue-950 shadow-md relative h-12 animate-fade-in flex items-center justify-center overflow-hidden">
       <div id="tickerContainer" class="relative w-full h-full text-[11px] font-bold text-center tracking-wide">
         <div class="ticker-item active text-zinc-300 italic">Memuat informasi antrean...</div>
       </div>
     </div>
 
-    <!-- Custom System Alert Box -->
     <div id="customAlert" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div class="bg-white rounded-2xl max-w-xs w-full p-5 text-center shadow-2xl border-t-8 border-blue-900 transform scale-95 transition-all">
         <div id="alertIcon" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center text-xl mb-3 shadow-md"></div>
@@ -75,11 +73,10 @@
       </div>
     </div>
 
-    <!-- MODAL POP UP FOOTER (INFORMASI APLIKASI SIVERA) -->
     <div id="aboutModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
       <div class="bg-white rounded-2xl max-w-xs w-full p-6 text-center shadow-2xl border-b-8 border-amber-400">
         <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Logo Sivera" class="w-20 h-20 object-cover mx-auto rounded-full p-1 border-2 border-blue-900 shadow-md mb-3">
-        <h3 class="text-xs font-black text-zinc-400 tracking-widest uppercase">SISTEMVERIVIKASI ANTREAN</h3>
+        <h3 class="text-xs font-black text-zinc-400 tracking-widest uppercase">SISTEM VERIFIKASI ANTREAN</h3>
         <h2 class="text-xl font-black text-blue-950 my-0.5 tracking-wide">SIVERA V 1.3</h2>
         <span class="inline-block bg-zinc-100 text-zinc-600 font-bold text-[10px] px-2.5 py-0.5 rounded-full mb-4 border border-zinc-200">Build 14 Juni 2026</span>
         
@@ -93,7 +90,6 @@
       </div>
     </div>
 
-    <!-- Form Section -->
     <div id="formSection" class="bg-white rounded-2xl p-5 shadow-xl border border-zinc-200 animate-fade-in">
       <div class="text-center mb-5">
         <h2 class="text-base font-black text-blue-900 uppercase tracking-wide">Formulir Loket Antrean</h2>
@@ -138,7 +134,6 @@
       </div>
     </div>
 
-    <!-- Ticket Section -->
     <div id="ticketSection" class="hidden space-y-4 animate-fade-in">
       <div id="ticketCard" class="bg-blue-950 rounded-2xl shadow-2xl p-5 border-2 border-blue-900 text-white relative">
         <div class="flex items-center gap-3 border-b border-blue-800 pb-4 mb-4">
@@ -172,7 +167,6 @@
     </div>
   </main>
 
-  <!-- FOOTER YANG BISA DIKLIK -->
   <footer onclick="openAboutModal()" class="text-center p-3.5 bg-zinc-200 hover:bg-zinc-300 active:bg-zinc-400 text-zinc-600 text-[10px] font-black tracking-widest uppercase border-t border-zinc-300 cursor-pointer transition shadow-sm">
     Aplikasi Sivera V 1.3
   </footer>
@@ -274,7 +268,6 @@
         var el = document.createElement('div');
         el.className = "ticker-item";
         el.innerText = text;
-        // Memberi variasi warna teks selang-seling agar menarik
         if (index % 2 === 0) {
           el.classList.add("text-zinc-100");
         } else {
@@ -287,7 +280,6 @@
       var currentIndex = 0;
       items[currentIndex].classList.add('active');
 
-      // Loop rotasi berkala setiap 4 detik
       setInterval(() => {
         var currentEl = items[currentIndex];
         currentEl.classList.remove('active');
@@ -321,7 +313,6 @@
           if (data.jamOperasional) { jamOperasionalGlobal = data.jamOperasional; }
         }).catch(err => console.log("Gagal memuat config jam"));
 
-      // Menarik data baris ke-7 mulai B7, C7, D7 secara dinamis dari skrip backend
       fetch(API_URL + "?action=getTickers")
         .then(res => res.json())
         .then(data => {
@@ -351,6 +342,7 @@
       .then(res => {
         searchButton.disabled = false; searchButton.innerText = "CARI";
         if (res.success) {
+          // Telah disinkronkan dengan return objek properti backend GAS versi baru
           document.getElementById('t_no').innerText = String(res.noAntrean).padStart(3, '0');
           document.getElementById('t_nama').innerText = res.nama;
           document.getElementById('t_nisn').innerText = res.nisn;
