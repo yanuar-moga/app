@@ -3,35 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SPMB SMP Negeri 1 Moga</title>
+  <title>Sistem Verifikasi Antrean - SIVERA V 1.3</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link class="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @keyframes fadeIn { 
-        from { opacity: 0; transform: translateY(15px); } 
+        from { opacity: 0; transform: translateY(12px); } 
         to { opacity: 1; transform: translateY(0); } 
     }
     .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
-    @keyframes floatAnim {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-      100% { transform: translateY(0); }
+    
+    /* Animasi Transisi Slide Up Per Baris untuk Ticker Text */
+    .ticker-item {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .animate-float { animation: floatAnim 3s ease-in-out infinite; }
-
-    /* PERBAIKAN ANIMASI: Jalur ngeroll mulus untuk 4 baris (3 konten asli + 1 kloning) */
-    @keyframes slideUp {
-      0%, 20% { transform: translateY(0); }
-      25%, 45% { transform: translateY(-25%); }
-      50%, 70% { transform: translateY(-50%); }
-      75%, 95% { transform: translateY(-75%); }
-      100% { transform: translateY(0); }
+    .ticker-item.active {
+      opacity: 1;
+      transform: translateY(0);
     }
-    .animate-ticker {
-      animation: slideUp 16s linear infinite; /* Menggunakan linear agar transisi perputaran konstan */
-    }
-    .animate-ticker:hover {
-      animation-play-state: paused;
+    .ticker-item.exit {
+      opacity: 0;
+      transform: translateY(-20px);
     }
   </style>
 </head>
@@ -58,22 +58,9 @@
       </div>
     </div>
 
-    <div class="bg-blue-900 text-white px-4 py-2.5 rounded-xl mb-4 border border-blue-950 shadow-sm overflow-hidden h-[42px] animate-fade-in flex items-center">
-      <div class="relative flex-grow h-full overflow-hidden text-[11px] font-bold text-center">
-        <div class="absolute top-0 left-0 w-full h-[400%] animate-ticker flex flex-col">
-          <div class="h-1/4 flex items-center justify-center text-zinc-100 truncate">
-            Calon murid wajib sudah melakukan pembuatan akun
-          </div>
-          <div class="h-1/4 flex items-center justify-center text-amber-300 truncate">
-            Antrian berlaku 1 hari. 1 Antrian untuk 1 Nomor NISN
-          </div>
-          <div class="h-1/4 flex items-center justify-center text-zinc-100 truncate">
-            Pengambilan antrean online dimulai hari Selasa, 16 Juni 2026
-          </div>
-          <div class="h-1/4 flex items-center justify-center text-zinc-100 truncate">
-            Calon murid wajib sudah melakukan pembuatan akun
-          </div>
-        </div>
+    <div class="bg-blue-900 text-white px-4 rounded-xl mb-4 border border-blue-950 shadow-md relative h-12 animate-fade-in flex items-center justify-center overflow-hidden">
+      <div id="tickerContainer" class="relative w-full h-full text-[11px] font-bold text-center tracking-wide">
+        <div class="ticker-item active text-zinc-300 italic">Memuat informasi antrean...</div>
       </div>
     </div>
 
@@ -86,28 +73,20 @@
       </div>
     </div>
 
-    <div id="developerModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-      <div class="bg-white rounded-2xl max-w-xs w-full p-6 text-center shadow-2xl border-t-8 border-blue-900 transform scale-95 transition-all duration-300" id="devModalContent">
+    <div id="aboutModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+      <div class="bg-white rounded-2xl max-w-xs w-full p-6 text-center shadow-2xl border-b-8 border-amber-400">
+        <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Logo Sivera" class="w-20 h-20 object-cover mx-auto rounded-full p-1 border-2 border-blue-900 shadow-md mb-3">
+        <h3 class="text-xs font-black text-zinc-400 tracking-widest uppercase">SISTEM VERIFIKASI ANTREAN</h3>
+        <h2 class="text-xl font-black text-blue-950 my-0.5 tracking-wide">SIVERA V 1.3</h2>
+        <span class="inline-block bg-zinc-100 text-zinc-600 font-bold text-[10px] px-2.5 py-0.5 rounded-full mb-4 border border-zinc-200">Build 14 Juni 2026</span>
         
-        <div class="relative w-20 h-20 mx-auto mb-4 group">
-          <div class="absolute inset-0 bg-blue-900 rounded-full blur-md opacity-40 animate-ping"></div>
-          <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Logo Dev" class="relative w-20 h-20 rounded-full object-cover shadow-md border-2 border-amber-400 transform transition-all duration-700 group-hover:rotate-[360deg] group-hover:scale-110 ease-out animate-float">
+        <div class="text-left bg-zinc-50 border border-zinc-200 rounded-xl p-3.5 space-y-2 text-xs mb-5 font-medium text-zinc-700">
+          <div class="flex items-center gap-2"><i class="fa-solid fa-code text-blue-900 w-4"></i> <span>Develop by <strong>MB</strong></span></div>
+          <div class="flex items-center gap-2"><i class="fa-solid fa-envelope text-blue-900 w-4"></i> <span>Contact: <a href="mailto:yanuar.b@gmail.com" class="text-blue-600 hover:underline">yanuar.b@gmail.com</a></span></div>
+          <div class="flex items-center gap-2"><i class="fa-solid fa-link text-blue-900 w-4"></i> <span>App: <a href="https://lynk.id/mb_dprint" target="_blank" class="text-blue-600 font-bold hover:underline">lynk.id/mb_dprint</a></span></div>
         </div>
-
-        <h3 class="text-sm font-black text-blue-900 uppercase tracking-wide">SISTEM VERIVIKASI ANTREAN</h3>
         
-        <p class="text-[12px] font-bold text-zinc-700 mt-1 tracking-wider uppercase">SIVERA V 1.3</p>
-        
-        <div class="text-[11px] font-mono font-bold text-zinc-500 mt-0.5">Build 12 Juni 2026</div>
-        
-        <hr class="my-4 border-zinc-200">
-
-        <div class="text-left space-y-1 bg-zinc-50 p-3 rounded-xl border border-zinc-200 text-xs font-bold text-zinc-700">
-          <div>Dev by MB</div>
-          <div>Contac : <a href="mailto:yanuar.b@gmail.com" class="text-blue-800 hover:underline">yanuar.b@gmail.com</a></div>
-        </div>
-
-        <button onclick="tutupModalDeveloper()" class="w-full bg-zinc-750 hover:bg-zinc-800 text-white font-black text-xs py-2.5 rounded-xl cursor-pointer transition uppercase tracking-wider shadow-md mt-4">Tutup</button>
+        <button onclick="closeAboutModal()" class="w-full bg-blue-900 hover:bg-blue-800 text-amber-400 font-black text-xs py-3 rounded-xl cursor-pointer transition uppercase tracking-wider shadow-md">Tutup</button>
       </div>
     </div>
 
@@ -173,9 +152,9 @@
           <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Nama Lengkap</span><span id="t_nama" class="font-black text-white uppercase text-right max-w-[190px] truncate"></span></div>
           <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">NISN</span><span id="t_nisn" class="font-mono font-bold text-white"></span></div>
           <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Jenis Kelamin</span><span id="t_jk" class="font-bold text-white"></span></div>
-          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Tanggal Verifikasi Berkas</span><span id="t_tgl" class="font-bold text-white text-right"></span></div>
-          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Jam Operasional</span><span id="t_jam" class="font-bold text-amber-400"></span></div>
-          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Tanggal Pendaftaran</span><span id="t_tgl_daftar" class="font-bold text-zinc-300 text-right text-[11px]"></span></div>
+          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Jadwal Verifikasi Berkas</span><span id="t_tgl" class="font-bold text-amber-400 text-right text-[11px] max-w-[190px]"></span></div>
+          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Jam Pelayanan</span><span id="t_jam" class="font-bold text-white"></span></div>
+          <div class="flex justify-between items-center border-b border-blue-900/60 pb-2"><span class="text-zinc-400 font-medium">Waktu Mendaftar</span><span id="t_tgl_daftar" class="font-bold text-zinc-300 text-right text-[11px] max-w-[190px]"></span></div>
         </div>
         <div class="text-center pt-2 border-t border-blue-900">
           <p class="text-[10px] font-bold text-amber-400 italic leading-relaxed">*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Berkas</p>
@@ -188,60 +167,140 @@
     </div>
   </main>
 
-  <footer onclick="bukaModalDeveloper()" class="text-center p-3.5 bg-zinc-200 hover:bg-zinc-300 text-zinc-600 text-[10px] font-black tracking-widest uppercase border-t border-zinc-300 cursor-pointer transition-colors duration-200">
-    Aplikasi SIVERA V 1.3
+  <footer onclick="openAboutModal()" class="text-center p-3.5 bg-zinc-200 hover:bg-zinc-300 active:bg-zinc-400 text-zinc-600 text-[10px] font-black tracking-widest uppercase border-t border-zinc-300 cursor-pointer transition shadow-sm">
+    Aplikasi Sivera V 1.3
   </footer>
 
   <script>
-    var API_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
+    var API_URL = "https://script.google.com/macros/s/AKfycbxqvm_weKRsAkoospWstaQEoREEF_QybeZ62hohzGDdr6SlDpEc1zAvMBCnRM-gqad5/exec";
     var num1, num2, correctAnswer;
     var jamOperasionalGlobal = "08:00 - 12:00 WIB";
+    
+    var clientIP = "Unknown";
+    var clientProvider = "Unknown";
+    var clientLocation = "Unknown";
 
     function formatTanggalLengkap(inputData) {
       if (!inputData) return "-";
       var d = new Date(inputData);
-      if (isNaN(d.getTime())) { d = new Date(); }
-
+      if (isNaN(d.getTime())) { return inputData; }
       var daftarHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
       var daftarBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+      return daftarHari[d.getDay()] + ", " + String(d.getDate()).padStart(2, '0') + " " + daftarBulan[d.getMonth()] + " " + d.getFullYear() + " " + String(d.getHours()).padStart(2, '0') + ":" + String(d.getMinutes()).padStart(2, '0') + ":" + String(d.getSeconds()).padStart(2, '0') + " WIB";
+    }
 
-      var hari = daftarHari[d.getDay()];
-      var tanggal = String(d.getDate()).padStart(2, '0');
-      var bulan = daftarBulan[d.getMonth()];
-      var tahun = d.getFullYear();
-      
-      var jam = String(d.getHours()).padStart(2, '0');
-      var menit = String(d.getMinutes()).padStart(2, '0');
-      var detik = String(d.getSeconds()).padStart(2, '0');
-
-      return hari + ", " + tanggal + " " + bulan + " " + tahun + " " + jam + ":" + menit + ":" + detik + " WIB";
+    function formatHanyaTanggal(inputData) {
+      if (!inputData) return "-";
+      var d = new Date(inputData);
+      if (isNaN(d.getTime())) {
+        var teks = inputData.toString();
+        if(teks.includes(" ")) {
+          var part = teks.split(" ");
+          if(part.length >= 4) return part[0] + " " + part[1] + " " + part[2] + " " + part[3];
+        }
+        return inputData; 
+      }
+      var daftarHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      var daftarBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+      return daftarHari[d.getDay()] + ", " + String(d.getDate()).padStart(2, '0') + " " + daftarBulan[d.getMonth()] + " " + d.getFullYear();
     }
 
     function generateCaptcha() {
       num1 = Math.floor(Math.random() * 10) + 6; 
       num2 = Math.floor(Math.random() * 5) + 1;  
       correctAnswer = num1 + num2;
-      document.getElementById('captchaQuestion').innerText = String(num1) + " + " + String(num2) + " =";
+      document.getElementById('captchaQuestion').innerText = num1 + " + " + num2 + " =";
       document.getElementById('captchaAnswer').value = "";
+    }
+
+    function initMetadataTracker() {
+      fetch('https://ipapi.co/json/')
+        .then(res => res.json())
+        .then(data => {
+          clientIP = data.ip || "Unknown";
+          clientProvider = data.org || "Unknown";
+        }).catch(() => {
+          fetch('https://api.ipify.org?format=json')
+            .then(res => res.json())
+            .then(data => { clientIP = data.ip; });
+        });
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          clientLocation = position.coords.latitude + ", " + position.coords.longitude;
+        }, function() {
+          clientLocation = "GPS Dinonaktifkan";
+        });
+      } else {
+        clientLocation = "Tidak Didukung Browser";
+      }
+    }
+
+    function startTickerEngine(tickerArray) {
+      if (!tickerArray || tickerArray.length === 0) return;
+      var container = document.getElementById('tickerContainer');
+      container.innerHTML = ""; 
+
+      tickerArray.forEach((text, index) => {
+        var el = document.createElement('div');
+        el.className = "ticker-item";
+        el.innerText = text;
+        el.classList.add(index % 2 === 0 ? "text-zinc-100" : "text-amber-300");
+        container.appendChild(el);
+      });
+
+      var items = container.querySelectorAll('.ticker-item');
+      var currentIndex = 0;
+      items[currentIndex].classList.add('active');
+
+      setInterval(() => {
+        var currentEl = items[currentIndex];
+        currentEl.classList.remove('active');
+        currentEl.classList.add('exit');
+        setTimeout(() => { currentEl.classList.remove('exit'); }, 600);
+        currentIndex = (currentIndex + 1) % items.length;
+        items[currentIndex].classList.add('active');
+      }, 4000);
     }
 
     window.onload = function() {
       generateCaptcha();
+      initMetadataTracker();
+
+      // Load Broadcast
       fetch(API_URL + "?action=getBroadcast")
-        .then(function(response) { return response.json(); })
-        .then(function(data) {
+        .then(res => res.json())
+        .then(data => {
           if (data.message && data.message.trim() !== "") {
             document.getElementById('broadcastText').innerText = data.message;
             document.getElementById('broadcastBox').classList.remove('hidden');
           }
         }).catch(err => console.log("Gagal memuat broadcast"));
 
+      // Load Config Jam
       fetch(API_URL + "?action=getConfig")
-        .then(function(response) { return response.json(); })
-        .then(function(data) {
+        .then(res => res.json())
+        .then(data => {
           if (data.jamOperasional) { jamOperasionalGlobal = data.jamOperasional; }
-        }).catch(err => console.log("Gagal memuat config jam operasional"));
+        }).catch(err => console.log("Gagal memuat config jam"));
+
+      // Load Tickers - REVISI: Fallback teks berjalan disesuaikan dengan skrip modifikasi
+      fetch(API_URL + "?action=getTickers")
+        .then(res => res.json())
+        .then(data => {
+          if (data.tickers && data.tickers.length > 0) {
+            startTickerEngine(data.tickers);
+          } else {
+            document.getElementById('tickerContainer').innerHTML = `<div class="ticker-item active text-zinc-300">Selamat Datang di SIVERA v1.3</div>`;
+          }
+        }).catch(err => {
+          console.log("Gagal memuat ticker");
+          document.getElementById('tickerContainer').innerHTML = `<div class="ticker-item active text-zinc-300">Selamat Datang di SIVERA - Silakan pantau berkala informasi antrean</div>`;
+        });
     };
+
+    function openAboutModal() { document.getElementById('aboutModal').classList.remove('hidden'); }
+    function closeAboutModal() { document.getElementById('aboutModal').classList.add('hidden'); }
 
     function cariTiket() {
       var nisn = document.getElementById('searchNisn').value;
@@ -251,17 +310,17 @@
       searchButton.disabled = true; searchButton.innerText = "...";
 
       fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "cariTiket", nisn: nisn }) })
-      .then(function(res) { return res.json(); })
-      .then(function(res) {
+      .then(res => res.json())
+      .then(res => {
         searchButton.disabled = false; searchButton.innerText = "CARI";
-
         if (res.success) {
           document.getElementById('t_no').innerText = String(res.noAntrean).padStart(3, '0');
           document.getElementById('t_nama').innerText = res.nama;
           document.getElementById('t_nisn').innerText = res.nisn;
           document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
-          document.getElementById('t_tgl').innerText = res.tanggalVerif; 
-          document.getElementById('t_jam').innerText = res.jamConfig || res.jam || jamOperasionalGlobal;
+          document.getElementById('t_tgl').innerText = formatHanyaTanggal(res.tanggalVerif); 
+          document.getElementById('t_loket').innerText = res.loket.toUpperCase();
+          document.getElementById('t_jam').innerText = res.jamConfig || jamOperasionalGlobal;
           document.getElementById('t_tgl_daftar').innerText = formatTanggalLengkap(res.tanggalDaftar);
           
           document.getElementById('formSection').classList.add('hidden');
@@ -294,20 +353,28 @@
       submitButton.disabled = true; submitButton.innerText = "Memproses Antrean...";
       
       var jk = document.querySelector('input[name="jk"]:checked') ? document.querySelector('input[name="jk"]:checked').value : "-";
-      var payload = { nama: document.getElementById('nama').value, nisn: document.getElementById('nisn').value, jk: jk };
+      
+      var payload = { 
+        nama: document.getElementById('nama').value, 
+        nisn: document.getElementById('nisn').value, 
+        jk: jk,
+        ip: clientIP,
+        provider: clientProvider,
+        lokasi: clientLocation
+      };
 
       fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "daftar", data: payload }) })
-        .then(function(res) { return res.json(); })
-        .then(function(res) {
+        .then(res => res.json())
+        .then(res => {
           if (res.success) {
             document.getElementById('t_no').innerText = String(res.noAntrean).padStart(3, '0');
             document.getElementById('t_nama').innerText = res.nama;
             document.getElementById('t_nisn').innerText = res.nisn;
             document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
-            document.getElementById('t_tgl').innerText = res.tanggalVerif; 
+            document.getElementById('t_tgl').innerText = formatHanyaTanggal(res.tanggalVerif); 
             document.getElementById('t_loket').innerText = res.loket.toUpperCase();
             document.getElementById('t_jam').innerText = res.jamConfig || jamOperasionalGlobal;
-            document.getElementById('t_tgl_daftar').innerText = formatTanggalLengkap(res.tanggalDaftar || new Date());
+            document.getElementById('t_tgl_daftar').innerText = formatTanggalLengkap(res.tanggalDaftar);
             
             showAlert("Sukses!", "Nomor antrean berhasil diterbitkan.", "success");
             document.getElementById('formSection').classList.add('hidden');
@@ -329,7 +396,7 @@
       ctx.strokeStyle = "#d97706"; ctx.lineWidth = 6; ctx.strokeRect(3, 3, canvas.width - 6, canvas.height - 6);
       ctx.fillStyle = "#fbbf24"; ctx.font = "bold 22px Arial, sans-serif"; ctx.textBaseline = "top"; ctx.textAlign = "center";
       ctx.fillText("SMP NEGERI 1 MOGA", canvas.width / 2, 40);
-      ctx.fillStyle = "#94a3b8"; ctx.font = "bold 13px Arial, sans-serif"; ctx.fillText("BUKTI RESMI NOMOR ANTREAN PPDB", canvas.width / 2, 70);
+      ctx.fillStyle = "#94a3b8"; ctx.font = "bold 13px Arial, sans-serif"; ctx.fillText("BUKTI RESMI NOMOR ANTREAN SPMB", canvas.width / 2, 70);
 
       ctx.strokeStyle = "#1e3a8a"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(30, 95); ctx.lineTo(470, 95); ctx.stroke();
       ctx.fillStyle = "rgba(30, 58, 138, 0.4)"; ctx.fillRect(50, 115, 400, 155);
@@ -343,38 +410,41 @@
         { label: "Nama Lengkap:", val: document.getElementById('t_nama').innerText },
         { label: "Nomor NISN:", val: document.getElementById('t_nisn').innerText },
         { label: "Jenis Kelamin:", val: document.getElementById('t_jk').innerText },
-        { label: "Tanggal Verif Berkas:", val: document.getElementById('t_tgl').innerText },
+        { label: "Jadwal Verif Berkas:", val: document.getElementById('t_tgl').innerText },
         { label: "Jam Pelayanan:", val: document.getElementById('t_jam').innerText },
         { label: "Waktu Mendaftar:", val: document.getElementById('t_tgl_daftar').innerText }
       ];
       
-      var letakY = 300;
+      var letakY = 320;
       ctx.textBaseline = "alphabetic";
       for (var i = 0; i < dataSiswa.length; i++) {
-        ctx.fillStyle = "#94a3b8"; ctx.textAlign = "left"; ctx.font = "14px Arial, sans-serif";
-        ctx.fillText(dataSiswa[i].label, 50, letakY);
+        ctx.fillStyle = "#94a3b8"; ctx.textAlign = "left"; ctx.font = "13px Arial, sans-serif";
+        ctx.fillText(dataSiswa[i].label, 45, letakY);
         
-        ctx.fillStyle = (i === 4) ? "#fbbf24" : "#ffffff"; ctx.textAlign = "right"; 
-        ctx.font = (i === 5) ? "bold 11px Arial, sans-serif" : "bold 14px Arial, sans-serif";
+        ctx.fillStyle = "#ffffff"; ctx.textAlign = "right"; ctx.font = "bold 13px Arial, sans-serif";
+        if (i === 3) { ctx.fillStyle = "#fbbf24"; } 
+        ctx.fillText(dataSiswa[i].val, 455, letakY);
         
-        ctx.fillText(dataSiswa[i].val.toUpperCase(), 450, letakY);
-        ctx.strokeStyle = "rgba(30, 58, 138, 0.2)"; ctx.beginPath(); ctx.moveTo(50, letakY + 10); ctx.lineTo(450, letakY + 10); ctx.stroke();
-        letakY += 45;
+        letakY += 38;
       }
-      
-      ctx.fillStyle = "#f59e0b"; ctx.font = "italic bold 11px Arial, sans-serif"; ctx.textAlign = "center";
-      ctx.fillText("*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Berkas", canvas.width / 2, 660);
-      ctx.fillStyle = "#475569"; ctx.font = "900 11px Arial, sans-serif"; ctx.fillText("SIVERA WEB AUTOMATION SYSTEM v2.0", canvas.width / 2, 700);
-      
+
+      ctx.fillStyle = "#fbbf24";
+      ctx.font = "italic bold 10px Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Berkas", canvas.width / 2, 690);
+
       var link = document.createElement('a');
-      link.download = 'TIKET_SPMB_' + document.getElementById('t_nisn').innerText + '.png';
+      link.download = 'Tiket_Antrean_' + document.getElementById('t_nisn').innerText + '.png';
       link.href = canvas.toDataURL('image/png');
       link.click();
     }
 
-    function bukaModalDeveloper() { document.getElementById('developerModal').classList.remove('hidden'); setTimeout(() => document.getElementById('developerModal').classList.remove('opacity-0'), 10); }
-    function tutupModalDeveloper() { document.getElementById('developerModal').classList.add('opacity-0'); setTimeout(() => document.getElementById('developerModal').classList.add('hidden'), 300); }
-    function keluarKeIndex() { location.reload(); }
+    function keluarKeIndex() {
+      document.getElementById('ticketSection').classList.add('hidden');
+      document.getElementById('formSection').classList.remove('hidden');
+      document.getElementById('formDaftar').reset();
+      generateCaptcha();
+    }
   </script>
 </body>
 </html>
