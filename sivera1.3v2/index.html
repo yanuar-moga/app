@@ -8,20 +8,31 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @keyframes fadeIn { 
-        from { opacity: 0; transform: translateY(15px); } 
+        from { opacity: 0; transform: translateY(12px); } 
         to { opacity: 1; transform: translateY(0); } 
     }
     .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
     
-    @keyframes slideUp {
-      0%, 20% { transform: translateY(0); }
-      25%, 45% { transform: translateY(-25%); }
-      50%, 70% { transform: translateY(-50%); }
-      75%, 95% { transform: translateY(-75%); }
-      100% { transform: translateY(0); }
+    /* Animasi Baru Transisi Slide Up Per Baris untuk Ticker Text */
+    .ticker-item {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .animate-ticker { animation: slideUp 16s linear infinite; }
-    .animate-ticker:hover { animation-play-state: paused; }
+    .ticker-item.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .ticker-item.exit {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
   </style>
 </head>
 <body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col justify-between select-none">
@@ -47,14 +58,14 @@
       </div>
     </div>
 
-    <div class="bg-blue-900 text-white px-4 py-2.5 rounded-xl mb-4 border border-blue-950 shadow-sm overflow-hidden h-[42px] animate-fade-in flex items-center">
-      <div class="relative flex-grow h-full overflow-hidden text-[11px] font-bold text-center">
-        <div id="tickerContainer" class="absolute top-0 left-0 w-full h-[400%] animate-ticker flex flex-col">
-          <div class="h-1/4 flex items-center justify-center text-zinc-100 truncate">Memuat informasi antrean...</div>
-        </div>
+    <!-- Ticker Box Dengan Desain Sempurna Di Tengah -->
+    <div class="bg-blue-900 text-white px-4 rounded-xl mb-4 border border-blue-950 shadow-md relative h-12 animate-fade-in flex items-center justify-center overflow-hidden">
+      <div id="tickerContainer" class="relative w-full h-full text-[11px] font-bold text-center tracking-wide">
+        <div class="ticker-item active text-zinc-300 italic">Memuat informasi antrean...</div>
       </div>
     </div>
 
+    <!-- Custom System Alert Box -->
     <div id="customAlert" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div class="bg-white rounded-2xl max-w-xs w-full p-5 text-center shadow-2xl border-t-8 border-blue-900 transform scale-95 transition-all">
         <div id="alertIcon" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center text-xl mb-3 shadow-md"></div>
@@ -64,6 +75,7 @@
       </div>
     </div>
 
+    <!-- MODAL POP UP FOOTER (INFORMASI APLIKASI SIVERA) -->
     <div id="aboutModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
       <div class="bg-white rounded-2xl max-w-xs w-full p-6 text-center shadow-2xl border-b-8 border-amber-400">
         <img src="https://yanuar-moga.github.io/assets/logo.jpg" alt="Logo Sivera" class="w-20 h-20 object-cover mx-auto rounded-full p-1 border-2 border-blue-900 shadow-md mb-3">
@@ -81,6 +93,7 @@
       </div>
     </div>
 
+    <!-- Form Section -->
     <div id="formSection" class="bg-white rounded-2xl p-5 shadow-xl border border-zinc-200 animate-fade-in">
       <div class="text-center mb-5">
         <h2 class="text-base font-black text-blue-900 uppercase tracking-wide">Formulir Loket Antrean</h2>
@@ -125,6 +138,7 @@
       </div>
     </div>
 
+    <!-- Ticket Section -->
     <div id="ticketSection" class="hidden space-y-4 animate-fade-in">
       <div id="ticketCard" class="bg-blue-950 rounded-2xl shadow-2xl p-5 border-2 border-blue-900 text-white relative">
         <div class="flex items-center gap-3 border-b border-blue-800 pb-4 mb-4">
@@ -158,6 +172,7 @@
     </div>
   </main>
 
+  <!-- FOOTER YANG BISA DIKLIK -->
   <footer onclick="openAboutModal()" class="text-center p-3.5 bg-zinc-200 hover:bg-zinc-300 active:bg-zinc-400 text-zinc-600 text-[10px] font-black tracking-widest uppercase border-t border-zinc-300 cursor-pointer transition shadow-sm">
     Aplikasi Sivera V 1.3
   </footer>
@@ -183,13 +198,13 @@
       var hari = daftarHari[d.getDay()];
       var tanggal = String(d.getDate()).padStart(2, '0');
       var bulan = daftarBulan[d.getMonth()];
-      var tahun = d.getFullYear();
+      var year = d.getFullYear();
       
       var jam = String(d.getHours()).padStart(2, '0');
       var menit = String(d.getMinutes()).padStart(2, '0');
       var detik = String(d.getSeconds()).padStart(2, '0');
 
-      return hari + ", " + tanggal + " " + bulan + " " + tahun + " " + jam + ":" + menit + ":" + detik + " WIB";
+      return hari + ", " + tanggal + " " + bulan + " " + year + " " + jam + ":" + menit + ":" + detik + " WIB";
     }
 
     // Formatter 2: Hanya Tanggal Saja (Khusus Untuk Jadwal Verifikasi Berkas)
@@ -197,11 +212,9 @@
       if (!inputData) return "-";
       var d = new Date(inputData);
       if (isNaN(d.getTime())) {
-        // Jika data dari spreadsheet sudah berupa teks string (ex: "Rabu, 17 Juni 2026 08:00:00 WIB"), kita potong jamnya
         var teks = inputData.toString();
         if(teks.includes(" ")) {
           var part = teks.split(" ");
-          // Jika strukturnya standard, ambil Hari, Tanggal, Bulan, Tahun saja (4 elemen pertama)
           if(part.length >= 4) {
             return part[0] + " " + part[1] + " " + part[2] + " " + part[3];
           }
@@ -215,9 +228,9 @@
       var hari = daftarHari[d.getDay()];
       var tanggal = String(d.getDate()).padStart(2, '0');
       var bulan = daftarBulan[d.getMonth()];
-      var tahun = d.getFullYear();
+      var year = d.getFullYear();
 
-      return hari + ", " + tanggal + " " + bulan + " " + tahun;
+      return hari + ", " + tanggal + " " + bulan + " " + year;
     }
 
     function generateCaptcha() {
@@ -251,6 +264,44 @@
       }
     }
 
+    // Fungsi Utama Pengatur Transisi Slide Up dan Fade pada Ticker Text
+    function startTickerEngine(tickerArray) {
+      if (!tickerArray || tickerArray.length === 0) return;
+      var container = document.getElementById('tickerContainer');
+      container.innerHTML = ""; 
+
+      tickerArray.forEach((text, index) => {
+        var el = document.createElement('div');
+        el.className = "ticker-item";
+        el.innerText = text;
+        // Memberi variasi warna teks selang-seling agar menarik
+        if (index % 2 === 0) {
+          el.classList.add("text-zinc-100");
+        } else {
+          el.classList.add("text-amber-300");
+        }
+        container.appendChild(el);
+      });
+
+      var items = container.querySelectorAll('.ticker-item');
+      var currentIndex = 0;
+      items[currentIndex].classList.add('active');
+
+      // Loop rotasi berkala setiap 4 detik
+      setInterval(() => {
+        var currentEl = items[currentIndex];
+        currentEl.classList.remove('active');
+        currentEl.classList.add('exit');
+
+        setTimeout(() => {
+          currentEl.classList.remove('exit');
+        }, 600);
+
+        currentIndex = (currentIndex + 1) % items.length;
+        items[currentIndex].classList.add('active');
+      }, 4000);
+    }
+
     window.onload = function() {
       generateCaptcha();
       initMetadataTracker();
@@ -270,21 +321,19 @@
           if (data.jamOperasional) { jamOperasionalGlobal = data.jamOperasional; }
         }).catch(err => console.log("Gagal memuat config jam"));
 
+      // Menarik data baris ke-7 mulai B7, C7, D7 secara dinamis dari skrip backend
       fetch(API_URL + "?action=getTickers")
         .then(res => res.json())
         .then(data => {
           if (data.tickers && data.tickers.length > 0) {
-            var htmlTicker = "";
-            data.tickers.forEach((text, index) => {
-              var colorClass = (index % 2 === 0) ? "text-zinc-100" : "text-amber-300";
-              htmlTicker += `<div class="h-1/4 flex items-center justify-center ${colorClass} truncate">${text}</div>`;
-            });
-            if(data.tickers.length < 4) {
-              htmlTicker += `<div class="h-1/4 flex items-center justify-center text-zinc-100 truncate">${data.tickers[0]}</div>`;
-            }
-            document.getElementById('tickerContainer').innerHTML = htmlTicker;
+            startTickerEngine(data.tickers);
+          } else {
+            document.getElementById('tickerContainer').innerHTML = `<div class="ticker-item active text-zinc-300">Belum ada pengumuman berjalan.</div>`;
           }
-        }).catch(err => console.log("Gagal memuat ticker"));
+        }).catch(err => {
+          console.log("Gagal memuat ticker");
+          document.getElementById('tickerContainer').innerHTML = `<div class="ticker-item active text-red-400">Gagal memuat data dari Config.</div>`;
+        });
     };
 
     function openAboutModal() { document.getElementById('aboutModal').classList.remove('hidden'); }
@@ -306,7 +355,7 @@
           document.getElementById('t_nama').innerText = res.nama;
           document.getElementById('t_nisn').innerText = res.nisn;
           document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
-          document.getElementById('t_tgl').innerText = formatHanyaTanggal(res.tanggalVerif); // Menggunakan formatter tanggal saja
+          document.getElementById('t_tgl').innerText = formatHanyaTanggal(res.tanggalVerif); 
           document.getElementById('t_loket').innerText = res.loket.toUpperCase();
           document.getElementById('t_jam').innerText = res.jamConfig || jamOperasionalGlobal;
           document.getElementById('t_tgl_daftar').innerText = formatTanggalLengkap(res.tanggalDaftar);
@@ -359,7 +408,7 @@
             document.getElementById('t_nama').innerText = res.nama;
             document.getElementById('t_nisn').innerText = res.nisn;
             document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
-            document.getElementById('t_tgl').innerText = formatHanyaTanggal(res.tanggalVerif); // Menggunakan formatter tanggal saja
+            document.getElementById('t_tgl').innerText = formatHanyaTanggal(res.tanggalVerif); 
             document.getElementById('t_loket').innerText = res.loket.toUpperCase();
             document.getElementById('t_jam').innerText = res.jamConfig || jamOperasionalGlobal;
             document.getElementById('t_tgl_daftar').innerText = formatTanggalLengkap(res.tanggalDaftar);
