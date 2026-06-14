@@ -171,6 +171,7 @@
     var clientProvider = "Unknown";
     var clientLocation = "Unknown";
 
+    // Formatter 1: Tanggal Lengkap Dengan Waktu (Untuk Waktu Mendaftar)
     function formatTanggalLengkap(inputData) {
       if (!inputData) return "-";
       var d = new Date(inputData);
@@ -189,6 +190,34 @@
       var detik = String(d.getSeconds()).padStart(2, '0');
 
       return hari + ", " + tanggal + " " + bulan + " " + tahun + " " + jam + ":" + menit + ":" + detik + " WIB";
+    }
+
+    // Formatter 2: Hanya Tanggal Saja (Khusus Untuk Jadwal Verifikasi Berkas)
+    function formatHanyaTanggal(inputData) {
+      if (!inputData) return "-";
+      var d = new Date(inputData);
+      if (isNaN(d.getTime())) {
+        // Jika data dari spreadsheet sudah berupa teks string (ex: "Rabu, 17 Juni 2026 08:00:00 WIB"), kita potong jamnya
+        var teks = inputData.toString();
+        if(teks.includes(" ")) {
+          var part = teks.split(" ");
+          // Jika strukturnya standard, ambil Hari, Tanggal, Bulan, Tahun saja (4 elemen pertama)
+          if(part.length >= 4) {
+            return part[0] + " " + part[1] + " " + part[2] + " " + part[3];
+          }
+        }
+        return inputData; 
+      }
+
+      var daftarHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      var daftarBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+      var hari = daftarHari[d.getDay()];
+      var tanggal = String(d.getDate()).padStart(2, '0');
+      var bulan = daftarBulan[d.getMonth()];
+      var tahun = d.getFullYear();
+
+      return hari + ", " + tanggal + " " + bulan + " " + tahun;
     }
 
     function generateCaptcha() {
@@ -277,7 +306,7 @@
           document.getElementById('t_nama').innerText = res.nama;
           document.getElementById('t_nisn').innerText = res.nisn;
           document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
-          document.getElementById('t_tgl').innerText = formatTanggalLengkap(res.tanggalVerif); 
+          document.getElementById('t_tgl').innerText = formatHanyaTanggal(res.tanggalVerif); // Menggunakan formatter tanggal saja
           document.getElementById('t_loket').innerText = res.loket.toUpperCase();
           document.getElementById('t_jam').innerText = res.jamConfig || jamOperasionalGlobal;
           document.getElementById('t_tgl_daftar').innerText = formatTanggalLengkap(res.tanggalDaftar);
@@ -330,7 +359,7 @@
             document.getElementById('t_nama').innerText = res.nama;
             document.getElementById('t_nisn').innerText = res.nisn;
             document.getElementById('t_jk').innerText = (res.jk === 'L') ? 'Laki-laki' : 'Perempuan';
-            document.getElementById('t_tgl').innerText = formatTanggalLengkap(res.tanggalVerif); 
+            document.getElementById('t_tgl').innerText = formatHanyaTanggal(res.tanggalVerif); // Menggunakan formatter tanggal saja
             document.getElementById('t_loket').innerText = res.loket.toUpperCase();
             document.getElementById('t_jam').innerText = res.jamConfig || jamOperasionalGlobal;
             document.getElementById('t_tgl_daftar').innerText = formatTanggalLengkap(res.tanggalDaftar);
