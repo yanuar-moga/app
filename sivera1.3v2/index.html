@@ -180,28 +180,15 @@
     var clientProvider = "Unknown";
     var clientLocation = "Unknown";
 
-    // Formatter 1: Tanggal Lengkap Dengan Waktu (Untuk Waktu Mendaftar)
     function formatTanggalLengkap(inputData) {
       if (!inputData) return "-";
       var d = new Date(inputData);
       if (isNaN(d.getTime())) { return inputData; }
-
       var daftarHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
       var daftarBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-
-      var hari = daftarHari[d.getDay()];
-      var tanggal = String(d.getDate()).padStart(2, '0');
-      var bulan = daftarBulan[d.getMonth()];
-      var year = d.getFullYear();
-      
-      var jam = String(d.getHours()).padStart(2, '0');
-      var menit = String(d.getMinutes()).padStart(2, '0');
-      var detik = String(d.getSeconds()).padStart(2, '0');
-
-      return hari + ", " + tanggal + " " + bulan + " " + year + " " + jam + ":" + menit + ":" + detik + " WIB";
+      return daftarHari[d.getDay()] + ", " + String(d.getDate()).padStart(2, '0') + " " + daftarBulan[d.getMonth()] + " " + d.getFullYear() + " " + String(d.getHours()).padStart(2, '0') + ":" + String(d.getMinutes()).padStart(2, '0') + ":" + String(d.getSeconds()).padStart(2, '0') + " WIB";
     }
 
-    // Formatter 2: Hanya Tanggal Saja (Khusus Untuk Jadwal Verifikasi Berkas)
     function formatHanyaTanggal(inputData) {
       if (!inputData) return "-";
       var d = new Date(inputData);
@@ -209,29 +196,20 @@
         var teks = inputData.toString();
         if(teks.includes(" ")) {
           var part = teks.split(" ");
-          if(part.length >= 4) {
-            return part[0] + " " + part[1] + " " + part[2] + " " + part[3];
-          }
+          if(part.length >= 4) return part[0] + " " + part[1] + " " + part[2] + " " + part[3];
         }
         return inputData; 
       }
-
       var daftarHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
       var daftarBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-
-      var hari = daftarHari[d.getDay()];
-      var tanggal = String(d.getDate()).padStart(2, '0');
-      var bulan = daftarBulan[d.getMonth()];
-      var year = d.getFullYear();
-
-      return hari + ", " + tanggal + " " + bulan + " " + year;
+      return daftarHari[d.getDay()] + ", " + String(d.getDate()).padStart(2, '0') + " " + daftarBulan[d.getMonth()] + " " + d.getFullYear();
     }
 
     function generateCaptcha() {
       num1 = Math.floor(Math.random() * 10) + 6; 
       num2 = Math.floor(Math.random() * 5) + 1;  
       correctAnswer = num1 + num2;
-      document.getElementById('captchaQuestion').innerText = String(num1) + " + " + String(num2) + " =";
+      document.getElementById('captchaQuestion').innerText = num1 + " + " + num2 + " =";
       document.getElementById('captchaAnswer').value = "";
     }
 
@@ -258,7 +236,6 @@
       }
     }
 
-    // Fungsi Utama Pengatur Transisi Slide Up dan Fade pada Ticker Text
     function startTickerEngine(tickerArray) {
       if (!tickerArray || tickerArray.length === 0) return;
       var container = document.getElementById('tickerContainer');
@@ -268,11 +245,7 @@
         var el = document.createElement('div');
         el.className = "ticker-item";
         el.innerText = text;
-        if (index % 2 === 0) {
-          el.classList.add("text-zinc-100");
-        } else {
-          el.classList.add("text-amber-300");
-        }
+        el.classList.add(index % 2 === 0 ? "text-zinc-100" : "text-amber-300");
         container.appendChild(el);
       });
 
@@ -284,11 +257,7 @@
         var currentEl = items[currentIndex];
         currentEl.classList.remove('active');
         currentEl.classList.add('exit');
-
-        setTimeout(() => {
-          currentEl.classList.remove('exit');
-        }, 600);
-
+        setTimeout(() => { currentEl.classList.remove('exit'); }, 600);
         currentIndex = (currentIndex + 1) % items.length;
         items[currentIndex].classList.add('active');
       }, 4000);
@@ -298,6 +267,7 @@
       generateCaptcha();
       initMetadataTracker();
 
+      // Load Broadcast
       fetch(API_URL + "?action=getBroadcast")
         .then(res => res.json())
         .then(data => {
@@ -307,12 +277,14 @@
           }
         }).catch(err => console.log("Gagal memuat broadcast"));
 
+      // Load Config Jam
       fetch(API_URL + "?action=getConfig")
         .then(res => res.json())
         .then(data => {
           if (data.jamOperasional) { jamOperasionalGlobal = data.jamOperasional; }
         }).catch(err => console.log("Gagal memuat config jam"));
 
+      // Load Tickers
       fetch(API_URL + "?action=getTickers")
         .then(res => res.json())
         .then(data => {
@@ -342,7 +314,6 @@
       .then(res => {
         searchButton.disabled = false; searchButton.innerText = "CARI";
         if (res.success) {
-          // Telah disinkronkan dengan return objek properti backend GAS versi baru
           document.getElementById('t_no').innerText = String(res.noAntrean).padStart(3, '0');
           document.getElementById('t_nama').innerText = res.nama;
           document.getElementById('t_nisn').innerText = res.nisn;
