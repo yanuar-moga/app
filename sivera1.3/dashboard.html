@@ -6,145 +6,248 @@
   <title>Dashboard Statistik SIVERA</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-    body { background: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; margin: 0; }
-    header { background: #1e3a8a; color: white; padding: 1.5rem; display: flex; align-items: center; gap: 15px; border-bottom: 4px solid #d4af37; }
-    header img { width: 60px; height: 60px; background: white; padding: 5px; border-radius: 50%; }
-    .school-info h1 { font-size: 1.2rem; font-weight: 900; margin: 0; }
-    .school-info a { color: #fbbf24; font-size: 0.7rem; font-weight: 700; text-decoration: none; }
-    footer { background: #334155; color: #cbd5e1; text-align: center; padding: 15px; font-size: 0.7rem; font-weight: 600; margin-top: auto; }
-    .content-wrapper { max-width: 1100px; margin: 20px auto; width: 95%; }
-    
-    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
-    .stat-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-left: 5px solid #1e3a8a; text-align: center; }
-    .stat-card h4 { margin: 0; font-size: 0.75rem; color: #64748b; text-transform: uppercase; }
-    .stat-card p { margin: 10px 0 0 0; font-size: 1.5rem; font-weight: 900; color: #1e3a8a; }
-
-    .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    @media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } }
-    .panel { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
-    .panel h3 { color: #1e3a8a; font-size: 1rem; margin-bottom: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
-    table { width: 100%; border-collapse: collapse; }
-    th { text-align: left; color: #64748b; font-size: 0.8rem; padding: 10px; border-bottom: 1px solid #e2e8f0; }
-    td { padding: 12px 10px; font-size: 0.9rem; font-weight: 600; border-bottom: 1px solid #f1f5f9; }
-    .btn-logout { background: #dc2626; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 700; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
   </style>
 </head>
-<body>
+<body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col justify-between select-none">
 
-<header>
-  <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo">
-  <div class="school-info">
-    <h1>SMP NEGERI 1 MOGA</h1>
-    <a href="https://smpn1moga.sch.id" target="_blank">smpn1moga.sch.id</a>
-  </div>
-</header>
-
-<div class="content-wrapper" id="mainSection" style="display:none;">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-    <h2>Dashboard Real-time</h2>
-    <button class="btn-logout" onclick="prosesLogout()">KELUAR</button>
-  </div>
-
-  <div class="stat-grid">
-    <div class="stat-card"><h4>Total Antrean</h4><p id="totalAntrean">0</p></div>
-    <div class="stat-card"><h4>Sudah Verif</h4><p id="totalVerif" style="color:green;">0</p></div>
-    <div class="stat-card"><h4>Belum Verif</h4><p id="totalBelum" style="color:#d97706;">0</p></div>
-    <div class="stat-card"><h4>Tunda</h4><p id="totalTunda" style="color:#dc2626;">0</p></div>
-  </div>
-
-  <div class="main-grid">
-    <div class="panel">
-      <h3>Data Pendaftar Terbaru</h3>
-      <table>
-        <thead><tr><th>Nama</th><th>NISN</th><th>Status</th></tr></thead>
-        <tbody id="tabelData"></tbody>
-      </table>
+  <header class="bg-blue-900 border-b-4 border-amber-400 p-4 shadow-lg sticky top-0 z-40">
+    <div class="container mx-auto max-w-5xl flex justify-between items-center px-1">
+      <div class="flex items-center gap-3">
+        <div class="bg-white p-1 rounded-full shadow-md">
+          <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo" class="w-12 h-12 object-contain">
+        </div>
+        <div>
+          <h1 class="text-white font-black text-sm md:text-base uppercase tracking-wider m-0">SMP NEGERI 1 MOGA</h1>
+          <a href="https://smpn1moga.sch.id" target="_blank" class="text-amber-400 text-[10px] font-bold uppercase hover:underline flex items-center gap-1">
+            <i class="fa-solid fa-earth-asia"></i> smpn1moga.sch.id
+          </a>
+        </div>
+      </div>
     </div>
-    <div class="panel">
-      <h3>Statistik Gender</h3>
-      <div style="height: 300px;"><canvas id="genderChart"></canvas></div>
-    </div>
-  </div>
-</div>
+  </header>
 
-<div id="loginWrapper" class="content-wrapper" style="text-align:center; padding-top:50px;">
-    <div style="background:white; max-width:400px; margin:auto; padding:30px; border-radius:20px; box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);">
-        <h2 style="color:#1e3a8a;">LOGIN DASHBOARD</h2>
-        <input type="password" id="dashPin" placeholder="Masukkan PIN" style="width:100%; padding:15px; margin:20px 0; border:2px solid #e2e8f0; border-radius:10px; text-align:center;">
-        <button onclick="prosesLogin()" style="background:#1e3a8a; color:white; border:none; padding:15px; width:100%; border-radius:10px; font-weight:700; cursor:pointer;">MASUK</button>
-    </div>
-</div>
-
-<footer>APLIKASI SIVERA V 1.3 - © 2026 Dev by MB</footer>
-
-<script>
-  const API_URL = "https://script.google.com/macros/s/AKfycbwqDaUhPAbV6FzrqgF9MHugZ15_EnIcbaQKTcHirE0q4Wb4pICOXFLvNWG2cEvi94kX/exec";
-  let chartG;
-
-  window.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('sivera_logged_in') === 'true') tampilkanDashboard();
-  });
-
-  function prosesLogin() {
-    const pin = document.getElementById('dashPin').value;
-    // Swal.showLoading() di sini hanya menampilkan ikon loading tanpa pop-up teks mengganggu
-    Swal.fire({ title: 'Memproses...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+  <main class="container mx-auto max-w-5xl p-4 flex-grow flex items-center justify-center">
     
-    fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "loginValidation", pin: pin, expectedRole: "dashboard" }) })
-    .then(res => res.json())
-    .then(res => {
-      Swal.close();
-      if(res.success) {
-        localStorage.setItem('sivera_logged_in', 'true');
+    <div id="loginWrapper" class="bg-white p-6 rounded-2xl shadow-xl border border-zinc-200 max-w-sm w-full mx-auto animate-fade-in text-center space-y-4">
+      <div class="w-14 h-14 bg-blue-900 rounded-full flex items-center justify-center mx-auto shadow-lg">
+        <i class="fa-solid fa-chart-pie text-amber-400 text-xl"></i>
+      </div>
+      <div>
+        <h2 class="text-blue-900 font-black text-base uppercase tracking-wide">Login Dashboard</h2>
+        <p class="text-zinc-400 text-[10px] font-bold uppercase">Masukkan PIN Akses Grafik Utama</p>
+      </div>
+      <input type="password" id="dashPin" placeholder="••••••" maxlength="6" class="w-full bg-zinc-50 border-2 border-zinc-200 p-3 rounded-xl text-center font-mono font-black text-xl tracking-[0.4em] focus:outline-none focus:border-blue-900 focus:bg-white transition-all">
+      <button onclick="prosesLogin()" class="w-full bg-blue-900 hover:bg-blue-800 text-amber-400 font-black py-3.5 rounded-xl shadow-md transition uppercase tracking-widest text-xs cursor-pointer flex items-center justify-center gap-2">
+        <i class="fa-solid fa-right-to-bracket"></i> Buka Statistik
+      </button>
+    </div>
+
+    <div id="mainSection" class="hidden w-full space-y-5 animate-fade-in self-start mt-2">
+      
+      <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow border border-zinc-200">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 bg-blue-600 rounded-full animate-pulse"></span>
+          <h2 class="text-sm font-black text-blue-950 uppercase tracking-wider">Dashboard Real-time Monitoring</h2>
+        </div>
+        <button onclick="prosesLogout()" class="bg-red-600 hover:bg-red-700 text-white text-[10px] font-black px-3 py-2 rounded-xl transition uppercase shadow cursor-pointer flex items-center gap-1.5">
+          <i class="fa-solid fa-power-off"></i> Keluar
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="bg-white p-4 rounded-xl shadow border-l-4 border-blue-900 flex flex-col justify-between">
+          <span class="text-[9px] font-black text-zinc-400 uppercase tracking-wider">Total Antrean</span>
+          <p id="totalAntrean" class="text-2xl font-black text-blue-900 mt-1">0</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow border-l-4 border-emerald-600 flex flex-col justify-between">
+          <span class="text-[9px] font-black text-zinc-400 uppercase tracking-wider">Sudah Verif</span>
+          <p id="totalVerif" class="text-2xl font-black text-emerald-600 mt-1">0</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow border-l-4 border-amber-500 flex flex-col justify-between">
+          <span class="text-[9px] font-black text-zinc-400 uppercase tracking-wider">Belum Verif</span>
+          <p id="totalBelum" class="text-2xl font-black text-amber-500 mt-1">0</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow border-l-4 border-red-500 flex flex-col justify-between">
+          <span class="text-[9px] font-black text-zinc-400 uppercase tracking-wider">Ditunda</span>
+          <p id="totalTunda" class="text-2xl font-black text-red-500 mt-1">0</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div class="bg-white p-4 rounded-xl shadow border border-zinc-200 md:col-span-3 flex flex-col">
+          <div class="flex items-center gap-2 mb-3 pb-2 border-b border-zinc-100">
+            <i class="fa-solid fa-clock-rotate-left text-blue-900 text-xs"></i>
+            <h3 class="text-xs font-black text-blue-900 uppercase tracking-wider">Data Pendaftar Terbaru</h3>
+          </div>
+          <div class="overflow-x-auto flex-grow">
+            <table class="w-full text-[11px] text-left border-collapse">
+              <thead>
+                <tr class="text-zinc-400 border-b border-zinc-200 font-black uppercase tracking-wider text-[10px]">
+                  <th class="pb-2">Nama Siswa</th>
+                  <th class="pb-2 w-24">NISN</th>
+                  <th class="pb-2 text-center w-24">Status</th>
+                </tr>
+              </thead>
+              <tbody id="tabelData" class="divide-y divide-zinc-50 font-medium">
+                </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow border border-zinc-200 md:col-span-2 flex flex-col items-center">
+          <div class="flex items-center gap-2 mb-3 pb-2 border-b border-zinc-100 w-full justify-start">
+            <i class="fa-solid fa-venus-mars text-indigo-600 text-xs"></i>
+            <h3 class="text-xs font-black text-blue-900 uppercase tracking-wider">Statistik Gender (Pendaftar)</h3>
+          </div>
+          <div class="w-full h-52 relative flex items-center justify-center">
+            <canvas id="genderChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="text-center p-3.5 bg-zinc-200 text-zinc-500 text-[10px] font-black tracking-widest uppercase border-t border-zinc-300 shadow-sm">
+    APLIKASI SIVERA V 1.3 - © 2026 Dev by MB
+  </footer>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbxqvm_weKRsAkoospWstaQEoREEF_QybeZ62hohzGDdr6SlDpEc1zAvMBCnRM-gqad5/exec";
+    let chartG = null;
+    let refreshInterval = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (localStorage.getItem('sivera_logged_in') === 'true') {
         tampilkanDashboard();
-      } else {
-        Swal.fire('Login Gagal', 'PIN tidak valid atau terjadi kesalahan.', 'error');
       }
-    })
-    .catch(() => {
-        Swal.close();
-        Swal.fire('Error', 'Gagal terhubung ke server.', 'error');
     });
-  }
 
-  function prosesLogout() {
-    localStorage.removeItem('sivera_logged_in');
-    location.reload();
-  }
-
-  function tampilkanDashboard() {
-    document.getElementById('loginWrapper').style.display = 'none';
-    document.getElementById('mainSection').style.display = 'block';
-    chartG = new Chart(document.getElementById('genderChart'), {
-      type: 'doughnut',
-      data: { labels: ['Laki-laki', 'Perempuan'], datasets: [{ data: [0, 0], backgroundColor: ['#3b82f6', '#ec4899'] }] },
-      options: { responsive: true, maintainAspectRatio: false }
-    });
-    muatData();
-    setInterval(muatData, 30000);
-  }
-
-  function muatData() {
-    fetch(`${API_URL}?action=getDashboardStats`)
+    function prosesLogin() {
+      const pin = document.getElementById('dashPin').value;
+      if(!pin) { Swal.fire('Peringatan', 'PIN data tidak boleh kosong!', 'warning'); return; }
+      
+      Swal.fire({ title: 'Memverifikasi Akses...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+      
+      fetch(API_URL, { 
+        method: "POST", 
+        body: JSON.stringify({ action: "loginValidation", pin: pin, expectedRole: "dashboard" }) 
+      })
       .then(res => res.json())
-      .then(data => {
-        document.getElementById('totalAntrean').innerText = data.totalAntrean || 0;
-        document.getElementById('totalVerif').innerText = data.totalVerif || 0;
-        document.getElementById('totalBelum').innerText = data.totalBelum || 0;
-        document.getElementById('totalTunda').innerText = data.totalTunda || 0;
-        
-        const tbody = document.getElementById('tabelData');
-        tbody.innerHTML = (data.terbaru || []).map(row => 
-          `<tr><td>${row.nama}</td><td>${row.nisn}</td><td>${row.status}</td></tr>`
-        ).join('');
-        
-        chartG.data.datasets[0].data = [data.totalLaki, data.totalPerempuan];
-        chartG.update();
+      .then(res => {
+        Swal.close();
+        if(res.success) {
+          localStorage.setItem('sivera_logged_in', 'true');
+          tampilkanDashboard();
+        } else {
+          Swal.fire('Login Gagal', res.error || 'PIN yang anda masukkan keliru.', 'error');
+        }
+      })
+      .catch(() => {
+        Swal.close();
+        Swal.fire('Error', 'Sambungan ke server terputus.', 'error');
       });
-  }
-</script>
+    }
+
+    function prosesLogout() {
+      if(refreshInterval) clearInterval(refreshInterval);
+      localStorage.removeItem('sivera_logged_in');
+      location.reload();
+    }
+
+    function tampilkanDashboard() {
+      document.getElementById('loginWrapper').classList.add('hidden');
+      document.getElementById('mainSection').classList.remove('hidden');
+      
+      // Hancurkan instance chart lama jika ada demi mencegah error tumpang tindih rendering
+      if (chartG !== null) {
+        chartG.destroy();
+      }
+
+      // Inisialisasi Chart Doughnut baru
+      const ctx = document.getElementById('genderChart').getContext('2d');
+      chartG = new Chart(ctx, {
+        type: 'doughnut',
+        data: { 
+          labels: ['Laki-laki', 'Perempuan'], 
+          datasets: [{ 
+            data: [0, 0], 
+            backgroundColor: ['#2563eb', '#db2777'],
+            borderWidth: 2,
+            borderColor: '#ffffff'
+          }] 
+        },
+        options: { 
+          responsive: true, 
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { font: { weight: 'bold', size: 10 } }
+            }
+          }
+        }
+      });
+      
+      muatData();
+      // Sinkronisasi ulang data otomatis via pooling interval setiap 30 detik
+      refreshInterval = setInterval(muatData, 30000);
+    }
+
+    function muatData() {
+      fetch(`${API_URL}?action=getDashboardStats`)
+        .then(res => res.json())
+        .then(data => {
+          // Update Nilai Counter Box Utama
+          document.getElementById('totalAntrean').innerText = data.totalAntrean || 0;
+          document.getElementById('totalVerif').innerText = data.totalVerif || 0;
+          document.getElementById('totalBelum').innerText = data.totalBelum || 0;
+          document.getElementById('totalTunda').innerText = data.totalTunda || 0;
+          
+          // Render Baris Tabel Berkas Pendaftar Masuk Terbaru
+          const tbody = document.getElementById('tabelData');
+          tbody.innerHTML = (data.terbaru || []).map(row => {
+            let badgeClass = "bg-zinc-100 text-zinc-600 border-zinc-200";
+            let txtStatus = row.status ? row.status.toUpperCase() : "MENUNGGU";
+            
+            var checkStatus = String(row.status).toLowerCase().trim();
+            if(checkStatus === 'terverifikasi') {
+              badgeClass = "bg-emerald-50 text-emerald-700 border-emerald-200";
+              txtStatus = "TERVERIFIKASI";
+            } else if(checkStatus === 'belum verifikasi' || checkStatus === 'belum verifikator' || checkStatus === 'menunggu') {
+              badgeClass = "bg-amber-50 text-amber-700 border-amber-200";
+              txtStatus = "MENUNGGU";
+            } else if(checkStatus === 'tunda' || checkStatus === 'tunda verifikasi') {
+              badgeClass = "bg-red-50 text-red-700 border-red-200";
+              txtStatus = "DITUNDA";
+            }
+
+            return `
+              <tr class="hover:bg-zinc-50/80 transition">
+                <td class="py-2.5 font-bold text-zinc-800 uppercase max-w-[140px] truncate">${row.nama || '-'}</td>
+                <td class="py-2.5 font-mono text-zinc-400 font-bold">${row.nisn || '-'}</td>
+                <td class="py-2.5 text-center">
+                  <span class="px-2 py-0.5 border text-[9px] font-black rounded-md uppercase tracking-wider block ${badgeClass}">
+                    ${txtStatus}
+                  </span>
+                </td>
+              </tr>`;
+          }).join('');
+          
+          // Inject Nilai Baru & Refresh Grafik Distribusi Gender
+          if(chartG) {
+            chartG.data.datasets[0].data = [data.totalLaki || 0, data.totalPerempuan || 0];
+            chartG.update();
+          }
+        }).catch(() => {
+          console.warn("Gagal melakukan refresh sinkronisasi data statistik SIVERA.");
+        });
+    }
+  </script>
 </body>
 </html>
