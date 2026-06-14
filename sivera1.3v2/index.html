@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistem Verifikasi Antrean - SIVERA V 1.3 </title>
+  <title>Sistem Verifikasi Antrean - SIVERA V 1.3</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -284,18 +284,18 @@
           if (data.jamOperasional) { jamOperasionalGlobal = data.jamOperasional; }
         }).catch(err => console.log("Gagal memuat config jam"));
 
-      // Load Tickers
+      // Load Tickers - REVISI: Fallback teks berjalan disesuaikan dengan skrip modifikasi
       fetch(API_URL + "?action=getTickers")
         .then(res => res.json())
         .then(data => {
           if (data.tickers && data.tickers.length > 0) {
             startTickerEngine(data.tickers);
           } else {
-            document.getElementById('tickerContainer').innerHTML = `<div class="ticker-item active text-zinc-300">Belum ada pengumuman berjalan.</div>`;
+            document.getElementById('tickerContainer').innerHTML = `<div class="ticker-item active text-zinc-300">Selamat Datang di SIVERA v1.3</div>`;
           }
         }).catch(err => {
           console.log("Gagal memuat ticker");
-          document.getElementById('tickerContainer').innerHTML = `<div class="ticker-item active text-red-400">Gagal memuat data dari Config.</div>`;
+          document.getElementById('tickerContainer').innerHTML = `<div class="ticker-item active text-zinc-300">Selamat Datang di SIVERA - Silakan pantau berkala informasi antrean</div>`;
         });
     };
 
