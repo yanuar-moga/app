@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Statistik SIVERA</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -52,11 +53,16 @@
       <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow border border-zinc-200">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 bg-blue-600 rounded-full animate-pulse"></span>
-          <h2 class="text-sm font-black text-blue-950 uppercase tracking-wider">Dashboard Real-time Monitoring</h2>
+          <h2 class="text-sm font-black text-blue-950 uppercase tracking-wider">Dashboard Real-time</h2>
         </div>
-        <button onclick="prosesLogout()" class="bg-red-600 hover:bg-red-700 text-white text-[10px] font-black px-3 py-2 rounded-xl transition uppercase shadow cursor-pointer flex items-center gap-1.5">
-          <i class="fa-solid fa-power-off"></i> Keluar
-        </button>
+        <div class="flex gap-2">
+          <button onclick="muatData(true)" class="bg-blue-50 hover:bg-blue-100 text-blue-900 text-[10px] font-black px-3 py-2 rounded-xl transition uppercase shadow cursor-pointer flex items-center gap-1.5">
+            <i class="fa-solid fa-arrows-rotate" id="refreshIcon"></i> Perbarui
+          </button>
+          <button onclick="prosesLogout()" class="bg-red-600 hover:bg-red-700 text-white text-[10px] font-black px-3 py-2 rounded-xl transition uppercase shadow cursor-pointer flex items-center gap-1.5">
+            <i class="fa-solid fa-power-off"></i> Keluar
+          </button>
+        </div>
       </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -93,8 +99,7 @@
                   <th class="pb-2 text-center w-24">Status</th>
                 </tr>
               </thead>
-              <tbody id="tabelData" class="divide-y divide-zinc-50 font-medium">
-                </tbody>
+              <tbody id="tabelData" class="divide-y divide-zinc-50 font-medium"></tbody>
             </table>
           </div>
         </div>
@@ -102,14 +107,13 @@
         <div class="bg-white p-4 rounded-xl shadow border border-zinc-200 md:col-span-2 flex flex-col items-center">
           <div class="flex items-center gap-2 mb-3 pb-2 border-b border-zinc-100 w-full justify-start">
             <i class="fa-solid fa-venus-mars text-indigo-600 text-xs"></i>
-            <h3 class="text-xs font-black text-blue-900 uppercase tracking-wider">Statistik Gender (Pendaftar)</h3>
+            <h3 class="text-xs font-black text-blue-900 uppercase tracking-wider">Distribusi Gender</h3>
           </div>
           <div class="w-full h-52 relative flex items-center justify-center">
             <canvas id="genderChart"></canvas>
           </div>
         </div>
       </div>
-
     </div>
   </main>
 
@@ -118,9 +122,11 @@
   </footer>
 
   <script>
+    // Registrasi plugin datalabels
+    Chart.register(ChartDataLabels);
+
     const API_URL = "https://script.google.com/macros/s/AKfycbxqvm_weKRsAkoospWstaQEoREEF_QybeZ62hohzGDdr6SlDpEc1zAvMBCnRM-gqad5/exec";
     let chartG = null;
-    let refreshInterval = null;
 
     window.addEventListener('DOMContentLoaded', () => {
       if (localStorage.getItem('sivera_logged_in') === 'true') {
@@ -145,7 +151,7 @@
           localStorage.setItem('sivera_logged_in', 'true');
           tampilkanDashboard();
         } else {
-          Swal.fire('Login Gagal', res.error || 'PIN yang anda masukkan keliru.', 'error');
+          Swal.fire('Login Gagal', 'PIN yang anda masukkan keliru.', 'error');
         }
       })
       .catch(() => {
@@ -155,7 +161,6 @@
     }
 
     function prosesLogout() {
-      if(refreshInterval) clearInterval(refreshInterval);
       localStorage.removeItem('sivera_logged_in');
       location.reload();
     }
@@ -164,88 +169,54 @@
       document.getElementById('loginWrapper').classList.add('hidden');
       document.getElementById('mainSection').classList.remove('hidden');
       
-      // Hancurkan instance chart lama jika ada demi mencegah error tumpang tindih rendering
-      if (chartG !== null) {
-        chartG.destroy();
-      }
+      if (chartG !== null) chartG.destroy();
 
-      // Inisialisasi Chart Doughnut baru
       const ctx = document.getElementById('genderChart').getContext('2d');
       chartG = new Chart(ctx, {
         type: 'doughnut',
-        data: { 
-          labels: ['Laki-laki', 'Perempuan'], 
-          datasets: [{ 
-            data: [0, 0], 
-            backgroundColor: ['#2563eb', '#db2777'],
-            borderWidth: 2,
-            borderColor: '#ffffff'
-          }] 
-        },
+        data: { labels: ['Laki-laki', 'Perempuan'], datasets: [{ data: [0, 0], backgroundColor: ['#2563eb', '#db2777'], borderWidth: 2, borderColor: '#ffffff' }] },
         options: { 
-          responsive: true, 
-          maintainAspectRatio: false,
+          responsive: true, maintainAspectRatio: false,
           plugins: {
-            legend: {
-              position: 'bottom',
-              labels: { font: { weight: 'bold', size: 10 } }
-            }
+            legend: { position: 'bottom', labels: { font: { weight: 'bold', size: 10 } } },
+            datalabels: { color: '#fff', font: { weight: 'bold', size: 12 }, formatter: (val) => val }
           }
         }
       });
-      
       muatData();
-      // Sinkronisasi ulang data otomatis via pooling interval setiap 30 detik
-      refreshInterval = setInterval(muatData, 30000);
     }
 
-    function muatData() {
+    function muatData(isManual = false) {
+      if(isManual) document.getElementById('refreshIcon').classList.add('fa-spin');
+      
       fetch(`${API_URL}?action=getDashboardStats`)
         .then(res => res.json())
         .then(data => {
-          // Update Nilai Counter Box Utama
+          if(isManual) document.getElementById('refreshIcon').classList.remove('fa-spin');
+
           document.getElementById('totalAntrean').innerText = data.totalAntrean || 0;
           document.getElementById('totalVerif').innerText = data.totalVerif || 0;
           document.getElementById('totalBelum').innerText = data.totalBelum || 0;
           document.getElementById('totalTunda').innerText = data.totalTunda || 0;
           
-          // Render Baris Tabel Berkas Pendaftar Masuk Terbaru
           const tbody = document.getElementById('tabelData');
           tbody.innerHTML = (data.terbaru || []).map(row => {
-            let badgeClass = "bg-zinc-100 text-zinc-600 border-zinc-200";
-            let txtStatus = row.status ? row.status.toUpperCase() : "MENUNGGU";
+            let status = row.status?.toUpperCase() || "";
+            let badgeClass = status.includes('TERVERIF') ? "bg-emerald-50 text-emerald-700 border-emerald-200" : (status.includes('TUNDA') ? "bg-red-50 text-red-700 border-red-200" : "bg-amber-50 text-amber-700 border-amber-200");
             
-            var checkStatus = String(row.status).toLowerCase().trim();
-            if(checkStatus === 'terverifikasi') {
-              badgeClass = "bg-emerald-50 text-emerald-700 border-emerald-200";
-              txtStatus = "TERVERIFIKASI";
-            } else if(checkStatus === 'belum verifikasi' || checkStatus === 'belum verifikator' || checkStatus === 'menunggu') {
-              badgeClass = "bg-amber-50 text-amber-700 border-amber-200";
-              txtStatus = "MENUNGGU";
-            } else if(checkStatus === 'tunda' || checkStatus === 'tunda verifikasi') {
-              badgeClass = "bg-red-50 text-red-700 border-red-200";
-              txtStatus = "DITUNDA";
-            }
-
-            return `
-              <tr class="hover:bg-zinc-50/80 transition">
-                <td class="py-2.5 font-bold text-zinc-800 uppercase max-w-[140px] truncate">${row.nama || '-'}</td>
-                <td class="py-2.5 font-mono text-zinc-400 font-bold">${row.nisn || '-'}</td>
-                <td class="py-2.5 text-center">
-                  <span class="px-2 py-0.5 border text-[9px] font-black rounded-md uppercase tracking-wider block ${badgeClass}">
-                    ${txtStatus}
-                  </span>
-                </td>
-              </tr>`;
+            return `<tr>
+              <td class="py-2.5 font-bold text-zinc-800 uppercase">${row.nama || '-'}</td>
+              <td class="py-2.5 font-mono text-zinc-400 font-bold">${row.nisn || '-'}</td>
+              <td class="py-2.5 text-center"><span class="px-2 py-0.5 border text-[9px] font-black rounded-md ${badgeClass}">${status}</span></td>
+            </tr>`;
           }).join('');
           
-          // Inject Nilai Baru & Refresh Grafik Distribusi Gender
           if(chartG) {
             chartG.data.datasets[0].data = [data.totalLaki || 0, data.totalPerempuan || 0];
             chartG.update();
           }
         }).catch(() => {
-          console.warn("Gagal melakukan refresh sinkronisasi data statistik SIVERA.");
+          if(isManual) document.getElementById('refreshIcon').classList.remove('fa-spin');
         });
     }
   </script>
