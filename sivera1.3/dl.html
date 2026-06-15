@@ -13,7 +13,6 @@
     }
     .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
     
-    /* Animasi Transisi Slide Up Per Baris untuk Ticker Text */
     .ticker-item {
       opacity: 0;
       transform: translateY(20px);
@@ -384,20 +383,46 @@
         }).catch(() => { submitButton.disabled = false; submitButton.innerText = "Ambil Nomor Antrean"; generateCaptcha(); });
     }
 
-    function downloadTiketGambar() {
+    async function downloadTiketGambar() {
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
-      
-      canvas.width = 500; canvas.height = 740; 
-      ctx.fillStyle = "#020617"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.strokeStyle = "#d97706"; ctx.lineWidth = 6; ctx.strokeRect(3, 3, canvas.width - 6, canvas.height - 6);
+      canvas.width = 500; canvas.height = 740;
+
+      // Draw rounded background
+      ctx.fillStyle = "#020617";
+      var radius = 25;
+      ctx.beginPath();
+      ctx.moveTo(radius, 0); ctx.lineTo(canvas.width - radius, 0);
+      ctx.quadraticCurveTo(canvas.width, 0, canvas.width, radius);
+      ctx.lineTo(canvas.width, canvas.height - radius);
+      ctx.quadraticCurveTo(canvas.width, canvas.height, canvas.width - radius, canvas.height);
+      ctx.lineTo(radius, canvas.height);
+      ctx.quadraticCurveTo(0, canvas.height, 0, canvas.height - radius);
+      ctx.lineTo(0, radius);
+      ctx.quadraticCurveTo(0, 0, radius, 0);
+      ctx.closePath(); ctx.fill();
+
+      // Watermark Logo
+      var logoImg = new Image();
+      logoImg.crossOrigin = "anonymous";
+      logoImg.src = "https://yanuar-moga.github.io/guruwali/assets/logo.png";
+      await new Promise(resolve => logoImg.onload = resolve);
+      ctx.globalAlpha = 0.08;
+      ctx.drawImage(logoImg, 100, 220, 300, 300);
+      ctx.globalAlpha = 1.0;
+
+      // Header Text
       ctx.fillStyle = "#fbbf24"; ctx.font = "bold 22px Arial, sans-serif"; ctx.textBaseline = "top"; ctx.textAlign = "center";
       ctx.fillText("SMP NEGERI 1 MOGA", canvas.width / 2, 40);
       ctx.fillStyle = "#94a3b8"; ctx.font = "bold 13px Arial, sans-serif"; ctx.fillText("BUKTI RESMI NOMOR ANTREAN SPMB", canvas.width / 2, 70);
 
       ctx.strokeStyle = "#1e3a8a"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(30, 95); ctx.lineTo(470, 95); ctx.stroke();
-      ctx.fillStyle = "rgba(30, 58, 138, 0.4)"; ctx.fillRect(50, 115, 400, 155);
-      ctx.strokeStyle = "#2563eb"; ctx.strokeRect(50, 115, 400, 155);
+      
+      // Main Box
+      ctx.fillStyle = "rgba(30, 58, 138, 0.4)";
+      ctx.beginPath();
+      ctx.roundRect(50, 115, 400, 155, 15); ctx.fill();
+      ctx.strokeStyle = "#2563eb"; ctx.stroke();
       
       ctx.fillStyle = "#60a5fa"; ctx.font = "bold 14px Arial, sans-serif"; ctx.fillText("NOMOR ANTREAN ANDA", canvas.width / 2, 130);
       ctx.fillStyle = "#fbbf24"; ctx.font = "900 65px monospace"; ctx.fillText(document.getElementById('t_no').innerText, canvas.width / 2, 160);
@@ -421,6 +446,10 @@
         ctx.fillStyle = "#ffffff"; ctx.textAlign = "right"; ctx.font = "bold 13px Arial, sans-serif";
         if (i === 3) { ctx.fillStyle = "#fbbf24"; } 
         ctx.fillText(dataSiswa[i].val, 455, letakY);
+        
+        // Garis Pembatas Putih Abu
+        ctx.strokeStyle = "#334155"; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(45, letakY + 8); ctx.lineTo(455, letakY + 8); ctx.stroke();
         
         letakY += 38;
       }
