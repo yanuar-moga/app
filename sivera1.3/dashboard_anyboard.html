@@ -29,11 +29,7 @@
           </a>
         </div>
       </div>
-      <div class="text-right">
-        <p class="text-amber-400 text-[9px] font-bold uppercase">Terakhir Update</p>
-        <p id="timestamp" class="text-white text-[10px] font-mono font-bold">-</p>
       </div>
-    </div>
   </header>
 
   <main class="container mx-auto max-w-5xl p-4 flex-grow flex items-center justify-center">
@@ -154,9 +150,6 @@
               </td>
             </tr>
           `).join('');
-          
-          const now = new Date();
-          document.getElementById('timestamp').innerText = now.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) + ', ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         })
         .catch(() => { if(isManual) document.getElementById('refreshIcon').classList.remove('fa-spin'); });
     }
