@@ -139,20 +139,23 @@
           chartTotal.update(); 
           chartVerif.update();
           
-          document.getElementById('tabelData').innerHTML = (data.terbaru || []).map(row => `
-            <tr>
-              <td class="py-2.5 font-bold text-zinc-800 uppercase">${row.nama || '-'}</td>
-              <td class="py-2.5 font-mono text-zinc-400 font-bold">${row.nisn || '-'}</td>
-              <td class="py-2.5 text-center">
-                <span class="block px-2 py-0.5 border text-[9px] font-black rounded-md ${row.status?.toLowerCase().includes('terverifikasi') ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}">
-                  ${row.status || '-'}
-                </span>
-                <span class="block text-[8px] text-zinc-400 font-mono mt-0.5">
-                  ${row.waktuVerif ? row.waktuVerif.split(',')[1] : '-'}
-                </span>
-              </td>
-            </tr>
-          `).join('');
+          document.getElementById('tabelData').innerHTML = (data.terbaru || []).map(row => {
+            const timeInfo = (row.waktuVerif && typeof row.waktuVerif === 'string' && row.waktuVerif.includes(',')) 
+                             ? row.waktuVerif.split(',')[1].trim() 
+                             : '-';
+            return `
+              <tr>
+                <td class="py-2.5 font-bold text-zinc-800 uppercase">${row.nama || '-'}</td>
+                <td class="py-2.5 font-mono text-zinc-400 font-bold">${row.nisn || '-'}</td>
+                <td class="py-2.5 text-center">
+                  <span class="block px-2 py-0.5 border text-[9px] font-black rounded-md ${row.status?.toLowerCase().includes('terverifikasi') ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}">
+                    ${row.status || '-'}
+                  </span>
+                  <span class="block text-[8px] text-zinc-400 font-mono mt-0.5">${timeInfo}</span>
+                </td>
+              </tr>
+            `;
+          }).join('');
         })
         .catch(() => { if(isManual) document.getElementById('refreshIcon').classList.remove('fa-spin'); });
     }
