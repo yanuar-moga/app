@@ -29,7 +29,7 @@
           </a>
         </div>
       </div>
-      </div>
+    </div>
   </header>
 
   <main class="container mx-auto max-w-5xl p-4 flex-grow flex items-center justify-center">
@@ -91,7 +91,7 @@
               <tr class="text-zinc-400 border-b border-zinc-200 font-black uppercase tracking-wider text-[10px]">
                 <th class="pb-2">Nama Siswa</th>
                 <th class="pb-2 w-24">NISN</th>
-                <th class="pb-2 text-center w-24">Status</th>
+                <th class="pb-2 text-center w-32">Status & Waktu</th>
               </tr>
             </thead>
             <tbody id="tabelData" class="divide-y divide-zinc-50 font-medium"></tbody>
@@ -144,8 +144,11 @@
               <td class="py-2.5 font-bold text-zinc-800 uppercase">${row.nama || '-'}</td>
               <td class="py-2.5 font-mono text-zinc-400 font-bold">${row.nisn || '-'}</td>
               <td class="py-2.5 text-center">
-                <span class="px-2 py-0.5 border text-[9px] font-black rounded-md ${row.status?.toLowerCase().includes('terverifikasi') ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}">
+                <span class="block px-2 py-0.5 border text-[9px] font-black rounded-md ${row.status?.toLowerCase().includes('terverifikasi') ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}">
                   ${row.status || '-'}
+                </span>
+                <span class="block text-[8px] text-zinc-400 font-mono mt-0.5">
+                  ${row.waktuVerif ? row.waktuVerif.split(',')[1] : '-'}
                 </span>
               </td>
             </tr>
