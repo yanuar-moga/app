@@ -77,7 +77,7 @@
             <label class="block text-[9px] font-black text-zinc-500 uppercase mb-1">Sampai No:</label>
             <input type="number" id="filterMax" placeholder="25" class="w-full bg-zinc-100 border border-zinc-200 text-xs font-bold p-2.5 rounded-lg focus:outline-none focus:border-blue-900">
           </div>
-          <button onclick="loadDataAntrean()" class="col-span-2 bg-blue-900 hover:bg-blue-800 text-amber-400 font-black py-2 rounded-lg text-xs uppercase shadow-md transition">
+          <button onclick="loadDataAntrean()" class="col-span-2 bg-blue-900 hover:bg-blue-800 text-amber-400 font-black py-2 rounded-lg text-xs uppercase shadow-md transition cursor-pointer">
             <i class="fa-solid fa-filter"></i> Terapkan Filter
           </button>
         </div>
@@ -125,6 +125,7 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbwN5UAUGXse_vKksd2mzReV-k6I4RnXxkzbewUP09hlfYuBrd7Nui4ogiaSKYjHPAQL/exec";
 
+    // Auto-login session check
     window.onload = function() {
       const savedUser = localStorage.getItem('username');
       if (savedUser) {
@@ -132,6 +133,7 @@
       }
     };
 
+    // Fungsi Pengolahan Validasi Login
     function prosesLogin() {
       const pin = document.getElementById('verifierPin').value;
       if(!pin) { Swal.fire('Error', 'PIN wajib diisi!', 'warning'); return; }
@@ -156,6 +158,7 @@
       });
     }
 
+    // Fungsi Berpindah Layout ke Dashboard Panel
     function masukDashboard(username) {
       document.getElementById('loginWrapper').classList.add('hidden');
       document.getElementById('mainSection').classList.remove('hidden');
@@ -163,6 +166,7 @@
       loadDataAntrean(false);
     }
 
+    // Fungsi Mengambil Data Antrean dari Database (Google Sheets via GET)
     function loadDataAntrean(isManualClick = false) {
       const refreshIcon = document.getElementById('refreshIcon');
       const min = parseInt(document.getElementById('filterMin').value) || 1;
@@ -178,6 +182,7 @@
         const emptyState = document.getElementById('emptyState');
         tbody.innerHTML = "";
         
+        // Filter rentang nomor urut antrean yang didapat
         const filteredData = data.filter(row => row.noAntrean >= min && row.noAntrean <= max);
         
         if(!filteredData || filteredData.length === 0) {
@@ -208,16 +213,17 @@
       });
     }
 
+    // PERBAIKAN UTAMA: Interseptor Aksi Penekanan Tombol Berkas Siswa
     function eksekusi(nisn, status) {
       const verifikatorAktif = localStorage.getItem('username') || "Petugas Verifikasi";
 
-      // Jika statusnya 'Tunda', minta input alasan/catatan penundaan berkas
       if (status === 'Tunda') {
+        // Alur Dialog khusus jika status tombol yang dipilih adalah 'Tunda'
         Swal.fire({
           title: 'Alasan Ditunda',
-          text: `Masukkan alasan penundaan untuk NISN ${nisn}:`,
+          text: `Masukkan alasan/catatan penundaan berkas untuk NISN ${nisn}:`,
           input: 'text',
-          inputPlaceholder: 'Misal: Berkas KK kurang legalisir...',
+          inputPlaceholder: 'Contoh: Berkas Akta Kelahiran atau KK belum dilegalisir...',
           showCancelButton: true,
           confirmButtonColor: '#d97706',
           cancelButtonColor: '#4b5563',
@@ -225,7 +231,7 @@
           cancelButtonText: 'Batal',
           inputValidator: (value) => {
             if (!value) {
-              return 'Alasan penundaan wajib diisi!';
+              return 'Anda wajib mengisi alasan penundaan berkas!';
             }
           }
         }).then((result) => {
@@ -234,15 +240,15 @@
           }
         });
       } else {
-        // Jika statusnya 'Terverifikasi' (Valid)
+        // Alur Dialog konfirmasi normal jika status berkas dinyatakan 'Valid/Terverifikasi'
         Swal.fire({
           title: 'Konfirmasi Validasi',
-          text: `Apakah Anda yakin berkas NISN ${nisn} sudah valid dan lengkap?`,
+          text: `Apakah Anda yakin seluruh berkas fisik dari NISN ${nisn} sudah valid dan lengkap?`,
           icon: 'question',
           showCancelButton: true,
           confirmButtonColor: '#059669',
           cancelButtonColor: '#4b5563',
-          confirmButtonText: 'Ya, Valid!',
+          confirmButtonText: 'Ya, Sudah Valid!',
           cancelButtonText: 'Batal'
         }).then((result) => {
           if (result.isConfirmed) {
@@ -252,14 +258,15 @@
       }
     }
 
+    // Fungsi Eksekusi Pengiriman HTTP POST Request ke Server Google Apps Script (GAS)
     function kirimDataVerifikasi(nisn, status, verifikator, catatan) {
       Swal.fire({ 
-        title: 'Memproses ke Server...', 
+        title: 'Menyimpan ke Server...', 
         allowOutsideClick: false, 
         didOpen: () => Swal.showLoading() 
       });
 
-      // Mengirim POST Data disesuaikan penuh dengan backend fungsi prosesVerifikasiBerkas di GAS
+      // Melakukan sinkronisasi payload JSON dengan parameter fungsi prosesVerifikasiBerkas di backend
       fetch(API_URL, {
         method: "POST",
         body: JSON.stringify({
@@ -274,18 +281,19 @@
       .then(res => {
         Swal.close();
         if (res.success) {
-          Swal.fire('Berhasil', `Siswa dengan NISN ${nisn} berhasil di-set ke ${status}.`, 'success');
-          loadDataAntrean(false); // Reload tabel secara asinkronus
+          Swal.fire('Berhasil', `Status berkas NISN ${nisn} saat ini berhasil diubah menjadi: ${status}.`, 'success');
+          loadDataAntrean(false); // Memperbarui daftar antrean di tabel secara dinamis
         } else {
-          Swal.fire('Gagal', res.error || 'Gagal mengubah status berkas.', 'error');
+          Swal.fire('Gagal', res.error || 'Server menolak memperbarui data.', 'error');
         }
       })
       .catch(() => {
         Swal.close();
-        Swal.fire('Error', 'Gagal terhubung ke server SIVERA.', 'error');
+        Swal.fire('Error', 'Gagal menyambungkan koneksi ke server SIVERA.', 'error');
       });
     }
 
+    // Fungsi Utilitas Pembantu Pendukung Antarmuka Modals
     function prosesLogout() { localStorage.clear(); location.reload(); }
     function bukaModalDeveloper() { document.getElementById('developerModal').classList.remove('hidden'); setTimeout(() => { document.getElementById('developerModal').classList.remove('opacity-0'); document.getElementById('devModalContent').classList.remove('scale-95'); }, 10); }
     function tutupModalDeveloper() { document.getElementById('developerModal').classList.add('opacity-0'); document.getElementById('devModalContent').classList.add('scale-95'); setTimeout(() => { document.getElementById('developerModal').classList.add('hidden'); }, 300); }
