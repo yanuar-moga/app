@@ -165,7 +165,6 @@
 
     function loadDataAntrean(isManualClick = false) {
       const refreshIcon = document.getElementById('refreshIcon');
-      // Mengambil input rentang
       const min = parseInt(document.getElementById('filterMin').value) || 1;
       const max = parseInt(document.getElementById('filterMax').value) || 1000;
       
@@ -179,7 +178,6 @@
         const emptyState = document.getElementById('emptyState');
         tbody.innerHTML = "";
         
-        // Logika Filter Rentang
         const filteredData = data.filter(row => row.noAntrean >= min && row.noAntrean <= max);
         
         if(!filteredData || filteredData.length === 0) {
@@ -211,8 +209,81 @@
     }
 
     function eksekusi(nisn, status) {
-        // Implementasi logika eksekusi Anda
-        Swal.fire('Info', `Proses ${status} untuk NISN ${nisn}`, 'info');
+      const verifikatorAktif = localStorage.getItem('username') || "Petugas Verifikasi";
+
+      // Jika statusnya 'Tunda', minta input alasan/catatan penundaan berkas
+      if (status === 'Tunda') {
+        Swal.fire({
+          title: 'Alasan Ditunda',
+          text: `Masukkan alasan penundaan untuk NISN ${nisn}:`,
+          input: 'text',
+          inputPlaceholder: 'Misal: Berkas KK kurang legalisir...',
+          showCancelButton: true,
+          confirmButtonColor: '#d97706',
+          cancelButtonColor: '#4b5563',
+          confirmButtonText: 'Simpan & Tunda',
+          cancelButtonText: 'Batal',
+          inputValidator: (value) => {
+            if (!value) {
+              return 'Alasan penundaan wajib diisi!';
+            }
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            kirimDataVerifikasi(nisn, status, verifikatorAktif, result.value);
+          }
+        });
+      } else {
+        // Jika statusnya 'Terverifikasi' (Valid)
+        Swal.fire({
+          title: 'Konfirmasi Validasi',
+          text: `Apakah Anda yakin berkas NISN ${nisn} sudah valid dan lengkap?`,
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#059669',
+          cancelButtonColor: '#4b5563',
+          confirmButtonText: 'Ya, Valid!',
+          cancelButtonText: 'Batal'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            kirimDataVerifikasi(nisn, status, verifikatorAktif, "-");
+          }
+        });
+      }
+    }
+
+    function kirimDataVerifikasi(nisn, status, verifikator, catatan) {
+      Swal.fire({ 
+        title: 'Memproses ke Server...', 
+        allowOutsideClick: false, 
+        didOpen: () => Swal.showLoading() 
+      });
+
+      // Mengirim POST Data disesuaikan penuh dengan backend fungsi prosesVerifikasiBerkas di GAS
+      fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "verifikasiSiswa",
+          nisn: nisn,
+          status: status,
+          verifikator: verifikator,
+          catatan: catatan
+        })
+      })
+      .then(res => res.json())
+      .then(res => {
+        Swal.close();
+        if (res.success) {
+          Swal.fire('Berhasil', `Siswa dengan NISN ${nisn} berhasil di-set ke ${status}.`, 'success');
+          loadDataAntrean(false); // Reload tabel secara asinkronus
+        } else {
+          Swal.fire('Gagal', res.error || 'Gagal mengubah status berkas.', 'error');
+        }
+      })
+      .catch(() => {
+        Swal.close();
+        Swal.fire('Error', 'Gagal terhubung ke server SIVERA.', 'error');
+      });
     }
 
     function prosesLogout() { localStorage.clear(); location.reload(); }
