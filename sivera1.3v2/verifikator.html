@@ -43,7 +43,7 @@
       <p class="text-[11px] font-bold text-zinc-500 mt-0.5 tracking-wider uppercase">SIVERA V 1.3</p>
       <div class="my-4 bg-zinc-50 p-2.5 rounded-xl border border-zinc-200">
         <span class="block text-[10px] text-zinc-400 font-bold uppercase">Build Version</span>
-        <span class="text-xs font-mono font-bold text-zinc-700">12 Juni 2026</span>
+        <span class="text-xs font-mono font-bold text-zinc-700">14 Juni 2026</span>
       </div>
       <button onclick="tutupModalDeveloper()" class="w-full bg-zinc-700 hover:bg-zinc-800 text-white font-black text-xs py-2.5 rounded-xl cursor-pointer transition uppercase tracking-wider shadow-md">Tutup Informasi</button>
     </div>
@@ -68,16 +68,30 @@
     <div id="mainSection" class="hidden w-full space-y-4 animate-fade-in self-start mt-2">
       <div class="bg-white p-5 rounded-2xl shadow-lg border border-zinc-200">
         
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div>
+            <label class="block text-[9px] font-black text-zinc-500 uppercase mb-1">Mulai No:</label>
+            <input type="number" id="filterMin" placeholder="1" class="w-full bg-zinc-100 border border-zinc-200 text-xs font-bold p-2.5 rounded-lg focus:outline-none focus:border-blue-900">
+          </div>
+          <div>
+            <label class="block text-[9px] font-black text-zinc-500 uppercase mb-1">Sampai No:</label>
+            <input type="number" id="filterMax" placeholder="25" class="w-full bg-zinc-100 border border-zinc-200 text-xs font-bold p-2.5 rounded-lg focus:outline-none focus:border-blue-900">
+          </div>
+          <button onclick="loadDataAntrean()" class="col-span-2 bg-blue-900 hover:bg-blue-800 text-amber-400 font-black py-2 rounded-lg text-xs uppercase shadow-md transition cursor-pointer">
+            <i class="fa-solid fa-filter"></i> Terapkan Filter
+          </button>
+        </div>
+
         <div class="flex items-center justify-between mb-4 pb-3 border-b border-zinc-100">
           <div class="flex items-center gap-2">
-            <span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span>
+            <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
             <h3 class="font-black text-blue-900 uppercase tracking-wider text-xs">Daftar Antrean Menunggu</h3>
           </div>
           <div class="flex items-center gap-2">
-            <button onclick="loadDataAntrean(true)" title="Segarkan Data" class="bg-zinc-100 hover:bg-zinc-200 text-zinc-600 p-1.5 rounded-lg text-xs transition cursor-pointer">
-              <i class="fa-solid fa-arrows-rotate" id="refreshIcon"></i>
+            <button onclick="loadDataAntrean(true)" title="Update Data" class="bg-blue-100 hover:bg-blue-200 text-blue-900 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase transition cursor-pointer flex items-center gap-2">
+              <i class="fa-solid fa-arrows-rotate" id="refreshIcon"></i> Perbarui
             </button>
-            <span id="displayUser" class="text-[9px] font-black bg-blue-50 text-blue-900 px-3 py-1.5 rounded-lg uppercase tracking-wider"></span>
+            <span id="displayUser" class="text-[9px] font-black bg-zinc-100 text-zinc-600 px-3 py-1.5 rounded-lg uppercase tracking-wider"></span>
           </div>
         </div>
 
@@ -92,15 +106,14 @@
               </tr>
             </thead>
             <tbody id="antreanTableBody" class="divide-y divide-zinc-100">
-              </tbody>
+            </tbody>
           </table>
           
           <div id="emptyState" class="hidden text-center py-8 space-y-2">
             <i class="fa-solid fa-circle-check text-emerald-500 text-3xl animate-bounce"></i>
-            <p class="text-xs font-bold text-zinc-400 uppercase tracking-wide">Semua antrean telah selesai diverifikasi!</p>
+            <p class="text-xs font-bold text-zinc-400 uppercase tracking-wide">Semua antrean telah selesai!</p>
           </div>
         </div>
-
       </div>
     </div>
   </main>
@@ -110,9 +123,9 @@
   </footer>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbwUoP8P0KvgjcOSu0nVDskujWBv6z58h54u9thYSJ5ZWmLl-Q3H6xS4tPXMgWEohqFx/exec";
-    let autoRefreshInterval = null;
+    const API_URL = "https://script.google.com/macros/s/AKfycbzftZCcFJ2vfre3UTOiY6PFqWPauOgu262Xz9VaiPrHTkxUbt1m1QjspAU396UINwnO/exec";
 
+    // Auto-login session check
     window.onload = function() {
       const savedUser = localStorage.getItem('username');
       if (savedUser) {
@@ -120,6 +133,7 @@
       }
     };
 
+    // Fungsi Pengolahan Validasi Login
     function prosesLogin() {
       const pin = document.getElementById('verifierPin').value;
       if(!pin) { Swal.fire('Error', 'PIN wajib diisi!', 'warning'); return; }
@@ -144,29 +158,22 @@
       });
     }
 
+    // Fungsi Berpindah Layout ke Dashboard Panel
     function masukDashboard(username) {
       document.getElementById('loginWrapper').classList.add('hidden');
       document.getElementById('mainSection').classList.remove('hidden');
-      document.getElementById('displayUser').innerHTML = `<i class="fa-solid fa-user-shield text-blue-900 mr-1"></i> ${username}`;
-      
+      document.getElementById('displayUser').innerHTML = `<i class="fa-solid fa-user-shield"></i> ${username}`;
       loadDataAntrean(false);
-      
-      // Mengaktifkan fitur Auto-Refresh berkala setiap 10 detik
-      if(!autoRefreshInterval) {
-        autoRefreshInterval = setInterval(() => {
-          loadDataAntrean(false);
-        }, 10000);
-      }
     }
 
+    // Fungsi Mengambil Data Antrean dari Database (Google Sheets via GET)
     function loadDataAntrean(isManualClick = false) {
       const refreshIcon = document.getElementById('refreshIcon');
+      const min = parseInt(document.getElementById('filterMin').value) || 1;
+      const max = parseInt(document.getElementById('filterMax').value) || 1000;
+      
       if(refreshIcon) refreshIcon.classList.add('fa-spin');
       
-      if(isManualClick) {
-        Swal.fire({ title: 'Menyegarkan Data...', allowOutsideClick: false, didOpen: () => Swal.showLoading(), timer: 600, showConfirmButton: false });
-      }
-
       fetch(`${API_URL}?action=getUnverifiedData`)
       .then(res => res.json())
       .then(data => {
@@ -175,13 +182,16 @@
         const emptyState = document.getElementById('emptyState');
         tbody.innerHTML = "";
         
-        if(!data || data.length === 0) {
+        // Filter rentang nomor urut antrean yang didapat
+        const filteredData = data.filter(row => row.noAntrean >= min && row.noAntrean <= max);
+        
+        if(!filteredData || filteredData.length === 0) {
           emptyState.classList.remove('hidden');
           return;
         }
         
         emptyState.classList.add('hidden');
-        data.forEach(row => {
+        filteredData.forEach(row => {
           tbody.innerHTML += `
             <tr class="hover:bg-zinc-50 transition">
               <td class="py-3 text-center font-black text-blue-950 text-xs">${String(row.noAntrean).padStart(3,'0')}</td>
@@ -199,76 +209,94 @@
         });
       }).catch(() => {
         if(refreshIcon) refreshIcon.classList.remove('fa-spin');
+        Swal.fire('Error', 'Gagal memuat data.', 'error');
       });
     }
 
+    // PERBAIKAN UTAMA: Interseptor Aksi Penekanan Tombol Berkas Siswa
     function eksekusi(nisn, status) {
-      Swal.fire({ 
-        title: status === 'Tunda' ? 'Tunda Antrean?' : 'Validasi Siswa?', 
-        text: status === 'Tunda' ? 'Berikan alasan penundaan berkas siswa ini:' : 'Pastikan berkas fisik siswa sudah sesuai.',
-        input: status === 'Tunda' ? 'text' : null, 
-        inputPlaceholder: 'Contoh: Berkas kurang Kartu Keluarga...', 
-        showCancelButton: true, 
-        confirmButtonColor: status === 'Tunda' ? '#f59e0b' : '#059669', 
-        confirmButtonText: status === 'Tunda' ? 'Tunda Sekarang' : 'Ya, Valid!',
-        cancelButtonText: 'Batal'
-      })
-      .then(res => {
-        if(res.isConfirmed) {
-          if(status === 'Tunda' && !res.value) {
-            Swal.fire('Gagal', 'Alasan penundaan wajib diisi!', 'warning');
-            return;
-          }
+      const verifikatorAktif = localStorage.getItem('username') || "Petugas Verifikasi";
 
-          Swal.fire({ title: 'Memproses Status...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-          
-          fetch(API_URL, { 
-            method: "POST", 
-            body: JSON.stringify({ 
-              action: "verifikasiSiswa", 
-              nisn: nisn, 
-              status: status, 
-              catatan: res.value || "", 
-              verifikator: localStorage.getItem('username') 
-            }) 
-          })
-          .then(res => res.json())
-          .then(data => {
-            Swal.close();
-            if(data.success) { 
-              Swal.fire('Berhasil!', `Siswa dengan NISN ${nisn} berhasil diperbarui menjadi [${status}].`, 'success'); 
-              loadDataAntrean(false); 
-            } else { 
-              Swal.fire('Gagal', data.error || 'Gagal mengubah status.', 'error'); 
+      if (status === 'Tunda') {
+        // Alur Dialog khusus jika status tombol yang dipilih adalah 'Tunda'
+        Swal.fire({
+          title: 'Alasan Ditunda',
+          text: `Masukkan alasan/catatan penundaan berkas untuk NISN ${nisn}:`,
+          input: 'text',
+          inputPlaceholder: 'Contoh: Berkas Akta Kelahiran atau KK belum dilegalisir...',
+          showCancelButton: true,
+          confirmButtonColor: '#d97706',
+          cancelButtonColor: '#4b5563',
+          confirmButtonText: 'Simpan & Tunda',
+          cancelButtonText: 'Batal',
+          inputValidator: (value) => {
+            if (!value) {
+              return 'Anda wajib mengisi alasan penundaan berkas!';
             }
-          }).catch(() => {
-            Swal.fire('Error', 'Koneksi ke sistem pusat terputus.', 'error');
-          });
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            kirimDataVerifikasi(nisn, status, verifikatorAktif, result.value);
+          }
+        });
+      } else {
+        // Alur Dialog konfirmasi normal jika status berkas dinyatakan 'Valid/Terverifikasi'
+        Swal.fire({
+          title: 'Konfirmasi Validasi',
+          text: `Apakah Anda yakin seluruh berkas fisik dari NISN ${nisn} sudah valid dan lengkap?`,
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#059669',
+          cancelButtonColor: '#4b5563',
+          confirmButtonText: 'Ya, Sudah Valid!',
+          cancelButtonText: 'Batal'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            kirimDataVerifikasi(nisn, status, verifikatorAktif, "-");
+          }
+        });
+      }
+    }
+
+    // Fungsi Eksekusi Pengiriman HTTP POST Request ke Server Google Apps Script (GAS)
+    function kirimDataVerifikasi(nisn, status, verifikator, catatan) {
+      Swal.fire({ 
+        title: 'Menyimpan ke Server...', 
+        allowOutsideClick: false, 
+        didOpen: () => Swal.showLoading() 
+      });
+
+      // Melakukan sinkronisasi payload JSON dengan parameter fungsi prosesVerifikasiBerkas di backend
+      fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "verifikasiSiswa",
+          nisn: nisn,
+          status: status,
+          verifikator: verifikator,
+          catatan: catatan
+        })
+      })
+      .then(res => res.json())
+      .then(res => {
+        Swal.close();
+        if (res.success) {
+          Swal.fire('Berhasil', `Status berkas NISN ${nisn} saat ini berhasil diubah menjadi: ${status}.`, 'success');
+          loadDataAntrean(false); // Memperbarui daftar antrean di tabel secara dinamis
+        } else {
+          Swal.fire('Gagal', res.error || 'Server menolak memperbarui data.', 'error');
         }
+      })
+      .catch(() => {
+        Swal.close();
+        Swal.fire('Error', 'Gagal menyambungkan koneksi ke server SIVERA.', 'error');
       });
     }
 
-    function prosesLogout() { 
-      if(autoRefreshInterval) clearInterval(autoRefreshInterval);
-      localStorage.clear(); 
-      location.reload(); 
-    }
-    
-    function bukaModalDeveloper() { 
-      document.getElementById('developerModal').classList.remove('hidden'); 
-      setTimeout(() => { 
-        document.getElementById('developerModal').classList.remove('opacity-0'); 
-        document.getElementById('devModalContent').classList.remove('scale-95'); 
-      }, 10); 
-    }
-    
-    function tutupModalDeveloper() { 
-      document.getElementById('developerModal').classList.add('opacity-0'); 
-      document.getElementById('devModalContent').classList.add('scale-95'); 
-      setTimeout(() => { 
-        document.getElementById('developerModal').classList.add('hidden'); 
-      }, 300); 
-    }
+    // Fungsi Utilitas Pembantu Pendukung Antarmuka Modals
+    function prosesLogout() { localStorage.clear(); location.reload(); }
+    function bukaModalDeveloper() { document.getElementById('developerModal').classList.remove('hidden'); setTimeout(() => { document.getElementById('developerModal').classList.remove('opacity-0'); document.getElementById('devModalContent').classList.remove('scale-95'); }, 10); }
+    function tutupModalDeveloper() { document.getElementById('developerModal').classList.add('opacity-0'); document.getElementById('devModalContent').classList.add('scale-95'); setTimeout(() => { document.getElementById('developerModal').classList.add('hidden'); }, 300); }
   </script>
 </body>
 </html>
