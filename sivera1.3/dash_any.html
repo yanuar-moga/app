@@ -16,7 +16,6 @@
     #splashScreen { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; background: #f4f4f5; transition: opacity 0.5s ease; }
     .splash-content { width: 90%; max-width: 350px; text-align: center; }
     
-    /* ANIMATIONS */
     @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     .animate-fade-in { animation: fadeIn .4s ease-out forwards; }
     @keyframes bannerFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
@@ -51,11 +50,10 @@
 
   <main class="container mx-auto max-w-5xl p-4 flex-grow">
     <div id="mainSection" class="w-full space-y-5 animate-fade-in mt-2">
-      
       <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow border border-zinc-200">
         <div>
           <h2 class="text-xs font-black text-blue-950 uppercase">Dashboard SIVERA V 1.3</h2>
-          <p id="infoWaktu" class="text-[9px] text-zinc-500 font-bold mt-1 uppercase">Memuat waktu...</p>
+          <p class="text-[9px] text-zinc-500 font-bold mt-1 uppercase italic">Dashboard auto-reload setiap 15 menit</p>
         </div>
         <button onclick="muatData(true)" class="bg-blue-50 text-blue-900 text-[10px] font-black px-3 py-2 rounded-xl hover:bg-blue-100 uppercase flex items-center gap-1.5">
           <i class="fa-solid fa-arrows-rotate" id="refreshIcon"></i> Perbarui
@@ -94,8 +92,14 @@
         const splash = document.getElementById("splashScreen");
         splash.style.opacity = "0";
         setTimeout(() => splash.style.display = "none", 500);
-      }, 3000);
-      initCharts(); muatData();
+      }, 2000);
+      initCharts(); 
+      muatData();
+      
+      // Auto-reload setiap 15 menit (900.000 ms)
+      setInterval(() => {
+        muatData();
+      }, 900000);
     });
 
     Chart.register(ChartDataLabels);
@@ -115,12 +119,6 @@
         .then(data => {
           if (isManual) document.getElementById("refreshIcon").classList.remove("fa-spin");
           
-          // Logika Update Terakhir dari timestamp verifikasi paling baru
-          const daftarData = data.terbaru || [];
-          const semuaWaktu = daftarData.map(r => r.waktuVerif).filter(w => w && w !== "");
-          const waktuTerakhir = semuaWaktu.length > 0 ? semuaWaktu[0] : "Data belum ada";
-          
-          document.getElementById("infoWaktu").innerText = `Update Terakhir : ${waktuTerakhir}`;
           document.getElementById("totalAntrean").innerText = data.totalAntrean || 0;
           document.getElementById("totalVerif").innerText = data.totalVerif || 0;
           document.getElementById("totalBelum").innerText = data.totalBelum || 0;
@@ -128,8 +126,10 @@
           
           chartTotal.data.datasets[0].data = [data.totalLaki || 0, data.totalPerempuan || 0];
           chartVerif.data.datasets[0].data = [data.verifLaki || 0, data.verifPerempuan || 0];
-          chartTotal.update(); chartVerif.update();
+          chartTotal.update(); 
+          chartVerif.update();
           
+          const daftarData = data.terbaru || [];
           document.getElementById("tabelData").innerHTML = daftarData.map(row => `
             <tr class="hover:bg-zinc-50">
               <td class="py-3 font-bold text-zinc-800 uppercase">${row.nama || "-"}</td>
@@ -140,7 +140,9 @@
                 </span>
               </td>
             </tr>`).join("");
-        }).catch(() => { if(isManual) document.getElementById("refreshIcon").classList.remove("fa-spin"); });
+        }).catch(err => { 
+            if(isManual) document.getElementById("refreshIcon").classList.remove("fa-spin"); 
+        });
     }
   </script>
 </body>
