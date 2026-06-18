@@ -1,13 +1,598 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Statistik SIVERA - Revisi</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Statistik SIVERA</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn .4s ease-out forwards;
+    }
+
+    /* =========================
+       BANNER ANIMATION
+    ========================== */
+
+    @keyframes bannerFloat {
+      0%,100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    @keyframes bannerGlow {
+      0%,100% {
+        box-shadow: 0 0 10px rgba(251,191,36,.3);
+      }
+      50% {
+        box-shadow:
+          0 0 25px rgba(251,191,36,.8),
+          0 0 50px rgba(251,191,36,.4);
+      }
+    }
+
+    @keyframes shine {
+      0% {
+        left: -150%;
+      }
+      100% {
+        left: 200%;
+      }
+    }
+
+    .banner-wrapper{
+      position:relative;
+      overflow:hidden;
+      border-radius:18px;
+    }
+
+    .banner-wrapper::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:-150%;
+      width:60%;
+      height:100%;
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(255,255,255,.45),
+          transparent
+        );
+      transform:skewX(-25deg);
+      animation:shine 4s linear infinite;
+      z-index:5;
+      pointer-events:none;
+    }
+
+    .banner-animated{
+      animation:
+        bannerFloat 4s ease-in-out infinite,
+        bannerGlow 3s ease-in-out infinite;
+      transition:.3s;
+    }
+
+    .banner-animated:hover{
+      transform:scale(1.02);
+    }
+
+    .card-stat{
+      transition:.25s;
+    }
+
+    .card-stat:hover{
+      transform:translateY(-3px);
+    }
+  </style>
 </head>
-<body>
-<h1>Dashboard SIVERA Revisi</h1>
-<p>File sementara dibuat dari potongan HTML yang dikirim melalui chat.</p>
-<p>Untuk menghasilkan file 100% lengkap siap replace, unggah file HTML asli karena kode yang ditempel terpotong dan melebihi batas pesan.</p>
+
+<body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col justify-between select-none">
+
+  <header class="bg-blue-900 border-b-4 border-amber-400 p-4 shadow-lg sticky top-0 z-40">
+    <div class="container mx-auto max-w-5xl flex justify-between items-center px-1">
+
+      <div class="flex items-center gap-3">
+
+        <div class="bg-white p-1 rounded-full shadow-md">
+          <img
+            src="https://yanuar-moga.github.io/guruwali/assets/logo.png"
+            alt="Logo"
+            class="w-12 h-12 object-contain"
+          >
+        </div>
+
+        <div>
+          <h1 class="text-white font-black text-sm md:text-base uppercase tracking-wider m-0">
+            SMP NEGERI 1 MOGA
+          </h1>
+
+          <a
+            href="https://smpn1moga.sch.id"
+            target="_blank"
+            class="text-amber-400 text-[10px] font-bold uppercase hover:underline flex items-center gap-1"
+          >
+            <i class="fa-solid fa-earth-asia"></i>
+            smpn1moga.sch.id
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </header>
+
+  <main class="container mx-auto max-w-5xl p-4 flex-grow flex items-center justify-center">
+
+    <div
+      id="mainSection"
+      class="w-full space-y-5 animate-fade-in self-start mt-2"
+    >
+
+      <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow border border-zinc-200">
+
+        <div class="flex flex-col">
+
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 bg-blue-600 rounded-full animate-pulse"></span>
+
+            <h2 class="text-sm font-black text-blue-950 uppercase tracking-wider">
+              Dashboard Real-time Monitoring SIVERA V 1.3
+            </h2>
+          </div>
+
+          <p
+            id="infoWaktu"
+            class="text-[9px] text-zinc-500 font-bold mt-1 uppercase tracking-wider"
+          >
+            <i class="fa-solid fa-clock mr-1"></i>
+            Memuat waktu verifikasi terakhir...
+          </p>
+
+        </div>
+
+        <button
+          onclick="muatData(true)"
+          class="bg-blue-50 hover:bg-blue-100 text-blue-900 text-[10px] font-black px-3 py-2 rounded-xl transition uppercase shadow cursor-pointer flex items-center gap-1.5"
+        >
+          <i class="fa-solid fa-arrows-rotate" id="refreshIcon"></i>
+          Perbarui
+        </button>
+
+      </div>
+
+      <!-- BANNER SIVERA -->
+
+      <div class="banner-wrapper animate-fade-in">
+
+        <a
+          href="https://yanuar-moga.github.io/app/sivera1.3v2/"
+          target="_blank"
+        >
+
+          <img
+            src="https://yanuar-moga.github.io/app/sivera1.3v2/assets/SIVERA.png"
+            alt="Banner SIVERA"
+            class="banner-animated w-full border-2 border-amber-400 rounded-2xl"
+          >
+
+        </a>
+
+      </div>
+      <!-- KARTU STATISTIK -->
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+
+        <div class="card-stat bg-white p-4 rounded-xl shadow border-l-4 border-blue-900 flex flex-col justify-between">
+          <span class="text-[9px] font-black text-zinc-400 uppercase tracking-wider">
+            Total Antrean
+          </span>
+
+          <p
+            id="totalAntrean"
+            class="text-2xl font-black text-blue-900 mt-1"
+          >
+            0
+          </p>
+        </div>
+
+        <div class="card-stat bg-white p-4 rounded-xl shadow border-l-4 border-emerald-600 flex flex-col justify-between">
+          <span class="text-[9px] font-black text-zinc-400 uppercase tracking-wider">
+            Sudah Verif
+          </span>
+
+          <p
+            id="totalVerif"
+            class="text-2xl font-black text-emerald-600 mt-1"
+          >
+            0
+          </p>
+        </div>
+
+        <div class="card-stat bg-white p-4 rounded-xl shadow border-l-4 border-amber-500 flex flex-col justify-between">
+          <span class="text-[9px] font-black text-zinc-400 uppercase tracking-wider">
+            Belum Verif
+          </span>
+
+          <p
+            id="totalBelum"
+            class="text-2xl font-black text-amber-500 mt-1"
+          >
+            0
+          </p>
+        </div>
+
+        <div class="card-stat bg-white p-4 rounded-xl shadow border-l-4 border-red-500 flex flex-col justify-between">
+          <span class="text-[9px] font-black text-zinc-400 uppercase tracking-wider">
+            Ditunda
+          </span>
+
+          <p
+            id="totalTunda"
+            class="text-2xl font-black text-red-500 mt-1"
+          >
+            0
+          </p>
+        </div>
+
+      </div>
+
+      <!-- CHART -->
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <div class="bg-white p-4 rounded-xl shadow border border-zinc-200">
+
+          <h3 class="text-xs font-black text-blue-900 uppercase mb-3 text-center">
+            Statistik Gender (Total)
+          </h3>
+
+          <div class="w-full h-48 relative">
+            <canvas id="totalChart"></canvas>
+          </div>
+
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow border border-zinc-200">
+
+          <h3 class="text-xs font-black text-emerald-700 uppercase mb-3 text-center">
+            Statistik Gender (Terverifikasi)
+          </h3>
+
+          <div class="w-full h-48 relative">
+            <canvas id="verifChart"></canvas>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- DATA TERBARU -->
+
+      <div class="bg-white p-4 rounded-xl shadow border border-zinc-200">
+
+        <div class="flex items-center gap-2 mb-3 pb-2 border-b border-zinc-100">
+
+          <i class="fa-solid fa-clock-rotate-left text-blue-900 text-xs"></i>
+
+          <h3 class="text-xs font-black text-blue-900 uppercase tracking-wider">
+            Data Pendaftar Terbaru
+          </h3>
+
+        </div>
+
+        <div class="overflow-x-auto">
+
+          <table class="w-full text-[11px] text-left border-collapse">
+
+            <thead>
+
+              <tr class="text-zinc-400 border-b border-zinc-200 font-black uppercase tracking-wider text-[10px]">
+
+                <th class="pb-2">
+                  Nama Siswa
+                </th>
+
+                <th class="pb-2 w-24">
+                  NISN
+                </th>
+
+                <th class="pb-2 text-center w-32">
+                  Status & Waktu
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody
+              id="tabelData"
+              class="divide-y divide-zinc-50 font-medium"
+            >
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="text-center p-3.5 bg-zinc-200 text-zinc-500 text-[10px] font-black tracking-widest uppercase border-t border-zinc-300 shadow-sm">
+    APLIKASI SIVERA V 1.3 - © 2026 Dev by MB
+  </footer>
+
+  <script>
+
+    Chart.register(ChartDataLabels);
+
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycbyIXkRXa88M0xbhBApaeJDMa7QuiSZj0L_Byjl_y-8CAd4IYXxwBabDJSkjMLrBEqWK/exec";
+
+    let chartTotal;
+    let chartVerif;
+
+    window.addEventListener("DOMContentLoaded", () => {
+
+      initCharts();
+
+      muatData();
+
+      setInterval(() => {
+        muatData();
+      }, 900000);
+
+    });
+
+    function initCharts() {
+
+      const config = {
+
+        type: "doughnut",
+
+        options: {
+
+          responsive: true,
+
+          maintainAspectRatio: false,
+
+          plugins: {
+
+            legend: {
+              position: "bottom"
+            },
+
+            datalabels: {
+              color: "#fff",
+              font: {
+                weight: "bold"
+              }
+            }
+
+          }
+
+        }
+
+      };
+
+      chartTotal = new Chart(
+        document.getElementById("totalChart"),
+        {
+          ...config,
+          data: {
+            labels: ["Laki-laki", "Perempuan"],
+            datasets: [{
+              data: [0,0],
+              backgroundColor: [
+                "#2563eb",
+                "#db2777"
+              ]
+            }]
+          }
+        }
+      );
+
+      chartVerif = new Chart(
+        document.getElementById("verifChart"),
+        {
+          ...config,
+          data: {
+            labels: ["Laki-laki", "Perempuan"],
+            datasets: [{
+              data: [0,0],
+              backgroundColor: [
+                "#2563eb",
+                "#db2777"
+              ]
+            }]
+          }
+        }
+      );
+
+    }
+
+    function muatData(isManual = false) {
+
+      if (isManual) {
+        document
+          .getElementById("refreshIcon")
+          .classList
+          .add("fa-spin");
+      }
+
+      fetch(`${API_URL}?action=getDashboardStats`)
+        .then(res => res.json())
+
+        .then(data => {
+
+          if (isManual) {
+            document
+              .getElementById("refreshIcon")
+              .classList
+              .remove("fa-spin");
+          }
+
+          /* ==================================
+             UPDATE TERAKHIR DARI KOLOM P
+             Backend harus mengirim:
+             data.lastVerif
+          ================================== */
+
+          if (data.lastVerif) {
+
+            document.getElementById("infoWaktu").innerHTML =
+              `<i class="fa-solid fa-clock mr-1"></i>
+              Update Verifikasi Terakhir :
+              ${data.lastVerif}`;
+
+          } else {
+
+            document.getElementById("infoWaktu").innerHTML =
+              `<i class="fa-solid fa-clock mr-1"></i>
+              Timestamp Verifikasi Belum Tersedia`;
+
+          }
+
+          /* ==================================
+             KARTU STATISTIK
+          ================================== */
+
+          document.getElementById("totalAntrean").innerText =
+            data.totalAntrean || 0;
+
+          document.getElementById("totalVerif").innerText =
+            data.totalVerif || 0;
+
+          document.getElementById("totalBelum").innerText =
+            data.totalBelum || 0;
+
+          document.getElementById("totalTunda").innerText =
+            data.totalTunda || 0;
+
+          /* ==================================
+             UPDATE CHART
+          ================================== */
+
+          chartTotal.data.datasets[0].data = [
+            data.totalLaki || 0,
+            data.totalPerempuan || 0
+          ];
+
+          chartVerif.data.datasets[0].data = [
+            data.verifLaki || 0,
+            data.verifPerempuan || 0
+          ];
+
+          chartTotal.update();
+          chartVerif.update();
+
+          /* ==================================
+             TABEL DATA TERBARU
+          ================================== */
+
+          document.getElementById("tabelData").innerHTML =
+            (data.terbaru || [])
+            .map(row => {
+
+              const timeInfo =
+                (
+                  row.waktuVerif &&
+                  typeof row.waktuVerif === "string" &&
+                  row.waktuVerif.includes(",")
+                )
+                ? row.waktuVerif.split(",")[1].trim()
+                : (row.waktuVerif || "-");
+
+              const statusClass =
+                row.status?.toLowerCase().includes("terverifikasi")
+                ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                : row.status?.toLowerCase().includes("ditunda")
+                ? "bg-red-50 text-red-700 border-red-200"
+                : "bg-amber-50 text-amber-700 border-amber-200";
+
+              return `
+                <tr class="hover:bg-zinc-50 transition">
+
+                  <td class="py-2.5 font-bold text-zinc-800 uppercase">
+                    ${row.nama || "-"}
+                  </td>
+
+                  <td class="py-2.5 font-mono text-zinc-400 font-bold">
+                    ${row.nisn || "-"}
+                  </td>
+
+                  <td class="py-2.5 text-center">
+
+                    <span
+                      class="block px-2 py-0.5 border text-[9px] font-black rounded-md ${statusClass}"
+                    >
+                      ${row.status || "-"}
+                    </span>
+
+                    <span
+                      class="block text-[8px] text-zinc-400 font-mono mt-0.5"
+                    >
+                      ${timeInfo}
+                    </span>
+
+                  </td>
+
+                </tr>
+              `;
+
+            })
+            .join("");
+
+        })
+
+        .catch(error => {
+
+          console.error(error);
+
+          if (isManual) {
+
+            document
+              .getElementById("refreshIcon")
+              .classList
+              .remove("fa-spin");
+
+          }
+
+          Swal.fire({
+            icon: "error",
+            title: "Gagal Memuat Data",
+            text: "Tidak dapat mengambil data dashboard."
+          });
+
+        });
+
+    }
+
+  </script>
+
 </body>
 </html>
