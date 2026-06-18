@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Statistik SIVERA</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* SPLASH SCREEN - Banner dibuat besar */
+    #splashScreen { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; background: #ffffff; transition: opacity 0.6s ease; }
+    .splash-content { width: 90%; max-width: 500px; text-align: center; }
+    .banner-splash { width: 100%; height: auto; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+
+    /* MAIN BANNER - Dibuat lebih besar/tinggi */
+    .banner-wrapper { width: 100%; overflow: hidden; border-radius: 20px; }
+    .banner-img { width: 100%; height: auto; aspect-ratio: 16 / 6; object-fit: cover; display: block; border: 3px solid #fbbf24; }
+    
+    .card-stat { transition: .25s; }
+    .card-stat:hover { transform: translateY(-3px); }
+  </style>
+</head>
+
+<body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen">
+
+  <div id="splashScreen">
+    <div class="splash-content">
+      <img src="https://yanuar-moga.github.io/app/sivera1.3v2/assets/SIVERA.png" alt="SIVERA" class="banner-splash animate-pulse">
+    </div>
+  </div>
+
+  <header class="bg-blue-900 border-b-4 border-amber-400 p-4 shadow-lg sticky top-0 z-40">
+    <div class="container mx-auto max-w-5xl flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="bg-white p-1 rounded-full shadow-md"><img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo" class="w-10 h-10 object-contain"></div>
+        <div>
+          <h1 class="text-white font-black text-sm uppercase">SMP NEGERI 1 MOGA</h1>
+          <a href="https://smpn1moga.sch.id" class="text-amber-400 text-[10px] font-bold uppercase hover:underline">smpn1moga.sch.id</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto max-w-5xl p-4">
+    <div class="space-y-5">
+      
+      <div class="banner-wrapper shadow-xl">
+        <img src="https://yanuar-moga.github.io/app/sivera1.3v2/assets/SIVERA.png" alt="Banner" class="banner-img">
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="card-stat bg-white p-4 rounded-xl shadow border-l-4 border-blue-900"><span class="text-[9px] font-black text-zinc-400 uppercase">Total Antrean</span><p id="totalAntrean" class="text-xl font-black text-blue-900">0</p></div>
+        <div class="card-stat bg-white p-4 rounded-xl shadow border-l-4 border-emerald-600"><span class="text-[9px] font-black text-zinc-400 uppercase">Sudah Verif</span><p id="totalVerif" class="text-xl font-black text-emerald-600">0</p></div>
+        <div class="card-stat bg-white p-4 rounded-xl shadow border-l-4 border-amber-500"><span class="text-[9px] font-black text-zinc-400 uppercase">Belum Verif</span><p id="totalBelum" class="text-xl font-black text-amber-500">0</p></div>
+        <div class="card-stat bg-white p-4 rounded-xl shadow border-l-4 border-red-500"><span class="text-[9px] font-black text-zinc-400 uppercase">Ditunda</span><p id="totalTunda" class="text-xl font-black text-red-500">0</p></div>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl shadow border border-zinc-200">
+        <h3 class="text-xs font-black text-blue-900 uppercase mb-3 border-b pb-2">Data Terbaru</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[11px] text-left">
+            <thead><tr class="text-zinc-400 uppercase font-black"><th class="pb-2">Nama</th><th class="pb-2 text-center">Tgl. Ticket</th><th class="pb-2 text-center">No. Antrean</th></tr></thead>
+            <tbody id="tabelData" class="divide-y divide-zinc-50 font-medium"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      // Splash screen durasi 3 detik
+      setTimeout(() => {
+        const s = document.getElementById("splashScreen");
+        s.style.opacity = "0";
+        setTimeout(() => s.style.display = "none", 600);
+      }, 3000);
+      muatData();
+    });
+
+    const API_URL = "https://script.google.com/macros/s/AKfycbyIXkRXa88M0xbhBApaeJDMa7QuiSZj0L_Byjl_y-8CAd4IYXxwBabDJSkjMLrBEqWK/exec";
+    function muatData() {
+      fetch(`${API_URL}?action=getDashboardStats`)
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("totalAntrean").innerText = data.totalAntrean || 0;
+          document.getElementById("totalVerif").innerText = data.totalVerif || 0;
+          document.getElementById("totalBelum").innerText = data.totalBelum || 0;
+          document.getElementById("totalTunda").innerText = data.totalTunda || 0;
+          document.getElementById("tabelData").innerHTML = (data.terbaru || []).map(row => `
+            <tr class="hover:bg-zinc-50">
+              <td class="py-3 font-bold text-zinc-800 uppercase">${row.nama || "-"}</td>
+              <td class="py-3 text-center text-zinc-500 font-mono">${row.tanggalTiket || "-"}</td>
+              <td class="py-3 text-center"><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded font-black text-[10px]">${row.noAntrean || "-"}</span></td>
+            </tr>`).join("");
+        });
+    }
+  </script>
+</body>
+</html>
