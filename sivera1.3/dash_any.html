@@ -101,12 +101,8 @@
           plugins: { 
             legend: { position: "bottom" }, 
             datalabels: { 
-              color: "#ffffff", 
-              font: { weight: "bold", size: 14 },
-              display: true, 
-              anchor: 'center',
-              align: 'center',
-              formatter: (value) => value > 0 ? value : "" // Hanya menampilkan angka
+              color: "#ffffff", font: { weight: "bold", size: 14 },
+              formatter: (value) => value > 0 ? value : "" 
             } 
           } 
         } 
@@ -126,9 +122,13 @@
           document.getElementById("totalBelum").innerText = data.totalBelum || 0;
           document.getElementById("totalTunda").innerText = data.totalTunda || 0;
           
+          // Update data grafik
           chartTotal.data.datasets[0].data = [data.totalLaki || 0, data.totalPerempuan || 0];
           chartVerif.data.datasets[0].data = [data.verifLaki || 0, data.verifPerempuan || 0];
-          chartTotal.update(); chartVerif.update();
+          
+          // Memaksa grafik dan datalabels untuk menggambar ulang
+          chartTotal.update('none'); 
+          chartVerif.update('none');
           
           document.getElementById("tabelData").innerHTML = (data.terbaru || []).map(row => `
             <tr class="hover:bg-zinc-50"><td class="py-3 font-bold">${row.nama || "-"}</td><td class="py-3 text-center">${row.waktuVerif || "-"}</td><td class="py-3 text-center"><span class="px-2 py-1 rounded font-black text-[9px] ${row.status === 'terverifikasi' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${(row.status || "-").toUpperCase()}</span></td></tr>`).join("");
