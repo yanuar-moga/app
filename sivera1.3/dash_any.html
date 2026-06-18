@@ -83,7 +83,6 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbwN5UAUGXse_vKksd2mzReV-k6I4RnXxkzbewUP09hlfYuBrd7Nui4ogiaSKYjHPAQL/exec";
     let chartTotal, chartVerif;
-    // Register plugin secara global
     Chart.register(ChartDataLabels);
 
     window.addEventListener("DOMContentLoaded", () => {
@@ -95,7 +94,7 @@
     function initCharts() {
       const cfg = { 
         type: "doughnut", 
-        plugins: [ChartDataLabels], // Wajib dipanggil di sini
+        plugins: [ChartDataLabels],
         options: { 
           responsive: true, 
           maintainAspectRatio: false, 
@@ -104,10 +103,10 @@
             datalabels: { 
               color: "#ffffff", 
               font: { weight: "bold", size: 14 },
-              formatter: (value, ctx) => {
-                const label = ctx.chart.data.labels[ctx.dataIndex] === "Laki" ? "L" : "P";
-                return value > 0 ? `${label}:${value}` : "";
-              }
+              display: true, 
+              anchor: 'center',
+              align: 'center',
+              formatter: (value) => value > 0 ? value : "" // Hanya menampilkan angka
             } 
           } 
         } 
