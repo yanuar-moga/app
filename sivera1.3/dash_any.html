@@ -7,14 +7,16 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    #loadingOverlay { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center; background: rgba(255,255,255,0.8); backdrop-filter: blur(2px); }
+    /* LOADING OVERLAY DENGAN BANNER */
+    #loadingOverlay { position: fixed; inset: 0; z-index: 1000; display: none; flex-direction: column; align-items: center; justify-content: center; background: rgba(244,244,245,0.95); backdrop-filter: blur(4px); }
+    
     #splashScreen { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; background: #f4f4f5; transition: opacity 0.5s ease; }
     .splash-content { width: 90%; max-width: 350px; text-align: center; }
+    
     @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     .animate-fade-in { animation: fadeIn .4s ease-out forwards; }
     @keyframes bannerFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
@@ -25,9 +27,9 @@
 <body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col select-none">
 
   <div id="loadingOverlay">
-    <div class="text-center">
-      <i class="fa-solid fa-circle-notch fa-spin text-4xl text-blue-900"></i>
-      <p class="mt-2 text-[10px] font-black uppercase tracking-widest text-blue-900">Memperbarui Data...</p>
+    <div class="splash-content">
+      <img src="https://yanuar-moga.github.io/app/sivera1.3v2/assets/SIVERA.png" alt="Banner" class="banner-animated border-2 border-amber-400 rounded-2xl shadow-2xl">
+      <p class="mt-8 text-blue-900 font-black text-[10px] uppercase tracking-widest animate-pulse">Memperbarui Data SIVERA...</p>
     </div>
   </div>
 
