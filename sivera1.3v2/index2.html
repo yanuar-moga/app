@@ -33,6 +33,50 @@
       opacity: 0;
       transform: translateY(-20px);
     }
+  
+    @keyframes bannerFloat {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes bannerGlow {
+      0%,100% { box-shadow: 0 0 10px rgba(251,191,36,.3); }
+      50% { box-shadow: 0 0 20px rgba(251,191,36,.8), 0 0 40px rgba(251,191,36,.4); }
+    }
+
+    @keyframes shine {
+      0% { left: -150%; }
+      100% { left: 200%; }
+    }
+
+    .banner-wrapper{
+      position:relative;
+      overflow:hidden;
+      border-radius:16px;
+    }
+
+    .banner-wrapper::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:-150%;
+      width:60%;
+      height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);
+      transform:skewX(-25deg);
+      animation:shine 4s linear infinite;
+      z-index:2;
+    }
+
+    .banner-animated{
+      animation: bannerFloat 4s ease-in-out infinite, bannerGlow 3s ease-in-out infinite;
+      transition:.3s;
+    }
+
+    .banner-animated:hover{
+      transform:scale(1.02);
+    }
+
   </style>
 </head>
 <body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col justify-between select-none">
@@ -60,12 +104,14 @@
 </div>
 
     <!-- Banner Aplikasi SIVERA -->
-    <div class="mb-3 animate-fade-in">
-      <img
-        src="https://yanuar-moga.github.io/app/sivera1.3v2/assets/SIVERA.png"
-        alt="Banner SIVERA"
-        class="w-full rounded-2xl shadow-md border border-zinc-200"
-      >
+    <div class="mb-3 animate-fade-in banner-wrapper">
+      <a href="https://yanuar-moga.github.io/app/sivera1.3v2/" target="_blank">
+        <img
+          src="https://yanuar-moga.github.io/app/sivera1.3v2/assets/SIVERA.png"
+          alt="Banner SIVERA"
+          class="banner-animated w-full rounded-2xl border-2 border-amber-400"
+        >
+      </a>
     </div>
 
     <div class="bg-blue-900 text-white px-4 rounded-xl mb-4 border border-blue-950 shadow-md relative h-12 animate-fade-in flex items-center justify-center overflow-hidden">
