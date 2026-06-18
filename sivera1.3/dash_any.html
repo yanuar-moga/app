@@ -99,14 +99,15 @@
           plugins: { 
             legend: { position: "bottom" }, 
             datalabels: { 
-              color: "#fff", 
+              color: "#ffffff", // Warna teks dibuat putih
               font: { weight: "bold", size: 14 },
-              display: true, // Memaksa tampil
+              display: true, 
               anchor: 'center',
               align: 'center',
               formatter: (value, ctx) => {
                 const label = ctx.chart.data.labels[ctx.dataIndex] === "Laki" ? "L" : "P";
-                return value > 0 ? `${label}:${value}` : ""; // Hanya tampil jika ada angkanya
+                // Menampilkan label dan angka jika nilainya > 0
+                return value > 0 ? `${label}:${value}` : ""; 
               }
             } 
           } 
