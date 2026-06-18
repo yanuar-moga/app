@@ -11,12 +11,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* Overlay Loading */
     #loadingOverlay { position: fixed; inset: 0; z-index: 1000; display: none; flex-direction: column; align-items: center; justify-content: center; background: rgba(244,244,245,0.95); backdrop-filter: blur(4px); }
     #splashScreen { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; background: #f4f4f5; transition: opacity 0.5s ease; }
     .splash-content { width: 90%; max-width: 350px; text-align: center; }
-    
-    /* Animasi */
     @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     .animate-fade-in { animation: fadeIn .4s ease-out forwards; }
     @keyframes bannerFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
@@ -101,7 +98,17 @@
           maintainAspectRatio: false, 
           plugins: { 
             legend: { position: "bottom" }, 
-            datalabels: { color: "#fff", font: { weight: "bold", size: 12 }, formatter: (value) => value } 
+            datalabels: { 
+              color: "#fff", 
+              font: { weight: "bold", size: 14 },
+              display: true, // Memaksa tampil
+              anchor: 'center',
+              align: 'center',
+              formatter: (value, ctx) => {
+                const label = ctx.chart.data.labels[ctx.dataIndex] === "Laki" ? "L" : "P";
+                return value > 0 ? `${label}:${value}` : ""; // Hanya tampil jika ada angkanya
+              }
+            } 
           } 
         } 
       };
