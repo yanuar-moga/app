@@ -83,6 +83,8 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbwN5UAUGXse_vKksd2mzReV-k6I4RnXxkzbewUP09hlfYuBrd7Nui4ogiaSKYjHPAQL/exec";
     let chartTotal, chartVerif;
+    // Register plugin secara global
+    Chart.register(ChartDataLabels);
 
     window.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => { document.getElementById("splashScreen").style.opacity = "0"; setTimeout(() => document.getElementById("splashScreen").style.display = "none", 500); }, 2000);
@@ -93,21 +95,18 @@
     function initCharts() {
       const cfg = { 
         type: "doughnut", 
+        plugins: [ChartDataLabels], // Wajib dipanggil di sini
         options: { 
           responsive: true, 
           maintainAspectRatio: false, 
           plugins: { 
             legend: { position: "bottom" }, 
             datalabels: { 
-              color: "#ffffff", // Warna teks dibuat putih
+              color: "#ffffff", 
               font: { weight: "bold", size: 14 },
-              display: true, 
-              anchor: 'center',
-              align: 'center',
               formatter: (value, ctx) => {
                 const label = ctx.chart.data.labels[ctx.dataIndex] === "Laki" ? "L" : "P";
-                // Menampilkan label dan angka jika nilainya > 0
-                return value > 0 ? `${label}:${value}` : ""; 
+                return value > 0 ? `${label}:${value}` : "";
               }
             } 
           } 
