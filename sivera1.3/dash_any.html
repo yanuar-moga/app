@@ -4,12 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Statistik SIVERA</title>
-
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
   <style>
     #loadingOverlay { position: fixed; inset: 0; z-index: 1000; display: none; flex-direction: column; align-items: center; justify-content: center; background: rgba(244,244,245,0.95); backdrop-filter: blur(4px); }
     #splashScreen { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; background: #f4f4f5; transition: opacity 0.5s ease; }
@@ -20,7 +18,6 @@
     .banner-animated { animation: bannerFloat 4s ease-in-out infinite; width: 100%; height: auto; display: block; }
   </style>
 </head>
-
 <body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col select-none">
 
   <div id="loadingOverlay">
@@ -92,23 +89,19 @@
     });
 
     function initCharts() {
-      const cfg = { 
+      const config = { 
         type: "doughnut", 
-        plugins: [ChartDataLabels],
+        data: { labels: ["Laki", "Perempuan"], datasets: [{ data: [0,0], backgroundColor: ["#2563eb", "#db2777"] }] },
         options: { 
-          responsive: true, 
-          maintainAspectRatio: false, 
+          responsive: true, maintainAspectRatio: false, 
           plugins: { 
             legend: { position: "bottom" }, 
-            datalabels: { 
-              color: "#ffffff", font: { weight: "bold", size: 14 },
-              formatter: (value) => value > 0 ? value : "" 
-            } 
+            datalabels: { color: "#ffffff", font: { weight: "bold", size: 14 }, formatter: (v) => v > 0 ? v : "" } 
           } 
         } 
       };
-      chartTotal = new Chart(document.getElementById("totalChart"), { ...cfg, data: { labels: ["Laki", "Perempuan"], datasets: [{ data: [0,0], backgroundColor: ["#2563eb", "#db2777"] }] } });
-      chartVerif = new Chart(document.getElementById("verifChart"), { ...cfg, data: { labels: ["Laki", "Perempuan"], datasets: [{ data: [0,0], backgroundColor: ["#2563eb", "#db2777"] }] } });
+      chartTotal = new Chart(document.getElementById("totalChart"), config);
+      chartVerif = new Chart(document.getElementById("verifChart"), JSON.parse(JSON.stringify(config)));
     }
 
     function muatData(isManual = false) {
@@ -122,13 +115,11 @@
           document.getElementById("totalBelum").innerText = data.totalBelum || 0;
           document.getElementById("totalTunda").innerText = data.totalTunda || 0;
           
-          // Update data grafik
           chartTotal.data.datasets[0].data = [data.totalLaki || 0, data.totalPerempuan || 0];
           chartVerif.data.datasets[0].data = [data.verifLaki || 0, data.verifPerempuan || 0];
           
-          // Memaksa grafik dan datalabels untuk menggambar ulang
-          chartTotal.update('none'); 
-          chartVerif.update('none');
+          chartTotal.update('active');
+          chartVerif.update('active');
           
           document.getElementById("tabelData").innerHTML = (data.terbaru || []).map(row => `
             <tr class="hover:bg-zinc-50"><td class="py-3 font-bold">${row.nama || "-"}</td><td class="py-3 text-center">${row.waktuVerif || "-"}</td><td class="py-3 text-center"><span class="px-2 py-1 rounded font-black text-[9px] ${row.status === 'terverifikasi' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${(row.status || "-").toUpperCase()}</span></td></tr>`).join("");
