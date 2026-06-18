@@ -16,7 +16,6 @@
     .animate-fade-in { animation: fadeIn .4s ease-out forwards; }
     @keyframes bannerFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
     .banner-animated { animation: bannerFloat 4s ease-in-out infinite; width: 100%; height: auto; display: block; }
-    canvas { transition: opacity 0.3s ease; }
   </style>
 </head>
 <body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col select-none">
@@ -90,44 +89,36 @@
     });
 
     function initCharts() {
-      const config = { 
-        type: "doughnut", 
-        data: { labels: ["Laki", "Perempuan"], datasets: [{ data: [0,0], backgroundColor: ["#2563eb", "#db2777"] }] },
-        options: { 
-          responsive: true, maintainAspectRatio: false, 
-          animation: { duration: 1000 }, // Animasi saat update
-          plugins: { 
-            legend: { position: "bottom" }, 
-            datalabels: { color: "#ffffff", font: { weight: "bold", size: 14 }, formatter: (v) => v > 0 ? v : "" } 
-          } 
+      const options = { 
+        responsive: true, maintainAspectRatio: false, 
+        animation: { duration: 1500, easing: 'easeOutQuart' },
+        plugins: { 
+          legend: { position: "bottom" }, 
+          datalabels: { color: "#ffffff", font: { weight: "bold", size: 14 }, formatter: (v) => v > 0 ? v : "" } 
         } 
       };
-      chartTotal = new Chart(document.getElementById("totalChart"), config);
-      chartVerif = new Chart(document.getElementById("verifChart"), JSON.parse(JSON.stringify(config)));
+      chartTotal = new Chart(document.getElementById("totalChart"), { type: "doughnut", data: { labels: ["Laki", "Perempuan"], datasets: [{ data: [0,0], backgroundColor: ["#2563eb", "#db2777"] }] }, options: options });
+      chartVerif = new Chart(document.getElementById("verifChart"), { type: "doughnut", data: { labels: ["Laki", "Perempuan"], datasets: [{ data: [0,0], backgroundColor: ["#2563eb", "#db2777"] }] }, options: options });
     }
 
     function muatData(isManual = false) {
-      if (isManual) {
-        document.getElementById("loadingOverlay").style.display = "flex";
-        document.querySelectorAll("canvas").forEach(c => c.style.opacity = "0.3");
-      }
+      if (isManual) document.getElementById("loadingOverlay").style.display = "flex";
       fetch(`${API_URL}?action=getDashboardStats`)
         .then(res => res.json())
         .then(data => {
-          if (isManual) {
-            document.getElementById("loadingOverlay").style.display = "none";
-            document.querySelectorAll("canvas").forEach(c => c.style.opacity = "1");
-          }
+          if (isManual) document.getElementById("loadingOverlay").style.display = "none";
+          
           document.getElementById("totalAntrean").innerText = data.totalAntrean || 0;
           document.getElementById("totalVerif").innerText = data.totalVerif || 0;
           document.getElementById("totalBelum").innerText = data.totalBelum || 0;
           document.getElementById("totalTunda").innerText = data.totalTunda || 0;
           
-          chartTotal.data.datasets[0].data = [data.totalLaki || 0, data.totalPerempuan || 0];
-          chartVerif.data.datasets[0].data = [data.verifLaki || 0, data.verifPerempuan || 0];
-          
-          chartTotal.update();
-          chartVerif.update();
+          // Reset animasi sebelum update
+          [chartTotal, chartVerif].forEach(chart => {
+            chart.data.datasets[0].data = chart.canvas.id === 'totalChart' ? [data.totalLaki || 0, data.totalPerempuan || 0] : [data.verifLaki || 0, data.verifPerempuan || 0];
+            chart.reset(); // Memaksa animasi ulang dari nol
+            chart.update();
+          });
           
           document.getElementById("tabelData").innerHTML = (data.terbaru || []).map(row => `
             <tr class="hover:bg-zinc-50"><td class="py-3 font-bold">${row.nama || "-"}</td><td class="py-3 text-center">${row.waktuVerif || "-"}</td><td class="py-3 text-center"><span class="px-2 py-1 rounded font-black text-[9px] ${row.status === 'terverifikasi' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${(row.status || "-").toUpperCase()}</span></td></tr>`).join("");
