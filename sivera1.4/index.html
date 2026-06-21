@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Verifikasi Antrean - SIVERA V 1.3</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @keyframes scrollUp {
+      0% { transform: translateY(100%); }
+      100% { transform: translateY(-100%); }
+    }
+    .animate-ticker {
+      display: inline-block;
+      animation: scrollUp 15s linear infinite;
+    }
+    .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col justify-between select-none">
+
+  <header class="bg-blue-900 border-b-4 border-amber-400 p-4 shadow-md">
+    <div class="container mx-auto max-w-md flex items-center gap-3.5 px-1">
+      <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo" class="w-14 h-14 object-contain shrink-0 bg-white p-1 rounded-full shadow-sm">
+      <div class="leading-tight">
+        <h1 class="text-sm font-black text-white tracking-wide uppercase">SMP Negeri 1 Moga</h1>
+        <p class="text-[10px] text-zinc-200 font-bold">Jl. Simpang Tiga Banyumudal, Kec. Moga</p>
+        <a href="https://smpn1moga.sch.id" target="_blank" class="text-[10px] text-amber-400 font-black hover:underline">smpn1moga.sch.id</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto p-4 flex-grow max-w-md flex flex-col justify-center">
+    
+    <div id="broadcastBox" class="hidden bg-amber-50 border-2 border-amber-400 p-4 rounded-xl mb-3 shadow-sm flex items-start gap-3 animate-fade-in">
+      <div id="broadcastContent" class="w-full">
+        <h4 class="font-black text-xs text-blue-950 uppercase tracking-wider mb-1">Pengumuman:</h4>
+        <div id="broadcastBody" class="text-xs text-zinc-700 leading-relaxed"></div>
+      </div>
+    </div>
+
+    <div class="bg-blue-900 text-white px-4 rounded-xl mb-4 border border-blue-950 shadow-md h-10 flex items-center overflow-hidden">
+      <div id="tickerContainer" class="w-full h-full whitespace-nowrap overflow-hidden relative">
+        <div id="tickerText" class="animate-ticker text-[11px] font-bold text-center leading-10">Memuat informasi...</div>
+      </div>
+    </div>
+
+    <div id="formSection" class="bg-white rounded-2xl p-5 shadow-xl border border-zinc-200 animate-fade-in">
+      <div class="text-center mb-5"><h2 class="text-base font-black text-blue-900 uppercase">Formulir Loket</h2></div>
+      <form id="formDaftar" onsubmit="submitForm(event)" class="space-y-4">
+        <input type="text" id="nama" required placeholder="Nama Lengkap" class="w-full bg-zinc-50 border p-3 text-sm rounded-xl focus:border-blue-900 outline-none">
+        <input type="number" id="nisn" required placeholder="NISN" class="w-full bg-zinc-50 border p-3 text-sm rounded-xl focus:border-blue-900 outline-none">
+        <div class="grid grid-cols-2 gap-3">
+          <label class="border p-3 rounded-xl bg-zinc-50 text-sm cursor-pointer"><input type="radio" name="jk" value="L" required> Laki-laki</label>
+          <label class="border p-3 rounded-xl bg-zinc-50 text-sm cursor-pointer"><input type="radio" name="jk" value="P" required> Perempuan</label>
+        </div>
+        <button type="submit" id="btnSubmit" class="w-full bg-blue-900 text-amber-400 p-3.5 rounded-xl font-black text-xs uppercase">Ambil Antrean</button>
+      </form>
+    </div>
+
+    <div id="ticketSection" class="hidden space-y-4">
+      <div id="ticketCard" class="bg-blue-950 rounded-2xl p-6 text-white text-center border-2 border-amber-400">
+        <h2 class="text-amber-400 font-black text-sm uppercase">Bukti Antrean</h2>
+        <div id="t_no" class="text-6xl font-black my-4">000</div>
+        <div id="t_nama" class="font-bold"></div>
+        <button onclick="downloadTiketGambar()" class="mt-6 w-full bg-amber-400 text-blue-950 font-black py-2 rounded-lg">Download Tiket</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    var API_URL = "YOUR_APPS_SCRIPT_URL"; // Ganti dengan URL Anda
+
+    window.onload = function() {
+      // Load Broadcast dengan pengecekan gambar
+      fetch(API_URL + "?action=getBroadcast")
+        .then(res => res.json())
+        .then(data => {
+          if (data.message) {
+            const body = document.getElementById('broadcastBody');
+            const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(data.message.trim());
+            if (isImage) {
+              body.innerHTML = `<img src="${data.message}" class="w-full rounded-lg shadow-md mt-2">`;
+            } else {
+              body.innerText = data.message;
+            }
+            document.getElementById('broadcastBox').classList.remove('hidden');
+          }
+        });
+
+      // Load Ticker (Looping)
+      fetch(API_URL + "?action=getTickers")
+        .then(res => res.json())
+        .then(data => {
+          const tickerText = document.getElementById('tickerText');
+          if (data.tickers && data.tickers.length > 0) {
+            tickerText.innerText = data.tickers.join(" | ");
+          }
+        });
+    };
+
+    function submitForm(event) {
+      event.preventDefault();
+      // Tambahkan logika submit Anda di sini...
+    }
+  </script>
+</body>
+</html>
