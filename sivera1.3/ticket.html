@@ -54,23 +54,20 @@
       transform: rotate(-25deg);
       white-space: nowrap;
     }
-    .watermark-image {
-      max-w: [70%];
-      max-h: [70%];
-      object-contain: true;
-    }
-    /* Kombinasi text & image dalam satu rotasi */
+    
+    /* Kombinasi text & image: Gambar tegak, teks miring */
     .watermark-combined {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transform: rotate(-25deg);
-      gap: 1rem;
+      width: 100%;
+      height: 100%;
+      gap: 1.5rem;
     }
     .watermark-combined img {
-      max-width: 140px;
-      max-height: 140px;
+      max-width: 130px;
+      max-height: 130px;
       object-fit: contain;
     }
     .watermark-combined div {
@@ -80,6 +77,7 @@
       letter-spacing: 0.1em;
       color: white;
       white-space: nowrap;
+      transform: rotate(-25deg);
     }
   </style>
 </head>
@@ -226,8 +224,6 @@
     var API_URL = "https://script.google.com/macros/s/AKfycbyFBhIkfDAF-3kgAQgLer_gaP4Ab2x6255pqQ2qEBkthS4zjNDhWtrQBNmLKKJZQFWO/exec";
     var num1, num2, correctAnswer;
     var jamOperasionalGlobal = "08:00 - 12:00 WIB";
-    
-    // REVISI: Mengikuti struktur multi-value terbaru dari Google Apps Script
     var watermarkConfig = { type: "text", textValue: "", imageValue: "", opacity: 0.1 };
 
     var clientIP = "Unknown";
@@ -317,7 +313,6 @@
       }, 4000);
     }
 
-    // REVISI: Penanganan Tampilan Teks, Gambar, dan Teks-Gambar (text_image) di Browser
     function terapkanWatermarkKeHtml() {
       var container = document.getElementById('htmlWatermark');
       container.innerHTML = "";
@@ -372,7 +367,6 @@
         .then(res => res.json())
         .then(data => {
           if (data.jamOperasional) { jamOperasionalGlobal = data.jamOperasional; }
-          // REVISI: Sinkronisasi data dari variabel split GAS terbaru
           watermarkConfig.type = data.watermarkType || "text";
           watermarkConfig.textValue = data.watermarkTextValue || "";
           watermarkConfig.imageValue = data.watermarkImageValue || "";
@@ -484,7 +478,7 @@
         }).catch(() => { submitButton.disabled = false; submitButton.innerText = "Ambil Nomor Antrean"; generateCaptcha(); });
     }
 
-    // REVISI: Logika Rendering Canvas Gambar Pendukung Opsi Teks + Gambar Sekaligus
+    // PERBAIKAN UTAMA: Logika Cetak Watermark Gambar Tegak & Teks Miring
     function downloadTiketGambar() {
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
@@ -516,10 +510,11 @@
         ctx.fillStyle = "#020617"; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 2. PROSES CETAK WATERMARK DINAMIS (Lapisan Belakang)
+        // 2. PROSES CETAK WATERMARK DINAMIS
         ctx.save();
         ctx.globalAlpha = watermarkConfig.opacity;
 
+        // OPSI A: Hanya Teks (Miring)
         if (watermarkConfig.type === "text" && watermarkConfig.textValue) {
           ctx.fillStyle = "#ffffff";
           ctx.font = "900 52px Arial, sans-serif";
@@ -529,30 +524,39 @@
           ctx.rotate(-25 * Math.PI / 180);
           ctx.fillText(watermarkConfig.textValue.toUpperCase(), 0, 0);
         } 
+        // OPSI B: Hanya Gambar (Tegak Lurus)
         else if (watermarkConfig.type === "image" && imgWatermark) {
           var mw = canvas.width * 0.65;
           var mh = (imgWatermark.height / imgWatermark.width) * mw;
           ctx.translate(canvas.width / 2, canvas.height / 2);
           ctx.drawImage(imgWatermark, -mw / 2, -mh / 2, mw, mh);
         } 
+        // OPSI C: Gabungan Teks & Gambar (GAMBAR TEGAK, TEKS MIRING)
         else if (watermarkConfig.type === "text_image") {
-          // Translasi ke tengah canvas dan rotasi untuk seluruh grup elemen watermark
-          ctx.translate(canvas.width / 2, canvas.height / 2);
-          ctx.rotate(-25 * Math.PI / 180);
+          var pusatX = canvas.width / 2;
+          var pusatY = canvas.height / 2;
 
-          var offsetY = 0;
+          // Langkah 1: Cetak Gambar Watermark secara TEGAK LURUS (Tanpa Rotasi)
           if (imgWatermark) {
-            var mw = canvas.width * 0.45; // Ukuran disesuaikan agar proporsional bersandingan dengan teks
+            var mw = canvas.width * 0.42; 
             var mh = (imgWatermark.height / imgWatermark.width) * mw;
-            ctx.drawImage(imgWatermark, -mw / 2, -mh / 2 - 30, mw, mh);
-            offsetY = mh / 2; 
+            // Diletakkan sedikit ke atas agar seimbang dengan teks di bawahnya
+            ctx.drawImage(imgWatermark, pusatX - (mw / 2), pusatY - mh - 10, mw, mh);
           }
+
+          // Langkah 2: Cetak Teks Watermark secara MIRING (-25 derajat)
           if (watermarkConfig.textValue) {
+            ctx.save(); // Isolasi rotasi teks saja
             ctx.fillStyle = "#ffffff";
-            ctx.font = "900 38px Arial, sans-serif";
+            ctx.font = "900 36px Arial, sans-serif";
             ctx.textAlign = "center";
             ctx.textBaseline = "top";
-            ctx.fillText(watermarkConfig.textValue.toUpperCase(), 0, offsetY - 10);
+            
+            // Geser koordinat ke titik tengah bagian bawah untuk rotasi teks
+            ctx.translate(pusatX, pusatY + 30);
+            ctx.rotate(-25 * Math.PI / 180);
+            ctx.fillText(watermarkConfig.textValue.toUpperCase(), 0, 0);
+            ctx.restore();
           }
         }
         ctx.restore();
@@ -637,7 +641,7 @@
         ctx.textAlign = "center";
         ctx.fillText("*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Berkas", canvas.width / 2, 695);
 
-        // 4. DOWNLOAD BERKAS PNG
+        // 4. AUTOMATIC DOWNLOAD
         var link = document.createElement('a');
         link.download = 'Tiket_Antrean_' + document.getElementById('t_nisn').innerText + '.png';
         link.href = canvas.toDataURL('image/png');
