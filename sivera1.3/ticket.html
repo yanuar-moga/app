@@ -39,6 +39,7 @@
       position: absolute;
       inset: 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       overflow: hidden;
@@ -51,6 +52,33 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       transform: rotate(-25deg);
+      white-space: nowrap;
+    }
+    .watermark-image {
+      max-w: [70%];
+      max-h: [70%];
+      object-contain: true;
+    }
+    /* Kombinasi text & image dalam satu rotasi */
+    .watermark-combined {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform: rotate(-25deg);
+      gap: 1rem;
+    }
+    .watermark-combined img {
+      max-width: 140px;
+      max-height: 140px;
+      object-fit: contain;
+    }
+    .watermark-combined div {
+      font-size: 2.5rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: white;
       white-space: nowrap;
     }
   </style>
@@ -199,8 +227,8 @@
     var num1, num2, correctAnswer;
     var jamOperasionalGlobal = "08:00 - 12:00 WIB";
     
-    // Objek Global untuk Menyimpan Data Watermark dari Config GAS
-    var watermarkConfig = { type: "text", value: "", opacity: 0.1 };
+    // REVISI: Mengikuti struktur multi-value terbaru dari Google Apps Script
+    var watermarkConfig = { type: "text", textValue: "", imageValue: "", opacity: 0.1 };
 
     var clientIP = "Unknown";
     var clientProvider = "Unknown";
@@ -289,23 +317,41 @@
       }, 4000);
     }
 
+    // REVISI: Penanganan Tampilan Teks, Gambar, dan Teks-Gambar (text_image) di Browser
     function terapkanWatermarkKeHtml() {
       var container = document.getElementById('htmlWatermark');
       container.innerHTML = "";
-      if (!watermarkConfig.value) return;
-
-      if (watermarkConfig.type === "text") {
+      
+      if (watermarkConfig.type === "text" && watermarkConfig.textValue) {
         var textEl = document.createElement('div');
         textEl.className = "watermark-text text-white";
         textEl.style.opacity = watermarkConfig.opacity;
-        textEl.innerText = watermarkConfig.value;
+        textEl.innerText = watermarkConfig.textValue;
         container.appendChild(textEl);
-      } else if (watermarkConfig.type === "image") {
+      } 
+      else if (watermarkConfig.type === "image" && watermarkConfig.imageValue) {
         var imgEl = document.createElement('img');
-        imgEl.src = watermarkConfig.value;
+        imgEl.src = watermarkConfig.imageValue;
         imgEl.className = "max-w-[70%] max-h-[70%] object-contain";
         imgEl.style.opacity = watermarkConfig.opacity;
         container.appendChild(imgEl);
+      } 
+      else if (watermarkConfig.type === "text_image") {
+        var combinedBox = document.createElement('div');
+        combinedBox.className = "watermark-combined";
+        combinedBox.style.opacity = watermarkConfig.opacity;
+
+        if (watermarkConfig.imageValue) {
+          var imgEl = document.createElement('img');
+          imgEl.src = watermarkConfig.imageValue;
+          combinedBox.appendChild(imgEl);
+        }
+        if (watermarkConfig.textValue) {
+          var textEl = document.createElement('div');
+          textEl.innerText = watermarkConfig.textValue;
+          combinedBox.appendChild(textEl);
+        }
+        container.appendChild(combinedBox);
       }
     }
 
@@ -326,8 +372,10 @@
         .then(res => res.json())
         .then(data => {
           if (data.jamOperasional) { jamOperasionalGlobal = data.jamOperasional; }
+          // REVISI: Sinkronisasi data dari variabel split GAS terbaru
           watermarkConfig.type = data.watermarkType || "text";
-          watermarkConfig.value = data.watermarkValue || "";
+          watermarkConfig.textValue = data.watermarkTextValue || "";
+          watermarkConfig.imageValue = data.watermarkImageValue || "";
           watermarkConfig.opacity = parseFloat(data.watermarkOpacity) || 0.1;
           terapkanWatermarkKeHtml();
         }).catch(err => console.log("Gagal memuat config jam dan watermark"));
@@ -436,6 +484,7 @@
         }).catch(() => { submitButton.disabled = false; submitButton.innerText = "Ambil Nomor Antrean"; generateCaptcha(); });
     }
 
+    // REVISI: Logika Rendering Canvas Gambar Pendukung Opsi Teks + Gambar Sekaligus
     function downloadTiketGambar() {
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
@@ -447,7 +496,6 @@
         return new Promise(function(resolve, reject) {
           if (!src) { resolve(null); return; }
           var img = new Image();
-          // Hapus crossOrigin jika memakai base64 langsung agar tidak memicu deteksi CORS liar di beberapa browser
           if(!src.startsWith('data:image')) {
             img.crossOrigin = "anonymous";
           }
@@ -457,9 +505,8 @@
         });
       }
 
-      // Memuat Logo sekolah menggunakan fallback Base64 jika URL github mengalami kendala CORS di browser tertentu
       var urlLogo = "https://yanuar-moga.github.io/guruwali/assets/logo.png";
-      var urlWatermarkImage = (watermarkConfig.type === "image" && watermarkConfig.value) ? watermarkConfig.value : null;
+      var urlWatermarkImage = (watermarkConfig.type === "image" || watermarkConfig.type === "text_image") && watermarkConfig.imageValue ? watermarkConfig.imageValue : null;
 
       Promise.all([muatGambar(urlLogo), muatGambar(urlWatermarkImage)]).then(function(images) {
         var imgLogo = images[0];
@@ -469,48 +516,61 @@
         ctx.fillStyle = "#020617"; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 2. PROSES CETAK WATERMARK (Lapisan Paling Belakang)
-        if (watermarkConfig.value) {
-          ctx.save();
-          ctx.globalAlpha = watermarkConfig.opacity;
+        // 2. PROSES CETAK WATERMARK DINAMIS (Lapisan Belakang)
+        ctx.save();
+        ctx.globalAlpha = watermarkConfig.opacity;
 
-          if (watermarkConfig.type === "text") {
-            ctx.fillStyle = "#ffffff";
-            ctx.font = "900 52px Arial, sans-serif";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.rotate(-25 * Math.PI / 180);
-            ctx.fillText(watermarkConfig.value.toUpperCase(), 0, 0);
-          } else if (watermarkConfig.type === "image" && imgWatermark) {
-            var mw = canvas.width * 0.65;
+        if (watermarkConfig.type === "text" && watermarkConfig.textValue) {
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "900 52px Arial, sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.translate(canvas.width / 2, canvas.height / 2);
+          ctx.rotate(-25 * Math.PI / 180);
+          ctx.fillText(watermarkConfig.textValue.toUpperCase(), 0, 0);
+        } 
+        else if (watermarkConfig.type === "image" && imgWatermark) {
+          var mw = canvas.width * 0.65;
+          var mh = (imgWatermark.height / imgWatermark.width) * mw;
+          ctx.translate(canvas.width / 2, canvas.height / 2);
+          ctx.drawImage(imgWatermark, -mw / 2, -mh / 2, mw, mh);
+        } 
+        else if (watermarkConfig.type === "text_image") {
+          // Translasi ke tengah canvas dan rotasi untuk seluruh grup elemen watermark
+          ctx.translate(canvas.width / 2, canvas.height / 2);
+          ctx.rotate(-25 * Math.PI / 180);
+
+          var offsetY = 0;
+          if (imgWatermark) {
+            var mw = canvas.width * 0.45; // Ukuran disesuaikan agar proporsional bersandingan dengan teks
             var mh = (imgWatermark.height / imgWatermark.width) * mw;
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.drawImage(imgWatermark, -mw / 2, -mh / 2, mw, mh);
+            ctx.drawImage(imgWatermark, -mw / 2, -mh / 2 - 30, mw, mh);
+            offsetY = mh / 2; 
           }
-          ctx.restore();
+          if (watermarkConfig.textValue) {
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "900 38px Arial, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "top";
+            ctx.fillText(watermarkConfig.textValue.toUpperCase(), 0, offsetY - 10);
+          }
         }
+        ctx.restore();
 
         // 3. PROSES CETAK TIKET UTAMA & LOGO DI HEADER
-        // Bingkai Tepi Tiket (Warna Amber)
         ctx.strokeStyle = "#d97706"; 
         ctx.lineWidth = 6; 
         ctx.strokeRect(3, 3, canvas.width - 6, canvas.height - 6);
 
-        // CETAK LOGO SEKOLAH (Sama seperti versi browser)
         if (imgLogo) {
           ctx.drawImage(imgLogo, 45, 30, 50, 50);
         } else {
-          // Fallback kotak jika aset jaringan mati agar layout teks tidak rusak
           ctx.fillStyle = "#1e3a8a";
           ctx.fillRect(45, 30, 50, 50);
         }
 
-        // Header Teks
         ctx.textBaseline = "top"; 
         ctx.textAlign = "left";
-        
         ctx.fillStyle = "#fbbf24"; 
         ctx.font = "bold 18px Arial, sans-serif"; 
         ctx.fillText("BUKTI NOMOR ANTREAN", 115, 32);
@@ -519,7 +579,6 @@
         ctx.font = "bold 11px Arial, sans-serif"; 
         ctx.fillText("Sivera V 1.3 • SMP Negeri 1 Moga", 115, 58);
 
-        // Garis Pembatas Header (Garis Biru)
         ctx.strokeStyle = "#1e3a8a"; 
         ctx.lineWidth = 2; 
         ctx.beginPath(); 
@@ -573,13 +632,12 @@
           letakY += 38;
         }
 
-        // Catatan Kaki / Footer Gambar Tiket
         ctx.fillStyle = "#fbbf24";
         ctx.font = "italic bold 10px Arial, sans-serif";
         ctx.textAlign = "center";
         ctx.fillText("*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Berkas", canvas.width / 2, 695);
 
-        // 4. PROSES AUTOMATIC DOWNLOAD FILE GAMBAR PNG
+        // 4. DOWNLOAD BERKAS PNG
         var link = document.createElement('a');
         link.download = 'Tiket_Antrean_' + document.getElementById('t_nisn').innerText + '.png';
         link.href = canvas.toDataURL('image/png');
