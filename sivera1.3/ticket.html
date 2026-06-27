@@ -157,7 +157,6 @@
     <div id="ticketSection" class="hidden space-y-4 animate-fade-in">
       <div id="ticketCard" class="bg-blue-950 rounded-2xl shadow-2xl p-5 border-2 border-blue-900 text-white relative overflow-hidden">
         
-        <!-- Wadah Lapisan Watermark HTML -->
         <div id="htmlWatermark" class="watermark-container"></div>
 
         <div class="flex items-center gap-3 border-b border-blue-800 pb-4 mb-4 relative z-10">
@@ -290,7 +289,6 @@
       }, 4000);
     }
 
-    // Fungsi Mengaplikasikan Tampilan Watermark ke HTML Elemen Tiket
     function terapkanWatermarkKeHtml() {
       var container = document.getElementById('htmlWatermark');
       container.innerHTML = "";
@@ -315,7 +313,6 @@
       generateCaptcha();
       initMetadataTracker();
 
-      // Load Broadcast
       fetch(API_URL + "?action=getBroadcast")
         .then(res => res.json())
         .then(data => {
@@ -325,21 +322,16 @@
           }
         }).catch(err => console.log("Gagal memuat broadcast"));
 
-      // Load Config, Jam, dan Data Watermark
       fetch(API_URL + "?action=getConfig")
         .then(res => res.json())
         .then(data => {
           if (data.jamOperasional) { jamOperasionalGlobal = data.jamOperasional; }
-          
-          // Menyimpan konfigurasi watermark dinamis dari spreadsheet
           watermarkConfig.type = data.watermarkType || "text";
           watermarkConfig.value = data.watermarkValue || "";
           watermarkConfig.opacity = parseFloat(data.watermarkOpacity) || 0.1;
-          
           terapkanWatermarkKeHtml();
         }).catch(err => console.log("Gagal memuat config jam dan watermark"));
 
-      // Load Tickers
       fetch(API_URL + "?action=getTickers")
         .then(res => res.json())
         .then(data => {
@@ -448,81 +440,153 @@
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
       
-      canvas.width = 500; canvas.height = 740; 
-      ctx.fillStyle = "#020617"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      canvas.width = 500; 
+      canvas.height = 740; 
 
-      // --- PROSES CETAK WATERMARK KE DALAM GAMBAR CANVAS ---
-      if (watermarkConfig.value) {
-        ctx.save(); 
-        ctx.globalAlpha = watermarkConfig.opacity; 
+      function muatGambar(src) {
+        return new Promise(function(resolve, reject) {
+          if (!src) { resolve(null); return; }
+          var img = new Image();
+          // Hapus crossOrigin jika memakai base64 langsung agar tidak memicu deteksi CORS liar di beberapa browser
+          if(!src.startsWith('data:image')) {
+            img.crossOrigin = "anonymous";
+          }
+          img.onload = function() { resolve(img); };
+          img.onerror = function() { resolve(null); }; 
+          img.src = src;
+        });
+      }
 
-        if (watermarkConfig.type === "text") {
-          ctx.fillStyle = "#ffffff";
-          ctx.font = "black 56px Arial, sans-serif";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          
-          ctx.translate(canvas.width / 2, canvas.height / 2);
-          ctx.rotate(-25 * Math.PI / 180); 
-          ctx.fillText(watermarkConfig.value.toUpperCase(), 0, 0);
+      // Memuat Logo sekolah menggunakan fallback Base64 jika URL github mengalami kendala CORS di browser tertentu
+      var urlLogo = "https://yanuar-moga.github.io/guruwali/assets/logo.png";
+      var urlWatermarkImage = (watermarkConfig.type === "image" && watermarkConfig.value) ? watermarkConfig.value : null;
 
-        } else if (watermarkConfig.type === "image") {
-          var imgWatermark = new Image();
-          imgWatermark.src = watermarkConfig.value;
-          imgWatermark.onload = function() {
+      Promise.all([muatGambar(urlLogo), muatGambar(urlWatermarkImage)]).then(function(images) {
+        var imgLogo = images[0];
+        var imgWatermark = images[1];
+
+        // 1. Background Utama Tiket
+        ctx.fillStyle = "#020617"; 
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // 2. PROSES CETAK WATERMARK (Lapisan Paling Belakang)
+        if (watermarkConfig.value) {
+          ctx.save();
+          ctx.globalAlpha = watermarkConfig.opacity;
+
+          if (watermarkConfig.type === "text") {
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "900 52px Arial, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(-25 * Math.PI / 180);
+            ctx.fillText(watermarkConfig.value.toUpperCase(), 0, 0);
+          } else if (watermarkConfig.type === "image" && imgWatermark) {
             var mw = canvas.width * 0.65;
             var mh = (imgWatermark.height / imgWatermark.width) * mw;
-            ctx.drawImage(imgWatermark, (canvas.width - mw) / 2, (canvas.height - mh) / 2, mw, mh);
-          };
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.drawImage(imgWatermark, -mw / 2, -mh / 2, mw, mh);
+          }
+          ctx.restore();
         }
-        ctx.restore(); 
-      }
 
-      // --- PROSES CETAK TIKET UTAMA ---
-      ctx.strokeStyle = "#d97706"; ctx.lineWidth = 6; ctx.strokeRect(3, 3, canvas.width - 6, canvas.height - 6);
-      ctx.fillStyle = "#fbbf24"; ctx.font = "bold 22px Arial, sans-serif"; ctx.textBaseline = "top"; ctx.textAlign = "center";
-      ctx.fillText("SMP NEGERI 1 MOGA", canvas.width / 2, 40);
-      ctx.fillStyle = "#94a3b8"; ctx.font = "bold 13px Arial, sans-serif"; ctx.fillText("BUKTI RESMI NOMOR ANTREAN SPMB", canvas.width / 2, 70);
+        // 3. PROSES CETAK TIKET UTAMA & LOGO DI HEADER
+        // Bingkai Tepi Tiket (Warna Amber)
+        ctx.strokeStyle = "#d97706"; 
+        ctx.lineWidth = 6; 
+        ctx.strokeRect(3, 3, canvas.width - 6, canvas.height - 6);
 
-      ctx.strokeStyle = "#1e3a8a"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(30, 95); ctx.lineTo(470, 95); ctx.stroke();
-      ctx.fillStyle = "rgba(30, 58, 138, 0.4)"; ctx.fillRect(50, 115, 400, 155);
-      ctx.strokeStyle = "#2563eb"; ctx.strokeRect(50, 115, 400, 155);
-      
-      ctx.fillStyle = "#60a5fa"; ctx.font = "bold 14px Arial, sans-serif"; ctx.fillText("NOMOR ANTREAN ANDA", canvas.width / 2, 130);
-      ctx.fillStyle = "#fbbf24"; ctx.font = "900 65px monospace"; ctx.fillText(document.getElementById('t_no').innerText, canvas.width / 2, 160);
-      ctx.fillStyle = "#ffffff"; ctx.font = "bold 15px Arial, sans-serif"; ctx.fillText(document.getElementById('t_loket').innerText, canvas.width / 2, 235);
+        // CETAK LOGO SEKOLAH (Sama seperti versi browser)
+        if (imgLogo) {
+          ctx.drawImage(imgLogo, 45, 30, 50, 50);
+        } else {
+          // Fallback kotak jika aset jaringan mati agar layout teks tidak rusak
+          ctx.fillStyle = "#1e3a8a";
+          ctx.fillRect(45, 30, 50, 50);
+        }
 
-      var dataSiswa = [
-        { label: "Nama Lengkap:", val: document.getElementById('t_nama').innerText },
-        { label: "Nomor NISN:", val: document.getElementById('t_nisn').innerText },
-        { label: "Jenis Kelamin:", val: document.getElementById('t_jk').innerText },
-        { label: "Jadwal Verif Berkas:", val: document.getElementById('t_tgl').innerText },
-        { label: "Jam Pelayanan:", val: document.getElementById('t_jam').innerText },
-        { label: "Waktu Mendaftar:", val: document.getElementById('t_tgl_daftar').innerText }
-      ];
-      
-      var letakY = 320;
-      ctx.textBaseline = "alphabetic";
-      for (var i = 0; i < dataSiswa.length; i++) {
-        ctx.fillStyle = "#94a3b8"; ctx.textAlign = "left"; ctx.font = "13px Arial, sans-serif";
-        ctx.fillText(dataSiswa[i].label, 45, letakY);
+        // Header Teks
+        ctx.textBaseline = "top"; 
+        ctx.textAlign = "left";
         
-        ctx.fillStyle = "#ffffff"; ctx.textAlign = "right"; ctx.font = "bold 13px Arial, sans-serif";
-        if (i === 3) { ctx.fillStyle = "#fbbf24"; } 
-        ctx.fillText(dataSiswa[i].val, 455, letakY);
+        ctx.fillStyle = "#fbbf24"; 
+        ctx.font = "bold 18px Arial, sans-serif"; 
+        ctx.fillText("BUKTI NOMOR ANTREAN", 115, 32);
         
-        letakY += 38;
-      }
+        ctx.fillStyle = "#94a3b8"; 
+        ctx.font = "bold 11px Arial, sans-serif"; 
+        ctx.fillText("Sivera V 1.3 • SMP Negeri 1 Moga", 115, 58);
 
-      ctx.fillStyle = "#fbbf24";
-      ctx.font = "italic bold 10px Arial, sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Berkas", canvas.width / 2, 690);
+        // Garis Pembatas Header (Garis Biru)
+        ctx.strokeStyle = "#1e3a8a"; 
+        ctx.lineWidth = 2; 
+        ctx.beginPath(); 
+        ctx.moveTo(30, 100); 
+        ctx.lineTo(470, 100); 
+        ctx.stroke();
 
-      var link = document.createElement('a');
-      link.download = 'Tiket_Antrean_' + document.getElementById('t_nisn').innerText + '.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+        // Box Nomor Antrean
+        ctx.fillStyle = "rgba(30, 58, 138, 0.4)"; 
+        ctx.fillRect(50, 120, 400, 155);
+        ctx.strokeStyle = "#2563eb"; 
+        ctx.strokeRect(50, 120, 400, 155);
+        
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#60a5fa"; 
+        ctx.font = "bold 13px Arial, sans-serif"; 
+        ctx.fillText("NOMOR ANTREAN", canvas.width / 2, 135);
+        
+        ctx.fillStyle = "#fbbf24"; 
+        ctx.font = "900 65px monospace"; 
+        ctx.fillText(document.getElementById('t_no').innerText, canvas.width / 2, 160);
+        
+        ctx.fillStyle = "#ffffff"; 
+        ctx.font = "bold 14px Arial, sans-serif"; 
+        ctx.fillText(document.getElementById('t_loket').innerText, canvas.width / 2, 238);
+
+        // Cetak Data Siswa
+        var dataSiswa = [
+          { label: "Nama Lengkap:", val: document.getElementById('t_nama').innerText },
+          { label: "Nomor NISN:", val: document.getElementById('t_nisn').innerText },
+          { label: "Jenis Kelamin:", val: document.getElementById('t_jk').innerText },
+          { label: "Jadwal Verif Berkas:", val: document.getElementById('t_tgl').innerText },
+          { label: "Jam Pelayanan:", val: document.getElementById('t_jam').innerText },
+          { label: "Waktu Mendaftar:", val: document.getElementById('t_tgl_daftar').innerText }
+        ];
+        
+        var letakY = 325;
+        ctx.textBaseline = "alphabetic";
+        for (var i = 0; i < dataSiswa.length; i++) {
+          ctx.fillStyle = "#94a3b8"; 
+          ctx.textAlign = "left"; 
+          ctx.font = "13px Arial, sans-serif";
+          ctx.fillText(dataSiswa[i].label, 45, letakY);
+          
+          ctx.fillStyle = "#ffffff"; 
+          ctx.textAlign = "right"; 
+          ctx.font = "bold 13px Arial, sans-serif";
+          if (i === 3) { ctx.fillStyle = "#fbbf24"; } 
+          ctx.fillText(dataSiswa[i].val, 455, letakY);
+          
+          letakY += 38;
+        }
+
+        // Catatan Kaki / Footer Gambar Tiket
+        ctx.fillStyle = "#fbbf24";
+        ctx.font = "italic bold 10px Arial, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("*Simpan Gambar ini & Tunjukkan ke Petugas Saat Verifikasi Berkas", canvas.width / 2, 695);
+
+        // 4. PROSES AUTOMATIC DOWNLOAD FILE GAMBAR PNG
+        var link = document.createElement('a');
+        link.download = 'Tiket_Antrean_' + document.getElementById('t_nisn').innerText + '.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(function(e){
+        console.error("Gagal memuat canvas eksternal:", e);
+      });
     }
 
     function keluarKeIndex() {
