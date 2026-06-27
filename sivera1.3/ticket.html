@@ -13,7 +13,6 @@
     }
     .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
     
-    /* Animasi Transisi Slide Up Per Baris untuk Ticker Text */
     .ticker-item {
       opacity: 0;
       transform: translateY(20px);
@@ -25,26 +24,19 @@
       align-items: center;
       justify-content: center;
     }
-    .ticker-item.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .ticker-item.exit {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
+    .ticker-item.active { opacity: 1; transform: translateY(0); }
+    .ticker-item.exit { opacity: 0; transform: translateY(-20px); }
 
-    /* Style tambahan untuk penempatan Watermark Dinamis di HTML */
+    /* Style Watermark Dinamis di HTML */
     .watermark-container {
       position: absolute;
       inset: 0;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       overflow: hidden;
       pointer-events: none;
-      z-index: 0;
+      z-index: 0; /* Layer paling bawah di dalam kartu */
     }
     .watermark-text {
       font-size: 3.5rem;
@@ -55,29 +47,31 @@
       white-space: nowrap;
     }
     
-    /* Kombinasi text & image: Gambar tegak, teks miring */
+    /* PERBAIKAN CSS TAMPILAN: Membuat teks menumpuk di atas gambar */
     .watermark-combined {
+      position: relative;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       width: 100%;
       height: 100%;
-      gap: 1.5rem;
     }
     .watermark-combined img {
-      max-width: 130px;
-      max-height: 130px;
+      max-width: 70%;
+      max-height: 70%;
       object-fit: contain;
+      position: absolute; /* Gambar di dasar */
     }
     .watermark-combined div {
-      font-size: 2.5rem;
+      position: absolute; /* Menumpuk di atas gambar */
+      font-size: 2.8rem;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       color: white;
       white-space: nowrap;
       transform: rotate(-25deg);
+      text-shadow: 0 0 10px rgba(0,0,0,0.5); /* Supaya teks tetap terbaca jelas */
     }
   </style>
 </head>
@@ -478,7 +472,7 @@
         }).catch(() => { submitButton.disabled = false; submitButton.innerText = "Ambil Nomor Antrean"; generateCaptcha(); });
     }
 
-    // PERBAIKAN UTAMA: Logika Cetak Watermark Gambar Tegak & Teks Miring
+    // PERBAIKAN LOGIKA CANVAS: LOGO TETAP BESAR & TEKS MENUMPUK DI ATASNYA
     function downloadTiketGambar() {
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
@@ -506,15 +500,15 @@
         var imgLogo = images[0];
         var imgWatermark = images[1];
 
-        // 1. Background Utama Tiket
+        // 1. Background Utama Tiket (Layer Terbawah Kartu Utama)
         ctx.fillStyle = "#020617"; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 2. PROSES CETAK WATERMARK DINAMIS
+        // 2. PROSES CETAK WATERMARK (Menumpuk di atas background, di bawah teks info tiket)
         ctx.save();
         ctx.globalAlpha = watermarkConfig.opacity;
 
-        // OPSI A: Hanya Teks (Miring)
+        // OPSI A: Hanya Teks (Miring -25 derajat)
         if (watermarkConfig.type === "text" && watermarkConfig.textValue) {
           ctx.fillStyle = "#ffffff";
           ctx.font = "900 52px Arial, sans-serif";
@@ -524,36 +518,35 @@
           ctx.rotate(-25 * Math.PI / 180);
           ctx.fillText(watermarkConfig.textValue.toUpperCase(), 0, 0);
         } 
-        // OPSI B: Hanya Gambar (Tegak Lurus)
+        // OPSI B: Hanya Gambar (Tegak Lurus, Ukuran Besar 65%)
         else if (watermarkConfig.type === "image" && imgWatermark) {
           var mw = canvas.width * 0.65;
           var mh = (imgWatermark.height / imgWatermark.width) * mw;
           ctx.translate(canvas.width / 2, canvas.height / 2);
           ctx.drawImage(imgWatermark, -mw / 2, -mh / 2, mw, mh);
         } 
-        // OPSI C: Gabungan Teks & Gambar (GAMBAR TEGAK, TEKS MIRING)
+        // OPSI C: Gabungan Teks & Gambar (UKURAN GAMBAR SAMA BESAR & TEKS MENUMPUK DI ATASNYA)
         else if (watermarkConfig.type === "text_image") {
           var pusatX = canvas.width / 2;
           var pusatY = canvas.height / 2;
 
-          // Langkah 1: Cetak Gambar Watermark secara TEGAK LURUS (Tanpa Rotasi)
+          // Langkah 1: Gambar Logo tetap TEGAK dengan ukuran besar (65%)
           if (imgWatermark) {
-            var mw = canvas.width * 0.42; 
+            var mw = canvas.width * 0.65; 
             var mh = (imgWatermark.height / imgWatermark.width) * mw;
-            // Diletakkan sedikit ke atas agar seimbang dengan teks di bawahnya
-            ctx.drawImage(imgWatermark, pusatX - (mw / 2), pusatY - mh - 10, mw, mh);
+            ctx.drawImage(imgWatermark, pusatX - (mw / 2), pusatY - (mh / 2), mw, mh);
           }
 
-          // Langkah 2: Cetak Teks Watermark secara MIRING (-25 derajat)
+          // Langkah 2: Teks digambar MENUMPUK langsung di atas logo (Miring -25 derajat)
           if (watermarkConfig.textValue) {
-            ctx.save(); // Isolasi rotasi teks saja
+            ctx.save(); 
             ctx.fillStyle = "#ffffff";
-            ctx.font = "900 36px Arial, sans-serif";
+            ctx.font = "900 42px Arial, sans-serif";
             ctx.textAlign = "center";
-            ctx.textBaseline = "top";
+            ctx.textBaseline = "middle";
             
-            // Geser koordinat ke titik tengah bagian bawah untuk rotasi teks
-            ctx.translate(pusatX, pusatY + 30);
+            // Geser koordinat ke titik tengah canvas untuk melakukan rotasi teks tepat di pusat logo
+            ctx.translate(pusatX, pusatY);
             ctx.rotate(-25 * Math.PI / 180);
             ctx.fillText(watermarkConfig.textValue.toUpperCase(), 0, 0);
             ctx.restore();
@@ -561,7 +554,7 @@
         }
         ctx.restore();
 
-        // 3. PROSES CETAK TIKET UTAMA & LOGO DI HEADER
+        // 3. LAYER PALING ATAS: INFORMASI TIKET (Stroke, Header, No Antrean, Data Siswa)
         ctx.strokeStyle = "#d97706"; 
         ctx.lineWidth = 6; 
         ctx.strokeRect(3, 3, canvas.width - 6, canvas.height - 6);
