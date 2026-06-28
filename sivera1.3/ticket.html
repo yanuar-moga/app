@@ -218,7 +218,8 @@
     var API_URL = "https://script.google.com/macros/s/AKfycbyFBhIkfDAF-3kgAQgLer_gaP4Ab2x6255pqQ2qEBkthS4zjNDhWtrQBNmLKKJZQFWO/exec";
     var num1, num2, correctAnswer;
     var jamOperasionalGlobal = "08:00 - 12:00 WIB";
-    var watermarkConfig = { type: "text", textValue: "", imageValue: "", opacity: 0.1 };
+    // HASIL REVISI: Penambahan konfigurasi opacity terpisah untuk teks dan gambar
+    var watermarkConfig = { type: "text", textValue: "", imageValue: "", opacityText: 0.1, opacityImage: 0.1 };
 
     var clientIP = "Unknown";
     var clientProvider = "Unknown";
@@ -307,6 +308,7 @@
       }, 4000);
     }
 
+    // HASIL REVISI: Modifikasi logika render watermark visual menggunakan opacity masing-masing jenis
     function terapkanWatermarkKeHtml() {
       var container = document.getElementById('htmlWatermark');
       container.innerHTML = "";
@@ -314,7 +316,7 @@
       if (watermarkConfig.type === "text" && watermarkConfig.textValue) {
         var textEl = document.createElement('div');
         textEl.className = "watermark-text text-white";
-        textEl.style.opacity = watermarkConfig.opacity;
+        textEl.style.opacity = watermarkConfig.opacityText;
         textEl.innerText = watermarkConfig.textValue;
         container.appendChild(textEl);
       } 
@@ -322,22 +324,23 @@
         var imgEl = document.createElement('img');
         imgEl.src = watermarkConfig.imageValue;
         imgEl.className = "max-w-[70%] max-h-[70%] object-contain";
-        imgEl.style.opacity = watermarkConfig.opacity;
+        imgEl.style.opacity = watermarkConfig.opacityImage;
         container.appendChild(imgEl);
       } 
       else if (watermarkConfig.type === "text_image") {
         var combinedBox = document.createElement('div');
         combinedBox.className = "watermark-combined";
-        combinedBox.style.opacity = watermarkConfig.opacity;
 
         if (watermarkConfig.imageValue) {
           var imgEl = document.createElement('img');
           imgEl.src = watermarkConfig.imageValue;
+          imgEl.style.opacity = watermarkConfig.opacityImage;
           combinedBox.appendChild(imgEl);
         }
         if (watermarkConfig.textValue) {
           var textEl = document.createElement('div');
           textEl.innerText = watermarkConfig.textValue;
+          textEl.style.opacity = watermarkConfig.opacityText;
           combinedBox.appendChild(textEl);
         }
         container.appendChild(combinedBox);
@@ -357,6 +360,7 @@
           }
         }).catch(err => console.log("Gagal memuat broadcast"));
 
+      // HASIL REVISI: Menyesuaikan parameter pengambilan konfigurasi baru dari JSON API
       fetch(API_URL + "?action=getConfig")
         .then(res => res.json())
         .then(data => {
@@ -364,7 +368,8 @@
           watermarkConfig.type = data.watermarkType || "text";
           watermarkConfig.textValue = data.watermarkTextValue || "";
           watermarkConfig.imageValue = data.watermarkImageValue || "";
-          watermarkConfig.opacity = parseFloat(data.watermarkOpacity) || 0.1;
+          watermarkConfig.opacityText = parseFloat(data.watermarkOpacityText) || 0.1;
+          watermarkConfig.opacityImage = parseFloat(data.watermarkOpacityImage) || 0.1;
           terapkanWatermarkKeHtml();
         }).catch(err => console.log("Gagal memuat config jam dan watermark"));
 
@@ -472,7 +477,7 @@
         }).catch(() => { submitButton.disabled = false; submitButton.innerText = "Ambil Nomor Antrean"; generateCaptcha(); });
     }
 
-    // PERBAIKAN LOGIKA CANVAS: LOGO TETAP BESAR & TEKS MENUMPUK DI ATASNYA
+    // HASIL REVISI: Modifikasi logika pembuatan Canvas gambar agar mematuhi opacity text & image terpisah
     function downloadTiketGambar() {
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
@@ -505,11 +510,10 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // 2. PROSES CETAK WATERMARK (Menumpuk di atas background, di bawah teks info tiket)
-        ctx.save();
-        ctx.globalAlpha = watermarkConfig.opacity;
-
         // OPSI A: Hanya Teks (Miring -25 derajat)
         if (watermarkConfig.type === "text" && watermarkConfig.textValue) {
+          ctx.save();
+          ctx.globalAlpha = watermarkConfig.opacityText;
           ctx.fillStyle = "#ffffff";
           ctx.font = "900 52px Arial, sans-serif";
           ctx.textAlign = "center";
@@ -517,29 +521,37 @@
           ctx.translate(canvas.width / 2, canvas.height / 2);
           ctx.rotate(-25 * Math.PI / 180);
           ctx.fillText(watermarkConfig.textValue.toUpperCase(), 0, 0);
+          ctx.restore();
         } 
         // OPSI B: Hanya Gambar (Tegak Lurus, Ukuran Besar 65%)
         else if (watermarkConfig.type === "image" && imgWatermark) {
+          ctx.save();
+          ctx.globalAlpha = watermarkConfig.opacityImage;
           var mw = canvas.width * 0.65;
           var mh = (imgWatermark.height / imgWatermark.width) * mw;
           ctx.translate(canvas.width / 2, canvas.height / 2);
           ctx.drawImage(imgWatermark, -mw / 2, -mh / 2, mw, mh);
+          ctx.restore();
         } 
-        // OPSI C: Gabungan Teks & Gambar (UKURAN GAMBAR SAMA BESAR & TEKS MENUMPUK DI ATASNYA)
+        // OPSI C: Gabungan Teks & Gambar (Masing-masing memakai opacity-nya sendiri)
         else if (watermarkConfig.type === "text_image") {
           var pusatX = canvas.width / 2;
           var pusatY = canvas.height / 2;
 
-          // Langkah 1: Gambar Logo tetap TEGAK dengan ukuran besar (65%)
+          // Langkah 1: Gambar Logo tetap TEGAK dengan opacityImage
           if (imgWatermark) {
+            ctx.save();
+            ctx.globalAlpha = watermarkConfig.opacityImage;
             var mw = canvas.width * 0.65; 
             var mh = (imgWatermark.height / imgWatermark.width) * mw;
             ctx.drawImage(imgWatermark, pusatX - (mw / 2), pusatY - (mh / 2), mw, mh);
+            ctx.restore();
           }
 
-          // Langkah 2: Teks digambar MENUMPUK langsung di atas logo (Miring -25 derajat)
+          // Langkah 2: Teks digambar MENUMPUK langsung di atas logo dengan opacityText
           if (watermarkConfig.textValue) {
             ctx.save(); 
+            ctx.globalAlpha = watermarkConfig.opacityText;
             ctx.fillStyle = "#ffffff";
             ctx.font = "900 42px Arial, sans-serif";
             ctx.textAlign = "center";
@@ -552,7 +564,6 @@
             ctx.restore();
           }
         }
-        ctx.restore();
 
         // 3. LAYER PALING ATAS: INFORMASI TIKET (Stroke, Header, No Antrean, Data Siswa)
         ctx.strokeStyle = "#d97706"; 
