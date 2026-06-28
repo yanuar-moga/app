@@ -9,205 +9,216 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @keyframes fadeIn { 
-        from { opacity: 0; transform: translateY(12px); } 
+        from { opacity: 0; transform: translateY(16px); } 
         to { opacity: 1; transform: translateY(0); } 
     }
-    .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    .animate-fade-in { animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    
+    /* Custom Scrollbar for premium feel */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f4f4f5; }
+    ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
   </style>
 </head>
-<body class="bg-zinc-100 text-zinc-800 font-sans min-h-screen flex flex-col justify-between select-none">
+<body class="bg-zinc-50 text-zinc-800 font-sans min-h-screen flex flex-col justify-between select-none antialiased">
 
-  <div id="loginWrapper" class="login-wrapper max-w-sm w-11/12 margin auto bg-white rounded-2xl shadow-2xl overflow-hidden border border-zinc-200 m-auto animate-fade-in">
-    <div class="bg-blue-900 border-b-4 border-amber-400 p-6 text-center shadow-md">
-      <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo" class="w-16 h-16 mx-auto object-contain bg-white p-1 rounded-full shadow-md mb-3">
-      <h1 class="text-base font-black text-white tracking-wide uppercase">SMP Negeri 1 Moga</h1>
-      <p class="text-[11px] text-amber-400 font-black tracking-wider uppercase mt-0.5">PANEL UTAMA ADMIN SIVERA</p>
+  <div id="loginWrapper" class="max-w-md w-11/12 bg-white rounded-2xl shadow-xl overflow-hidden border border-zinc-200/80 m-auto animate-fade-in">
+    <div class="bg-gradient-to-br from-blue-950 to-blue-900 border-b-4 border-amber-400 p-8 text-center relative overflow-hidden">
+      <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+      <img src="https://yanuar-moga.github.io/guruwali/assets/logo.png" alt="Logo" class="w-20 h-20 mx-auto object-contain bg-white p-1.5 rounded-full shadow-lg mb-4 relative z-10 transition-transform hover:scale-105">
+      <h1 class="text-lg font-black text-white tracking-wide uppercase relative z-10">SMP Negeri 1 Moga</h1>
+      <p class="text-xs text-amber-400 font-bold tracking-widest uppercase mt-1 relative z-10">Panel Utama Admin SIVERA</p>
     </div>
-    <div class="p-6 space-y-4">
+    <div class="p-8 space-y-5">
       <div>
-        <label class="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider text-center">Masukkan PIN Autentikasi</label>
-        <input type="password" id="adminPin" placeholder="••••••" maxlength="6" class="w-full bg-zinc-50 border-2 border-zinc-200 p-3 text-xl rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white text-center font-mono font-bold tracking-widest transition-all">
+        <label class="block text-xs font-bold text-zinc-400 mb-2 uppercase tracking-widest text-center">Masukkan PIN Autentikasi</label>
+        <div class="relative">
+          <input type="password" id="adminPin" placeholder="••••••" maxlength="6" class="w-full bg-zinc-50 border-2 border-zinc-200 p-3.5 text-2xl rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white text-center font-mono font-bold tracking-widest transition-all shadow-inner">
+        </div>
       </div>
-      <button onclick="prosesLogin()" class="w-full bg-blue-900 hover:bg-blue-800 text-amber-400 p-3.5 rounded-xl font-black text-xs uppercase tracking-widest cursor-pointer transition shadow-md flex items-center justify-center gap-2">
-        <i class="fa-solid fa-right-to-bracket"></i> Masuk Aplikasi
+      <button onclick="prosesLogin()" class="w-full bg-blue-950 hover:bg-blue-900 text-amber-400 p-4 rounded-xl font-black text-xs uppercase tracking-widest cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 transform active:scale-[0.99]">
+        <i class="fa-solid fa-right-to-bracket text-sm"></i> Masuk Aplikasi
       </button>
     </div>
   </div>
 
-  <div id="mainSection" class="container mx-auto p-4 flex-grow max-w-2xl w-full hidden animate-fade-in">
+  <div id="mainSection" class="container mx-auto p-4 md:p-6 flex-grow max-w-3xl w-full hidden animate-fade-in">
     
-    <div class="bg-blue-900 border-b-4 border-amber-400 p-4 rounded-xl shadow-md flex items-center justify-between mb-5">
-      <div class="flex items-center gap-3">
-        <i class="fa-solid fa-sliders text-amber-400 text-xl"></i>
+    <div class="bg-gradient-to-r from-blue-950 to-blue-900 border-b-4 border-amber-400 p-5 rounded-2xl shadow-md flex items-center justify-between mb-6">
+      <div class="flex items-center gap-3.5">
+        <div class="bg-blue-900/50 p-2.5 rounded-xl border border-blue-800">
+          <i class="fa-solid fa-sliders text-amber-400 text-xl"></i>
+        </div>
         <div>
-          <h2 class="text-sm font-black text-white tracking-wide uppercase">SIVERA CONTROL PANEL</h2>
-          <p class="text-[9px] text-zinc-300 font-bold">Manajemen Pusat Data Antrean & Ticker</p>
+          <h2 class="text-base font-black text-white tracking-wide uppercase">SIVERA Control Panel</h2>
+          <p class="text-[11px] text-zinc-300 font-medium">Manajemen Pusat Data Antrean & Ticker</p>
         </div>
       </div>
-      <button onclick="prosesLogout()" class="bg-red-600 hover:bg-red-700 text-white font-black text-[10px] px-3 py-2 rounded-lg cursor-pointer transition uppercase tracking-wider shadow flex items-center gap-1.5">
-        <i class="fa-solid fa-power-off"></i> Keluar
+      <button onclick="prosesLogout()" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl cursor-pointer transition-all duration-200 uppercase tracking-wider shadow hover:shadow-md flex items-center gap-2 transform active:scale-[0.97]">
+        <i class="fa-solid fa-power-off text-[11px]"></i> Keluar
       </button>
     </div>
 
-    <div class="space-y-5">
+    <div class="space-y-6">
       
-      <div class="bg-white rounded-2xl p-5 shadow-lg border border-zinc-200">
-        <div class="flex items-center gap-2 mb-4 pb-2 border-b border-zinc-100">
-          <i class="fa-solid fa-calendar-days text-blue-900 text-sm"></i>
-          <h3 class="text-xs font-black text-blue-900 uppercase tracking-wider">Status & Waktu Operasional</h3>
+      <div class="bg-white rounded-2xl p-6 shadow-md border border-zinc-200/60 transition-all hover:shadow-lg">
+        <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-zinc-100">
+          <i class="fa-solid fa-calendar-days text-blue-950 text-base"></i>
+          <h3 class="text-sm font-black text-blue-950 uppercase tracking-wider">Status & Waktu Operasional</h3>
         </div>
         <form id="configForm" class="space-y-4">
-          <div class="grid grid-cols-2 gap-4">
-            <div class="col-span-2 bg-amber-50 p-3 rounded-xl border border-amber-200">
-              <label class="block text-[10px] font-black text-amber-900 mb-1.5 uppercase tracking-wider">Status Sistem Pendaftaran</label>
-              <select id="statusPendaftaran" class="w-full bg-white border border-amber-300 p-2.5 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="md:col-span-2 bg-amber-50/60 p-4 rounded-xl border border-amber-200/70 shadow-inner">
+              <label class="block text-[11px] font-black text-amber-900 mb-2 uppercase tracking-wider">Status Sistem Pendaftaran</label>
+              <select id="statusPendaftaran" class="w-full bg-white border border-amber-300 p-3 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 shadow-sm transition-all cursor-pointer">
                 <option value="buka">🟢 BUKA (Calon Siswa Bisa Ambil Antrean)</option>
                 <option value="tutup">🔴 TUTUP (Sistem Dikunci Sementara)</option>
               </select>
             </div>
             <div>
-              <label class="block text-[10px] font-black text-zinc-500 mb-1 uppercase tracking-wider">Tanggal Mulai Verif</label>
-              <input type="date" id="tanggalMulai" required class="w-full bg-zinc-50 border border-zinc-300 p-2.5 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white text-center">
+              <label class="block text-[11px] font-black text-zinc-500 mb-1.5 uppercase tracking-wider">Tanggal Mulai Verif</label>
+              <input type="date" id="tanggalMulai" required class="w-full bg-zinc-50 border border-zinc-200 p-3 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white text-center transition-all shadow-sm">
             </div>
             <div>
-              <label class="block text-[10px] font-black text-zinc-500 mb-1 uppercase tracking-wider">Jam Operasional Pelayanan (Teks)</label>
-              <input type="text" id="jamOperasional" required placeholder="Contoh: 07:30 - 12:00 WIB" class="w-full bg-zinc-50 border border-zinc-300 p-2.5 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white text-center">
+              <label class="block text-[11px] font-black text-zinc-500 mb-1.5 uppercase tracking-wider">Jam Operasional Pelayanan</label>
+              <input type="text" id="jamOperasional" required placeholder="Contoh: 07:30 - 12:00 WIB" class="w-full bg-zinc-50 border border-zinc-200 p-3 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white transition-all shadow-sm">
             </div>
             <div>
-              <label class="block text-[10px] font-black text-zinc-500 mb-1 uppercase tracking-wider">Jam Buka Sistem (Validasi)</label>
-              <input type="text" id="jamBuka" required placeholder="Contoh: 07:00 WIB" class="w-full bg-zinc-50 border border-zinc-300 p-2.5 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white text-center">
+              <label class="block text-[11px] font-black text-zinc-500 mb-1.5 uppercase tracking-wider">Jam Buka Sistem (Validasi)</label>
+              <input type="text" id="jamBuka" required placeholder="Contoh: 07:00 WIB" class="w-full bg-zinc-50 border border-zinc-200 p-3 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white text-center transition-all shadow-sm">
             </div>
             <div>
-              <label class="block text-[10px] font-black text-zinc-500 mb-1 uppercase tracking-wider">Jam Tutup Sistem (Validasi)</label>
-              <input type="text" id="jamTutup" required placeholder="Contoh: 12:00 WIB" class="w-full bg-zinc-50 border border-zinc-300 p-2.5 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white text-center">
+              <label class="block text-[11px] font-black text-zinc-500 mb-1.5 uppercase tracking-wider">Jam Tutup Sistem (Validasi)</label>
+              <input type="text" id="jamTutup" required placeholder="Contoh: 12:00 WIB" class="w-full bg-zinc-50 border border-zinc-200 p-3 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white text-center transition-all shadow-sm">
             </div>
           </div>
-          <button type="submit" class="w-full bg-blue-900 hover:bg-blue-800 text-amber-400 p-3 rounded-xl font-black text-xs uppercase tracking-wider cursor-pointer transition shadow-sm">
+          <button type="submit" class="w-full bg-blue-950 hover:bg-blue-900 text-amber-400 p-3.5 rounded-xl font-black text-xs uppercase tracking-widest cursor-pointer transition-all shadow hover:shadow-md mt-2">
             Simpan Pengaturan Waktu & Status
           </button>
         </form>
       </div>
 
-      <div class="bg-white rounded-2xl p-5 shadow-lg border border-zinc-200">
-        <div class="flex items-center gap-2 mb-4 pb-2 border-b border-zinc-100">
-          <i class="fa-solid fa-users-gear text-blue-900 text-sm"></i>
-          <h3 class="text-xs font-black text-blue-900 uppercase tracking-wider">Kuota Harian & Atur Tanggal Hari</h3>
+      <div class="bg-white rounded-2xl p-6 shadow-md border border-zinc-200/60 transition-all hover:shadow-lg">
+        <div class="flex items-center gap-2.5 mb-4 pb-3 border-b border-zinc-100">
+          <i class="fa-solid fa-users-gear text-blue-950 text-base"></i>
+          <h3 class="text-sm font-black text-blue-950 uppercase tracking-wider">Kuota Harian & Atur Tanggal Hari</h3>
         </div>
         <form id="quotaForm" class="space-y-4">
-          <p class="text-[10px] text-zinc-500 font-semibold italic -mt-2">*Sesuaikan tanggal berjalan beserta batasan maksimum kuota pendaftar per harinya.</p>
-          <div class="space-y-2">
-            <div class="grid grid-cols-3 gap-2 items-center bg-zinc-50 p-2 rounded-xl border border-zinc-200">
-              <span class="text-xs font-black text-zinc-600 pl-2">Senin</span>
-              <input type="text" id="tgl_senin" placeholder="DD/MM/YYYY" class="bg-white border border-zinc-300 p-2 text-xs font-bold rounded-lg text-center focus:outline-none">
-              <input type="number" id="q_senin" placeholder="Kuota" class="bg-white border border-zinc-300 p-2 text-xs font-bold rounded-lg text-center focus:outline-none">
+          <p class="text-[11px] text-zinc-400 font-medium italic -mt-2"><i class="fa-solid fa-circle-info mr-1"></i>Sesuaikan tanggal berjalan beserta batasan maksimum kuota pendaftar per harinya.</p>
+          <div class="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+            <div class="grid grid-cols-3 gap-3 items-center bg-zinc-50/80 p-2.5 rounded-xl border border-zinc-200/60">
+              <span class="text-xs font-extrabold text-zinc-600 pl-2">Senin</span>
+              <input type="text" id="tgl_senin" placeholder="DD/MM/YYYY" class="bg-white border border-zinc-200 p-2 text-xs font-bold rounded-lg text-center focus:outline-none focus:border-blue-900 shadow-sm transition-all">
+              <input type="number" id="q_senin" placeholder="Kuota" class="bg-white border border-zinc-200 p-2 text-xs font-bold rounded-lg text-center focus:outline-none focus:border-blue-900 shadow-sm transition-all">
             </div>
-            <div class="grid grid-cols-3 gap-2 items-center bg-zinc-50 p-2 rounded-xl border border-zinc-200">
-              <span class="text-xs font-black text-zinc-600 pl-2">Selasa</span>
-              <input type="text" id="tgl_selasa" placeholder="DD/MM/YYYY" class="bg-white border border-zinc-300 p-2 text-xs font-bold rounded-lg text-center focus:outline-none">
-              <input type="number" id="q_selasa" placeholder="Kuota" class="bg-white border border-zinc-300 p-2 text-xs font-bold rounded-lg text-center focus:outline-none">
+            <div class="grid grid-cols-3 gap-3 items-center bg-zinc-50/80 p-2.5 rounded-xl border border-zinc-200/60">
+              <span class="text-xs font-extrabold text-zinc-600 pl-2">Selasa</span>
+              <input type="text" id="tgl_selasa" placeholder="DD/MM/YYYY" class="bg-white border border-zinc-200 p-2 text-xs font-bold rounded-lg text-center focus:outline-none focus:border-blue-900 shadow-sm transition-all">
+              <input type="number" id="q_selasa" placeholder="Kuota" class="bg-white border border-zinc-200 p-2 text-xs font-bold rounded-lg text-center focus:outline-none focus:border-blue-900 shadow-sm transition-all">
             </div>
-            <div class="grid grid-cols-3 gap-2 items-center bg-zinc-50 p-2 rounded-xl border border-zinc-200">
-              <span class="text-xs font-black text-zinc-600 pl-2">Rabu</span>
-              <input type="text" id="tgl_rabu" placeholder="DD/MM/YYYY" class="bg-white border border-zinc-300 p-2 text-xs font-bold rounded-lg text-center focus:outline-none">
-              <input type="number" id="q_rabu" placeholder="Kuota" class="bg-white border border-zinc-300 p-2 text-xs font-bold rounded-lg text-center focus:outline-none">
+            <div class="grid grid-cols-3 gap-3 items-center bg-zinc-50/80 p-2.5 rounded-xl border border-zinc-200/60">
+              <span class="text-xs font-extrabold text-zinc-600 pl-2">Rabu</span>
+              <input type="text" id="tgl_rabu" placeholder="DD/MM/YYYY" class="bg-white border border-zinc-200 p-2 text-xs font-bold rounded-lg text-center focus:outline-none focus:border-blue-900 shadow-sm transition-all">
+              <input type="number" id="q_rabu" placeholder="Kuota" class="bg-white border border-zinc-300 p-2 text-xs font-bold rounded-lg text-center focus:outline-none focus:border-blue-900 shadow-sm transition-all">
             </div>
-            <div class="grid grid-cols-3 gap-2 items-center bg-zinc-50 p-2 rounded-xl border border-zinc-200">
-              <span class="text-xs font-black text-zinc-600 pl-2">Kamis</span>
-              <input type="text" id="tgl_kamis" placeholder="DD/MM/YYYY" class="bg-white border border-zinc-300 p-2 text-xs font-bold rounded-lg text-center focus:outline-none">
-              <input type="number" id="q_kamis" placeholder="Kuota" class="bg-white border border-zinc-300 p-2 text-xs font-bold rounded-lg text-center focus:outline-none">
+            <div class="grid grid-cols-3 gap-3 items-center bg-zinc-50/80 p-2.5 rounded-xl border border-zinc-200/60">
+              <span class="text-xs font-extrabold text-zinc-600 pl-2">Kamis</span>
+              <input type="text" id="tgl_kamis" placeholder="DD/MM/YYYY" class="bg-white border border-zinc-200 p-2 text-xs font-bold rounded-lg text-center focus:outline-none focus:border-blue-900 shadow-sm transition-all">
+              <input type="number" id="q_kamis" placeholder="Kuota" class="bg-white border border-zinc-200 p-2 text-xs font-bold rounded-lg text-center focus:outline-none focus:border-blue-900 shadow-sm transition-all">
             </div>
-            <div class="grid grid-cols-3 gap-2 items-center bg-zinc-50 p-2 rounded-xl border border-zinc-200">
-              <span class="text-xs font-black text-zinc-600 pl-2">Jumat</span>
-              <input type="text" id="tgl_jumat" placeholder="DD/MM/YYYY" class="bg-white border border-zinc-300 p-2 text-xs font-bold rounded-lg text-center focus:outline-none">
-              <input type="number" id="q_jumat" placeholder="Kuota" class="bg-white border border-zinc-300 p-2 text-xs font-bold rounded-lg text-center focus:outline-none">
+            <div class="grid grid-cols-3 gap-3 items-center bg-zinc-50/80 p-2.5 rounded-xl border border-zinc-200/60">
+              <span class="text-xs font-extrabold text-zinc-600 pl-2">Jumat</span>
+              <input type="text" id="tgl_jumat" placeholder="DD/MM/YYYY" class="bg-white border border-zinc-200 p-2 text-xs font-bold rounded-lg text-center focus:outline-none focus:border-blue-900 shadow-sm transition-all">
+              <input type="number" id="q_jumat" placeholder="Kuota" class="bg-white border border-zinc-200 p-2 text-xs font-bold rounded-lg text-center focus:outline-none focus:border-blue-900 shadow-sm transition-all">
             </div>
-            <div class="grid grid-cols-3 gap-2 items-center bg-zinc-50 p-2 rounded-xl border border-zinc-200">
-              <span class="text-xs font-black text-zinc-600 pl-2">Sabtu</span>
-              <input type="text" id="tgl_sabtu" placeholder="DD/MM/YYYY" class="bg-white border border-zinc-300 p-2 text-xs font-bold rounded-lg text-center focus:outline-none">
-              <input type="number" id="q_sabtu" placeholder="Kuota" class="bg-white border border-zinc-300 p-2 text-xs font-bold rounded-lg text-center focus:outline-none">
+            <div class="grid grid-cols-3 gap-3 items-center bg-zinc-50/80 p-2.5 rounded-xl border border-zinc-200/60">
+              <span class="text-xs font-extrabold text-zinc-600 pl-2">Sabtu</span>
+              <input type="text" id="tgl_sabtu" placeholder="DD/MM/YYYY" class="bg-white border border-zinc-200 p-2 text-xs font-bold rounded-lg text-center focus:outline-none focus:border-blue-900 shadow-sm transition-all">
+              <input type="number" id="q_sabtu" placeholder="Kuota" class="bg-white border border-zinc-200 p-2 text-xs font-bold rounded-lg text-center focus:outline-none focus:border-blue-900 shadow-sm transition-all">
             </div>
-            <div class="grid grid-cols-3 gap-2 items-center bg-zinc-50 p-2 rounded-xl border border-zinc-200">
-              <span class="text-xs font-black text-zinc-600 pl-2">Minggu</span>
-              <input type="text" id="tgl_minggu" placeholder="DD/MM/YYYY" class="bg-white border border-zinc-300 p-2 text-xs font-bold rounded-lg text-center focus:outline-none">
-              <input type="number" id="q_minggu" placeholder="Kuota" class="bg-white border border-zinc-300 p-2 text-xs font-bold rounded-lg text-center focus:outline-none">
+            <div class="grid grid-cols-3 gap-3 items-center bg-zinc-50/80 p-2.5 rounded-xl border border-zinc-200/60">
+              <span class="text-xs font-extrabold text-zinc-600 pl-2">Minggu</span>
+              <input type="text" id="tgl_minggu" placeholder="DD/MM/YYYY" class="bg-white border border-zinc-200 p-2 text-xs font-bold rounded-lg text-center focus:outline-none focus:border-blue-900 shadow-sm transition-all">
+              <input type="number" id="q_minggu" placeholder="Kuota" class="bg-white border border-zinc-200 p-2 text-xs font-bold rounded-lg text-center focus:outline-none focus:border-blue-900 shadow-sm transition-all">
             </div>
           </div>
-          <button type="submit" class="w-full bg-blue-900 hover:bg-blue-800 text-amber-400 p-3 rounded-xl font-black text-xs uppercase tracking-wider cursor-pointer transition shadow-sm">
+          <button type="submit" class="w-full bg-blue-950 hover:bg-blue-900 text-amber-400 p-3.5 rounded-xl font-black text-xs uppercase tracking-widest cursor-pointer transition-all shadow hover:shadow-md mt-2">
             Simpan Kalender & Kuota SIVERA
           </button>
         </form>
       </div>
 
-      <div class="bg-white rounded-2xl p-5 shadow-lg border border-zinc-200">
-        <div class="flex items-center gap-2 mb-4 pb-2 border-b border-zinc-100">
-          <i class="fa-solid fa-stamp text-blue-900 text-sm"></i>
-          <h3 class="text-xs font-black text-blue-900 uppercase tracking-wider">Pengaturan Watermark Tiket</h3>
+      <div class="bg-white rounded-2xl p-6 shadow-md border border-zinc-200/60 transition-all hover:shadow-lg">
+        <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-zinc-100">
+          <i class="fa-solid fa-stamp text-blue-950 text-base"></i>
+          <h3 class="text-sm font-black text-blue-950 uppercase tracking-wider">Pengaturan Watermark Tiket</h3>
         </div>
         <form id="watermarkForm" class="space-y-4">
           <div>
-            <label class="block text-[10px] font-black text-zinc-500 mb-1 uppercase tracking-wider">Jenis Tampilan Watermark</label>
-            <select id="watermarkType" class="w-full bg-zinc-50 border border-zinc-300 p-2.5 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900">
+            <label class="block text-[11px] font-black text-zinc-500 mb-1.5 uppercase tracking-wider">Jenis Tampilan Watermark</label>
+            <select id="watermarkType" class="w-full bg-zinc-50 border border-zinc-200 p-3 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 shadow-sm cursor-pointer transition-all">
               <option value="text">Hanya Teks Tulisan</option>
               <option value="image">Hanya Gambar Logo</option>
               <option value="text_image">Gabungan (Gambar & Teks Menumpuk)</option>
             </select>
           </div>
           <div>
-            <label class="block text-[10px] font-black text-zinc-500 mb-1 uppercase tracking-wider">Isi Materi Teks Watermark</label>
-            <input type="text" id="watermarkTextValue" placeholder="Contoh: SIMULASI" class="w-full bg-zinc-50 border border-zinc-300 p-2.5 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900">
+            <label class="block text-[11px] font-black text-zinc-500 mb-1.5 uppercase tracking-wider">Isi Materi Teks Watermark</label>
+            <input type="text" id="watermarkTextValue" placeholder="Contoh: SIMULASI" class="w-full bg-zinc-50 border border-zinc-200 p-3 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 shadow-sm transition-all">
           </div>
           <div>
-            <label class="block text-[10px] font-black text-zinc-500 mb-1 uppercase tracking-wider">URL Link Gambar Watermark</label>
-            <input type="url" id="watermarkImageValue" placeholder="https://domain.com/gambar.png" class="w-full bg-zinc-50 border border-zinc-300 p-2.5 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900">
+            <label class="block text-[11px] font-black text-zinc-500 mb-1.5 uppercase tracking-wider">URL Link Gambar Watermark</label>
+            <input type="url" id="watermarkImageValue" placeholder="https://domain.com/gambar.png" class="w-full bg-zinc-50 border border-zinc-200 p-3 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 shadow-sm transition-all">
           </div>
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-[10px] font-black text-zinc-500 mb-1 uppercase tracking-wider">Opacity Teks (0.0 - 1.0)</label>
-              <input type="number" id="watermarkOpacityText" step="0.05" min="0" max="1" placeholder="Contoh: 0.5" required class="w-full bg-zinc-50 border border-zinc-300 p-2.5 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 text-center">
+              <label class="block text-[11px] font-black text-zinc-500 mb-1.5 uppercase tracking-wider">Opacity Teks (0.0 - 1.0)</label>
+              <input type="number" id="watermarkOpacityText" step="0.05" min="0" max="1" placeholder="Contoh: 0.5" required class="w-full bg-zinc-50 border border-zinc-200 p-3 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 text-center shadow-sm transition-all">
             </div>
             <div>
-              <label class="block text-[10px] font-black text-zinc-500 mb-1 uppercase tracking-wider">Opacity Gambar (0.0 - 1.0)</label>
-              <input type="number" id="watermarkOpacityImage" step="0.05" min="0" max="1" placeholder="Contoh: 0.1" required class="w-full bg-zinc-50 border border-zinc-300 p-2.5 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 text-center">
+              <label class="block text-[11px] font-black text-zinc-500 mb-1.5 uppercase tracking-wider">Opacity Gambar (0.0 - 1.0)</label>
+              <input type="number" id="watermarkOpacityImage" step="0.05" min="0" max="1" placeholder="Contoh: 0.1" required class="w-full bg-zinc-50 border border-zinc-200 p-3 text-xs font-bold rounded-xl focus:outline-none focus:border-blue-900 text-center shadow-sm transition-all">
             </div>
           </div>
-          <button type="submit" class="w-full bg-blue-900 hover:bg-blue-800 text-amber-400 p-3 rounded-xl font-black text-xs uppercase tracking-wider cursor-pointer transition shadow-sm">
+          <button type="submit" class="w-full bg-blue-950 hover:bg-blue-900 text-amber-400 p-3.5 rounded-xl font-black text-xs uppercase tracking-widest cursor-pointer transition-all shadow hover:shadow-md mt-2">
             Simpan Pengaturan Watermark
           </button>
         </form>
       </div>
 
-      <div class="bg-white rounded-2xl p-5 shadow-lg border border-zinc-200">
-        <div class="flex items-center gap-2 mb-4 pb-2 border-b border-zinc-100">
-          <i class="fa-solid fa-bullhorn text-amber-500 text-sm"></i>
-          <h3 class="text-xs font-black text-blue-900 uppercase tracking-wider">Kirim Pengumuman Kotak Atas</h3>
+      <div class="bg-white rounded-2xl p-6 shadow-md border border-zinc-200/60 transition-all hover:shadow-lg">
+        <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-zinc-100">
+          <i class="fa-solid fa-bullhorn text-amber-500 text-base"></i>
+          <h3 class="text-sm font-black text-blue-950 uppercase tracking-wider">Kirim Pengumuman Kotak Atas</h3>
         </div>
-        <form id="broadcastForm" class="space-y-3">
+        <form id="broadcastForm" class="space-y-4">
           <div>
-            <label class="block text-[10px] font-black text-zinc-500 mb-1 uppercase tracking-wider">Isi Materi Pengumuman Utama</label>
-            <textarea id="broadcast" rows="3" placeholder="Tulis info penting pendaftaran disini..." class="w-full bg-zinc-50 border border-zinc-300 p-3 text-xs font-semibold rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white transition-all leading-relaxed"></textarea>
+            <label class="block text-[11px] font-black text-zinc-500 mb-1.5 uppercase tracking-wider">Isi Materi Pengumuman Utama</label>
+            <textarea id="broadcast" rows="3" placeholder="Tulis info penting pendaftaran disini..." class="w-full bg-zinc-50 border border-zinc-200 p-3.5 text-xs font-semibold rounded-xl focus:outline-none focus:border-blue-900 focus:bg-white shadow-sm transition-all leading-relaxed"></textarea>
           </div>
-          <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-blue-950 p-3 rounded-xl font-black text-xs uppercase tracking-wider cursor-pointer transition shadow-sm">
+          <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-blue-950 p-3.5 rounded-xl font-black text-xs uppercase tracking-widest cursor-pointer transition-all shadow hover:shadow-md">
             Perbarui Pengumuman Box
           </button>
         </form>
       </div>
 
-      <div class="bg-white rounded-2xl p-5 shadow-lg border border-zinc-200">
-        <div class="flex items-center gap-2 mb-4 pb-2 border-b border-zinc-100">
-          <i class="fa-solid fa-window-maximize text-emerald-600 text-sm"></i>
-          <h3 class="text-xs font-black text-blue-900 uppercase tracking-wider">Pengaturan Teks Berjalan (Ticker)</h3>
+      <div class="bg-white rounded-2xl p-6 shadow-md border border-zinc-200/60 transition-all hover:shadow-lg">
+        <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-zinc-100">
+          <i class="fa-solid fa-window-maximize text-emerald-600 text-base"></i>
+          <h3 class="text-sm font-black text-blue-950 uppercase tracking-wider">Pengaturan Teks Berjalan (Ticker)</h3>
         </div>
-        <form id="tickerForm" class="space-y-3">
-          <div class="bg-zinc-50 p-3 rounded-xl border border-zinc-200 space-y-2.5">
-            <div class="flex items-center gap-2"><span class="w-6 text-[10px] font-bold text-zinc-400 font-mono">B7:</span><input type="text" id="tk_b" placeholder="(Kosong)" class="w-full bg-white border border-zinc-300 p-2 text-xs font-medium rounded-lg focus:outline-none"></div>
-            <div class="flex items-center gap-2"><span class="w-6 text-[10px] font-bold text-zinc-400 font-mono">C7:</span><input type="text" id="tk_c" placeholder="(Kosong)" class="w-full bg-white border border-zinc-300 p-2 text-xs font-medium rounded-lg focus:outline-none"></div>
-            <div class="flex items-center gap-2"><span class="w-6 text-[10px] font-bold text-zinc-400 font-mono">D7:</span><input type="text" id="tk_d" placeholder="(Kosong)" class="w-full bg-white border border-zinc-300 p-2 text-xs font-medium rounded-lg focus:outline-none"></div>
-            <div class="flex items-center gap-2"><span class="w-6 text-[10px] font-bold text-zinc-400 font-mono">E7:</span><input type="text" id="tk_e" placeholder="(Kosong)" class="w-full bg-white border border-zinc-300 p-2 text-xs font-medium rounded-lg focus:outline-none"></div>
-            <div class="flex items-center gap-2"><span class="w-6 text-[10px] font-bold text-zinc-400 font-mono">F7:</span><input type="text" id="tk_f" placeholder="(Kosong)" class="w-full bg-white border border-zinc-300 p-2 text-xs font-medium rounded-lg focus:outline-none"></div>
-            <div class="flex items-center gap-2"><span class="w-6 text-[10px] font-bold text-zinc-400 font-mono">G7:</span><input type="text" id="tk_g" placeholder="(Kosong)" class="w-full bg-white border border-zinc-300 p-2 text-xs font-medium rounded-lg focus:outline-none"></div>
-            <div class="flex items-center gap-2"><span class="w-6 text-[10px] font-bold text-zinc-400 font-mono">H7:</span><input type="text" id="tk_h" placeholder="(Kosong)" class="w-full bg-white border border-zinc-300 p-2 text-xs font-medium rounded-lg focus:outline-none"></div>
+        <form id="tickerForm" class="space-y-4">
+          <div class="bg-zinc-50/80 p-4 rounded-xl border border-zinc-200/60 space-y-3 shadow-inner">
+            <div class="flex items-center gap-3"><span class="w-8 text-[11px] font-bold text-zinc-400 font-mono text-right">B7:</span><input type="text" id="tk_b" placeholder="(Kosong)" class="w-full bg-white border border-zinc-200 p-2.5 text-xs font-medium rounded-xl focus:outline-none focus:border-blue-900 shadow-sm transition-all"></div>
+            <div class="flex items-center gap-3"><span class="w-8 text-[11px] font-bold text-zinc-400 font-mono text-right">C7:</span><input type="text" id="tk_c" placeholder="(Kosong)" class="w-full bg-white border border-zinc-200 p-2.5 text-xs font-medium rounded-xl focus:outline-none focus:border-blue-900 shadow-sm transition-all"></div>
+            <div class="flex items-center gap-3"><span class="w-8 text-[11px] font-bold text-zinc-400 font-mono text-right">D7:</span><input type="text" id="tk_d" placeholder="(Kosong)" class="w-full bg-white border border-zinc-200 p-2.5 text-xs font-medium rounded-xl focus:outline-none focus:border-blue-900 shadow-sm transition-all"></div>
+            <div class="flex items-center gap-3"><span class="w-8 text-[11px] font-bold text-zinc-400 font-mono text-right">E7:</span><input type="text" id="tk_e" placeholder="(Kosong)" class="w-full bg-white border border-zinc-200 p-2.5 text-xs font-medium rounded-xl focus:outline-none focus:border-blue-900 shadow-sm transition-all"></div>
+            <div class="flex items-center gap-3"><span class="w-8 text-[11px] font-bold text-zinc-400 font-mono text-right">F7:</span><input type="text" id="tk_f" placeholder="(Kosong)" class="w-full bg-white border border-zinc-200 p-2.5 text-xs font-medium rounded-xl focus:outline-none focus:border-blue-900 shadow-sm transition-all"></div>
+            <div class="flex items-center gap-3"><span class="w-8 text-[11px] font-bold text-zinc-400 font-mono text-right">G7:</span><input type="text" id="tk_g" placeholder="(Kosong)" class="w-full bg-white border border-zinc-200 p-2.5 text-xs font-medium rounded-xl focus:outline-none focus:border-blue-900 shadow-sm transition-all"></div>
+            <div class="flex items-center gap-3"><span class="w-8 text-[11px] font-bold text-zinc-400 font-mono text-right">H7:</span><input type="text" id="tk_h" placeholder="(Kosong)" class="w-full bg-white border border-zinc-200 p-2.5 text-xs font-medium rounded-xl focus:outline-none focus:border-blue-900 shadow-sm transition-all"></div>
           </div>
-          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-xl font-black text-xs uppercase tracking-wider cursor-pointer transition shadow-sm">
+          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white p-3.5 rounded-xl font-black text-xs uppercase tracking-widest cursor-pointer transition-all shadow hover:shadow-md">
             Sinkronkan Semua Ticker
           </button>
         </form>
@@ -216,8 +227,8 @@
     </div>
   </div>
 
-  <footer class="text-center p-3.5 bg-zinc-200 text-zinc-500 text-[10px] font-black tracking-widest uppercase border-t border-zinc-300 shadow-sm">
-    APLIKASI SIVERA V 1.3 - © 2026 Dev by MB
+  <footer class="text-center p-4 bg-white text-zinc-400 text-[10px] font-bold tracking-widest uppercase border-t border-zinc-200/80 shadow-inner mt-8">
+    Aplikasi SIVERA V 1.3 - © 2026 Dev by MB
   </footer>
 
   <script>
@@ -259,7 +270,6 @@
       loadData();
     }
 
-    // MEMUAT DATA SECARA OTOMATIS DARI GOOGLE SHEET CONFIG
     function loadData() {
       Swal.fire({ title: 'Mengambil Data...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
       
@@ -267,14 +277,12 @@
         .then(res => res.json())
         .then(data => {
           Swal.close();
-          // Muat Section 1 (Status & Waktu)
           document.getElementById('statusPendaftaran').value = data.statusPendaftaran || "buka";
           document.getElementById('jamOperasional').value = data.jamOperasional || "";
           document.getElementById('jamBuka').value = data.jamBuka || "";
           document.getElementById('jamTutup').value = data.jamTutup || "";
           if(data.tanggalMulai) document.getElementById('tanggalMulai').value = data.tanggalMulai.split('T')[0];
           
-          // Muat Section 2 (Kalender Tanggal & Batas Kuota)
           if(data.quotaConfig) {
             document.getElementById('tgl_senin').value   = data.quotaConfig.senin.tanggal || "";
             document.getElementById('q_senin').value     = data.quotaConfig.senin.quota || "";
@@ -292,17 +300,14 @@
             document.getElementById('q_minggu').value    = data.quotaConfig.minggu.quota || "";
           }
 
-          // Muat Section 3 (Watermark Terpisah)
           document.getElementById('watermarkType').value = data.watermarkType || "text";
           document.getElementById('watermarkTextValue').value = data.watermarkTextValue || "";
           document.getElementById('watermarkImageValue').value = data.watermarkImageValue || "";
           document.getElementById('watermarkOpacityText').value = data.watermarkOpacityText || "0.5";
           document.getElementById('watermarkOpacityImage').value = data.watermarkOpacityImage || "0.1";
           
-          // Muat Section 4 (Broadcast Box)
           document.getElementById('broadcast').value = data.broadcast || "";
 
-          // Muat Section 5 (Ticker B7-H7)
           if(data.rawTickers && data.rawTickers.length >= 7) {
             document.getElementById('tk_b').value = data.rawTickers[0] || "";
             document.getElementById('tk_c').value = data.rawTickers[1] || "";
@@ -317,7 +322,6 @@
         });
     }
 
-    // FORM ACTION: SIMPAN WAKTU & STATUS OPERASIONAL
     document.getElementById('configForm').addEventListener('submit', function(e) {
       e.preventDefault();
       Swal.fire({ title: 'Menyimpan...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
@@ -340,7 +344,6 @@
       });
     });
 
-    // FORM ACTION: SIMPAN KALENDER TANGGAL & KUOTA HARIAN
     document.getElementById('quotaForm').addEventListener('submit', function(e) {
       e.preventDefault();
       Swal.fire({ title: 'Menyimpan Kuota...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
@@ -367,7 +370,6 @@
       });
     });
 
-    // FORM ACTION: SIMPAN WATERMARK
     document.getElementById('watermarkForm').addEventListener('submit', function(e) {
       e.preventDefault();
       Swal.fire({ title: 'Menyimpan Watermark...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
@@ -392,7 +394,6 @@
       });
     });
 
-    // FORM ACTION: SIMPAN BROADCAST BOX
     document.getElementById('broadcastForm').addEventListener('submit', function(e) {
       e.preventDefault();
       Swal.fire({ title: 'Mengirim...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
@@ -411,7 +412,6 @@
       });
     });
 
-    // FORM ACTION: SIMPAN TICKER TEXT BERJALAN
     document.getElementById('tickerForm').addEventListener('submit', function(e) {
       e.preventDefault();
       Swal.fire({ title: 'Menyinkronkan Ticker...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
