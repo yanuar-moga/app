@@ -34,7 +34,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      transition: background-color 0.3s smooth, color 0.3s smooth;
+      transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -326,7 +326,7 @@
     <p style="font-size:13px; color:var(--text-muted); padding: 0 40px; margin-top:6px;">Sistem Informasi Panduan dan Diagnostik Siswa</p>
     
     <div style="margin-top:40px; font-size:11px; color:var(--text-muted); line-height:1.6;">
-      <div>Versi 1.0.0 (UI 2026 Build)</div>
+      <div>Versi 2.0.0 (Unified Engine 2026 Build)</div>
       <div>Developer Engine Network</div>
       <div>info@sipanda-smp.sch.id</div>
       <div><a href="#" style="color:var(--primary); text-decoration:none;">www.sipanda-smp.sch.id</a></div>
@@ -342,7 +342,7 @@
       
       <div class="input-group">
         <label>Username / NISN</label>
-        <input type="text" id="login-username" class="form-control" placeholder="Masukkan ID atau NISN Anda">
+        <input type="text" id="login-username" class="form-control" placeholder="Masukkan USERNAME atau NISN Anda">
       </div>
       
       <div class="input-group">
@@ -371,7 +371,7 @@
       <h4>Status Akademik & Karakter</h4>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:14px;">
         <div style="background:rgba(0,59,149,0.05); padding:12px; border-radius:14px; text-align:center;">
-          <div style="font-size:12px; color:var(--text-muted)">Total Poin</div>
+          <div style="font-size:12px; color:var(--text-muted)">Total Poin Pelanggaran</div>
           <div id="ds-poin" style="font-size:24px; font-weight:700; color:var(--primary);">0</div>
         </div>
         <div style="background:rgba(0,59,149,0.05); padding:12px; border-radius:14px; text-align:center;">
@@ -434,38 +434,48 @@
       
       <form id="form-biodata-wizard" onsubmit="event.preventDefault();">
         <div class="wizard-step active" data-step="1">
-          <div class="input-group"><label>No Absen</label><input type="number" name="No Absen" class="form-control" required></div>
-          <div class="input-group"><label>Kelas</label><input type="text" name="Kelas" class="form-control" required></div>
-          <div class="input-group"><label>Nama Lengkap</label><input type="text" name="Nama Lengkap" class="form-control" required></div>
-          <div class="input-group"><label>Nama Panggilan</label><input type="text" name="Nama Panggilan" class="form-control" required></div>
+          <div class="input-group"><label>No Absen</label><input type="number" name="NO_ABSEN" class="form-control" required></div>
+          <div class="input-group"><label>Kelas</label><input type="text" name="KELAS" class="form-control" placeholder="Contoh: IX-A" required></div>
+          <div class="input-group"><label>Nama Lengkap</label><input type="text" name="NAMA_LENGKAP" class="form-control" required></div>
+          <div class="input-group"><label>Nama Panggilan</label><input type="text" name="NAMA_PANGGILAN" class="form-control" required></div>
         </div>
 
         <div class="wizard-step" data-step="2">
-          <div class="input-group"><label>Jenis Kelamin (L/P)</label><input type="text" name="Jenis Kelamin" class="form-control" required></div>
-          <div class="input-group"><label>Tempat Lahir</label><input type="text" name="Tempat Lahir" class="form-control" required></div>
-          <div class="input-group"><label>Tanggal Lahir</label><input type="date" name="Tanggal Lahir" class="form-control" required></div>
-          <div class="input-group"><label>Alamat Lengkap</label><input type="text" name="Alamat Lengkap" class="form-control" required></div>
+          <div class="input-group"><label>Jenis Kelamin (L/P)</label><input type="text" name="JENIS_KELAMIN" class="form-control" maxlength="1" placeholder="L atau P" required></div>
+          <div class="input-group"><label>Tempat Lahir</label><input type="text" name="TEMPAT_LAHIR" class="form-control" required></div>
+          <div class="input-group"><label>Tanggal Lahir</label><input type="date" name="TANGGAL_LAHIR" class="form-control" required></div>
+          <div class="input-group"><label>Alamat Lengkap</label><input type="text" name="ALAMAT_LENGKAP" class="form-control" required></div>
         </div>
 
         <div class="wizard-step" data-step="3">
-          <div class="input-group"><label>No WA Siswa</label><input type="tel" name="No WA Siswa" class="form-control" required></div>
-          <div class="input-group"><label>No WA Orang Tua</label><input type="tel" name="No WA Orang Tua" class="form-control" required></div>
-          <div class="input-group"><label>NIS</label><input type="text" name="NIS" class="form-control" required></div>
+          <div class="input-group"><label>No WA Siswa</label><input type="tel" name="NO_WA_SISWA" class="form-control" required></div>
+          <div class="input-group"><label>No WA Orang Tua</label><input type="tel" name="NO_WA_ORTU" class="form-control" required></div>
+          <div class="input-group"><label>No Induk (NIS)</label><input type="text" name="NO_INDUK" class="form-control" required></div>
           <div class="input-group"><label>NISN</label><input type="text" name="NISN" class="form-control" required></div>
         </div>
 
         <div class="wizard-step" data-step="4">
-          <div class="input-group"><label>Hobi</label><input type="text" name="Hobi" class="form-control"></div>
-          <div class="input-group"><label>Cita-cita</label><input type="text" name="Cita-cita" class="form-control"></div>
-          <div class="input-group"><label>Pelajaran Disukai</label><input type="text" name="Pelajaran Disukai" class="form-control"></div>
-          <div class="input-group"><label>Ekskul</label><input type="text" name="Ekskul" class="form-control"></div>
+          <div class="input-group"><label>Hobi</label><input type="text" name="HOBI" class="form-control"></div>
+          <div class="input-group"><label>Cita-cita</label><input type="text" name="CITA_CITA" class="form-control"></div>
+          <div class="input-group"><label>Pelajaran Disukai</label><input type="text" name="PELAJARAN_DISUKAI" class="form-control"></div>
+          <div class="input-group"><label>Pelajaran Tidak Disukai</label><input type="text" name="PELAJARAN_TIDAK_DISUKAI" class="form-control"></div>
+          <div class="input-group"><label>Ekstrakurikuler</label><input type="text" name="EKSKUL" class="form-control"></div>
+          <div class="input-group"><label>Kegiatan Memotivasi</label><input type="text" name="KEGIATAN_MEMOTIVASI" class="form-control"></div>
+          <div class="input-group"><label>Cara Belajar Idaman</label><input type="text" name="CARA_BELAJAR" class="form-control"></div>
         </div>
 
         <div class="wizard-step" data-step="5">
-          <div class="input-group"><label>Nama Ayah</label><input type="text" name="Nama Ayah" class="form-control"></div>
-          <div class="input-group"><label>Nama Ibu</label><input type="text" name="Nama Ibu" class="form-control"></div>
-          <div class="input-group"><label>Punya KIP? (YA/TIDAK)</label><input type="text" name="Punya KIP" class="form-control"></div>
-          <div class="input-group"><label>Upload Pas Foto (Max 5MB)</label><input type="file" id="file-pasfoto" class="form-control" accept="image/*"></div>
+          <div class="input-group"><label>Nama Ayah</label><input type="text" name="NAMA_AYAH" class="form-control" required></div>
+          <div class="input-group"><label>Pekerjaan Ayah</label><input type="text" name="PEKERJAAN_AYAH" class="form-control"></div>
+          <div class="input-group"><label>Pendidikan Ayah</label><input type="text" name="PENDIDIKAN_AYAH" class="form-control"></div>
+          <div class="input-group"><label>Nama Ibu</label><input type="text" name="NAMA_IBU" class="form-control" required></div>
+          <div class="input-group"><label>Pekerjaan Ibu</label><input type="text" name="PEKERJAAN_IBU" class="form-control"></div>
+          <div class="input-group"><label>Pendidikan Ibu</label><input type="text" name="PENDIDIKAN_IBU" class="form-control"></div>
+          <div class="input-group"><label>Hal sering dibicarakan dengan Ortua</label><input type="text" name="YANG_SERING_DIBICARAKAN" class="form-control"></div>
+          <div class="input-group"><label>Harapan Orang Tua terhadap Anak</label><input type="text" name="HARAPAN_ORANG_TUA" class="form-control"></div>
+          <div class="input-group"><label>Punya KIP? (YA/TIDAK)</label><input type="text" name="PUNYA_KIP" class="form-control" placeholder="YA / TIDAK"></div>
+          <div class="input-group"><label>Yatim/Piatu/Yatim Piatu/Tidak</label><input type="text" name="YATIM_PIATU" class="form-control" placeholder="Tidak / Yatim / Piatu"></div>
+          <div class="input-group"><label>Upload Pas Foto Resmi (Max 5MB)</label><input type="file" id="file-pasfoto" class="form-control" accept="image/*"></div>
           <div class="input-group"><label>Upload Kartu Keluarga (Max 5MB)</label><input type="file" id="file-kk" class="form-control" accept="image/*,application/pdf"></div>
           <div class="input-group"><label>Upload Akta Kelahiran (Max 5MB)</label><input type="file" id="file-akta" class="form-control" accept="image/*,application/pdf"></div>
         </div>
@@ -481,7 +491,7 @@
   <div id="screen-diagnostik" class="screen">
     <div class="glass-card">
       <h3>Asesmen Diagnostik Karakter</h3>
-      <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">Jawab secara jujur untuk memetakan profiling diri.</p>
+      <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">Jawab secara jujur untuk memetakan profiling tipe belajar dan kepribadian Anda.</p>
       
       <div id="diagnostik-questions-container">
         </div>
@@ -492,17 +502,17 @@
 
   <div id="screen-chat" class="screen">
     <div class="app-header-title">Layanan Curhat</div>
-    <div class="app-sub">Saluran Aman Berbagi Bersama Wali Kelas</div>
+    <div class="app-sub">Saluran Aman Berbagi Bersama Wali Kelas & Guru BK</div>
 
     <div class="glass-card" style="flex:1; display:flex; flex-direction:column; padding:16px;">
       <div id="chat-box" class="chat-container"></div>
       
       <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-        <input type="checkbox" id="chat-anonim"> <label style="font-size:12px; var(--text-muted)" for="chat-anonim">Kirim sebagai Anonim</label>
+        <input type="checkbox" id="chat-anonim"> <label style="font-size:12px; color:var(--text-muted);" for="chat-anonim">Kirim sebagai Anonim</label>
       </div>
       
       <div style="display:flex; gap:8px;">
-        <input type="text" id="chat-message-input" class="form-control" placeholder="Ketik pesan pesan Anda di sini...">
+        <input type="text" id="chat-message-input" class="form-control" placeholder="Ketik pesan Anda di sini...">
         <button class="btn" style="width:auto; padding:14px;" onclick="app.chat.send()">▶</button>
       </div>
     </div>
@@ -524,7 +534,7 @@
   </nav>
 
   <div id="teacher-modal" class="screen" style="position:fixed; top:0; left:0; right:0; bottom:0; z-index:2000; background:var(--bg-light); display:none;">
-    <div class="glass-card" style="margin:20px;">
+    <div class="glass-card" style="margin:20px; margin-top: 60px;">
       <h3 id="modal-title">Operasi Data</h3>
       <div id="modal-body-content" style="margin-top:16px;"></div>
       <div style="display:flex; gap:12px; margin-top:20px;">
@@ -536,12 +546,14 @@
 
   <script src="app.js"></script>
   <script>
+    // PWA Service Worker Registration
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(err => console.error(err));
+        navigator.serviceWorker.register('sw.js').catch(err => console.error("Service Worker gagal: ", err));
       });
     }
 
+    // Engine Switcher Dark/Light Theme 
     function toggleTheme() {
       const current = document.documentElement.getAttribute('data-theme');
       const next = current === 'dark' ? 'light' : 'dark';
@@ -549,7 +561,6 @@
       localStorage.setItem('sipanda-theme', next);
     }
     
-    // Theme Initializer Integration
     if(localStorage.getItem('sipanda-theme') === 'dark') {
       document.documentElement.setAttribute('data-theme', 'dark');
     }
