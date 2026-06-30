@@ -1,1 +1,1237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
+<title>SIPANDA</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+
+<style>
+
+/* ===========================
+WIZARD FORM
+=========================== */
+
+.wizard{
+display:none;
+animation:fadePage .5s;
+}
+
+@keyframes fadePage{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:none;
+}
+}
+
+.step-card{
+background:
+rgba(255,255,255,.05);
+backdrop-filter:blur(25px);
+border-radius:35px;
+padding:35px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.step-title{
+font-size:28px;
+font-weight:700;
+margin-bottom:10px;
+}
+
+.step-subtitle{
+opacity:.7;
+margin-bottom:30px;
+}
+
+.progress{
+height:14px;
+background:
+rgba(255,255,255,.08);
+border-radius:30px;
+overflow:hidden;
+margin-bottom:35px;
+}
+
+.progress-value{
+height:100%;
+width:14%;
+background:
+linear-gradient(
+90deg,
+var(--biru2),
+var(--kuning)
+);
+border-radius:30px;
+transition:.5s;
+}
+
+.grid2{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.grid3{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:20px;
+}
+
+.form-control{
+margin-bottom:20px;
+}
+
+.form-control label{
+display:block;
+margin-bottom:10px;
+}
+
+.form-control input,
+.form-control textarea,
+.form-control select{
+width:100%;
+padding:16px;
+border:none;
+outline:none;
+border-radius:18px;
+background:
+rgba(255,255,255,.08);
+color:white;
+}
+
+.form-control textarea{
+min-height:120px;
+resize:none;
+}
+
+.step-button{
+display:flex;
+justify-content:space-between;
+margin-top:30px;
+}
+
+.btn2{
+padding:15px 35px;
+border:none;
+border-radius:20px;
+cursor:pointer;
+background:
+linear-gradient(
+90deg,
+var(--biru2),
+var(--kuning)
+);
+color:white;
+font-weight:600;
+}
+
+.file-box{
+padding:40px;
+border:
+2px dashed
+rgba(255,255,255,.2);
+border-radius:25px;
+text-align:center;
+cursor:pointer;
+}
+
+.question{
+background:
+rgba(255,255,255,.05);
+padding:20px;
+border-radius:25px;
+margin-bottom:20px;
+}
+
+.question p{
+margin-bottom:15px;
+}
+
+.question label{
+display:block;
+padding:10px;
+cursor:pointer;
+}
+
+@media(max-width:900px){
+
+.grid2,
+.grid3{
+grid-template-columns:1fr;
+}
+
+}
+
+/* DASHBOARD */
+
+.dashboard-grid{
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+margin-bottom:30px;
+}
+
+.stat-card{
+background:
+rgba(255,255,255,.05);
+backdrop-filter:blur(20px);
+border-radius:30px;
+padding:30px;
+position:relative;
+overflow:hidden;
+transition:.3s;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.stat-card:hover{
+transform:translateY(-8px);
+}
+
+.stat-card i{
+font-size:45px;
+opacity:.2;
+position:absolute;
+right:25px;
+top:25px;
+}
+
+.stat-title{
+font-size:15px;
+opacity:.7;
+margin-bottom:15px;
+}
+
+.stat-number{
+font-size:40px;
+font-weight:700;
+}
+
+.dashboard-row{
+display:grid;
+grid-template-columns:
+2fr 1fr;
+gap:25px;
+margin-bottom:25px;
+}
+
+.panel{
+background:
+rgba(255,255,255,.05);
+backdrop-filter:blur(20px);
+border-radius:30px;
+padding:30px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.panel h2{
+margin-bottom:25px;
+}
+
+.timeline-item{
+display:flex;
+gap:15px;
+padding:15px 0;
+border-bottom:
+1px solid rgba(255,255,255,.05);
+}
+
+.timeline-icon{
+width:45px;
+height:45px;
+border-radius:50%;
+background:
+linear-gradient(
+90deg,
+var(--biru2),
+var(--kuning)
+);
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.timeline-content small{
+opacity:.6;
+}
+
+.notif-item{
+padding:15px;
+background:
+rgba(255,255,255,.04);
+border-radius:20px;
+margin-bottom:15px;
+}
+
+.quick-grid{
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(180px,1fr));
+gap:20px;
+}
+
+.quick-btn{
+background:
+rgba(255,255,255,.05);
+border-radius:25px;
+padding:25px;
+text-align:center;
+cursor:pointer;
+transition:.3s;
+}
+
+.quick-btn:hover{
+transform:translateY(-6px);
+}
+
+.quick-btn i{
+font-size:35px;
+margin-bottom:15px;
+color:var(--kuning);
+}
+
+.progress-card{
+margin-top:20px;
+}
+
+.progress-bar{
+height:14px;
+background:
+rgba(255,255,255,.08);
+border-radius:30px;
+overflow:hidden;
+}
+
+.progress-fill{
+height:100%;
+width:70%;
+background:
+linear-gradient(
+90deg,
+var(--biru2),
+var(--kuning)
+);
+border-radius:30px;
+}
+
+@media(max-width:1000px){
+
+.dashboard-row{
+grid-template-columns:1fr;
+}
+
+}
+:root{
+--biru:#003b95;
+--biru2:#0057d9;
+--kuning:#ffc107;
+--putih:#ffffff;
+--abu:#f3f4f6;
+--dark:#071326;
+--card:#0d1b34;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:
+linear-gradient(
+135deg,
+#020617,
+#071326,
+#10254d
+);
+color:white;
+overflow-x:hidden;
+}
+
+/* SPLASH */
+
+#splash{
+position:fixed;
+inset:0;
+background:
+linear-gradient(
+135deg,
+#001b44,
+#003b95
+);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:99999;
+flex-direction:column;
+animation:splashOut 1s ease 3s forwards;
+}
+
+#splash img{
+width:130px;
+animation:
+bounce 2s infinite;
+}
+
+#splash h1{
+margin-top:20px;
+font-size:40px;
+font-weight:700;
+}
+
+#splash p{
+opacity:.8;
+}
+
+@keyframes splashOut{
+to{
+opacity:0;
+visibility:hidden;
+}
+}
+
+@keyframes bounce{
+50%{
+transform:translateY(-10px);
+}
+}
+
+/* LOGIN */
+
+.login-page{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.login-card{
+width:100%;
+max-width:420px;
+background:
+rgba(255,255,255,.05);
+backdrop-filter:blur(30px);
+border:1px solid rgba(255,255,255,.1);
+border-radius:35px;
+padding:40px;
+box-shadow:
+0 20px 80px rgba(0,0,0,.5);
+animation:fadeUp .8s;
+}
+
+@keyframes fadeUp{
+from{
+transform:translateY(80px);
+opacity:0;
+}
+to{
+transform:none;
+opacity:1;
+}
+}
+
+.logo{
+text-align:center;
+margin-bottom:30px;
+}
+
+.logo img{
+width:100px;
+}
+
+.logo h1{
+margin-top:15px;
+font-size:40px;
+}
+
+.logo p{
+opacity:.7;
+}
+
+.form-group{
+margin-bottom:20px;
+}
+
+.form-group label{
+display:block;
+margin-bottom:8px;
+font-size:14px;
+}
+
+.form-group input{
+width:100%;
+padding:16px;
+border:none;
+outline:none;
+background:
+rgba(255,255,255,.08);
+border-radius:18px;
+color:white;
+font-size:15px;
+}
+
+.form-group input:focus{
+border:1px solid var(--kuning);
+}
+
+.btn{
+width:100%;
+padding:16px;
+border:none;
+border-radius:20px;
+background:
+linear-gradient(
+90deg,
+var(--biru2),
+var(--kuning)
+);
+font-size:16px;
+font-weight:600;
+color:white;
+cursor:pointer;
+transition:.3s;
+}
+
+.btn:hover{
+transform:translateY(-4px);
+}
+
+/* LAYOUT */
+
+.app{
+display:none;
+}
+
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+bottom:0;
+width:280px;
+background:
+rgba(255,255,255,.05);
+backdrop-filter:blur(30px);
+border-right:
+1px solid rgba(255,255,255,.1);
+padding:30px;
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:15px;
+margin-bottom:40px;
+}
+
+.brand img{
+width:55px;
+}
+
+.menu a{
+display:flex;
+align-items:center;
+gap:15px;
+padding:16px;
+border-radius:18px;
+text-decoration:none;
+color:white;
+margin-bottom:10px;
+transition:.3s;
+}
+
+<a href="#" onclick="showPage('chatPage')">
+<i class="fa fa-comments"></i>
+Curhat
+</a>
+
+<a href="#" onclick="showPage('profilPage')">
+<i class="fa fa-id-card"></i>
+Profil Saya
+</a>
+
+<a href="#" onclick="showPage('prestasiPage')">
+<i class="fa fa-trophy"></i>
+Prestasi
+</a>
+
+<a href="#" onclick="showPage('pelanggaranPage')">
+<i class="fa fa-triangle-exclamation"></i>
+Pelanggaran
+</a>
+
+<a href="#" onclick="showPage('catatanPage')">
+<i class="fa fa-book"></i>
+Catatan Wali
+</a>
+
+.menu a:hover{
+background:
+rgba(255,255,255,.08);
+}
+
+.main{
+margin-left:280px;
+padding:35px;
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:40px;
+}
+
+.profile{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.profile img{
+width:50px;
+height:50px;
+border-radius:50%;
+object-fit:cover;
+}
+
+.card{
+background:
+rgba(255,255,255,.05);
+backdrop-filter:blur(20px);
+border-radius:30px;
+padding:30px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.footer{
+position:fixed;
+bottom:0;
+left:280px;
+right:0;
+padding:12px;
+text-align:center;
+background:
+rgba(0,0,0,.3);
+backdrop-filter:blur(20px);
+font-size:14px;
+}
+
+.footer a{
+color:var(--kuning);
+text-decoration:none;
+}
+
+/* POPUP */
+
+.popup{
+position:fixed;
+inset:0;
+background:
+rgba(0,0,0,.6);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+.popup-box{
+width:90%;
+max-width:600px;
+background:white;
+color:#222;
+border-radius:40px;
+padding:40px;
+text-align:center;
+animation:zoom .4s;
+}
+
+@keyframes zoom{
+from{
+transform:scale(.6);
+opacity:0;
+}
+to{
+transform:none;
+opacity:1;
+}
+}
+
+.popup-box img{
+width:90px;
+}
+
+.popup-box h1{
+margin-top:20px;
+}
+
+.popup-box button{
+margin-top:30px;
+padding:15px 35px;
+border:none;
+border-radius:20px;
+background:
+linear-gradient(
+90deg,
+var(--biru2),
+var(--kuning)
+);
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+@media(max-width:900px){
+
+.sidebar{
+width:100%;
+height:auto;
+position:relative;
+}
+
+.main{
+margin-left:0;
+padding:20px;
+}
+
+.footer{
+left:0;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+
+<div id="splash">
+
+<img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
+
+<h1>SIPANDA</h1>
+<p>Sistem Informasi Panduan Siswa</p>
+
+</div>
+
+<!-- LOGIN -->
+
+<div class="login-page" id="loginPage">
+
+<div class="login-card">
+
+<div class="logo">
+<img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
+
+<h1>SIPANDA</h1>
+
+<p>Sistem Informasi Panduan Siswa</p>
+</div>
+
+<div class="form-group">
+<label>Username / NISN</label>
+<input
+id="username"
+placeholder="Masukkan Username">
+</div>
+
+<div class="form-group">
+<label>PIN</label>
+<input
+type="password"
+id="pin"
+placeholder="Masukkan PIN">
+</div>
+
+<button
+class="btn"
+onclick="login()">
+
+<i class="fa fa-right-to-bracket"></i>
+Masuk
+
+</button>
+
+</div>
+
+</div>
+
+<!-- APP -->
+
+<div class="app" id="app">
+
+<div class="sidebar">
+
+<div class="brand">
+<img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
+<div>
+<h2>SIPANDA</h2>
+<small>Panduan Siswa</small>
+</div>
+</div>
+
+<div class="menu">
+
+<a href="#">
+<i class="fa fa-home"></i>
+Dashboard
+</a>
+
+<a href="#">
+<i class="fa fa-user"></i>
+Profil Saya
+</a>
+
+<a href="#">
+<i class="fa fa-file-lines"></i>
+Asesmen Diagnostik
+</a>
+
+<a href="#">
+<i class="fa fa-comments"></i>
+Chat
+</a>
+
+<a href="#">
+<i class="fa fa-face-smile"></i>
+Mood Harian
+</a>
+
+</div>
+
+</div>
+
+<div class="main">
+
+<div class="topbar">
+
+<div>
+<h1>Halo 👋</h1>
+<p>Selamat datang di SIPANDA</p>
+</div>
+
+<div class="profile">
+<img id="fotoProfil"
+src="https://i.pravatar.cc/150?img=3">
+
+<div>
+<h3 id="namaSiswa">
+Siswa Demo
+</h3>
+
+<small id="roleUser">
+SISWA
+</small>
+</div>
+
+</div>
+
+</div>
+
+<!-- STAT CARD -->
+
+<div class="dashboard-grid">
+
+<div class="stat-card">
+<div class="stat-title">
+Poin Pelanggaran
+</div>
+<div class="stat-number">
+25
+</div>
+<i class="fa fa-triangle-exclamation"></i>
+</div>
+
+<div class="stat-card">
+<div class="stat-title">
+Prestasi
+</div>
+<div class="stat-number">
+5
+</div>
+<i class="fa fa-trophy"></i>
+</div>
+
+<div class="stat-card">
+<div class="stat-title">
+Curhat Masuk
+</div>
+<div class="stat-number">
+3
+</div>
+<i class="fa fa-comments"></i>
+</div>
+
+<div class="stat-card">
+<div class="stat-title">
+Mood Hari Ini
+</div>
+<div class="stat-number">
+😊
+</div>
+<i class="fa fa-face-smile"></i>
+</div>
+
+</div>
+
+<!-- ROW -->
+
+<div class="dashboard-row">
+
+<div class="panel">
+
+<h2>
+Aktivitas Terbaru
+</h2>
+
+<div class="timeline-item">
+
+<div class="timeline-icon">
+<i class="fa fa-user"></i>
+</div>
+
+<div class="timeline-content">
+<div>
+Mengisi biodata siswa.
+</div>
+
+<small>
+Hari ini, 08:10
+</small>
+</div>
+
+</div>
+
+<div class="timeline-item">
+
+<div class="timeline-icon">
+<i class="fa fa-file-lines"></i>
+</div>
+
+<div class="timeline-content">
+<div>
+Mengisi asesmen diagnostik.
+</div>
+
+<small>
+Hari ini, 08:20
+</small>
+</div>
+
+</div>
+
+<div class="timeline-item">
+
+<div class="timeline-icon">
+<i class="fa fa-comment"></i>
+</div>
+
+<div class="timeline-content">
+<div>
+Mengirim curhat kepada wali kelas.
+</div>
+
+<small>
+Hari ini, 09:00
+</small>
+</div>
+
+</div>
+
+<div class="timeline-item">
+
+<div class="timeline-icon">
+<i class="fa fa-trophy"></i>
+</div>
+
+<div class="timeline-content">
+<div>
+Prestasi baru ditambahkan.
+</div>
+
+<small>
+Kemarin
+</small>
+</div>
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<h2>
+Notifikasi
+</h2>
+
+<div class="notif-item">
+📢 Selamat datang di SIPANDA.
+</div>
+
+<div class="notif-item">
+📢 Profil siswa telah berhasil dibuat.
+</div>
+
+<div class="notif-item">
+📢 Anda memiliki 1 pesan baru.
+</div>
+
+<div class="progress-card">
+
+<h3>
+Progress Pengisian Data
+</h3>
+
+<br>
+
+<div class="progress-bar">
+
+<div class="progress-fill">
+</div>
+
+</div>
+
+<br>
+
+<div>
+70% selesai
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- QUICK MENU -->
+
+<div class="panel">
+
+<h2>
+Menu Cepat
+</h2>
+
+<div class="quick-grid">
+
+<div class="quick-btn">
+
+<i class="fa fa-user"></i>
+
+<div>
+Profil Saya
+</div>
+
+</div>
+
+<div class="quick-btn">
+
+<i class="fa fa-file-lines"></i>
+
+<div>
+Asesmen
+</div>
+
+</div>
+
+<div class="quick-btn">
+
+<i class="fa fa-comments"></i>
+
+<div>
+Curhat
+</div>
+
+</div>
+
+<div class="quick-btn">
+
+<i class="fa fa-face-smile"></i>
+
+<div>
+Mood
+</div>
+
+</div>
+
+<div class="quick-btn">
+
+<i class="fa fa-trophy"></i>
+
+<div>
+Prestasi
+</div>
+
+</div>
+
+<div class="quick-btn">
+
+<i class="fa fa-triangle-exclamation"></i>
+
+<div>
+Pelanggaran
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="topbar">
+
+<div>
+<h1>Halo 👋</h1>
+<p>Selamat datang di SIPANDA</p>
+</div>
+
+<div class="profile">
+<img src="https://i.pravatar.cc/150?img=3">
+<div>
+<h3>Siswa Demo</h3>
+<small>SISWA</small>
+</div>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Dashboard SIPANDA</h2>
+
+<p style="margin-top:15px;opacity:.8">
+
+Selamat datang di Sistem Informasi Panduan Siswa.
+
+Silakan pilih menu di sebelah kiri.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+<img
+src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png"
+width="20">
+
+SIPANDA v1.0 |
+<a href="#"
+onclick="openInfo()">
+
+Informasi Aplikasi
+
+</a>
+
+</div>
+
+</div>
+
+<!-- POPUP -->
+
+<div class="popup" id="popup">
+
+<div class="popup-box">
+
+<img
+src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
+
+<h1>SIPANDA</h1>
+
+<p style="margin-top:10px">
+Versi 1.0.0
+</p>
+
+<hr style="margin:25px 0">
+
+<h3>Developer</h3>
+<p>Yanuar Moga</p>
+
+<br>
+
+<h3>Kontak</h3>
+
+<p>
+WhatsApp :
++62xxxxxxxxxx
+</p>
+
+<p>
+Email :
+youremail@gmail.com
+</p>
+
+<p>
+Website :
+yanuar-moga.github.io
+</p>
+
+<button
+onclick="closeInfo()">
+
+Tutup
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+function login(){
+
+document
+.getElementById("loginPage")
+.style.display="none";
+
+document
+.getElementById("app")
+.style.display="block";
+
+}
+
+function openInfo(){
+
+document
+.getElementById("popup")
+.style.display="flex";
+
+}
+
+function closeInfo(){
+
+document
+.getElementById("popup")
+.style.display="none";
+
+}
+
+window.onload=()=>{
+
+setTimeout(()=>{
+openInfo();
+},3500);
+
+};
+
+</script>
+
+</body>
+</html>
