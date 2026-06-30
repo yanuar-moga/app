@@ -5,332 +5,25 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>SIPANDA</title>
+<title>SIPANDA - Sistem Informasi Panduan Siswa</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#003b95">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+<link rel="icon"
+href="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+rel="stylesheet">
 
 <style>
 
-/* ===========================
-WIZARD FORM
-=========================== */
-
-.wizard{
-display:none;
-animation:fadePage .5s;
-}
-
-@keyframes fadePage{
-from{
-opacity:0;
-transform:translateY(20px);
-}
-to{
-opacity:1;
-transform:none;
-}
-}
-
-.step-card{
-background:
-rgba(255,255,255,.05);
-backdrop-filter:blur(25px);
-border-radius:35px;
-padding:35px;
-border:1px solid rgba(255,255,255,.08);
-}
-
-.step-title{
-font-size:28px;
-font-weight:700;
-margin-bottom:10px;
-}
-
-.step-subtitle{
-opacity:.7;
-margin-bottom:30px;
-}
-
-.progress{
-height:14px;
-background:
-rgba(255,255,255,.08);
-border-radius:30px;
-overflow:hidden;
-margin-bottom:35px;
-}
-
-.progress-value{
-height:100%;
-width:14%;
-background:
-linear-gradient(
-90deg,
-var(--biru2),
-var(--kuning)
-);
-border-radius:30px;
-transition:.5s;
-}
-
-.grid2{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
-}
-
-.grid3{
-display:grid;
-grid-template-columns:1fr 1fr 1fr;
-gap:20px;
-}
-
-.form-control{
-margin-bottom:20px;
-}
-
-.form-control label{
-display:block;
-margin-bottom:10px;
-}
-
-.form-control input,
-.form-control textarea,
-.form-control select{
-width:100%;
-padding:16px;
-border:none;
-outline:none;
-border-radius:18px;
-background:
-rgba(255,255,255,.08);
-color:white;
-}
-
-.form-control textarea{
-min-height:120px;
-resize:none;
-}
-
-.step-button{
-display:flex;
-justify-content:space-between;
-margin-top:30px;
-}
-
-.btn2{
-padding:15px 35px;
-border:none;
-border-radius:20px;
-cursor:pointer;
-background:
-linear-gradient(
-90deg,
-var(--biru2),
-var(--kuning)
-);
-color:white;
-font-weight:600;
-}
-
-.file-box{
-padding:40px;
-border:
-2px dashed
-rgba(255,255,255,.2);
-border-radius:25px;
-text-align:center;
-cursor:pointer;
-}
-
-.question{
-background:
-rgba(255,255,255,.05);
-padding:20px;
-border-radius:25px;
-margin-bottom:20px;
-}
-
-.question p{
-margin-bottom:15px;
-}
-
-.question label{
-display:block;
-padding:10px;
-cursor:pointer;
-}
-
-@media(max-width:900px){
-
-.grid2,
-.grid3{
-grid-template-columns:1fr;
-}
-
-}
-
-/* DASHBOARD */
-
-.dashboard-grid{
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-margin-bottom:30px;
-}
-
-.stat-card{
-background:
-rgba(255,255,255,.05);
-backdrop-filter:blur(20px);
-border-radius:30px;
-padding:30px;
-position:relative;
-overflow:hidden;
-transition:.3s;
-border:1px solid rgba(255,255,255,.08);
-}
-
-.stat-card:hover{
-transform:translateY(-8px);
-}
-
-.stat-card i{
-font-size:45px;
-opacity:.2;
-position:absolute;
-right:25px;
-top:25px;
-}
-
-.stat-title{
-font-size:15px;
-opacity:.7;
-margin-bottom:15px;
-}
-
-.stat-number{
-font-size:40px;
-font-weight:700;
-}
-
-.dashboard-row{
-display:grid;
-grid-template-columns:
-2fr 1fr;
-gap:25px;
-margin-bottom:25px;
-}
-
-.panel{
-background:
-rgba(255,255,255,.05);
-backdrop-filter:blur(20px);
-border-radius:30px;
-padding:30px;
-border:1px solid rgba(255,255,255,.08);
-}
-
-.panel h2{
-margin-bottom:25px;
-}
-
-.timeline-item{
-display:flex;
-gap:15px;
-padding:15px 0;
-border-bottom:
-1px solid rgba(255,255,255,.05);
-}
-
-.timeline-icon{
-width:45px;
-height:45px;
-border-radius:50%;
-background:
-linear-gradient(
-90deg,
-var(--biru2),
-var(--kuning)
-);
-display:flex;
-justify-content:center;
-align-items:center;
-}
-
-.timeline-content small{
-opacity:.6;
-}
-
-.notif-item{
-padding:15px;
-background:
-rgba(255,255,255,.04);
-border-radius:20px;
-margin-bottom:15px;
-}
-
-.quick-grid{
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(180px,1fr));
-gap:20px;
-}
-
-.quick-btn{
-background:
-rgba(255,255,255,.05);
-border-radius:25px;
-padding:25px;
-text-align:center;
-cursor:pointer;
-transition:.3s;
-}
-
-.quick-btn:hover{
-transform:translateY(-6px);
-}
-
-.quick-btn i{
-font-size:35px;
-margin-bottom:15px;
-color:var(--kuning);
-}
-
-.progress-card{
-margin-top:20px;
-}
-
-.progress-bar{
-height:14px;
-background:
-rgba(255,255,255,.08);
-border-radius:30px;
-overflow:hidden;
-}
-
-.progress-fill{
-height:100%;
-width:70%;
-background:
-linear-gradient(
-90deg,
-var(--biru2),
-var(--kuning)
-);
-border-radius:30px;
-}
-
-@media(max-width:1000px){
-
-.dashboard-row{
-grid-template-columns:1fr;
-}
-
-}
 :root{
 --biru:#003b95;
 --biru2:#0057d9;
@@ -339,6 +32,10 @@ grid-template-columns:1fr;
 --abu:#f3f4f6;
 --dark:#071326;
 --card:#0d1b34;
+--danger:#ef4444;
+--success:#10b981;
+--shadow:
+0 20px 60px rgba(0,0,0,.35);
 }
 
 *{
@@ -346,6 +43,10 @@ margin:0;
 padding:0;
 box-sizing:border-box;
 font-family:'Inter',sans-serif;
+}
+
+html{
+scroll-behavior:smooth;
 }
 
 body{
@@ -358,6 +59,19 @@ linear-gradient(
 );
 color:white;
 overflow-x:hidden;
+min-height:100vh;
+}
+
+/* SCROLL */
+
+::-webkit-scrollbar{
+width:10px;
+}
+
+::-webkit-scrollbar-thumb{
+background:
+rgba(255,255,255,.2);
+border-radius:20px;
 }
 
 /* SPLASH */
@@ -365,100 +79,99 @@ overflow-x:hidden;
 #splash{
 position:fixed;
 inset:0;
+z-index:999999;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
 background:
 linear-gradient(
 135deg,
 #001b44,
 #003b95
 );
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:99999;
-flex-direction:column;
-animation:splashOut 1s ease 3s forwards;
 }
 
 #splash img{
-width:130px;
+width:140px;
 animation:
-bounce 2s infinite;
+floating 2s infinite;
 }
 
 #splash h1{
-margin-top:20px;
-font-size:40px;
-font-weight:700;
+font-size:45px;
+margin-top:25px;
+font-weight:800;
 }
 
 #splash p{
 opacity:.8;
+margin-top:10px;
 }
 
-@keyframes splashOut{
-to{
-opacity:0;
-visibility:hidden;
-}
-}
-
-@keyframes bounce{
+@keyframes floating{
 50%{
-transform:translateY(-10px);
+transform:
+translateY(-12px);
 }
 }
 
 /* LOGIN */
 
 .login-page{
-height:100vh;
+min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-padding:20px;
+padding:25px;
 }
 
 .login-card{
 width:100%;
-max-width:420px;
+max-width:450px;
 background:
 rgba(255,255,255,.05);
 backdrop-filter:blur(30px);
-border:1px solid rgba(255,255,255,.1);
-border-radius:35px;
-padding:40px;
+border:
+1px solid rgba(255,255,255,.08);
+border-radius:40px;
+padding:45px;
 box-shadow:
-0 20px 80px rgba(0,0,0,.5);
-animation:fadeUp .8s;
+var(--shadow);
+animation:
+fadeUp .7s;
 }
 
 @keyframes fadeUp{
 from{
-transform:translateY(80px);
 opacity:0;
+transform:
+translateY(80px);
 }
 to{
-transform:none;
 opacity:1;
+transform:none;
 }
 }
 
 .logo{
 text-align:center;
-margin-bottom:30px;
+margin-bottom:35px;
 }
 
 .logo img{
-width:100px;
+width:110px;
 }
 
 .logo h1{
-margin-top:15px;
-font-size:40px;
+margin-top:20px;
+font-size:42px;
+font-weight:800;
 }
 
 .logo p{
 opacity:.7;
+margin-top:10px;
 }
 
 .form-group{
@@ -467,72 +180,77 @@ margin-bottom:20px;
 
 .form-group label{
 display:block;
-margin-bottom:8px;
+margin-bottom:10px;
 font-size:14px;
 }
 
 .form-group input{
 width:100%;
-padding:16px;
+padding:18px;
 border:none;
 outline:none;
+border-radius:20px;
 background:
 rgba(255,255,255,.08);
-border-radius:18px;
 color:white;
 font-size:15px;
 }
 
 .form-group input:focus{
-border:1px solid var(--kuning);
+border:
+1px solid var(--kuning);
 }
 
 .btn{
 width:100%;
-padding:16px;
+padding:18px;
 border:none;
-border-radius:20px;
+border-radius:22px;
+cursor:pointer;
+font-size:16px;
+font-weight:700;
 background:
 linear-gradient(
 90deg,
 var(--biru2),
 var(--kuning)
 );
-font-size:16px;
-font-weight:600;
 color:white;
-cursor:pointer;
 transition:.3s;
 }
 
 .btn:hover{
-transform:translateY(-4px);
+transform:
+translateY(-5px);
 }
 
-/* LAYOUT */
+/* APP */
 
 .app{
 display:none;
 }
 
+/* SIDEBAR */
+
 .sidebar{
 position:fixed;
-left:0;
 top:0;
+left:0;
 bottom:0;
 width:280px;
 background:
 rgba(255,255,255,.05);
 backdrop-filter:blur(30px);
 border-right:
-1px solid rgba(255,255,255,.1);
+1px solid rgba(255,255,255,.08);
 padding:30px;
+overflow:auto;
 }
 
 .brand{
 display:flex;
-align-items:center;
 gap:15px;
+align-items:center;
 margin-bottom:40px;
 }
 
@@ -540,58 +258,48 @@ margin-bottom:40px;
 width:55px;
 }
 
+.brand h2{
+font-size:25px;
+}
+
+.brand small{
+opacity:.7;
+}
+
 .menu a{
 display:flex;
 align-items:center;
 gap:15px;
 padding:16px;
-border-radius:18px;
+margin-bottom:10px;
+border-radius:20px;
 text-decoration:none;
 color:white;
-margin-bottom:10px;
 transition:.3s;
 }
-
-<a href="#" onclick="showPage('chatPage')">
-<i class="fa fa-comments"></i>
-Curhat
-</a>
-
-<a href="#" onclick="showPage('profilPage')">
-<i class="fa fa-id-card"></i>
-Profil Saya
-</a>
-
-<a href="#" onclick="showPage('prestasiPage')">
-<i class="fa fa-trophy"></i>
-Prestasi
-</a>
-
-<a href="#" onclick="showPage('pelanggaranPage')">
-<i class="fa fa-triangle-exclamation"></i>
-Pelanggaran
-</a>
-
-<a href="#" onclick="showPage('catatanPage')">
-<i class="fa fa-book"></i>
-Catatan Wali
-</a>
 
 .menu a:hover{
 background:
 rgba(255,255,255,.08);
 }
 
+.menu i{
+width:25px;
+}
+
+/* MAIN */
+
 .main{
 margin-left:280px;
 padding:35px;
+min-height:100vh;
 }
 
 .topbar{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:40px;
+margin-bottom:35px;
 }
 
 .profile{
@@ -601,8 +309,8 @@ gap:15px;
 }
 
 .profile img{
-width:50px;
-height:50px;
+width:55px;
+height:55px;
 border-radius:50%;
 object-fit:cover;
 }
@@ -610,18 +318,22 @@ object-fit:cover;
 .card{
 background:
 rgba(255,255,255,.05);
-backdrop-filter:blur(20px);
-border-radius:30px;
+backdrop-filter:blur(25px);
+border:
+1px solid rgba(255,255,255,.08);
+border-radius:35px;
 padding:30px;
-border:1px solid rgba(255,255,255,.08);
+margin-bottom:25px;
 }
+
+/* FOOTER */
 
 .footer{
 position:fixed;
-bottom:0;
 left:280px;
 right:0;
-padding:12px;
+bottom:0;
+padding:14px;
 text-align:center;
 background:
 rgba(0,0,0,.3);
@@ -640,27 +352,29 @@ text-decoration:none;
 position:fixed;
 inset:0;
 background:
-rgba(0,0,0,.6);
+rgba(0,0,0,.65);
 display:none;
 justify-content:center;
 align-items:center;
-z-index:9999;
+z-index:99999;
+padding:20px;
 }
 
 .popup-box{
-width:90%;
-max-width:600px;
+width:100%;
+max-width:550px;
 background:white;
 color:#222;
-border-radius:40px;
 padding:40px;
+border-radius:40px;
 text-align:center;
-animation:zoom .4s;
+animation:
+popupAnim .35s;
 }
 
-@keyframes zoom{
+@keyframes popupAnim{
 from{
-transform:scale(.6);
+transform:scale(.7);
 opacity:0;
 }
 to{
@@ -671,10 +385,7 @@ opacity:1;
 
 .popup-box img{
 width:90px;
-}
-
-.popup-box h1{
-margin-top:20px;
+margin-bottom:20px;
 }
 
 .popup-box button{
@@ -689,16 +400,18 @@ var(--biru2),
 var(--kuning)
 );
 color:white;
-font-size:16px;
+font-size:15px;
 cursor:pointer;
 }
+
+/* RESPONSIVE */
 
 @media(max-width:900px){
 
 .sidebar{
+position:relative;
 width:100%;
 height:auto;
-position:relative;
 }
 
 .main{
@@ -710,9 +423,16 @@ padding:20px;
 left:0;
 }
 
+.topbar{
+flex-direction:column;
+align-items:flex-start;
+gap:20px;
+}
+
 }
 
 </style>
+
 </head>
 <body>
 
@@ -720,40 +440,61 @@ left:0;
 
 <div id="splash">
 
-<img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
+<img
+src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
 
 <h1>SIPANDA</h1>
-<p>Sistem Informasi Panduan Siswa</p>
+
+<p>
+Sistem Informasi Panduan Siswa
+</p>
 
 </div>
 
 <!-- LOGIN -->
 
-<div class="login-page" id="loginPage">
+<div
+class="login-page"
+id="loginPage">
 
 <div class="login-card">
 
 <div class="logo">
-<img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
+
+<img
+src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
 
 <h1>SIPANDA</h1>
 
-<p>Sistem Informasi Panduan Siswa</p>
+<p>
+Sistem Informasi Panduan Siswa
+</p>
+
 </div>
 
 <div class="form-group">
-<label>Username / NISN</label>
+
+<label>
+Username / NISN
+</label>
+
 <input
 id="username"
 placeholder="Masukkan Username">
+
 </div>
 
 <div class="form-group">
-<label>PIN</label>
+
+<label>
+PIN
+</label>
+
 <input
 type="password"
 id="pin"
 placeholder="Masukkan PIN">
+
 </div>
 
 <button
@@ -771,16 +512,29 @@ Masuk
 
 <!-- APP -->
 
-<div class="app" id="app">
+<div
+class="app"
+id="app">
+
+<!-- SIDEBAR -->
 
 <div class="sidebar">
 
 <div class="brand">
-<img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
+
+<img
+src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
+
 <div>
+
 <h2>SIPANDA</h2>
-<small>Panduan Siswa</small>
+
+<small>
+Panduan Siswa
+</small>
+
 </div>
+
 </div>
 
 <div class="menu">
@@ -797,12 +551,12 @@ Profil Saya
 
 <a href="#">
 <i class="fa fa-file-lines"></i>
-Asesmen Diagnostik
+Biodata & Asesmen
 </a>
 
 <a href="#">
 <i class="fa fa-comments"></i>
-Chat
+Curhat
 </a>
 
 <a href="#">
@@ -810,24 +564,51 @@ Chat
 Mood Harian
 </a>
 
+<a href="#">
+<i class="fa fa-trophy"></i>
+Prestasi
+</a>
+
+<a href="#">
+<i class="fa fa-triangle-exclamation"></i>
+Pelanggaran
+</a>
+
+<a href="#">
+<i class="fa fa-book"></i>
+Catatan Wali
+</a>
+
 </div>
 
 </div>
+
+<!-- MAIN -->
 
 <div class="main">
 
 <div class="topbar">
 
 <div>
-<h1>Halo 👋</h1>
-<p>Selamat datang di SIPANDA</p>
+
+<h1>
+Halo 👋
+</h1>
+
+<p>
+Selamat datang di SIPANDA
+</p>
+
 </div>
 
 <div class="profile">
-<img id="fotoProfil"
-src="https://i.pravatar.cc/150?img=3">
+
+<img
+src="https://i.pravatar.cc/150?img=3"
+id="fotoProfil">
 
 <div>
+
 <h3 id="namaSiswa">
 Siswa Demo
 </h3>
@@ -835,190 +616,77 @@ Siswa Demo
 <small id="roleUser">
 SISWA
 </small>
-</div>
 
 </div>
 
 </div>
 
-<!-- STAT CARD -->
+</div>
+<!-- DASHBOARD -->
+
+<div id="dashboardPage">
 
 <div class="dashboard-grid">
 
-<div class="stat-card">
-<div class="stat-title">
-Poin Pelanggaran
-</div>
-<div class="stat-number">
-25
-</div>
-<i class="fa fa-triangle-exclamation"></i>
+<div class="card stat-card">
+<h3>Poin Pelanggaran</h3>
+<h1 id="totalPoin">0</h1>
+<p>Status Siswa</p>
 </div>
 
-<div class="stat-card">
-<div class="stat-title">
-Prestasi
-</div>
-<div class="stat-number">
-5
-</div>
-<i class="fa fa-trophy"></i>
+<div class="card stat-card">
+<h3>Prestasi</h3>
+<h1 id="totalPrestasi">0</h1>
+<p>Data Prestasi</p>
 </div>
 
-<div class="stat-card">
-<div class="stat-title">
-Curhat Masuk
-</div>
-<div class="stat-number">
-3
-</div>
-<i class="fa fa-comments"></i>
+<div class="card stat-card">
+<h3>Curhat</h3>
+<h1 id="totalChat">0</h1>
+<p>Pesan Masuk</p>
 </div>
 
-<div class="stat-card">
-<div class="stat-title">
-Mood Hari Ini
-</div>
-<div class="stat-number">
-😊
-</div>
-<i class="fa fa-face-smile"></i>
+<div class="card stat-card">
+<h3>Mood Hari Ini</h3>
+<h1 id="moodHariIni">😊</h1>
+<p>Perasaan Siswa</p>
 </div>
 
 </div>
 
-<!-- ROW -->
-
-<div class="dashboard-row">
-
-<div class="panel">
+<div class="card">
 
 <h2>
 Aktivitas Terbaru
 </h2>
 
-<div class="timeline-item">
-
-<div class="timeline-icon">
-<i class="fa fa-user"></i>
-</div>
-
-<div class="timeline-content">
-<div>
-Mengisi biodata siswa.
-</div>
-
-<small>
-Hari ini, 08:10
-</small>
-</div>
-
-</div>
+<div id="timeline">
 
 <div class="timeline-item">
-
-<div class="timeline-icon">
-<i class="fa fa-file-lines"></i>
-</div>
-
-<div class="timeline-content">
-<div>
-Mengisi asesmen diagnostik.
-</div>
-
-<small>
-Hari ini, 08:20
-</small>
-</div>
-
-</div>
-
-<div class="timeline-item">
-
-<div class="timeline-icon">
-<i class="fa fa-comment"></i>
-</div>
-
-<div class="timeline-content">
-<div>
-Mengirim curhat kepada wali kelas.
-</div>
-
-<small>
-Hari ini, 09:00
-</small>
-</div>
-
-</div>
-
-<div class="timeline-item">
-
-<div class="timeline-icon">
-<i class="fa fa-trophy"></i>
-</div>
-
-<div class="timeline-content">
-<div>
-Prestasi baru ditambahkan.
-</div>
-
-<small>
-Kemarin
-</small>
+📌 Selamat datang di SIPANDA.
 </div>
 
 </div>
 
 </div>
 
-<div class="panel">
+<div class="card">
 
 <h2>
 Notifikasi
 </h2>
 
-<div class="notif-item">
-📢 Selamat datang di SIPANDA.
-</div>
+<div id="notifikasi">
 
-<div class="notif-item">
-📢 Profil siswa telah berhasil dibuat.
-</div>
-
-<div class="notif-item">
-📢 Anda memiliki 1 pesan baru.
-</div>
-
-<div class="progress-card">
-
-<h3>
-Progress Pengisian Data
-</h3>
-
-<br>
-
-<div class="progress-bar">
-
-<div class="progress-fill">
-</div>
-
-</div>
-
-<br>
-
-<div>
-70% selesai
+<div class="timeline-item">
+Belum ada notifikasi.
 </div>
 
 </div>
 
 </div>
 
-</div>
-
-<!-- QUICK MENU -->
-
-<div class="panel">
+<div class="card">
 
 <h2>
 Menu Cepat
@@ -1026,63 +694,25 @@ Menu Cepat
 
 <div class="quick-grid">
 
-<div class="quick-btn">
-
-<i class="fa fa-user"></i>
-
-<div>
+<button class="btn"
+onclick="showPage('profilPage')">
 Profil Saya
-</div>
+</button>
 
-</div>
+<button class="btn"
+onclick="showPage('biodataPage')">
+Biodata
+</button>
 
-<div class="quick-btn">
-
-<i class="fa fa-file-lines"></i>
-
-<div>
-Asesmen
-</div>
-
-</div>
-
-<div class="quick-btn">
-
-<i class="fa fa-comments"></i>
-
-<div>
+<button class="btn"
+onclick="showPage('chatPage')">
 Curhat
-</div>
+</button>
 
-</div>
-
-<div class="quick-btn">
-
-<i class="fa fa-face-smile"></i>
-
-<div>
-Mood
-</div>
-
-</div>
-
-<div class="quick-btn">
-
-<i class="fa fa-trophy"></i>
-
-<div>
+<button class="btn"
+onclick="showPage('prestasiPage')">
 Prestasi
-</div>
-
-</div>
-
-<div class="quick-btn">
-
-<i class="fa fa-triangle-exclamation"></i>
-
-<div>
-Pelanggaran
-</div>
+</button>
 
 </div>
 
@@ -1090,61 +720,1276 @@ Pelanggaran
 
 </div>
 
-</div>
+<!-- PROFIL -->
 
-<div class="topbar">
-
-<div>
-<h1>Halo 👋</h1>
-<p>Selamat datang di SIPANDA</p>
-</div>
-
-<div class="profile">
-<img src="https://i.pravatar.cc/150?img=3">
-<div>
-<h3>Siswa Demo</h3>
-<small>SISWA</small>
-</div>
-</div>
-
-</div>
+<div
+id="profilPage"
+style="display:none">
 
 <div class="card">
 
-<h2>Dashboard SIPANDA</h2>
+<div
+style="
+display:flex;
+gap:30px;
+align-items:center;
+flex-wrap:wrap;
+">
 
-<p style="margin-top:15px;opacity:.8">
+<img
+id="fotoSiswa"
+src="https://i.pravatar.cc/200"
+style="
+width:150px;
+height:150px;
+border-radius:50%;
+object-fit:cover;
+">
 
-Selamat datang di Sistem Informasi Panduan Siswa.
+<div>
 
-Silakan pilih menu di sebelah kiri.
+<h1 id="profilNama">
+Nama Siswa
+</h1>
 
+<p id="profilKelas">
+Kelas
+</p>
+
+<br>
+
+<p>
+NISN :
+<span id="profilNisn">
+-
+</span>
+</p>
+
+<p>
+No WA :
+<span id="profilWa">
+-
+</span>
+</p>
+
+<p>
+Jenis Kelamin :
+<span id="profilJk">
+-
+</span>
 </p>
 
 </div>
 
 </div>
 
+</div>
+
+<div class="card">
+
+<h2>
+Kesimpulan Diagnostik
+</h2>
+
+<br>
+
+<p>
+Gaya Belajar :
+<b id="tipeBelajar">
+-
+</b>
+</p>
+
+<br>
+
+<p>
+Kepribadian :
+<b id="tipeKepribadian">
+-
+</b>
+</p>
+
+<br>
+
+<p id="kesimpulanSiswa">
+Belum ada data.
+</p>
+
+</div>
+
+</div>
+
+<!-- BIODATA -->
+
+<div
+id="biodataPage"
+style="display:none">
+
+<div class="card">
+
+<h2>
+Biodata Siswa
+</h2>
+
+<br>
+
+<form id="biodataForm">
+
+<div class="form-group">
+<label>Nama Lengkap</label>
+<input id="namaLengkap">
+</div>
+
+<div class="form-group">
+<label>Nama Panggilan</label>
+<input id="namaPanggilan">
+</div>
+
+<div class="form-group">
+<label>NISN</label>
+<input id="nisn">
+</div>
+
+<div class="form-group">
+<label>No WA Siswa</label>
+<input id="waSiswa">
+</div>
+
+<div class="form-group">
+<label>No WA Orang Tua</label>
+<input id="waOrtu">
+</div>
+
+<div class="form-group">
+<label>Hobi</label>
+<input id="hobi">
+</div>
+
+<div class="form-group">
+<label>Cita-cita</label>
+<input id="citaCita">
+</div>
+
+<div class="form-group">
+<label>Alamat</label>
+<textarea
+id="alamat"
+style="
+width:100%;
+height:120px;
+border:none;
+padding:20px;
+border-radius:20px;
+background:rgba(255,255,255,.08);
+color:white;
+"></textarea>
+</div>
+
+<br>
+
+<button
+type="button"
+class="btn"
+onclick="simpanBiodata()">
+
+Simpan Biodata
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+
+const GAS_URL =
+"https://script.google.com/macros/s/AKfycbx7Vbq4RhCL8qpOksha_s4CloWSfJwyHPcAHF0bkic5YzCy3tKGpSXTfvwUy83ecjpD/exec";
+
+let currentUser = null;
+
+// =======================
+// LOGIN
+// =======================
+
+async function login(){
+
+let username =
+document.getElementById(
+'username'
+).value;
+
+let pin =
+document.getElementById(
+'pin'
+).value;
+
+if(!username || !pin){
+showPopup(
+"⚠️",
+"Login Gagal",
+"Username dan PIN wajib diisi."
+);
+return;
+}
+
+try{
+
+let res =
+await fetch(
+GAS_URL,
+{
+method:'POST',
+body:JSON.stringify({
+action:'login',
+username,
+pin
+})
+}
+);
+
+let data =
+await res.json();
+
+if(data.success){
+
+currentUser =
+data.user;
+
+localStorage.setItem(
+'sipandaUser',
+JSON.stringify(data.user)
+);
+
+document.getElementById(
+'loginPage'
+).style.display='none';
+
+document.getElementById(
+'app'
+).style.display='block';
+
+loadDashboard();
+
+}
+else{
+
+showPopup(
+"❌",
+"Login Gagal",
+data.message
+);
+
+}
+
+}
+catch(e){
+
+showPopup(
+"❌",
+"Server Error",
+e.message
+);
+
+}
+
+}
+
+// =======================
+// DASHBOARD
+// =======================
+
+async function loadDashboard(){
+
+if(!currentUser) return;
+
+document.getElementById(
+'namaSiswa'
+).innerHTML =
+currentUser.nama;
+
+document.getElementById(
+'roleUser'
+).innerHTML =
+currentUser.role;
+
+if(currentUser.foto){
+
+document.getElementById(
+'fotoProfil'
+).src =
+currentUser.foto;
+
+}
+
+}
+
+// =======================
+// GANTI HALAMAN
+// =======================
+
+function showPage(id){
+
+document.getElementById(
+'dashboardPage'
+).style.display='none';
+
+document.getElementById(
+'profilPage'
+).style.display='none';
+
+document.getElementById(
+'biodataPage'
+).style.display='none';
+
+document.getElementById(
+'chatPage'
+).style.display='none';
+
+document.getElementById(
+'prestasiPage'
+).style.display='none';
+
+document.getElementById(
+'pelanggaranPage'
+).style.display='none';
+
+document.getElementById(
+'catatanPage'
+).style.display='none';
+
+document.getElementById(id)
+.style.display='block';
+
+}
+
+// =======================
+// SIMPAN BIODATA
+// =======================
+
+async function simpanBiodata(){
+
+let data = {
+
+action:'registerStudent',
+
+namaLengkap:
+document.getElementById(
+'namaLengkap'
+).value,
+
+namaPanggilan:
+document.getElementById(
+'namaPanggilan'
+).value,
+
+nisn:
+document.getElementById(
+'nisn'
+).value,
+
+noWaSiswa:
+document.getElementById(
+'waSiswa'
+).value,
+
+noWaOrtu:
+document.getElementById(
+'waOrtu'
+).value,
+
+hobi:
+document.getElementById(
+'hobi'
+).value,
+
+citaCita:
+document.getElementById(
+'citaCita'
+).value,
+
+alamatLengkap:
+document.getElementById(
+'alamat'
+).value
+
+};
+
+let res =
+await fetch(
+GAS_URL,
+{
+method:'POST',
+body:JSON.stringify(data)
+}
+);
+
+let hasil =
+await res.json();
+
+if(hasil.success){
+
+showPopup(
+"✅",
+"Berhasil",
+"Data berhasil disimpan."
+);
+
+}
+else{
+
+showPopup(
+"❌",
+"Gagal",
+hasil.message
+);
+
+}
+
+}
+<!-- ===================================== -->
+<!-- BIODATA & ASESMEN WIZARD -->
+<!-- ===================================== -->
+
+<div id="wizardPage" style="display:none">
+
+<div class="card">
+
+<h2>Biodata dan Asesmen Diagnostik</h2>
+<p>Isi data secara bertahap agar lebih nyaman.</p>
+
+<br>
+
+<div
+style="
+width:100%;
+height:12px;
+background:rgba(255,255,255,.08);
+border-radius:20px;
+overflow:hidden;
+">
+
+<div
+id="wizardProgress"
+style="
+width:14%;
+height:100%;
+background:
+linear-gradient(
+90deg,
+#0057d9,
+#ffc107
+);
+transition:.4s;
+">
+</div>
+
+</div>
+
+<br>
+
+<!-- STEP 1 -->
+
+<div class="wizard-step" id="step1">
+
+<h3>Data Diri</h3>
+
+<div class="form-group">
+<label>Nama Lengkap</label>
+<input id="wNamaLengkap">
+</div>
+
+<div class="form-group">
+<label>Nama Panggilan</label>
+<input id="wNamaPanggilan">
+</div>
+
+<div class="form-group">
+<label>Jenis Kelamin</label>
+
+<select id="wJk">
+
+<option>Laki-laki</option>
+<option>Perempuan</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+<label>Tempat Lahir</label>
+<input id="wTempatLahir">
+</div>
+
+<div class="form-group">
+<label>Tanggal Lahir</label>
+<input type="date" id="wTanggalLahir">
+</div>
+
+</div>
+
+<!-- STEP 2 -->
+
+<div
+class="wizard-step"
+id="step2"
+style="display:none">
+
+<h3>Kontak</h3>
+
+<div class="form-group">
+<label>Alamat Lengkap</label>
+<textarea
+id="wAlamat"
+style="
+width:100%;
+height:120px;
+border:none;
+padding:20px;
+border-radius:20px;
+background:
+rgba(255,255,255,.08);
+color:white;
+"></textarea>
+</div>
+
+<div class="form-group">
+<label>No WA Siswa</label>
+<input id="wWaSiswa">
+</div>
+
+<div class="form-group">
+<label>No WA Orang Tua</label>
+<input id="wWaOrtu">
+</div>
+
+</div>
+
+<!-- STEP 3 -->
+
+<div
+class="wizard-step"
+id="step3"
+style="display:none">
+
+<h3>Keluarga</h3>
+
+<div class="form-group">
+<label>Nama Ayah</label>
+<input id="wAyah">
+</div>
+
+<div class="form-group">
+<label>Pekerjaan Ayah</label>
+<input id="wKerjaAyah">
+</div>
+
+<div class="form-group">
+<label>Pendidikan Ayah</label>
+<input id="wPendidikanAyah">
+</div>
+
+<div class="form-group">
+<label>Nama Ibu</label>
+<input id="wIbu">
+</div>
+
+<div class="form-group">
+<label>Pekerjaan Ibu</label>
+<input id="wKerjaIbu">
+</div>
+
+<div class="form-group">
+<label>Pendidikan Ibu</label>
+<input id="wPendidikanIbu">
+</div>
+
+</div>
+
+<!-- STEP NAV -->
+
+<br>
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+">
+
+<button
+class="btn"
+style="width:48%"
+onclick="prevWizard()">
+
+Sebelumnya
+
+</button>
+
+<button
+class="btn"
+style="width:48%"
+onclick="nextWizard()">
+
+Selanjutnya
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+let currentStep = 1;
+
+function openWizard(){
+
+showPage('wizardPage');
+
+}
+
+function nextWizard(){
+
+if(currentStep>=7)return;
+
+document.getElementById(
+'step'+currentStep
+).style.display='none';
+
+currentStep++;
+
+document.getElementById(
+'step'+currentStep
+).style.display='block';
+
+updateProgress();
+
+saveDraft();
+
+}
+
+function prevWizard(){
+
+if(currentStep<=1)return;
+
+document.getElementById(
+'step'+currentStep
+).style.display='none';
+
+currentStep--;
+
+document.getElementById(
+'step'+currentStep
+).style.display='block';
+
+updateProgress();
+
+}
+
+function updateProgress(){
+
+let persen =
+(currentStep/7)*100;
+
+document.getElementById(
+'wizardProgress'
+).style.width =
+persen+'%';
+
+}
+<!-- STEP 4 -->
+
+<div
+class="wizard-step"
+id="step4"
+style="display:none">
+
+<h3>Minat dan Bakat</h3>
+
+<div class="form-group">
+<label>Hobi</label>
+<input id="wHobi">
+</div>
+
+<div class="form-group">
+<label>Cita-cita</label>
+<input id="wCita">
+</div>
+
+<div class="form-group">
+<label>Pelajaran yang Disukai</label>
+<input id="wMapelSuka">
+</div>
+
+<div class="form-group">
+<label>Pelajaran yang Tidak Disukai</label>
+<input id="wMapelTidak">
+</div>
+
+<div class="form-group">
+<label>Ekstrakurikuler</label>
+<input id="wEkskul">
+</div>
+
+</div>
+
+<!-- STEP 5 -->
+
+<div
+class="wizard-step"
+id="step5"
+style="display:none">
+
+<h3>Gaya Belajar</h3>
+
+<div class="question">
+
+<p>
+Saya lebih mudah memahami pelajaran dengan melihat gambar.
+</p>
+
+<select id="visual1">
+<option value="2">Sangat Setuju</option>
+<option value="1">Setuju</option>
+<option value="0">Tidak</option>
+</select>
+
+</div>
+
+<div class="question">
+
+<p>
+Saya lebih mudah memahami pelajaran jika mendengarkan penjelasan.
+</p>
+
+<select id="audio1">
+<option value="2">Sangat Setuju</option>
+<option value="1">Setuju</option>
+<option value="0">Tidak</option>
+</select>
+
+</div>
+
+<div class="question">
+
+<p>
+Saya lebih suka praktik langsung.
+</p>
+
+<select id="kin1">
+<option value="2">Sangat Setuju</option>
+<option value="1">Setuju</option>
+<option value="0">Tidak</option>
+</select>
+
+</div>
+
+</div>
+
+<!-- STEP 6 -->
+
+<div
+class="wizard-step"
+id="step6"
+style="display:none">
+
+<h3>Kepribadian</h3>
+
+<div class="question">
+
+<p>
+Saya senang berbicara dengan banyak teman.
+</p>
+
+<select id="ext1">
+
+<option value="2">Ya</option>
+<option value="0">Tidak</option>
+
+</select>
+
+</div>
+
+<div class="question">
+
+<p>
+Saya lebih nyaman menyendiri.
+</p>
+
+<select id="int1">
+
+<option value="2">Ya</option>
+<option value="0">Tidak</option>
+
+</select>
+
+</div>
+
+</div>
+function hitungDiagnostik(){
+
+let visual =
+Number(
+document.getElementById(
+'visual1'
+).value
+);
+
+let audio =
+Number(
+document.getElementById(
+'audio1'
+).value
+);
+
+let kin =
+Number(
+document.getElementById(
+'kin1'
+).value
+);
+
+let ext =
+Number(
+document.getElementById(
+'ext1'
+).value
+);
+
+let intr =
+Number(
+document.getElementById(
+'int1'
+).value
+);
+
+let gaya="";
+
+if(
+visual>=audio &&
+visual>=kin
+){
+
+gaya="VISUAL";
+
+}
+else if(
+audio>=visual &&
+audio>=kin
+){
+
+gaya="AUDITORIAL";
+
+}
+else{
+
+gaya="KINESTETIK";
+
+}
+
+let kepribadian="";
+
+if(ext>intr){
+
+kepribadian="EKSTROVERT";
+
+}
+else if(intr>ext){
+
+kepribadian="INTROVERT";
+
+}
+else{
+
+kepribadian="AMBIVERT";
+
+}
+
+return{
+gaya,
+kepribadian
+};
+
+}
+<!-- STEP 7 -->
+
+<div
+class="wizard-step"
+id="step7"
+style="display:none">
+
+<h3>Upload Dokumen</h3>
+
+<div class="form-group">
+
+<label>Pas Foto (Maks 5 MB)</label>
+
+<input
+type="file"
+id="pasFoto"
+accept="image/*">
+
+</div>
+
+<div class="form-group">
+
+<label>KK (Maks 5 MB)</label>
+
+<input
+type="file"
+id="kk"
+accept="image/*,.pdf">
+
+</div>
+
+<div class="form-group">
+
+<label>Akta (Maks 5 MB)</label>
+
+<input
+type="file"
+id="akta"
+accept="image/*,.pdf">
+
+</div>
+
+<br>
+
+<button
+class="btn"
+onclick="submitFinal()">
+
+Kirim Data
+
+</button>
+
+</div>
+async function submitFinal(){
+
+let hasil =
+hitungDiagnostik();
+
+let data = {
+
+action:
+"registerStudent",
+
+namaLengkap:
+document.getElementById(
+'wNamaLengkap'
+).value,
+
+namaPanggilan:
+document.getElementById(
+'wNamaPanggilan'
+).value,
+
+jenisKelamin:
+document.getElementById(
+'wJk'
+).value,
+
+tempatLahir:
+document.getElementById(
+'wTempatLahir'
+).value,
+
+tanggalLahir:
+document.getElementById(
+'wTanggalLahir'
+).value,
+
+alamat:
+document.getElementById(
+'wAlamat'
+).value,
+
+waSiswa:
+document.getElementById(
+'wWaSiswa'
+).value,
+
+waOrtu:
+document.getElementById(
+'wWaOrtu'
+).value,
+
+namaAyah:
+document.getElementById(
+'wAyah'
+).value,
+
+namaIbu:
+document.getElementById(
+'wIbu'
+).value,
+
+hobi:
+document.getElementById(
+'wHobi'
+).value,
+
+citacita:
+document.getElementById(
+'wCita'
+).value,
+
+mapelSuka:
+document.getElementById(
+'wMapelSuka'
+).value,
+
+mapelTidak:
+document.getElementById(
+'wMapelTidak'
+).value,
+
+ekskul:
+document.getElementById(
+'wEkskul'
+).value,
+
+gayaBelajar:
+hasil.gaya,
+
+kepribadian:
+hasil.kepribadian
+
+};
+
+let res =
+await fetch(
+GAS_URL,
+{
+method:'POST',
+body:
+JSON.stringify(data)
+}
+);
+
+let json =
+await res.json();
+
+if(json.success){
+
+showPopup(
+"🎉",
+"Berhasil",
+"Data berhasil dikirim."
+);
+
+}
+else{
+
+showPopup(
+"❌",
+"Gagal",
+json.message
+);
+
+}
+
+}
+<!-- ========================= -->
+<!-- CHAT PAGE -->
+<!-- ========================= -->
+
+<div id="chatPage" style="display:none">
+
+<div class="card">
+
+<h2>Curhat dengan Wali Kelas</h2>
+
+<p>
+Semua pesan bersifat rahasia.
+</p>
+
+<br>
+
+<label style="display:flex;gap:10px;">
+<input type="checkbox" id="isAnonim">
+Kirim sebagai Anonim
+</label>
+
+<br>
+
+<div id="chatContainer"
+style="
+height:450px;
+overflow:auto;
+padding:20px;
+background:rgba(255,255,255,.05);
+border-radius:25px;
+">
+
+</div>
+
+<br>
+
+<div style="
+display:flex;
+gap:10px;
+">
+
+<input
+id="chatText"
+placeholder="Tulis pesan..."
+style="
+flex:1;
+padding:16px;
+border:none;
+border-radius:20px;
+background:rgba(255,255,255,.08);
+color:white;
+">
+
+<button
+class="btn"
+style="width:150px"
+onclick="kirimPesan()">
+
+Kirim
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+<!-- ========================= -->
+<!-- PRESTASI -->
+<!-- ========================= -->
+
+<div id="prestasiPage" style="display:none">
+
+<div class="card">
+
+<h2>Prestasi Saya</h2>
+
+<div id="prestasiContainer">
+
+Belum ada prestasi.
+
+</div>
+
+</div>
+
+</div>
+<!-- ========================= -->
+<!-- PELANGGARAN -->
+<!-- ========================= -->
+
+<div id="pelanggaranPage" style="display:none">
+
+<div class="card">
+
+<h2>Poin Pelanggaran</h2>
+
+<h1 id="poinPelanggaran">
+
+0
+
+</h1>
+
+<p id="statusPelanggaran">
+
+Belum ada pelanggaran.
+
+</p>
+
+<br>
+
+<div id="pelanggaranContainer">
+
+</div>
+
+</div>
+
+</div>
+<!-- ========================= -->
+<!-- CATATAN -->
+<!-- ========================= -->
+
+<div id="catatanPage" style="display:none">
+
+<div class="card">
+
+<h2>Catatan Wali Kelas</h2>
+
+<div id="catatanContainer">
+
+Belum ada catatan.
+
+</div>
+
+</div>
+
+</div>
+<!-- ========================= -->
+<!-- MOOD -->
+<!-- ========================= -->
+
+<div id="moodPage" style="display:none">
+
+<div class="card">
+
+<h2>Mood Hari Ini</h2>
+
+<p>
+Bagaimana perasaanmu hari ini?
+</p>
+
+<br>
+
+<div
+style="
+display:grid;
+grid-template-columns:
+repeat(5,1fr);
+gap:15px;
+">
+
+<button class="btn" onclick="kirimMood('😁')">
+😁
+</button>
+
+<button class="btn" onclick="kirimMood('😊')">
+😊
+</button>
+
+<button class="btn" onclick="kirimMood('😐')">
+😐
+</button>
+
+<button class="btn" onclick="kirimMood('😔')">
+😔
+</button>
+
+<button class="btn" onclick="kirimMood('😭')">
+😭
+</button>
+
+</div>
+
+</div>
+
+</div>
 <div class="footer">
 
 <img
 src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png"
 width="20">
 
-SIPANDA v1.0 |
+SIPANDA v1.0.0 |
 <a href="#"
 onclick="openInfo()">
 
-Informasi Aplikasi
+Tentang Aplikasi
 
 </a>
 
 </div>
-
-</div>
-
-<!-- POPUP -->
-
 <div class="popup" id="popup">
 
 <div class="popup-box">
@@ -1152,38 +1997,20 @@ Informasi Aplikasi
 <img
 src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
 
-<h1>SIPANDA</h1>
+<h2 id="popupTitle">
 
-<p style="margin-top:10px">
-Versi 1.0.0
-</p>
+SIPANDA
 
-<hr style="margin:25px 0">
+</h2>
 
-<h3>Developer</h3>
-<p>Yanuar Moga</p>
+<p id="popupMessage">
 
-<br>
+Sistem Informasi Panduan Siswa
 
-<h3>Kontak</h3>
-
-<p>
-WhatsApp :
-+62xxxxxxxxxx
-</p>
-
-<p>
-Email :
-youremail@gmail.com
-</p>
-
-<p>
-Website :
-yanuar-moga.github.io
 </p>
 
 <button
-onclick="closeInfo()">
+onclick="closePopup()">
 
 Tutup
 
@@ -1192,46 +2019,254 @@ Tutup
 </div>
 
 </div>
-
 <script>
 
-function login(){
+function showPopup(
+title,
+subtitle,
+message
+){
 
-document
-.getElementById("loginPage")
-.style.display="none";
+document.getElementById(
+'popupTitle'
+).innerHTML =
+title;
 
-document
-.getElementById("app")
-.style.display="block";
+document.getElementById(
+'popupMessage'
+).innerHTML =
+subtitle +
+"<br><br>" +
+message;
 
-}
-
-function openInfo(){
-
-document
-.getElementById("popup")
-.style.display="flex";
-
-}
-
-function closeInfo(){
-
-document
-.getElementById("popup")
-.style.display="none";
+document.getElementById(
+'popup'
+).style.display =
+'flex';
 
 }
 
-window.onload=()=>{
+function closePopup(){
+
+document.getElementById(
+'popup'
+).style.display =
+'none';
+
+}
+
+/* ======================
+AUTO LOGIN
+====================== */
+
+window.onload = function(){
 
 setTimeout(()=>{
-openInfo();
-},3500);
+
+document.getElementById(
+'splash'
+).style.display =
+'none';
+
+},2500);
+
+let session =
+localStorage.getItem(
+'sipandaUser'
+);
+
+let expired =
+localStorage.getItem(
+'sipandaExpired'
+);
+
+if(
+session &&
+expired &&
+Date.now() <
+Number(expired)
+){
+
+currentUser =
+JSON.parse(session);
+
+document.getElementById(
+'loginPage'
+).style.display =
+'none';
+
+document.getElementById(
+'app'
+).style.display =
+'block';
+
+loadDashboard();
+
+}
 
 };
 
+/* ======================
+SESSION 30 MENIT
+====================== */
+
+function simpanSession(user){
+
+localStorage.setItem(
+'sipandaUser',
+JSON.stringify(user)
+);
+
+localStorage.setItem(
+'sipandaExpired',
+Date.now() +
+(30*60*1000)
+);
+
+}
+
+/* ======================
+LOGOUT
+====================== */
+
+function logout(){
+
+localStorage.clear();
+
+location.reload();
+
+}
+
+/* ======================
+CHAT
+====================== */
+
+async function kirimPesan(){
+
+let pesan =
+document.getElementById(
+'chatText'
+).value;
+
+if(!pesan) return;
+
+let anonim =
+document.getElementById(
+'isAnonim'
+).checked;
+
+let body = {
+
+action:'sendMessage',
+
+nisn:
+currentUser.username,
+
+pesan:pesan,
+
+anonim:anonim
+
+};
+
+let res =
+await fetch(
+GAS_URL,
+{
+method:'POST',
+body:
+JSON.stringify(body)
+}
+);
+
+let data =
+await res.json();
+
+if(data.success){
+
+document.getElementById(
+'chatText'
+).value='';
+
+loadChat();
+
+}
+
+}
+
+/* ======================
+LOAD CHAT
+====================== */
+
+async function loadChat(){
+
+}
+
+/* ======================
+MOOD
+====================== */
+
+async function kirimMood(mood){
+
+await fetch(
+GAS_URL,
+{
+method:'POST',
+body:
+JSON.stringify({
+
+action:'saveMood',
+
+nisn:
+currentUser.username,
+
+mood:mood
+
+})
+}
+);
+
+document.getElementById(
+'moodHariIni'
+).innerHTML =
+mood;
+
+showPopup(
+'😊',
+'Terima Kasih',
+'Mood berhasil dikirim.'
+);
+
+}
+
+/* ======================
+UPLOAD FILE
+====================== */
+
+function validasiFile(file){
+
+if(!file) return true;
+
+if(
+file.size >
+(5*1024*1024)
+){
+
+showPopup(
+'❌',
+'Ukuran File',
+'Maksimal 5 MB.'
+);
+
+return false;
+
+}
+
+return true;
+
+}
+
 </script>
+</div>
 
 </body>
 </html>
