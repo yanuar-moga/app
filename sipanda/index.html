@@ -57,7 +57,7 @@
       opacity: 0;
       transform: translateY(20px);
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      padding: 20px 20px calc(80px + env(safe-area-inset-bottom)) 20px; /* Ditambah padding bawah agar tidak tertutup nav */
+      padding: 20px 20px calc(80px + env(safe-area-inset-bottom)) 20px;
       flex: 1;
       width: 100%;
       max-width: 480px;
@@ -289,38 +289,23 @@
       margin-bottom: 20px;
     }
 
-    /* SHARED INTEGRATED APP FOOTER */
-    .app-footer {
+    /* REVISED MINIMALIST INTERACTIVE FOOTER */
+    .app-footer-text {
       margin-top: auto;
-      padding: 24px 0 8px 0;
+      padding: 20px 0 10px 0;
       text-align: center;
-      border-top: 1px dashed var(--glass-border);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      cursor: pointer;
+      opacity: 0.6;
+      user-select: none;
+      transition: opacity 0.2s, color 0.2s;
     }
-    .footer-logo {
-      width: 32px;
-      height: 32px;
-      object-fit: contain;
-      vertical-align: middle;
-      margin-right: 6px;
-    }
-    .footer-title {
-      font-size: 13px;
-      font-weight: 700;
+    .app-footer-text:hover, .app-footer-text:active {
+      opacity: 1;
       color: var(--primary);
-      display: inline-block;
-      vertical-align: middle;
-    }
-    .footer-sub {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 3px;
-    }
-    .footer-meta {
-      font-size: 10px;
-      color: var(--text-muted);
-      margin-top: 6px;
-      line-height: 1.4;
-      opacity: 0.8;
     }
 
     /* ANIMATED CUSTOM POPUP STYLING */
@@ -366,12 +351,19 @@
       justify-content: center;
       font-size: 32px;
       margin: 0 auto 16px auto;
-      animation: iconBounce 0.5s ease-out alternate infinite;
     }
     .popup-icon.success { background: rgba(16, 185, 129, 0.15); color: var(--success); }
     .popup-icon.error { background: rgba(239, 68, 110, 0.15); color: var(--error); }
     .popup-icon.info { background: rgba(59, 130, 246, 0.15); color: var(--info); }
+    .popup-icon.app-logo-box { background: transparent; width: 80px; height: 80px; border-radius: 0; }
     
+    .logo-pulse {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      animation: iconBounce 0.5s ease-out alternate infinite;
+    }
+
     @keyframes iconBounce {
       from { transform: translateY(0); }
       to { transform: translateY(-6px); }
@@ -427,12 +419,7 @@
       </div>
     </div>
 
-    <div class="app-footer">
-      <img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png" class="footer-logo" alt="Logo">
-      <div class="footer-title">SIPANDA</div>
-      <div class="footer-sub">Sistem Informasi Panduan dan Diagnostik Siswa</div>
-      <div class="footer-meta">Versi 1.0 Build 30 Juni 2026<br>Develop by MB • yanuar.b@gmail.com</div>
-    </div>
+    <div class="app-footer-text" onclick="showAboutPopup()">SIPANDA V 1.0</div>
   </div>
 
   <div id="screen-dash-siswa" class="screen">
@@ -470,12 +457,7 @@
       <p style="text-align:center; font-size:12px; margin-top:10px; color:var(--text-muted)">Mood saat ini: <span id="ds-current-mood">😐</span></p>
     </div>
 
-    <div class="app-footer">
-      <img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png" class="footer-logo" alt="Logo">
-      <div class="footer-title">SIPANDA</div>
-      <div class="footer-sub">Sistem Informasi Panduan dan Diagnostik Siswa</div>
-      <div class="footer-meta">Versi 1.0 Build 30 Juni 2026<br>Develop by MB • yanuar.b@gmail.com</div>
-    </div>
+    <div class="app-footer-text" onclick="showAboutPopup()">SIPANDA V 1.0</div>
   </div>
 
   <div id="screen-dash-guru" class="screen">
@@ -510,12 +492,7 @@
       </div>
     </div>
 
-    <div class="app-footer">
-      <img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png" class="footer-logo" alt="Logo">
-      <div class="footer-title">SIPANDA</div>
-      <div class="footer-sub">Sistem Informasi Panduan dan Diagnostik Siswa</div>
-      <div class="footer-meta">Versi 1.0 Build 30 Juni 2026<br>Develop by MB • yanuar.b@gmail.com</div>
-    </div>
+    <div class="app-footer-text" onclick="showAboutPopup()">SIPANDA V 1.0</div>
   </div>
 
   <div id="screen-biodata" class="screen">
@@ -578,12 +555,7 @@
       </form>
     </div>
 
-    <div class="app-footer">
-      <img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png" class="footer-logo" alt="Logo">
-      <div class="footer-title">SIPANDA</div>
-      <div class="footer-sub">Sistem Informasi Panduan dan Diagnostik Siswa</div>
-      <div class="footer-meta">Versi 1.0 Build 30 Juni 2026<br>Develop by MB • yanuar.b@gmail.com</div>
-    </div>
+    <div class="app-footer-text" onclick="showAboutPopup()">SIPANDA V 1.0</div>
   </div>
 
   <div id="screen-diagnostik" class="screen">
@@ -597,12 +569,7 @@
       <button class="btn" style="margin-top:20px;" onclick="app.student.evaluateDiagnostik()">Submit & Analisis</button>
     </div>
 
-    <div class="app-footer">
-      <img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png" class="footer-logo" alt="Logo">
-      <div class="footer-title">SIPANDA</div>
-      <div class="footer-sub">Sistem Informasi Panduan dan Diagnostik Siswa</div>
-      <div class="footer-meta">Versi 1.0 Build 30 Juni 2026<br>Develop by MB • yanuar.b@gmail.com</div>
-    </div>
+    <div class="app-footer-text" onclick="showAboutPopup()">SIPANDA V 1.0</div>
   </div>
 
   <div id="screen-chat" class="screen">
@@ -622,12 +589,7 @@
       </div>
     </div>
 
-    <div class="app-footer">
-      <img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png" class="footer-logo" alt="Logo">
-      <div class="footer-title">SIPANDA</div>
-      <div class="footer-sub">Sistem Informasi Panduan dan Diagnostik Siswa</div>
-      <div class="footer-meta">Versi 1.0 Build 30 Juni 2026<br>Develop by MB • yanuar.b@gmail.com</div>
-    </div>
+    <div class="app-footer-text" onclick="showAboutPopup()">SIPANDA V 1.0</div>
   </div>
 
   <nav id="app-nav" class="nav-bar">
@@ -677,7 +639,7 @@
       document.documentElement.setAttribute('data-theme', 'dark');
     }
 
-    // HIGH INTERACTIVE POPUP ENGINE (REPLACING INBUILT ALERT)
+    // INTERACTIVE SYSTEM POPUP MODULES
     function showPopup(message, type = 'success', title = 'Pemberitahuan') {
       const overlay = document.getElementById('custom-popup');
       const titleEl = document.getElementById('popup-title');
@@ -691,6 +653,30 @@
       if (type === 'success') iconBox.innerText = '✓';
       else if (type === 'error') iconBox.innerText = '✕';
       else iconBox.innerText = 'ℹ';
+
+      overlay.classList.add('show');
+    }
+
+    // FUNCTION TO TRIGGER APP SPECIFIC SPEC FOOTER DETAILS
+    function showAboutPopup() {
+      const overlay = document.getElementById('custom-popup');
+      const titleEl = document.getElementById('popup-title');
+      const msgEl = document.getElementById('popup-message');
+      const iconBox = document.getElementById('popup-icon-box');
+
+      titleEl.innerText = "SIPANDA";
+      iconBox.className = "popup-icon app-logo-box";
+      iconBox.innerHTML = `<img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png" class="logo-pulse" alt="SIPANDA Logo">`;
+      
+      msgEl.innerHTML = `
+        <span style="font-weight: 600; display:block; margin-bottom: 12px; color: var(--primary);">Sistem Informasi Panduan dan Diagnostik Siswa</span>
+        <hr style="border: 0; border-top: 1px dashed var(--glass-border); margin: 12px 0;">
+        <div style="font-size: 13px; text-align: left; line-height: 1.6; padding: 0 10px;">
+          • <b>Versi:</b> 1.0 Build 30 Juni 2026<br>
+          • <b>Develop by:</b> MB<br>
+          • <b>Kontak:</b> <a href="mailto:yanuar.b@gmail.com" style="color: var(--primary); text-decoration: none;">yanuar.b@gmail.com</a>
+        </div>
+      `;
 
       overlay.classList.add('show');
     }
