@@ -1,2272 +1,558 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>SIPANDA - Sistem Informasi Panduan Siswa</title>
-
-<meta name="theme-color" content="#003b95">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-
-<link rel="icon"
-href="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
-
-<link
-href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-rel="stylesheet">
-
-<link
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-rel="stylesheet">
-
-<style>
-
-:root{
---biru:#003b95;
---biru2:#0057d9;
---kuning:#ffc107;
---putih:#ffffff;
---abu:#f3f4f6;
---dark:#071326;
---card:#0d1b34;
---danger:#ef4444;
---success:#10b981;
---shadow:
-0 20px 60px rgba(0,0,0,.35);
-}
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Inter',sans-serif;
-}
-
-html{
-scroll-behavior:smooth;
-}
-
-body{
-background:
-linear-gradient(
-135deg,
-#020617,
-#071326,
-#10254d
-);
-color:white;
-overflow-x:hidden;
-min-height:100vh;
-}
-
-/* SCROLL */
-
-::-webkit-scrollbar{
-width:10px;
-}
-
-::-webkit-scrollbar-thumb{
-background:
-rgba(255,255,255,.2);
-border-radius:20px;
-}
-
-/* SPLASH */
-
-#splash{
-position:fixed;
-inset:0;
-z-index:999999;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-background:
-linear-gradient(
-135deg,
-#001b44,
-#003b95
-);
-}
-
-#splash img{
-width:140px;
-animation:
-floating 2s infinite;
-}
-
-#splash h1{
-font-size:45px;
-margin-top:25px;
-font-weight:800;
-}
-
-#splash p{
-opacity:.8;
-margin-top:10px;
-}
-
-@keyframes floating{
-50%{
-transform:
-translateY(-12px);
-}
-}
-
-/* LOGIN */
-
-.login-page{
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:25px;
-}
-
-.login-card{
-width:100%;
-max-width:450px;
-background:
-rgba(255,255,255,.05);
-backdrop-filter:blur(30px);
-border:
-1px solid rgba(255,255,255,.08);
-border-radius:40px;
-padding:45px;
-box-shadow:
-var(--shadow);
-animation:
-fadeUp .7s;
-}
-
-@keyframes fadeUp{
-from{
-opacity:0;
-transform:
-translateY(80px);
-}
-to{
-opacity:1;
-transform:none;
-}
-}
-
-.logo{
-text-align:center;
-margin-bottom:35px;
-}
-
-.logo img{
-width:110px;
-}
-
-.logo h1{
-margin-top:20px;
-font-size:42px;
-font-weight:800;
-}
-
-.logo p{
-opacity:.7;
-margin-top:10px;
-}
-
-.form-group{
-margin-bottom:20px;
-}
-
-.form-group label{
-display:block;
-margin-bottom:10px;
-font-size:14px;
-}
-
-.form-group input{
-width:100%;
-padding:18px;
-border:none;
-outline:none;
-border-radius:20px;
-background:
-rgba(255,255,255,.08);
-color:white;
-font-size:15px;
-}
-
-.form-group input:focus{
-border:
-1px solid var(--kuning);
-}
-
-.btn{
-width:100%;
-padding:18px;
-border:none;
-border-radius:22px;
-cursor:pointer;
-font-size:16px;
-font-weight:700;
-background:
-linear-gradient(
-90deg,
-var(--biru2),
-var(--kuning)
-);
-color:white;
-transition:.3s;
-}
-
-.btn:hover{
-transform:
-translateY(-5px);
-}
-
-/* APP */
-
-.app{
-display:none;
-}
-
-/* SIDEBAR */
-
-.sidebar{
-position:fixed;
-top:0;
-left:0;
-bottom:0;
-width:280px;
-background:
-rgba(255,255,255,.05);
-backdrop-filter:blur(30px);
-border-right:
-1px solid rgba(255,255,255,.08);
-padding:30px;
-overflow:auto;
-}
-
-.brand{
-display:flex;
-gap:15px;
-align-items:center;
-margin-bottom:40px;
-}
-
-.brand img{
-width:55px;
-}
-
-.brand h2{
-font-size:25px;
-}
-
-.brand small{
-opacity:.7;
-}
-
-.menu a{
-display:flex;
-align-items:center;
-gap:15px;
-padding:16px;
-margin-bottom:10px;
-border-radius:20px;
-text-decoration:none;
-color:white;
-transition:.3s;
-}
-
-.menu a:hover{
-background:
-rgba(255,255,255,.08);
-}
-
-.menu i{
-width:25px;
-}
-
-/* MAIN */
-
-.main{
-margin-left:280px;
-padding:35px;
-min-height:100vh;
-}
-
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:35px;
-}
-
-.profile{
-display:flex;
-align-items:center;
-gap:15px;
-}
-
-.profile img{
-width:55px;
-height:55px;
-border-radius:50%;
-object-fit:cover;
-}
-
-.card{
-background:
-rgba(255,255,255,.05);
-backdrop-filter:blur(25px);
-border:
-1px solid rgba(255,255,255,.08);
-border-radius:35px;
-padding:30px;
-margin-bottom:25px;
-}
-
-/* FOOTER */
-
-.footer{
-position:fixed;
-left:280px;
-right:0;
-bottom:0;
-padding:14px;
-text-align:center;
-background:
-rgba(0,0,0,.3);
-backdrop-filter:blur(20px);
-font-size:14px;
-}
-
-.footer a{
-color:var(--kuning);
-text-decoration:none;
-}
-
-/* POPUP */
-
-.popup{
-position:fixed;
-inset:0;
-background:
-rgba(0,0,0,.65);
-display:none;
-justify-content:center;
-align-items:center;
-z-index:99999;
-padding:20px;
-}
-
-.popup-box{
-width:100%;
-max-width:550px;
-background:white;
-color:#222;
-padding:40px;
-border-radius:40px;
-text-align:center;
-animation:
-popupAnim .35s;
-}
-
-@keyframes popupAnim{
-from{
-transform:scale(.7);
-opacity:0;
-}
-to{
-transform:none;
-opacity:1;
-}
-}
-
-.popup-box img{
-width:90px;
-margin-bottom:20px;
-}
-
-.popup-box button{
-margin-top:30px;
-padding:15px 35px;
-border:none;
-border-radius:20px;
-background:
-linear-gradient(
-90deg,
-var(--biru2),
-var(--kuning)
-);
-color:white;
-font-size:15px;
-cursor:pointer;
-}
-
-/* RESPONSIVE */
-
-@media(max-width:900px){
-
-.sidebar{
-position:relative;
-width:100%;
-height:auto;
-}
-
-.main{
-margin-left:0;
-padding:20px;
-}
-
-.footer{
-left:0;
-}
-
-.topbar{
-flex-direction:column;
-align-items:flex-start;
-gap:20px;
-}
-
-}
-
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIPANDA - Sistem Informasi Panduan & Diagnostik Siswa</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#003b95">
+  <link rel="apple-touch-icon" href="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #003b95;
+      --accent: #ffc107;
+      --bg-light: #f3f4f6;
+      --surface: rgba(255, 255, 255, 0.75);
+      --text-main: #1f2937;
+      --text-muted: #4b5563;
+      --glass-border: rgba(255, 255, 255, 0.4);
+      --shadow: 0 8px 32px 0 rgba(0, 59, 149, 0.1);
+    }
+
+    [data-theme="dark"] {
+      --bg-light: #0f172a;
+      --surface: rgba(30, 41, 59, 0.75);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background-color 0.3s smooth, color 0.3s smooth;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-light);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Screen Management Engine */
+    .screen {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 20px;
+      flex: 1;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Splash Screen Styling */
+    #screen-splash {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: radial-gradient(circle at center, var(--surface), var(--bg-light));
+    }
+
+    .splash-logo {
+      width: 130px;
+      height: 130px;
+      object-fit: contain;
+      animation: pulse 2s infinite ease-in-out;
+      border-radius: 24px;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(0,59,149,0)); }
+      50% { transform: scale(1.05); filter: drop-shadow(0 10px 20px rgba(0,59,149,0.2)); }
+    }
+
+    /* Glassmorphism Components */
+    .glass-card {
+      background: var(--surface);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 16px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 12px rgba(0, 59, 149, 0.2);
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+      opacity: 0.9;
+    }
+
+    .btn-secondary {
+      background: rgba(156, 163, 175, 0.2);
+      color: var(--text-main);
+      box-shadow: none;
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-muted);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      font-size: 15px;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0, 59, 149, 0.15);
+    }
+
+    /* App Shell Custom Navigation */
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--glass-border);
+      display: none;
+      justify-content: space-around;
+      padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+      box-shadow: 0 -4px 24px rgba(0,0,0,0.05);
+      z-index: 999;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      font-size: 22px;
+      margin-bottom: 2px;
+    }
+
+    /* Wizard Progression Engine */
+    .wizard-step { display: none; }
+    .wizard-step.active { display: block; animation: slideIn 0.3s ease-out; }
+    .progress-container {
+      height: 6px;
+      background: rgba(0,0,0,0.05);
+      border-radius: 3px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: var(--primary);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Skeleton Loading System */
+    .skeleton {
+      background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 37%, rgba(255,255,255,0.1) 63%);
+      background-size: 400% 100%;
+      animation: skeleton-loading 1.4s ease infinite;
+      border-radius: 12px;
+    }
+    @keyframes skeleton-loading {
+      0% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Chat Structure */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+      padding: 10px;
+    }
+    .chat-bubble {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.4;
+      position: relative;
+    }
+    .chat-bubble.me {
+      background: var(--primary);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .chat-bubble.other {
+      background: var(--surface);
+      border: 1px solid var(--glass-border);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .chat-meta {
+      font-size: 10px;
+      margin-top: 4px;
+      opacity: 0.7;
+      text-align: right;
+    }
+
+    /* Header Profile Custom Styling */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      display: inline-block;
+    }
+    .badge-warn { background: #fee2e2; color: #dc2626; }
+    .badge-success { background: #dcfce7; color: #16a34a; }
+
+    /* Theme Switcher Toggle styling */
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      cursor: pointer;
+      font-size: 20px;
+      z-index: 1001;
+    }
+
+    .app-header-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .app-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body>
 
-<!-- SPLASH -->
-
-<div id="splash">
-
-<img
-src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
-
-<h1>SIPANDA</h1>
-
-<p>
-Sistem Informasi Panduan Siswa
-</p>
-
-</div>
-
-<!-- LOGIN -->
-
-<div
-class="login-page"
-id="loginPage">
-
-<div class="login-card">
-
-<div class="logo">
-
-<img
-src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
-
-<h1>SIPANDA</h1>
-
-<p>
-Sistem Informasi Panduan Siswa
-</p>
-
-</div>
-
-<div class="form-group">
-
-<label>
-Username / NISN
-</label>
-
-<input
-id="username"
-placeholder="Masukkan Username">
-
-</div>
-
-<div class="form-group">
-
-<label>
-PIN
-</label>
-
-<input
-type="password"
-id="pin"
-placeholder="Masukkan PIN">
-
-</div>
-
-<button
-class="btn"
-onclick="login()">
-
-<i class="fa fa-right-to-bracket"></i>
-Masuk
-
-</button>
-
-</div>
-
-</div>
-
-<!-- APP -->
-
-<div
-class="app"
-id="app">
-
-<!-- SIDEBAR -->
-
-<div class="sidebar">
-
-<div class="brand">
-
-<img
-src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
-
-<div>
-
-<h2>SIPANDA</h2>
-
-<small>
-Panduan Siswa
-</small>
-
-</div>
-
-</div>
-
-<div class="menu">
-
-<a href="#">
-<i class="fa fa-home"></i>
-Dashboard
-</a>
-
-<a href="#">
-<i class="fa fa-user"></i>
-Profil Saya
-</a>
-
-<a href="#">
-<i class="fa fa-file-lines"></i>
-Biodata & Asesmen
-</a>
-
-<a href="#">
-<i class="fa fa-comments"></i>
-Curhat
-</a>
-
-<a href="#">
-<i class="fa fa-face-smile"></i>
-Mood Harian
-</a>
-
-<a href="#">
-<i class="fa fa-trophy"></i>
-Prestasi
-</a>
-
-<a href="#">
-<i class="fa fa-triangle-exclamation"></i>
-Pelanggaran
-</a>
-
-<a href="#">
-<i class="fa fa-book"></i>
-Catatan Wali
-</a>
-
-</div>
-
-</div>
-
-<!-- MAIN -->
-
-<div class="main">
-
-<div class="topbar">
-
-<div>
-
-<h1>
-Halo 👋
-</h1>
-
-<p>
-Selamat datang di SIPANDA
-</p>
-
-</div>
-
-<div class="profile">
-
-<img
-src="https://i.pravatar.cc/150?img=3"
-id="fotoProfil">
-
-<div>
-
-<h3 id="namaSiswa">
-Siswa Demo
-</h3>
-
-<small id="roleUser">
-SISWA
-</small>
-
-</div>
-
-</div>
-
-</div>
-<!-- DASHBOARD -->
-
-<div id="dashboardPage">
-
-<div class="dashboard-grid">
-
-<div class="card stat-card">
-<h3>Poin Pelanggaran</h3>
-<h1 id="totalPoin">0</h1>
-<p>Status Siswa</p>
-</div>
-
-<div class="card stat-card">
-<h3>Prestasi</h3>
-<h1 id="totalPrestasi">0</h1>
-<p>Data Prestasi</p>
-</div>
-
-<div class="card stat-card">
-<h3>Curhat</h3>
-<h1 id="totalChat">0</h1>
-<p>Pesan Masuk</p>
-</div>
-
-<div class="card stat-card">
-<h3>Mood Hari Ini</h3>
-<h1 id="moodHariIni">😊</h1>
-<p>Perasaan Siswa</p>
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>
-Aktivitas Terbaru
-</h2>
-
-<div id="timeline">
-
-<div class="timeline-item">
-📌 Selamat datang di SIPANDA.
-</div>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>
-Notifikasi
-</h2>
-
-<div id="notifikasi">
-
-<div class="timeline-item">
-Belum ada notifikasi.
-</div>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>
-Menu Cepat
-</h2>
-
-<div class="quick-grid">
-
-<button class="btn"
-onclick="showPage('profilPage')">
-Profil Saya
-</button>
-
-<button class="btn"
-onclick="showPage('biodataPage')">
-Biodata
-</button>
-
-<button class="btn"
-onclick="showPage('chatPage')">
-Curhat
-</button>
-
-<button class="btn"
-onclick="showPage('prestasiPage')">
-Prestasi
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- PROFIL -->
-
-<div
-id="profilPage"
-style="display:none">
-
-<div class="card">
-
-<div
-style="
-display:flex;
-gap:30px;
-align-items:center;
-flex-wrap:wrap;
-">
-
-<img
-id="fotoSiswa"
-src="https://i.pravatar.cc/200"
-style="
-width:150px;
-height:150px;
-border-radius:50%;
-object-fit:cover;
-">
-
-<div>
-
-<h1 id="profilNama">
-Nama Siswa
-</h1>
-
-<p id="profilKelas">
-Kelas
-</p>
-
-<br>
-
-<p>
-NISN :
-<span id="profilNisn">
--
-</span>
-</p>
-
-<p>
-No WA :
-<span id="profilWa">
--
-</span>
-</p>
-
-<p>
-Jenis Kelamin :
-<span id="profilJk">
--
-</span>
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>
-Kesimpulan Diagnostik
-</h2>
-
-<br>
-
-<p>
-Gaya Belajar :
-<b id="tipeBelajar">
--
-</b>
-</p>
-
-<br>
-
-<p>
-Kepribadian :
-<b id="tipeKepribadian">
--
-</b>
-</p>
-
-<br>
-
-<p id="kesimpulanSiswa">
-Belum ada data.
-</p>
-
-</div>
-
-</div>
-
-<!-- BIODATA -->
-
-<div
-id="biodataPage"
-style="display:none">
-
-<div class="card">
-
-<h2>
-Biodata Siswa
-</h2>
-
-<br>
-
-<form id="biodataForm">
-
-<div class="form-group">
-<label>Nama Lengkap</label>
-<input id="namaLengkap">
-</div>
-
-<div class="form-group">
-<label>Nama Panggilan</label>
-<input id="namaPanggilan">
-</div>
-
-<div class="form-group">
-<label>NISN</label>
-<input id="nisn">
-</div>
-
-<div class="form-group">
-<label>No WA Siswa</label>
-<input id="waSiswa">
-</div>
-
-<div class="form-group">
-<label>No WA Orang Tua</label>
-<input id="waOrtu">
-</div>
-
-<div class="form-group">
-<label>Hobi</label>
-<input id="hobi">
-</div>
-
-<div class="form-group">
-<label>Cita-cita</label>
-<input id="citaCita">
-</div>
-
-<div class="form-group">
-<label>Alamat</label>
-<textarea
-id="alamat"
-style="
-width:100%;
-height:120px;
-border:none;
-padding:20px;
-border-radius:20px;
-background:rgba(255,255,255,.08);
-color:white;
-"></textarea>
-</div>
-
-<br>
-
-<button
-type="button"
-class="btn"
-onclick="simpanBiodata()">
-
-Simpan Biodata
-
-</button>
-
-</form>
-
-</div>
-
-</div>
-
-<script>
-
-const GAS_URL =
-"https://script.google.com/macros/s/AKfycbx7Vbq4RhCL8qpOksha_s4CloWSfJwyHPcAHF0bkic5YzCy3tKGpSXTfvwUy83ecjpD/exec";
-
-let currentUser = null;
-
-// =======================
-// LOGIN
-// =======================
-
-async function login(){
-
-let username =
-document.getElementById(
-'username'
-).value;
-
-let pin =
-document.getElementById(
-'pin'
-).value;
-
-if(!username || !pin){
-showPopup(
-"⚠️",
-"Login Gagal",
-"Username dan PIN wajib diisi."
-);
-return;
-}
-
-try{
-
-let res =
-await fetch(
-GAS_URL,
-{
-method:'POST',
-body:JSON.stringify({
-action:'login',
-username,
-pin
-})
-}
-);
-
-let data =
-await res.json();
-
-if(data.success){
-
-currentUser =
-data.user;
-
-localStorage.setItem(
-'sipandaUser',
-JSON.stringify(data.user)
-);
-
-document.getElementById(
-'loginPage'
-).style.display='none';
-
-document.getElementById(
-'app'
-).style.display='block';
-
-loadDashboard();
-
-}
-else{
-
-showPopup(
-"❌",
-"Login Gagal",
-data.message
-);
-
-}
-
-}
-catch(e){
-
-showPopup(
-"❌",
-"Server Error",
-e.message
-);
-
-}
-
-}
-
-// =======================
-// DASHBOARD
-// =======================
-
-async function loadDashboard(){
-
-if(!currentUser) return;
-
-document.getElementById(
-'namaSiswa'
-).innerHTML =
-currentUser.nama;
-
-document.getElementById(
-'roleUser'
-).innerHTML =
-currentUser.role;
-
-if(currentUser.foto){
-
-document.getElementById(
-'fotoProfil'
-).src =
-currentUser.foto;
-
-}
-
-}
-
-// =======================
-// GANTI HALAMAN
-// =======================
-
-function showPage(id){
-
-document.getElementById(
-'dashboardPage'
-).style.display='none';
-
-document.getElementById(
-'profilPage'
-).style.display='none';
-
-document.getElementById(
-'biodataPage'
-).style.display='none';
-
-document.getElementById(
-'chatPage'
-).style.display='none';
-
-document.getElementById(
-'prestasiPage'
-).style.display='none';
-
-document.getElementById(
-'pelanggaranPage'
-).style.display='none';
-
-document.getElementById(
-'catatanPage'
-).style.display='none';
-
-document.getElementById(id)
-.style.display='block';
-
-}
-
-// =======================
-// SIMPAN BIODATA
-// =======================
-
-async function simpanBiodata(){
-
-let data = {
-
-action:'registerStudent',
-
-namaLengkap:
-document.getElementById(
-'namaLengkap'
-).value,
-
-namaPanggilan:
-document.getElementById(
-'namaPanggilan'
-).value,
-
-nisn:
-document.getElementById(
-'nisn'
-).value,
-
-noWaSiswa:
-document.getElementById(
-'waSiswa'
-).value,
-
-noWaOrtu:
-document.getElementById(
-'waOrtu'
-).value,
-
-hobi:
-document.getElementById(
-'hobi'
-).value,
-
-citaCita:
-document.getElementById(
-'citaCita'
-).value,
-
-alamatLengkap:
-document.getElementById(
-'alamat'
-).value
-
-};
-
-let res =
-await fetch(
-GAS_URL,
-{
-method:'POST',
-body:JSON.stringify(data)
-}
-);
-
-let hasil =
-await res.json();
-
-if(hasil.success){
-
-showPopup(
-"✅",
-"Berhasil",
-"Data berhasil disimpan."
-);
-
-}
-else{
-
-showPopup(
-"❌",
-"Gagal",
-hasil.message
-);
-
-}
-
-}
-<!-- ===================================== -->
-<!-- BIODATA & ASESMEN WIZARD -->
-<!-- ===================================== -->
-
-<div id="wizardPage" style="display:none">
-
-<div class="card">
-
-<h2>Biodata dan Asesmen Diagnostik</h2>
-<p>Isi data secara bertahap agar lebih nyaman.</p>
-
-<br>
-
-<div
-style="
-width:100%;
-height:12px;
-background:rgba(255,255,255,.08);
-border-radius:20px;
-overflow:hidden;
-">
-
-<div
-id="wizardProgress"
-style="
-width:14%;
-height:100%;
-background:
-linear-gradient(
-90deg,
-#0057d9,
-#ffc107
-);
-transition:.4s;
-">
-</div>
-
-</div>
-
-<br>
-
-<!-- STEP 1 -->
-
-<div class="wizard-step" id="step1">
-
-<h3>Data Diri</h3>
-
-<div class="form-group">
-<label>Nama Lengkap</label>
-<input id="wNamaLengkap">
-</div>
-
-<div class="form-group">
-<label>Nama Panggilan</label>
-<input id="wNamaPanggilan">
-</div>
-
-<div class="form-group">
-<label>Jenis Kelamin</label>
-
-<select id="wJk">
-
-<option>Laki-laki</option>
-<option>Perempuan</option>
-
-</select>
-
-</div>
-
-<div class="form-group">
-<label>Tempat Lahir</label>
-<input id="wTempatLahir">
-</div>
-
-<div class="form-group">
-<label>Tanggal Lahir</label>
-<input type="date" id="wTanggalLahir">
-</div>
-
-</div>
-
-<!-- STEP 2 -->
-
-<div
-class="wizard-step"
-id="step2"
-style="display:none">
-
-<h3>Kontak</h3>
-
-<div class="form-group">
-<label>Alamat Lengkap</label>
-<textarea
-id="wAlamat"
-style="
-width:100%;
-height:120px;
-border:none;
-padding:20px;
-border-radius:20px;
-background:
-rgba(255,255,255,.08);
-color:white;
-"></textarea>
-</div>
-
-<div class="form-group">
-<label>No WA Siswa</label>
-<input id="wWaSiswa">
-</div>
-
-<div class="form-group">
-<label>No WA Orang Tua</label>
-<input id="wWaOrtu">
-</div>
-
-</div>
-
-<!-- STEP 3 -->
-
-<div
-class="wizard-step"
-id="step3"
-style="display:none">
-
-<h3>Keluarga</h3>
-
-<div class="form-group">
-<label>Nama Ayah</label>
-<input id="wAyah">
-</div>
-
-<div class="form-group">
-<label>Pekerjaan Ayah</label>
-<input id="wKerjaAyah">
-</div>
-
-<div class="form-group">
-<label>Pendidikan Ayah</label>
-<input id="wPendidikanAyah">
-</div>
-
-<div class="form-group">
-<label>Nama Ibu</label>
-<input id="wIbu">
-</div>
-
-<div class="form-group">
-<label>Pekerjaan Ibu</label>
-<input id="wKerjaIbu">
-</div>
-
-<div class="form-group">
-<label>Pendidikan Ibu</label>
-<input id="wPendidikanIbu">
-</div>
-
-</div>
-
-<!-- STEP NAV -->
-
-<br>
-
-<div
-style="
-display:flex;
-justify-content:space-between;
-">
-
-<button
-class="btn"
-style="width:48%"
-onclick="prevWizard()">
-
-Sebelumnya
-
-</button>
-
-<button
-class="btn"
-style="width:48%"
-onclick="nextWizard()">
-
-Selanjutnya
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-let currentStep = 1;
-
-function openWizard(){
-
-showPage('wizardPage');
-
-}
-
-function nextWizard(){
-
-if(currentStep>=7)return;
-
-document.getElementById(
-'step'+currentStep
-).style.display='none';
-
-currentStep++;
-
-document.getElementById(
-'step'+currentStep
-).style.display='block';
-
-updateProgress();
-
-saveDraft();
-
-}
-
-function prevWizard(){
-
-if(currentStep<=1)return;
-
-document.getElementById(
-'step'+currentStep
-).style.display='none';
-
-currentStep--;
-
-document.getElementById(
-'step'+currentStep
-).style.display='block';
-
-updateProgress();
-
-}
-
-function updateProgress(){
-
-let persen =
-(currentStep/7)*100;
-
-document.getElementById(
-'wizardProgress'
-).style.width =
-persen+'%';
-
-}
-<!-- STEP 4 -->
-
-<div
-class="wizard-step"
-id="step4"
-style="display:none">
-
-<h3>Minat dan Bakat</h3>
-
-<div class="form-group">
-<label>Hobi</label>
-<input id="wHobi">
-</div>
-
-<div class="form-group">
-<label>Cita-cita</label>
-<input id="wCita">
-</div>
-
-<div class="form-group">
-<label>Pelajaran yang Disukai</label>
-<input id="wMapelSuka">
-</div>
-
-<div class="form-group">
-<label>Pelajaran yang Tidak Disukai</label>
-<input id="wMapelTidak">
-</div>
-
-<div class="form-group">
-<label>Ekstrakurikuler</label>
-<input id="wEkskul">
-</div>
-
-</div>
-
-<!-- STEP 5 -->
-
-<div
-class="wizard-step"
-id="step5"
-style="display:none">
-
-<h3>Gaya Belajar</h3>
-
-<div class="question">
-
-<p>
-Saya lebih mudah memahami pelajaran dengan melihat gambar.
-</p>
-
-<select id="visual1">
-<option value="2">Sangat Setuju</option>
-<option value="1">Setuju</option>
-<option value="0">Tidak</option>
-</select>
-
-</div>
-
-<div class="question">
-
-<p>
-Saya lebih mudah memahami pelajaran jika mendengarkan penjelasan.
-</p>
-
-<select id="audio1">
-<option value="2">Sangat Setuju</option>
-<option value="1">Setuju</option>
-<option value="0">Tidak</option>
-</select>
-
-</div>
-
-<div class="question">
-
-<p>
-Saya lebih suka praktik langsung.
-</p>
-
-<select id="kin1">
-<option value="2">Sangat Setuju</option>
-<option value="1">Setuju</option>
-<option value="0">Tidak</option>
-</select>
-
-</div>
-
-</div>
-
-<!-- STEP 6 -->
-
-<div
-class="wizard-step"
-id="step6"
-style="display:none">
-
-<h3>Kepribadian</h3>
-
-<div class="question">
-
-<p>
-Saya senang berbicara dengan banyak teman.
-</p>
-
-<select id="ext1">
-
-<option value="2">Ya</option>
-<option value="0">Tidak</option>
-
-</select>
-
-</div>
-
-<div class="question">
-
-<p>
-Saya lebih nyaman menyendiri.
-</p>
-
-<select id="int1">
-
-<option value="2">Ya</option>
-<option value="0">Tidak</option>
-
-</select>
-
-</div>
-
-</div>
-function hitungDiagnostik(){
-
-let visual =
-Number(
-document.getElementById(
-'visual1'
-).value
-);
-
-let audio =
-Number(
-document.getElementById(
-'audio1'
-).value
-);
-
-let kin =
-Number(
-document.getElementById(
-'kin1'
-).value
-);
-
-let ext =
-Number(
-document.getElementById(
-'ext1'
-).value
-);
-
-let intr =
-Number(
-document.getElementById(
-'int1'
-).value
-);
-
-let gaya="";
-
-if(
-visual>=audio &&
-visual>=kin
-){
-
-gaya="VISUAL";
-
-}
-else if(
-audio>=visual &&
-audio>=kin
-){
-
-gaya="AUDITORIAL";
-
-}
-else{
-
-gaya="KINESTETIK";
-
-}
-
-let kepribadian="";
-
-if(ext>intr){
-
-kepribadian="EKSTROVERT";
-
-}
-else if(intr>ext){
-
-kepribadian="INTROVERT";
-
-}
-else{
-
-kepribadian="AMBIVERT";
-
-}
-
-return{
-gaya,
-kepribadian
-};
-
-}
-<!-- STEP 7 -->
-
-<div
-class="wizard-step"
-id="step7"
-style="display:none">
-
-<h3>Upload Dokumen</h3>
-
-<div class="form-group">
-
-<label>Pas Foto (Maks 5 MB)</label>
-
-<input
-type="file"
-id="pasFoto"
-accept="image/*">
-
-</div>
-
-<div class="form-group">
-
-<label>KK (Maks 5 MB)</label>
-
-<input
-type="file"
-id="kk"
-accept="image/*,.pdf">
-
-</div>
-
-<div class="form-group">
-
-<label>Akta (Maks 5 MB)</label>
-
-<input
-type="file"
-id="akta"
-accept="image/*,.pdf">
-
-</div>
-
-<br>
-
-<button
-class="btn"
-onclick="submitFinal()">
-
-Kirim Data
-
-</button>
-
-</div>
-async function submitFinal(){
-
-let hasil =
-hitungDiagnostik();
-
-let data = {
-
-action:
-"registerStudent",
-
-namaLengkap:
-document.getElementById(
-'wNamaLengkap'
-).value,
-
-namaPanggilan:
-document.getElementById(
-'wNamaPanggilan'
-).value,
-
-jenisKelamin:
-document.getElementById(
-'wJk'
-).value,
-
-tempatLahir:
-document.getElementById(
-'wTempatLahir'
-).value,
-
-tanggalLahir:
-document.getElementById(
-'wTanggalLahir'
-).value,
-
-alamat:
-document.getElementById(
-'wAlamat'
-).value,
-
-waSiswa:
-document.getElementById(
-'wWaSiswa'
-).value,
-
-waOrtu:
-document.getElementById(
-'wWaOrtu'
-).value,
-
-namaAyah:
-document.getElementById(
-'wAyah'
-).value,
-
-namaIbu:
-document.getElementById(
-'wIbu'
-).value,
-
-hobi:
-document.getElementById(
-'wHobi'
-).value,
-
-citacita:
-document.getElementById(
-'wCita'
-).value,
-
-mapelSuka:
-document.getElementById(
-'wMapelSuka'
-).value,
-
-mapelTidak:
-document.getElementById(
-'wMapelTidak'
-).value,
-
-ekskul:
-document.getElementById(
-'wEkskul'
-).value,
-
-gayaBelajar:
-hasil.gaya,
-
-kepribadian:
-hasil.kepribadian
-
-};
-
-let res =
-await fetch(
-GAS_URL,
-{
-method:'POST',
-body:
-JSON.stringify(data)
-}
-);
-
-let json =
-await res.json();
-
-if(json.success){
-
-showPopup(
-"🎉",
-"Berhasil",
-"Data berhasil dikirim."
-);
-
-}
-else{
-
-showPopup(
-"❌",
-"Gagal",
-json.message
-);
-
-}
-
-}
-<!-- ========================= -->
-<!-- CHAT PAGE -->
-<!-- ========================= -->
-
-<div id="chatPage" style="display:none">
-
-<div class="card">
-
-<h2>Curhat dengan Wali Kelas</h2>
-
-<p>
-Semua pesan bersifat rahasia.
-</p>
-
-<br>
-
-<label style="display:flex;gap:10px;">
-<input type="checkbox" id="isAnonim">
-Kirim sebagai Anonim
-</label>
-
-<br>
-
-<div id="chatContainer"
-style="
-height:450px;
-overflow:auto;
-padding:20px;
-background:rgba(255,255,255,.05);
-border-radius:25px;
-">
-
-</div>
-
-<br>
-
-<div style="
-display:flex;
-gap:10px;
-">
-
-<input
-id="chatText"
-placeholder="Tulis pesan..."
-style="
-flex:1;
-padding:16px;
-border:none;
-border-radius:20px;
-background:rgba(255,255,255,.08);
-color:white;
-">
-
-<button
-class="btn"
-style="width:150px"
-onclick="kirimPesan()">
-
-Kirim
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-<!-- ========================= -->
-<!-- PRESTASI -->
-<!-- ========================= -->
-
-<div id="prestasiPage" style="display:none">
-
-<div class="card">
-
-<h2>Prestasi Saya</h2>
-
-<div id="prestasiContainer">
-
-Belum ada prestasi.
-
-</div>
-
-</div>
-
-</div>
-<!-- ========================= -->
-<!-- PELANGGARAN -->
-<!-- ========================= -->
-
-<div id="pelanggaranPage" style="display:none">
-
-<div class="card">
-
-<h2>Poin Pelanggaran</h2>
-
-<h1 id="poinPelanggaran">
-
-0
-
-</h1>
-
-<p id="statusPelanggaran">
-
-Belum ada pelanggaran.
-
-</p>
-
-<br>
-
-<div id="pelanggaranContainer">
-
-</div>
-
-</div>
-
-</div>
-<!-- ========================= -->
-<!-- CATATAN -->
-<!-- ========================= -->
-
-<div id="catatanPage" style="display:none">
-
-<div class="card">
-
-<h2>Catatan Wali Kelas</h2>
-
-<div id="catatanContainer">
-
-Belum ada catatan.
-
-</div>
-
-</div>
-
-</div>
-<!-- ========================= -->
-<!-- MOOD -->
-<!-- ========================= -->
-
-<div id="moodPage" style="display:none">
-
-<div class="card">
-
-<h2>Mood Hari Ini</h2>
-
-<p>
-Bagaimana perasaanmu hari ini?
-</p>
-
-<br>
-
-<div
-style="
-display:grid;
-grid-template-columns:
-repeat(5,1fr);
-gap:15px;
-">
-
-<button class="btn" onclick="kirimMood('😁')">
-😁
-</button>
-
-<button class="btn" onclick="kirimMood('😊')">
-😊
-</button>
-
-<button class="btn" onclick="kirimMood('😐')">
-😐
-</button>
-
-<button class="btn" onclick="kirimMood('😔')">
-😔
-</button>
-
-<button class="btn" onclick="kirimMood('😭')">
-😭
-</button>
-
-</div>
-
-</div>
-
-</div>
-<div class="footer">
-
-<img
-src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png"
-width="20">
-
-SIPANDA v1.0.0 |
-<a href="#"
-onclick="openInfo()">
-
-Tentang Aplikasi
-
-</a>
-
-</div>
-<div class="popup" id="popup">
-
-<div class="popup-box">
-
-<img
-src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png">
-
-<h2 id="popupTitle">
-
-SIPANDA
-
-</h2>
-
-<p id="popupMessage">
-
-Sistem Informasi Panduan Siswa
-
-</p>
-
-<button
-onclick="closePopup()">
-
-Tutup
-
-</button>
-
-</div>
-
-</div>
-<script>
-
-function showPopup(
-title,
-subtitle,
-message
-){
-
-document.getElementById(
-'popupTitle'
-).innerHTML =
-title;
-
-document.getElementById(
-'popupMessage'
-).innerHTML =
-subtitle +
-"<br><br>" +
-message;
-
-document.getElementById(
-'popup'
-).style.display =
-'flex';
-
-}
-
-function closePopup(){
-
-document.getElementById(
-'popup'
-).style.display =
-'none';
-
-}
-
-/* ======================
-AUTO LOGIN
-====================== */
-
-window.onload = function(){
-
-setTimeout(()=>{
-
-document.getElementById(
-'splash'
-).style.display =
-'none';
-
-},2500);
-
-let session =
-localStorage.getItem(
-'sipandaUser'
-);
-
-let expired =
-localStorage.getItem(
-'sipandaExpired'
-);
-
-if(
-session &&
-expired &&
-Date.now() <
-Number(expired)
-){
-
-currentUser =
-JSON.parse(session);
-
-document.getElementById(
-'loginPage'
-).style.display =
-'none';
-
-document.getElementById(
-'app'
-).style.display =
-'block';
-
-loadDashboard();
-
-}
-
-};
-
-/* ======================
-SESSION 30 MENIT
-====================== */
-
-function simpanSession(user){
-
-localStorage.setItem(
-'sipandaUser',
-JSON.stringify(user)
-);
-
-localStorage.setItem(
-'sipandaExpired',
-Date.now() +
-(30*60*1000)
-);
-
-}
-
-/* ======================
-LOGOUT
-====================== */
-
-function logout(){
-
-localStorage.clear();
-
-location.reload();
-
-}
-
-/* ======================
-CHAT
-====================== */
-
-async function kirimPesan(){
-
-let pesan =
-document.getElementById(
-'chatText'
-).value;
-
-if(!pesan) return;
-
-let anonim =
-document.getElementById(
-'isAnonim'
-).checked;
-
-let body = {
-
-action:'sendMessage',
-
-nisn:
-currentUser.username,
-
-pesan:pesan,
-
-anonim:anonim
-
-};
-
-let res =
-await fetch(
-GAS_URL,
-{
-method:'POST',
-body:
-JSON.stringify(body)
-}
-);
-
-let data =
-await res.json();
-
-if(data.success){
-
-document.getElementById(
-'chatText'
-).value='';
-
-loadChat();
-
-}
-
-}
-
-/* ======================
-LOAD CHAT
-====================== */
-
-async function loadChat(){
-
-}
-
-/* ======================
-MOOD
-====================== */
-
-async function kirimMood(mood){
-
-await fetch(
-GAS_URL,
-{
-method:'POST',
-body:
-JSON.stringify({
-
-action:'saveMood',
-
-nisn:
-currentUser.username,
-
-mood:mood
-
-})
-}
-);
-
-document.getElementById(
-'moodHariIni'
-).innerHTML =
-mood;
-
-showPopup(
-'😊',
-'Terima Kasih',
-'Mood berhasil dikirim.'
-);
-
-}
-
-/* ======================
-UPLOAD FILE
-====================== */
-
-function validasiFile(file){
-
-if(!file) return true;
-
-if(
-file.size >
-(5*1024*1024)
-){
-
-showPopup(
-'❌',
-'Ukuran File',
-'Maksimal 5 MB.'
-);
-
-return false;
-
-}
-
-return true;
-
-}
-
-</script>
-</div>
-
+  <div class="theme-toggle" onclick="toggleTheme()">🌓</div>
+
+  <div id="screen-splash" class="screen active">
+    <img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png" alt="Logo" class="splash-logo">
+    <h1 style="font-weight:700; margin-top:16px; color:var(--primary);">SIPANDA</h1>
+    <p style="font-size:13px; color:var(--text-muted); padding: 0 40px; margin-top:6px;">Sistem Informasi Panduan dan Diagnostik Siswa</p>
+    
+    <div style="margin-top:40px; font-size:11px; color:var(--text-muted); line-height:1.6;">
+      <div>Versi 1.0.0 (UI 2026 Build)</div>
+      <div>Developer Engine Network</div>
+      <div>info@sipanda-smp.sch.id</div>
+      <div><a href="#" style="color:var(--primary); text-decoration:none;">www.sipanda-smp.sch.id</a></div>
+    </div>
+  </div>
+
+  <div id="screen-login" class="screen">
+    <div class="glass-card" style="margin-top: auto; margin-bottom: auto;">
+      <div style="text-align:center; margin-bottom:24px;">
+        <img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png" style="width:70px;" alt="Logo">
+        <h2 style="margin-top:10px;">Masuk ke SIPANDA</h2>
+      </div>
+      
+      <div class="input-group">
+        <label>Username / NISN</label>
+        <input type="text" id="login-username" class="form-control" placeholder="Masukkan ID atau NISN Anda">
+      </div>
+      
+      <div class="input-group">
+        <label>PIN Keamanan</label>
+        <input type="password" id="login-pin" class="form-control" placeholder="••••">
+      </div>
+      
+      <button class="btn" onclick="app.auth.login()">Otentikasi Aman</button>
+      <div style="text-align:center; margin-top:20px; font-size:13px;">
+        <span style="color:var(--text-muted)">Siswa Baru?</span> 
+        <a href="#" style="color:var(--primary); font-weight:600; text-decoration:none;" onclick="app.router.navigate('screen-biodata')">Isi Biodata Awal</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-dash-siswa" class="screen">
+    <div class="profile-header glass-card">
+      <img src="https://via.placeholder.com/150" id="ds-avatar" class="avatar" alt="Foto Siswa">
+      <div>
+        <h3 id="ds-nama" style="font-weight:700;">MEMUAT...</h3>
+        <p id="ds-kelas-wali" style="font-size:13px; color:var(--text-muted);"></p>
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <h4>Status Akademik & Karakter</h4>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:14px;">
+        <div style="background:rgba(0,59,149,0.05); padding:12px; border-radius:14px; text-align:center;">
+          <div style="font-size:12px; color:var(--text-muted)">Total Poin</div>
+          <div id="ds-poin" style="font-size:24px; font-weight:700; color:var(--primary);">0</div>
+        </div>
+        <div style="background:rgba(0,59,149,0.05); padding:12px; border-radius:14px; text-align:center;">
+          <div style="font-size:12px; color:var(--text-muted)">Prestasi</div>
+          <div id="ds-prestasi-count" style="font-size:24px; font-weight:700; color:var(--accent);">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <h4>Mood Tracker Hari Ini</h4>
+      <div style="display:flex; justify-content:space-around; margin-top:14px; font-size:28px;">
+        <span style="cursor:pointer" onclick="app.student.setMood('😁')">😁</span>
+        <span style="cursor:pointer" onclick="app.student.setMood('😊')">😊</span>
+        <span style="cursor:pointer" onclick="app.student.setMood('😐')">😐</span>
+        <span style="cursor:pointer" onclick="app.student.setMood('😔')">😔</span>
+        <span style="cursor:pointer" onclick="app.student.setMood('😭')">😭</span>
+      </div>
+      <p style="text-align:center; font-size:12px; margin-top:10px; color:var(--text-muted)">Mood saat ini: <span id="ds-current-mood">😐</span></p>
+    </div>
+  </div>
+
+  <div id="screen-dash-guru" class="screen">
+    <div class="app-header-title">Panel Kendali Guru</div>
+    <div class="app-sub">Overview Data Monitor Kelas</div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
+      <div class="glass-card" style="margin:0; padding:16px;">
+        <div style="font-size:12px; color:var(--text-muted)">Total Siswa</div>
+        <div id="dg-total" style="font-size:24px; font-weight:700; color:var(--primary);">0</div>
+      </div>
+      <div class="glass-card" style="margin:0; padding:16px;">
+        <div style="font-size:12px; color:var(--text-muted)">Laki / Perempuan</div>
+        <div id="dg-ratio" style="font-size:16px; font-weight:700; margin-top:8px;">0 / 0</div>
+      </div>
+      <div class="glass-card" style="margin:0; padding:16px;">
+        <div style="font-size:12px; color:var(--text-muted)">Poin Bahaya (>=75)</div>
+        <div id="dg-critical" style="font-size:24px; font-weight:700; color:red;">0</div>
+      </div>
+      <div class="glass-card" style="margin:0; padding:16px;">
+        <div style="font-size:12px; color:var(--text-muted)">Belum Biodata</div>
+        <div id="dg-nobio" style="font-size:24px; font-weight:700; color:orange;">0</div>
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <h4>Aksi Cepat Manajemen</h4>
+      <div style="display:flex; flex-direction:column; gap:10px; margin-top:12px;">
+        <button class="btn btn-secondary" style="justify-content:flex-start;" onclick="app.teacher.openModal('prestasi')">🏆 Tambah Prestasi</button>
+        <button class="btn btn-secondary" style="justify-content:flex-start;" onclick="app.teacher.openModal('pelanggaran')">⚠️ Catat Pelanggaran</button>
+        <button class="btn btn-secondary" style="justify-content:flex-start;" onclick="app.teacher.openModal('catatan')">📝 Beri Catatan Wali</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-biodata" class="screen">
+    <div class="glass-card">
+      <h3 style="margin-bottom:6px;">Pendaftaran Biodata Mandiri</h3>
+      <div class="progress-container"><div id="bio-progress" class="progress-bar"></div></div>
+      
+      <form id="form-biodata-wizard" onsubmit="event.preventDefault();">
+        <div class="wizard-step active" data-step="1">
+          <div class="input-group"><label>No Absen</label><input type="number" name="No Absen" class="form-control" required></div>
+          <div class="input-group"><label>Kelas</label><input type="text" name="Kelas" class="form-control" required></div>
+          <div class="input-group"><label>Nama Lengkap</label><input type="text" name="Nama Lengkap" class="form-control" required></div>
+          <div class="input-group"><label>Nama Panggilan</label><input type="text" name="Nama Panggilan" class="form-control" required></div>
+        </div>
+
+        <div class="wizard-step" data-step="2">
+          <div class="input-group"><label>Jenis Kelamin (L/P)</label><input type="text" name="Jenis Kelamin" class="form-control" required></div>
+          <div class="input-group"><label>Tempat Lahir</label><input type="text" name="Tempat Lahir" class="form-control" required></div>
+          <div class="input-group"><label>Tanggal Lahir</label><input type="date" name="Tanggal Lahir" class="form-control" required></div>
+          <div class="input-group"><label>Alamat Lengkap</label><input type="text" name="Alamat Lengkap" class="form-control" required></div>
+        </div>
+
+        <div class="wizard-step" data-step="3">
+          <div class="input-group"><label>No WA Siswa</label><input type="tel" name="No WA Siswa" class="form-control" required></div>
+          <div class="input-group"><label>No WA Orang Tua</label><input type="tel" name="No WA Orang Tua" class="form-control" required></div>
+          <div class="input-group"><label>NIS</label><input type="text" name="NIS" class="form-control" required></div>
+          <div class="input-group"><label>NISN</label><input type="text" name="NISN" class="form-control" required></div>
+        </div>
+
+        <div class="wizard-step" data-step="4">
+          <div class="input-group"><label>Hobi</label><input type="text" name="Hobi" class="form-control"></div>
+          <div class="input-group"><label>Cita-cita</label><input type="text" name="Cita-cita" class="form-control"></div>
+          <div class="input-group"><label>Pelajaran Disukai</label><input type="text" name="Pelajaran Disukai" class="form-control"></div>
+          <div class="input-group"><label>Ekskul</label><input type="text" name="Ekskul" class="form-control"></div>
+        </div>
+
+        <div class="wizard-step" data-step="5">
+          <div class="input-group"><label>Nama Ayah</label><input type="text" name="Nama Ayah" class="form-control"></div>
+          <div class="input-group"><label>Nama Ibu</label><input type="text" name="Nama Ibu" class="form-control"></div>
+          <div class="input-group"><label>Punya KIP? (YA/TIDAK)</label><input type="text" name="Punya KIP" class="form-control"></div>
+          <div class="input-group"><label>Upload Pas Foto (Max 5MB)</label><input type="file" id="file-pasfoto" class="form-control" accept="image/*"></div>
+          <div class="input-group"><label>Upload Kartu Keluarga (Max 5MB)</label><input type="file" id="file-kk" class="form-control" accept="image/*,application/pdf"></div>
+          <div class="input-group"><label>Upload Akta Kelahiran (Max 5MB)</label><input type="file" id="file-akta" class="form-control" accept="image/*,application/pdf"></div>
+        </div>
+
+        <div style="display:flex; gap:12px; margin-top:20px;">
+          <button type="button" class="btn btn-secondary" id="btn-wizard-prev" onclick="app.wizard.prev()" style="display:none;">Kembali</button>
+          <button type="button" class="btn" id="btn-wizard-next" onclick="app.wizard.next()">Lanjut</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="screen-diagnostik" class="screen">
+    <div class="glass-card">
+      <h3>Asesmen Diagnostik Karakter</h3>
+      <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">Jawab secara jujur untuk memetakan profiling diri.</p>
+      
+      <div id="diagnostik-questions-container">
+        </div>
+      
+      <button class="btn" style="margin-top:20px;" onclick="app.student.evaluateDiagnostik()">Submit & Analisis</button>
+    </div>
+  </div>
+
+  <div id="screen-chat" class="screen">
+    <div class="app-header-title">Layanan Curhat</div>
+    <div class="app-sub">Saluran Aman Berbagi Bersama Wali Kelas</div>
+
+    <div class="glass-card" style="flex:1; display:flex; flex-direction:column; padding:16px;">
+      <div id="chat-box" class="chat-container"></div>
+      
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+        <input type="checkbox" id="chat-anonim"> <label style="font-size:12px; var(--text-muted)" for="chat-anonim">Kirim sebagai Anonim</label>
+      </div>
+      
+      <div style="display:flex; gap:8px;">
+        <input type="text" id="chat-message-input" class="form-control" placeholder="Ketik pesan pesan Anda di sini...">
+        <button class="btn" style="width:auto; padding:14px;" onclick="app.chat.send()">▶</button>
+      </div>
+    </div>
+  </div>
+
+  <nav id="app-nav" class="nav-bar">
+    <div class="nav-item" onclick="app.router.navHome()">
+      <span class="nav-icon">🏠</span><span>Beranda</span>
+    </div>
+    <div class="nav-item" onclick="app.router.navigate('screen-chat')">
+      <span class="nav-icon">💬</span><span>Curhat</span>
+    </div>
+    <div class="nav-item student-only" onclick="app.router.navigate('screen-diagnostik')">
+      <span class="nav-icon">🧠</span><span>Asesmen</span>
+    </div>
+    <div class="nav-item" onclick="app.auth.logout()">
+      <span class="nav-icon">🚪</span><span>Keluar</span>
+    </div>
+  </nav>
+
+  <div id="teacher-modal" class="screen" style="position:fixed; top:0; left:0; right:0; bottom:0; z-index:2000; background:var(--bg-light); display:none;">
+    <div class="glass-card" style="margin:20px;">
+      <h3 id="modal-title">Operasi Data</h3>
+      <div id="modal-body-content" style="margin-top:16px;"></div>
+      <div style="display:flex; gap:12px; margin-top:20px;">
+        <button class="btn btn-secondary" onclick="document.getElementById('teacher-modal').style.display='none'">Batal</button>
+        <button class="btn" onclick="app.teacher.submitModalAction()">Simpan Transaksi</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => console.error(err));
+      });
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('sipanda-theme', next);
+    }
+    
+    // Theme Initializer Integration
+    if(localStorage.getItem('sipanda-theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  </script>
 </body>
 </html>
