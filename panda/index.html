@@ -6,56 +6,33 @@
     <title>🐼 PANDA | Diagnostik Lengkap</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #003b95; --bg: #eef2f7; }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
-        .container { width: 100%; max-width: 600px; background: white; padding: 2rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        :root { --primary: #003b95; --bg: #f3f4f6; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 600px; background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .step { display: none; }
-        .step.active { display: block; animation: fadeIn 0.4s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .progress-container { width: 100%; height: 8px; background: #eee; border-radius: 4px; margin-bottom: 25px; }
-        #progress { height: 100%; background: var(--primary); width: 25%; border-radius: 4px; transition: 0.4s; }
+        .step.active { display: block; }
         .form-group { margin-bottom: 15px; }
-        label { font-size: 0.8rem; font-weight: 600; color: #444; display: block; margin-bottom: 5px; }
-        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; }
-        .btn-row { display: flex; gap: 10px; margin-top: 20px; }
-        button { flex: 1; padding: 14px; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; background: var(--primary); color: white; }
-        button.secondary { background: #6c757d; }
-        .asesmen-box { height: 300px; overflow-y: auto; padding: 10px; border: 1px solid #ddd; border-radius: 12px; margin-bottom: 15px; }
-        .uppercase { text-transform: uppercase; }
+        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; border: none; border-radius: 10px; background: var(--primary); color: white; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .asesmen-box { height: 400px; overflow-y: auto; padding: 10px; border: 1px solid #eee; border-radius: 10px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="progress-container"><div id="progress"></div></div>
-    
     <form id="pandaForm">
         <div class="step active" id="step1">
-            <h3>1. Identitas Siswa</h3>
-            <div class="form-group"><label>No Absen</label><input type="number" id="noAbsen" required></div>
-            <div class="form-group"><label>Nama Lengkap</label><input type="text" id="namaLengkap" class="uppercase" required></div>
+            <h2>Biodata Siswa</h2>
+            <div class="form-group"><label>Nama Lengkap</label><input type="text" id="namaLengkap" required></div>
             <div class="form-group"><label>NISN</label><input type="number" id="nisn" required></div>
-            <button type="button" onclick="nextStep(2, 50)">Lanjut ke Profil</button>
+            <button type="button" onclick="goStep(2)">Lanjut ke Asesmen</button>
         </div>
 
         <div class="step" id="step2">
-            <h3>2. Profil & Keluarga</h3>
-            <div class="form-group"><label>Hobi</label><input type="text" id="hobi"></div>
-            <div class="form-group"><label>Nama Ayah</label><input type="text" id="namaAyah" class="uppercase"></div>
-            <div class="form-group"><label>Nama Ibu</label><input type="text" id="namaIbu" class="uppercase"></div>
-            <div class="btn-row">
-                <button type="button" class="secondary" onclick="nextStep(1, 25)">Kembali</button>
-                <button type="button" onclick="nextStep(3, 75)">Lanjut ke Asesmen</button>
-            </div>
-        </div>
-
-        <div class="step" id="step3">
-            <h3>3. Asesmen Diagnostik</h3>
+            <h2>Asesmen Diagnostik (100 Soal)</h2>
             <div class="asesmen-box" id="asesmen-container"></div>
-            <div class="btn-row">
-                <button type="button" class="secondary" onclick="nextStep(2, 50)">Kembali</button>
-                <button type="submit" id="btnSubmit">SUBMIT DATA</button>
-            </div>
+            <button type="submit" id="btnSubmit">KIRIM SEMUA DATA</button>
         </div>
     </form>
 </div>
@@ -63,12 +40,12 @@
 <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbzPaWgz2zof9UTq-BRvvk5Nwcmz0pMwZAkEQfHne-k3RmUcKVWvG1VaxU9R-M_QmLI/exec";
 
-    // Generate 100 Soal
+    // Generate 100 Soal Otomatis
     const container = document.getElementById('asesmen-container');
     for (let i = 1; i <= 100; i++) {
         container.innerHTML += `
             <div class="form-group">
-                <label>${i}. Pertanyaan asesmen terkait minat/bakat ke-${i}?</label>
+                <label>${i}. Pertanyaan asesmen terkait minat/bakat ${i}?</label>
                 <select name="Q${i}" required>
                     <option value="1">1 - Sangat Tidak Setuju</option>
                     <option value="2">2 - Tidak Setuju</option>
@@ -80,40 +57,32 @@
         `;
     }
 
-    function nextStep(s, progress) {
+    function goStep(s) {
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById('step' + s).classList.add('active');
-        document.getElementById('progress').style.width = progress + '%';
     }
 
     document.getElementById('pandaForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.getElementById('btnSubmit');
-        btn.disabled = true; btn.innerText = "Mengirim...";
+        btn.disabled = true; btn.innerText = "Mengirim Data...";
 
         const formData = new FormData(e.target);
         const data = {
-            action: "SUBMIT_SISWA_LENGKAP",
+            action: "SUBMIT_SISWA_LENGKAP", // Sesuaikan dengan handler di GAS
             id: crypto.randomUUID(),
-            noAbsen: document.getElementById('noAbsen').value,
             namaLengkap: document.getElementById('namaLengkap').value,
-            nisn: document.getElementById('nisn').value,
-            hobi: document.getElementById('hobi').value,
-            namaAyah: document.getElementById('namaAyah').value,
-            namaIbu: document.getElementById('namaIbu').value
+            nisn: document.getElementById('nisn').value
         };
 
+        // Masukkan Q1-Q100 ke objek data
         for(let i=1; i<=100; i++) data['Q'+i] = formData.get('Q'+i);
 
         try {
-            const res = await fetch(GAS_URL, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain" },
-                body: JSON.stringify(data)
-            });
-            alert("Data berhasil tersimpan!");
+            await fetch(GAS_URL, { method: "POST", body: JSON.stringify(data) });
+            alert("Data Asesmen Berhasil Dikirim!");
             location.reload();
-        } catch (err) { alert("Gagal koneksi."); btn.disabled = false; btn.innerText = "SUBMIT DATA"; }
+        } catch (err) { alert("Gagal koneksi."); btn.disabled = false; }
     });
 </script>
 </body>
