@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐼 PANDA | Pemetaan Anak melalui Diagnostik Awal</title>
+    <!-- Font Poppins & Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #003b95;
+            --secondary: #ffc107;
+            --bg: #f3f4f6;
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0e7ff, #f3f4f6);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.5);
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .header-section { text-align: center; margin-bottom: 2rem; }
+        .logo { width: 100px; margin-bottom: 15px; }
+        h1 { font-size: 1.5rem; color: var(--primary); margin: 0; }
+        p { font-size: 0.85rem; color: #666; margin: 5px 0 0 0; }
+
+        .form-group { margin-bottom: 1rem; }
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 16px;
+            box-sizing: border-box;
+            background: rgba(255,255,255,0.5);
+            font-family: 'Poppins';
+            transition: 0.3s;
+        }
+
+        input:focus { outline: 2px solid var(--primary); background: #fff; }
+        
+        button {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: 0.3s;
+        }
+
+        button:active { transform: scale(0.98); }
+
+        /* Auto-Upper Logic CSS */
+        .uppercase { text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-section">
+        <img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png" class="logo" alt="Logo PANDA">
+        <h1>PANDA</h1>
+        <p>Pemetaan Anak melalui Diagnostik Awal</p>
+    </div>
+
+    <form id="formSiswa">
+        <div class="form-group"><input type="text" id="namaLengkap" class="uppercase" placeholder="Nama Lengkap" required></div>
+        <div class="form-group"><input type="text" id="namaPanggilan" class="uppercase" placeholder="Nama Panggilan" required></div>
+        <div class="form-group"><input type="number" id="nisn" placeholder="NISN" required></div>
+        <div class="form-group">
+            <select id="jk">
+                <option value="L">Laki-laki</option>
+                <option value="P">Perempuan</option>
+            </select>
+        </div>
+        <div class="form-group"><input type="text" id="namaAyah" class="uppercase" placeholder="Nama Ayah" required></div>
+        <div class="form-group"><input type="text" id="namaIbu" class="uppercase" placeholder="Nama Ibu" required></div>
+        
+        <button type="submit" id="btnSubmit">SUBMIT DATA</button>
+    </form>
+</div>
+
+<script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbzPaWgz2zof9UTq-BRvvk5Nwcmz0pMwZAkEQfHne-k3RmUcKVWvG1VaxU9R-M_QmLI/exec";
+
+    document.getElementById('formSiswa').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmit');
+        btn.disabled = true;
+        btn.innerText = "Mengirim...";
+
+        const data = {
+            action: "SUBMIT_SISWA",
+            id: crypto.randomUUID(),
+            namaLengkap: document.getElementById('namaLengkap').value,
+            namaPanggilan: document.getElementById('namaPanggilan').value,
+            nisn: document.getElementById('nisn').value,
+            jk: document.getElementById('jk').value,
+            namaAyah: document.getElementById('namaAyah').value,
+            namaIbu: document.getElementById('namaIbu').value
+            // Tambahkan field lain sesuai kebutuhan sheet Anda
+        };
+
+        try {
+            const res = await fetch(GAS_URL, {
+                method: "POST",
+                body: JSON.stringify(data)
+            });
+            const result = await res.json();
+            
+            if(result.status === "success") {
+                alert("Data berhasil tersimpan!");
+                document.getElementById('formSiswa').reset();
+            } else {
+                alert("Error: " + result.message);
+            }
+        } catch (err) {
+            alert("Koneksi gagal, silakan coba lagi.");
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "SUBMIT DATA";
+        }
+    });
+</script>
+</body>
+</html>
