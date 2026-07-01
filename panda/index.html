@@ -55,13 +55,20 @@
             <div class="form-group"><label>Pelajaran Tdk Disukai</label><input type="text" id="pelajaranTdkSuka"></div>
             <div class="form-group"><label>Ekskul</label><input type="text" id="ekskul"></div>
             <div class="form-group"><label>Kegiatan Motivasi</label><input type="text" id="kegiatanMotivasi"></div>
-            <div class="form-group"><label>Cara Belajar</label><select id="caraBelajar"><option>Visual</option><option>Auditori</option><option>Kinestetik</option></select></div>
-            <div class="form-group"><label>Nama Ayah</label><input type="text" id="namaAyah"></div>
+            <div class="form-group">
+                <label>Cara Belajar</label>
+                <select id="caraBelajar">
+                    <option value="Melihat video atau gambar">Melihat video atau gambar</option>
+                    <option value="Mendengarkan guru atau podcast">Mendengarkan guru atau podcast</option>
+                    <option value="Praktik langsung">Praktik langsung</option>
+                </select>
+            </div>
             <button type="button" onclick="go(3)">Lanjut ke Sesi 3</button>
         </div>
 
         <div class="step" id="step3">
             <h4>Data Keluarga (3/3)</h4>
+            <div class="form-group"><label>Nama Ayah</label><input type="text" id="namaAyah"></div>
             <div class="form-group"><label>Pekerjaan Ayah</label><input type="text" id="pekerjaanAyah"></div>
             <div class="form-group"><label>Pendidikan Ayah</label><input type="text" id="pendidikanAyah"></div>
             <div class="form-group"><label>Nama Ibu</label><input type="text" id="namaIbu"></div>
