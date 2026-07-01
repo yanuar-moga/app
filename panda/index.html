@@ -188,7 +188,7 @@
         }
         button.secondary:hover { background: #f1f5f9; }
         
-        /* Sistem Animasi Modal Baru */
+        /* Sistem Animasi Modal */
         .modal { 
             display: none; 
             position: fixed; 
@@ -232,16 +232,23 @@
             color: var(--text-main);
         }
 
-        /* Footer Elegan */
+        /* Desain Baru Footer Gradasi Biru-Putih-Biru */
         footer {
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            width: 100%;
+            max-width: 450px;
+            background: linear-gradient(135deg, #e0f2fe 0%, #ffffff 50%, #e0f2fe 100%);
+            border: 1.5px solid rgba(0, 59, 149, 0.15);
+            padding: 14px 20px;
+            border-radius: 18px;
+            font-size: 0.85rem;
+            color: #334155;
             text-align: center;
-            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+            font-weight: 500;
         }
         footer span {
             color: var(--primary);
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             text-decoration: underline;
             transition: var(--transition);
@@ -270,30 +277,30 @@
     <form id="pandaForm">
         <div class="step active" id="step1">
             <h4>Biodata Diri (1/3)</h4>
-            <div class="form-group"><label>No Absen</label><input type="number" id="noAbsen" required></div>
-            <div class="form-group"><label>Kelas</label><input type="text" id="kelas" required></div>
-            <div class="form-group"><label>Nama Lengkap</label><input type="text" id="namaLengkap" required></div>
-            <div class="form-group"><label>Nama Panggilan</label><input type="text" id="namaPanggilan" required></div>
+            <div class="form-group"><label>No Absen</label><input type="number" id="noAbsen" placeholder="Contoh: 12" required></div>
+            <div class="form-group"><label>Kelas</label><input type="text" id="kelas" placeholder="Contoh: X-A atau 11 MIPA 1" required></div>
+            <div class="form-group"><label>Nama Lengkap</label><input type="text" id="namaLengkap" placeholder="Masukkan nama lengkap sesuai ijazah" required></div>
+            <div class="form-group"><label>Nama Panggilan</label><input type="text" id="namaPanggilan" placeholder="Contoh: Budi" required></div>
             <div class="form-group"><label>Jenis Kelamin</label><select id="jk"><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
-            <div class="form-group"><label>Tempat Lahir</label><input type="text" id="tempatLahir" required></div>
+            <div class="form-group"><label>Tempat Lahir</label><input type="text" id="tempatLahir" placeholder="Contoh: Semarang" required></div>
             <div class="form-group"><label>Tgl Lahir</label><input type="date" id="tglLahir" required></div>
-            <div class="form-group"><label>Alamat Lengkap</label><input type="text" id="alamat" required></div>
-            <div class="form-group"><label>No WA Siswa</label><input type="text" id="noWaSiswa" required></div>
-            <div class="form-group"><label>No WA Ortu</label><input type="text" id="noWaOrtu" required></div>
+            <div class="form-group"><label>Alamat Lengkap</label><input type="text" id="alamat" placeholder="Nama jalan, RT/RW, nomor rumah, kecamatan" required></div>
+            <div class="form-group"><label>No WA Siswa</label><input type="text" id="noWaSiswa" placeholder="Contoh: 081234567xxx" required></div>
+            <div class="form-group"><label>No WA Ortu</label><input type="text" id="noWaOrtu" placeholder="Contoh: 089876543xxx" required></div>
             <button type="button" onclick="go(2)">Lanjut</button>
         </div>
 
         <div class="step" id="step2">
             <h4>Minat & Sekolah (2/3)</h4>
-            <div class="form-group"><label>Hobi</label><input type="text" id="hobi"></div>
-            <div class="form-group"><label>Cita-cita</label><input type="text" id="citaCita"></div>
-            <div class="form-group"><label>No Induk (NIS)</label><input type="text" id="nis"></div>
-            <div class="form-group"><label>NISN</label><input type="number" id="nisn" required></div>
-            <div class="form-group"><label>Pelajaran Disukai</label><input type="text" id="pelajaranSuka"></div>
-            <div class="form-group"><label>Pelajaran Tidak Disukai</label><input type="text" id="pelajaranTdkSuka"></div>
-            <div class="form-group"><label>Ekskul</label><input type="text" id="ekskul"></div>
-            <div class="form-group"><label>Kegiatan Motivasi</label><input type="text" id="kegiatanMotivasi"></div>
-            <div class="form-group"><label>Cara Belajar</label><select id="caraBelajar"><option value="Visual">Visual</option><option value="Auditori">Auditori</option><option value="Kinestetik">Kinestetik</option></select></div>
+            <div class="form-group"><label>Hobi</label><input type="text" id="hobi" placeholder="Contoh: Membaca, Sepak bola, Menggambar"></div>
+            <div class="form-group"><label>Cita-cita</label><input type="text" id="citaCita" placeholder="Contoh: Programmer, Dokter, Guru"></div>
+            <div class="form-group"><label>No Induk (NIS)</label><input type="text" id="nis" placeholder="Masukkan Nomor Induk Siswa"></div>
+            <div class="form-group"><label>NISN</label><input type="number" id="nisn" placeholder="Masukkan 10 digit NISN nasional" required></div>
+            <div class="form-group"><label>Pelajaran Disukai</label><input type="text" id="pelajaranSuka" placeholder="Contoh: Matematika, Bahasa Inggris"></div>
+            <div class="form-group"><label>Pelajaran Tidak Disukai</label><input type="text" id="pelajaranTdkSuka" placeholder="Contoh: Sejarah, Fisika"></div>
+            <div class="form-group"><label>Ekskul</label><input type="text" id="ekskul" placeholder="Contoh: Pramuka, PMR, Basket"></div>
+            <div class="form-group"><label>Kegiatan Motivasi</label><input type="text" id="kegiatanMotivasi" placeholder="Kegiatan yang bikin kamu semangat belajar"></div>
+            <div class="form-group"><label>Cara Belajar</label><select id="caraBelajar"><option value="Menonton Video atau Gambar">Menonton Video atau Gambar</option><option value="Mendengarkan cerita guru atau podcast">Mendengarkan cerita guru atau podcast</option><option value="Praktik langsung">Praktik langsung</option></select></div>
             <div class="btn-group">
                 <button type="button" class="secondary" onclick="go(1)">Kembali</button>
                 <button type="button" onclick="go(3)">Lanjut</button>
@@ -302,17 +309,17 @@
 
         <div class="step" id="step3">
             <h4>Data Keluarga (3/3)</h4>
-            <div class="form-group"><label>Nama Ayah</label><input type="text" id="namaAyah"></div>
-            <div class="form-group"><label>Pekerjaan Ayah</label><input type="text" id="pekerjaanAyah"></div>
-            <div class="form-group"><label>Pendidikan Ayah</label><input type="text" id="pendidikanAyah"></div>
-            <div class="form-group"><label>Nama Ibu</label><input type="text" id="namaIbu"></div>
-            <div class="form-group"><label>Pekerjaan Ibu</label><input type="text" id="pekerjaanIbu"></div>
-            <div class="form-group"><label>Pendidikan Ibu</label><input type="text" id="pendidikanIbu"></div>
-            <div class="form-group"><label>Topik Sering Dibicarakan</label><input type="text" id="topikOrtu"></div>
-            <div class="form-group"><label>Harapan Orang Tua</label><input type="text" id="harapanOrtu"></div>
+            <div class="form-group"><label>Nama Ayah</label><input type="text" id="namaAyah" placeholder="Masukkan nama lengkap ayah"></div>
+            <div class="form-group"><label>Pekerjaan Ayah</label><input type="text" id="pekerjaanAyah" placeholder="Contoh: Karyawan Swasta, PNS, Wiraswasta"></div>
+            <div class="form-group"><label>Pendidikan Ayah</label><input type="text" id="pendidikanAyah" placeholder="Contoh: SMA, S1, Diploma"></div>
+            <div class="form-group"><label>Nama Ibu</label><input type="text" id="namaIbu" placeholder="Masukkan nama lengkap ibu"></div>
+            <div class="form-group"><label>Pekerjaan Ibu</label><input type="text" id="pekerjaanIbu" placeholder="Contoh: Ibu Rumah Tangga, Guru, Pedagang"></div>
+            <div class="form-group"><label>Pendidikan Ibu</label><input type="text" id="pendidikanIbu" placeholder="Contoh: SMP, SMA, S1"></div>
+            <div class="form-group"><label>Topik Sering Dibicarakan</label><input type="text" id="topikOrtu" placeholder="Contoh: Perkembangan belajar, Masalah keuangan, Masa depan"></div>
+            <div class="form-group"><label>Harapan Orang Tua</label><input type="text" id="harapanOrtu" placeholder="Contoh: Sukses kuliah, Menjadi anak mandiri"></div>
             <div class="form-group"><label>Punya KIP</label><select id="punyaKip"><option value="Ya">Ya</option><option value="Tidak">Tidak</option></select></div>
             <div class="form-group"><label>Status Yatim/Piatu</label><select id="statusYatimPiatu"><option value="Lengkap">Lengkap</option><option value="Yatim">Yatim</option><option value="Piatu">Piatu</option></select></div>
-            <div class="form-group"><label>Riwayat Sakit</label><input type="text" id="riwayatSakit"></div>
+            <div class="form-group"><label>Riwayat Sakit</label><input type="text" id="riwayatSakit" placeholder="Contoh: Asma, Tipes, Kejang, Mag, atau Tulis 'Tidak Ada'"></div>
             <div class="btn-group">
                 <button type="button" class="secondary" onclick="go(2)">Kembali</button>
                 <button type="submit" id="btnSubmit">SUBMIT DATA</button>
@@ -347,13 +354,10 @@
 </div>
 
 <script>
-    // Menggunakan URL Apps Script Anda yang valid
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbzPaWgz2zof9UTq-BRvvk5Nwcmz0pMwZAkEQfHne-k3RmUcKVWvG1VaxU9R-M_QmLI/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwEZuEovCgVlE6cWfB-IoUA0fqrjN12TvgAOMwupXfaiaSz36p5nQ0fDmvptK2DEUt9/exec";
     let reloadOnClose = false;
 
-    // Fungsi Navigasi Langkah Form & Progress Bar
     function go(s) {
-        // Validasi input minimal untuk mematikan bypass asal klik 'Lanjut'
         if (s === 2) {
             const requiredFields = document.getElementById('step1').querySelectorAll('[required]');
             for (let field of requiredFields) {
@@ -367,11 +371,9 @@
             }
         }
 
-        // Jalankan transisi langkah
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById('step' + s).classList.add('active');
         
-        // Perbarui Tampilan Bar Progress
         const fillPercent = ((s - 1) / 2) * 100;
         document.getElementById('progressLine').style.width = fillPercent + '%';
         
@@ -391,7 +393,6 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Penanganan Event Submit Form
     document.getElementById('pandaForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.getElementById('btnSubmit');
@@ -451,7 +452,6 @@
         }
     });
 
-    // Manajemen Sistem Modal Kustom (Pengganti Alert)
     function showCustomModal(title, text, isSuccess) {
         const modal = document.getElementById('msgModal');
         document.getElementById('modalTitle').innerText = title;
@@ -467,9 +467,13 @@
         if (reloadOnClose) { location.reload(); }
     }
 
-    // Manajemen Modal About (Tentang Aplikasi)
+    // About Modal handlers
     function openAboutModal() { document.getElementById('aboutModal').classList.add('active'); }
-    function closeAboutModal() { document.getElementById('aboutModal').classList.remove('active'); }
+    function closeAboutModal() { document.getElementById('aboutModal').remove('active'); }
+    // Memperbaiki typo pemanggilan fungsi close modal agar modal dapat tertutup sempurna
+    document.querySelector('#aboutModal button').addEventListener('click', function() {
+        document.getElementById('aboutModal').classList.remove('active');
+    });
 </script>
 </body>
 </html>
