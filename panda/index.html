@@ -3,30 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐼 PANDA | Diagnostik</title>
+    <title>🐼 PANDA | Diagnostik Awal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #003b95; --bg: #eef2f7; }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 450px; background: white; padding: 25px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        :root { 
+            --primary: #003b95; 
+            --primary-hover: #002b6d;
+            --bg: #f4f7fc; 
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
+        body { 
+            background: var(--bg); 
+            margin: 0; 
+            padding: 20px 10px; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            min-height: 100vh;
+            color: var(--text-main);
+        }
+        
+        .container { 
+            width: 100%; 
+            max-width: 450px; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 24px; 
+            box-shadow: 0 20px 40px rgba(0, 59, 149, 0.05); 
+            margin-bottom: 20px;
+        }
+
+        .header-brand {
+            text-align: center; 
+            margin-bottom: 25px;
+        }
+
+        .header-brand img {
+            width: 75px;
+            height: auto;
+            margin-bottom: 8px;
+        }
+
+        .header-brand h3 {
+            color: var(--primary);
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        /* Progress Bar Langkah */
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        .progress-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            background: #e2e8f0;
+            width: 100%;
+            z-index: 1;
+            border-radius: 2px;
+        }
+        .progress-line-fill {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            background: var(--primary);
+            width: 0%;
+            z-index: 2;
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+        .progress-step {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border: 3px solid #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            z-index: 3;
+            transition: var(--transition);
+        }
+        .progress-step.active {
+            border-color: var(--primary);
+            color: var(--primary);
+            font-weight: 700;
+            transform: scale(1.1);
+        }
+        .progress-step.completed {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
         .step { display: none; }
-        .step.active { display: block; animation: slideIn 0.3s; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .form-group { margin-bottom: 12px; }
-        label { font-size: 0.7rem; color: #555; font-weight: 700; text-transform: uppercase; }
-        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 12px; margin-top: 4px; box-sizing: border-box; }
-        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
-        button { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; }
-        button.secondary { background: #6c757d; }
-        .modal { display: none; position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; }
-        .modal.active { display: flex; }
-        .modal-content { background: white; padding: 25px; border-radius: 20px; width: 80%; max-width: 300px; text-align: center; }
+        .step.active { display: block; animation: slideIn 0.4s forwards; }
+        
+        @keyframes slideIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        .step h4 {
+            font-size: 1.1rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+        
+        .form-group { margin-bottom: 16px; }
+        
+        label { 
+            font-size: 0.75rem; 
+            color: var(--text-muted); 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        
+        input, select { 
+            width: 100%; 
+            padding: 12px 16px; 
+            border: 1.5px solid #e2e8f0; 
+            border-radius: 12px; 
+            box-sizing: border-box; 
+            font-size: 0.95rem;
+            color: var(--text-main);
+            transition: var(--transition);
+            background: #f8fafc;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(0, 59, 149, 0.1);
+        }
+        
+        .btn-group { display: flex; gap: 12px; margin-top: 25px; }
+        
+        button { 
+            width: 100%; 
+            padding: 14px; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            font-weight: 600; 
+            font-size: 0.95rem;
+            cursor: pointer; 
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(0, 59, 149, 0.15);
+        }
+
+        button:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        button:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; box-shadow: none; }
+        
+        button.secondary { 
+            background: white; 
+            color: var(--text-main); 
+            border: 1.5px solid #e2e8f0;
+            box-shadow: none;
+        }
+        button.secondary:hover { background: #f1f5f9; }
+        
+        /* Sistem Animasi Modal Baru */
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top:0; left:0; 
+            width: 100%; height: 100%; 
+            background: rgba(15, 23, 42, 0.6); 
+            backdrop-filter: blur(4px);
+            justify-content: center; 
+            align-items: center; 
+            z-index: 1000; 
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active { display: flex; opacity: 1; }
+        
+        .modal-content { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 20px; 
+            width: 85%; 
+            max-width: 360px; 
+            text-align: center; 
+            transform: scale(0.85);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .modal.active .modal-content { transform: scale(1); }
+
+        .modal-content img.modal-logo {
+            width: 65px;
+            height: auto;
+            margin-bottom: 12px;
+        }
+
+        .modal-content p {
+            margin: 10px 0 20px 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
+
+        /* Footer Elegan */
+        footer {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 10px;
+        }
+        footer span {
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: var(--transition);
+        }
+        footer span:hover {
+            color: var(--primary-hover);
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div style="text-align:center; margin-bottom:20px;">
-        <h3 style="color:var(--primary); margin:5px 0 0 0;">PANDA</h3>
+    <div class="header-brand">
+        <img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png" alt="Logo PANDA">
+        <h3>PANDA</h3>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-line"></div>
+        <div class="progress-line-fill" id="progressLine"></div>
+        <div class="progress-step active" id="pstep1">1</div>
+        <div class="progress-step" id="pstep2">2</div>
+        <div class="progress-step" id="pstep3">3</div>
     </div>
 
     <form id="pandaForm">
@@ -83,25 +321,81 @@
     </form>
 </div>
 
+<footer>
+    Develop by MB | <span onclick="openAboutModal()">Panda V 1.0</span>
+</footer>
+
 <div class="modal" id="msgModal">
     <div class="modal-content">
+        <h3 id="modalTitle" style="margin: 0 0 10px 0;"></h3>
         <p id="modalText"></p>
-        <button onclick="location.reload()">Tutup</button>
+        <button id="modalBtn" onclick="closeModal()">Tutup</button>
+    </div>
+</div>
+
+<div class="modal" id="aboutModal">
+    <div class="modal-content">
+        <img class="modal-logo" src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png" alt="Logo PANDA">
+        <h3 style="margin: 5px 0; color: var(--primary);">PANDA</h3>
+        <p style="font-weight: 500; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">Pemetaan Anak melalui Diagnostik Awal</p>
+        <p style="font-size: 0.8rem; margin-top: 0;">Versi 1.0 Build 30 Juni 2026</p>
+        <div style="border-top: 1px solid #e2e8f0; padding-top: 15px; margin-top: 15px;">
+            <p style="font-size: 0.85rem; font-weight: 600; margin: 0;">Developed by MB</p>
+        </div>
+        <button style="margin-top: 15px;" onclick="closeAboutModal()">Tutup</button>
     </div>
 </div>
 
 <script>
+    // Menggunakan URL Apps Script Anda yang valid
     const GAS_URL = "https://script.google.com/macros/s/AKfycbzPaWgz2zof9UTq-BRvvk5Nwcmz0pMwZAkEQfHne-k3RmUcKVWvG1VaxU9R-M_QmLI/exec";
+    let reloadOnClose = false;
 
+    // Fungsi Navigasi Langkah Form & Progress Bar
     function go(s) {
+        // Validasi input minimal untuk mematikan bypass asal klik 'Lanjut'
+        if (s === 2) {
+            const requiredFields = document.getElementById('step1').querySelectorAll('[required]');
+            for (let field of requiredFields) {
+                if (!field.value) { field.reportValidity(); return; }
+            }
+        }
+        if (s === 3) {
+            const requiredFields = document.getElementById('step2').querySelectorAll('[required]');
+            for (let field of requiredFields) {
+                if (!field.value) { field.reportValidity(); return; }
+            }
+        }
+
+        // Jalankan transisi langkah
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById('step' + s).classList.add('active');
+        
+        // Perbarui Tampilan Bar Progress
+        const fillPercent = ((s - 1) / 2) * 100;
+        document.getElementById('progressLine').style.width = fillPercent + '%';
+        
+        for (let i = 1; i <= 3; i++) {
+            const stepEl = document.getElementById('pstep' + i);
+            if (i < s) {
+                stepEl.className = 'progress-step completed';
+                stepEl.innerText = '✓';
+            } else if (i === s) {
+                stepEl.className = 'progress-step active';
+                stepEl.innerText = i;
+            } else {
+                stepEl.className = 'progress-step';
+                stepEl.innerText = i;
+            }
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // Penanganan Event Submit Form
     document.getElementById('pandaForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.getElementById('btnSubmit');
-        btn.innerText = "Mengirim..."; btn.disabled = true;
+        btn.innerText = "Mengirim Data..."; btn.disabled = true;
 
         const data = {
             action: "SUBMIT_SISWA_LENGKAP",
@@ -146,16 +440,36 @@
             
             const result = await response.json();
             if (result.status === "success") {
-                document.getElementById('modalText').innerText = "Data berhasil disimpan!";
-                document.getElementById('msgModal').classList.add('active');
+                showCustomModal("Sukses!", "Data Anda berhasil dikirim dan disimpan ke sistem PANDA.", true);
             } else {
-                alert("Server error: " + result.message);
+                showCustomModal("Gagal Menyimpan", "Server error: " + result.message, false);
+                btn.disabled = false; btn.innerText = "SUBMIT DATA";
             }
         } catch (err) {
-            alert("Error: " + err);
+            showCustomModal("Terjadi Kesalahan", "Gagal terhubung ke server. Hubungi admin atau coba lagi. (" + err + ")", false);
             btn.disabled = false; btn.innerText = "SUBMIT DATA";
         }
     });
+
+    // Manajemen Sistem Modal Kustom (Pengganti Alert)
+    function showCustomModal(title, text, isSuccess) {
+        const modal = document.getElementById('msgModal');
+        document.getElementById('modalTitle').innerText = title;
+        document.getElementById('modalTitle').style.color = isSuccess ? 'var(--primary)' : '#dc2626';
+        document.getElementById('modalText').innerText = text;
+        
+        reloadOnClose = isSuccess;
+        modal.classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('msgModal').classList.remove('active');
+        if (reloadOnClose) { location.reload(); }
+    }
+
+    // Manajemen Modal About (Tentang Aplikasi)
+    function openAboutModal() { document.getElementById('aboutModal').classList.add('active'); }
+    function closeAboutModal() { document.getElementById('aboutModal').classList.remove('active'); }
 </script>
 </body>
 </html>
