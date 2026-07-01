@@ -1,121 +1,152 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐼 PANDA | Pemetaan Anak (Lengkap)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root { --primary: #003b95; --bg: #eef2f7; --glass: rgba(255, 255, 255, 0.9); }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
-        .container { width: 100%; max-width: 600px; background: var(--glass); backdrop-filter: blur(15px); padding: 2rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .step { display: none; }
-        .step.active { display: block; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-        .form-group { margin-bottom: 15px; }
-        label { font-size: 0.8rem; color: #555; display: block; margin-bottom: 5px; font-weight: 600; }
-        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; }
-        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-        button { flex: 1; padding: 12px; border: none; border-radius: 12px; cursor: pointer; background: var(--primary); color: white; }
-        .uppercase { text-transform: uppercase; }
-    </style>
-</head>
-<body>
+/**
+ * PANDA Backend - Google Apps Script
+ * Versi Lengkap: Menangani Biodata & 100 Jawaban Diagnostik
+ */
 
-<div class="container">
-    <div style="text-align: center; margin-bottom: 20px;">
-        <img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png" style="width: 80px;">
-        <h1>PANDA</h1>
-    </div>
+const SS_ID = "1TWqVP-PKwQzqdp_qHIulHRFrynfm0O_kGiFXrq2X6CQ";
 
-    <form id="formSiswa">
-        <div class="step active" id="step1">
-            <h3>1. Identitas Diri</h3>
-            <div class="form-group"><label>No Absen</label><input type="number" id="noAbsen" required></div>
-            <div class="form-group"><label>Nama Lengkap</label><input type="text" id="namaLengkap" class="uppercase" required></div>
-            <div class="form-group"><label>Nama Panggilan</label><input type="text" id="namaPanggilan" class="uppercase" required></div>
-            <div class="form-group"><label>Jenis Kelamin</label><select id="jk"><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
-            <div class="form-group"><label>Tempat Lahir</label><input type="text" id="tempatLahir" required></div>
-            <div class="form-group"><label>Tgl Lahir</label><input type="date" id="tglLahir" required></div>
-            <button type="button" onclick="changeStep(2)">Lanjut</button>
-        </div>
+/**
+ * Handle HTTP GET
+ */
+function doGet(e) {
+  const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName("CONFIG");
+  const data = sheet.getDataRange().getValues();
+  const config = {};
+  data.forEach((row, i) => { if(i > 0 && row[0]) config[row[0]] = row[1]; });
+  
+  return jsonResponse(config);
+}
 
-        <div class="step" id="step2">
-            <h3>2. Profil & Minat</h3>
-            <div class="form-group"><label>NISN</label><input type="number" id="nisn" required></div>
-            <div class="form-group"><label>No Induk Siswa</label><input type="text" id="nis" required></div>
-            <div class="form-group"><label>Alamat</label><input type="text" id="alamat" required></div>
-            <div class="form-group"><label>No WA Siswa</label><input type="text" id="noWaSiswa" placeholder="628..." required></div>
-            <div class="form-group"><label>Hobi</label><input type="text" id="hobi"></div>
-            <div class="form-group"><label>Cita-cita</label><input type="text" id="citaCita"></div>
-            <div class="form-group"><label>Cara Belajar</label><select id="caraBelajar"><option>Visual</option><option>Auditori</option><option>Kinestetik</option></select></div>
-            <div class="btn-group">
-                <button type="button" onclick="changeStep(1)">Kembali</button>
-                <button type="button" onclick="changeStep(3)">Lanjut</button>
-            </div>
-        </div>
-
-        <div class="step" id="step3">
-            <h3>3. Informasi Tambahan</h3>
-            <div class="form-group"><label>Nama Ayah</label><input type="text" id="namaAyah" class="uppercase"></div>
-            <div class="form-group"><label>Nama Ibu</label><input type="text" id="namaIbu" class="uppercase"></div>
-            <div class="form-group"><label>Punya KIP</label><select id="punyaKip"><option>Ya</option><option>Tidak</option></select></div>
-            <div class="form-group"><label>Riwayat Sakit</label><input type="text" id="riwayatSakit" placeholder="Contoh: Tidak ada"></div>
-            <div class="btn-group">
-                <button type="button" onclick="changeStep(2)">Kembali</button>
-                <button type="submit" id="btnSubmit">SUBMIT DATA</button>
-            </div>
-        </div>
-    </form>
-</div>
-
-<script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbzPaWgz2zof9UTq-BRvvk5Nwcmz0pMwZAkEQfHne-k3RmUcKVWvG1VaxU9R-M_QmLI/exec";
-
-    function changeStep(s) {
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById('step' + s).classList.add('active');
+/**
+ * Handle HTTP POST (Entry Point)
+ */
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents);
+    switch(data.action) {
+      case "SUBMIT_SISWA": return handleSubmitSiswa(data);
+      case "SUBMIT_SISWA_LENGKAP": return handleSubmitSiswaLengkap(data);
+      case "SUBMIT_JAWABAN": return handleSubmitJawaban(data);
+      case "SUBMIT_KUESIONER": return handleSubmitKuesioner(data);
+      default: return jsonResponse({status: "error", message: "Action tidak dikenal"});
     }
+  } catch (err) {
+    logError(err);
+    return jsonResponse({status: "error", message: err.toString()});
+  }
+}
 
-    document.getElementById('formSiswa').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('btnSubmit');
-        btn.innerText = "Mengirim..."; btn.disabled = true;
+/**
+ * Handle Pre-flight request (CORS)
+ */
+function doOptions(e) {
+  return jsonResponse({status: "ok"});
+}
 
-        // Kumpulkan 28 Field
-        const data = {
-            action: "SUBMIT_SISWA",
-            id: crypto.randomUUID(),
-            noAbsen: document.getElementById('noAbsen').value,
-            namaLengkap: document.getElementById('namaLengkap').value,
-            namaPanggilan: document.getElementById('namaPanggilan').value,
-            jk: document.getElementById('jk').value,
-            tempatLahir: document.getElementById('tempatLahir').value,
-            tglLahir: document.getElementById('tglLahir').value,
-            nisn: document.getElementById('nisn').value,
-            nis: document.getElementById('nis').value,
-            alamat: document.getElementById('alamat').value,
-            noWaSiswa: document.getElementById('noWaSiswa').value,
-            hobi: document.getElementById('hobi').value,
-            citaCita: document.getElementById('citaCita').value,
-            caraBelajar: document.getElementById('caraBelajar').value,
-            namaAyah: document.getElementById('namaAyah').value,
-            namaIbu: document.getElementById('namaIbu').value,
-            punyaKip: document.getElementById('punyaKip').value,
-            riwayatSakit: document.getElementById('riwayatSakit').value
-            // ... tambahkan sisa field lainnya dengan pola yang sama
-        };
+/**
+ * Gabungan Biodata & 100 Jawaban
+ */
+function handleSubmitSiswaLengkap(data) {
+  const ss = SpreadsheetApp.openById(SS_ID);
+  
+  // 1. Simpan ke Sheet SISWA
+  // Pastikan urutan ini sesuai dengan kolom di Google Sheets Anda
+  ss.getSheetByName("SISWA").appendRow([
+    data.id, 
+    data.noAbsen, 
+    data.namaLengkap.toUpperCase(), 
+    data.namaPanggilan.toUpperCase(),
+    data.jk, 
+    data.tempatLahir, 
+    data.tglLahir, 
+    data.alamat, 
+    data.noWaSiswa, 
+    data.noWaOrtu,
+    data.hobi, 
+    data.citaCita, 
+    data.nis, 
+    data.nisn, 
+    data.pelajaranSuka, 
+    data.pelajaranTdkSuka,
+    data.ekskul, 
+    data.kegiatanMotivasi, 
+    data.caraBelajar, 
+    data.namaAyah.toUpperCase(),
+    data.pekerjaanAyah, 
+    data.pendidikanAyah, 
+    data.namaIbu.toUpperCase(), 
+    data.pekerjaanIbu,
+    data.pendidikanIbu, 
+    data.punyaKip, 
+    data.statusYatimPiatu, 
+    data.riwayatSakit, 
+    new Date()
+  ]);
 
-        try {
-            const res = await fetch(GAS_URL, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain" },
-                body: JSON.stringify(data)
-            });
-            alert("Data berhasil tersimpan!");
-            location.reload();
-        } catch (err) { alert("Gagal koneksi."); btn.disabled = false; btn.innerText = "SUBMIT DATA"; }
-    });
-</script>
-</body>
-</html>
+  // 2. Simpan ke Sheet JAWABAN (Loop Q1-Q100)
+  const sheetJawaban = ss.getSheetByName("JAWABAN");
+  let row = [data.id];
+  for(let i = 1; i <= 100; i++) {
+    row.push(data["Q" + i] || 0);
+  }
+  sheetJawaban.appendRow(row);
+
+  return jsonResponse({status: "success", message: "Data lengkap tersimpan"});
+}
+
+/**
+ * Insert Data Siswa (Fungsi Terpisah)
+ */
+function handleSubmitSiswa(data) {
+  const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName("SISWA");
+  sheet.appendRow([
+    data.id, data.noAbsen, data.namaLengkap.toUpperCase(), data.namaPanggilan.toUpperCase(),
+    data.jk, data.tempatLahir, data.tglLahir, data.alamat, data.noWaSiswa, data.noWaOrtu,
+    data.hobi, data.citaCita, data.nis, data.nisn, data.pelajaranSuka, data.pelajaranTdkSuka,
+    data.ekskul, data.kegiatanMotivasi, data.caraBelajar, data.namaAyah.toUpperCase(),
+    data.pekerjaanAyah, data.pendidikanAyah, data.namaIbu.toUpperCase(), data.pekerjaanIbu,
+    data.pendidikanIbu, data.punyaKip, data.statusYatimPiatu, data.riwayatSakit, new Date()
+  ]);
+  return jsonResponse({status: "success", message: "Data siswa berhasil disimpan"});
+}
+
+/**
+ * Insert Data Jawaban
+ */
+function handleSubmitJawaban(data) {
+  const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName("JAWABAN");
+  let row = [data.id];
+  for(let i = 1; i <= 100; i++) {
+    row.push(data["Q" + i] || 0);
+  }
+  sheet.appendRow(row);
+  return jsonResponse({status: "success", message: "Jawaban tersimpan"});
+}
+
+/**
+ * Insert Data Kuesioner
+ */
+function handleSubmitKuesioner(data) {
+  const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName("KUESIONER");
+  sheet.appendRow([data.id, data.rating, data.kesulitan, data.saran, new Date()]);
+  return jsonResponse({status: "success", message: "Feedback tersimpan"});
+}
+
+/**
+ * Logging Error
+ */
+function logError(err) {
+  const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName("LOG_ERROR");
+  sheet.appendRow([new Date(), err.message, "Backend", "N/A", err.stack]);
+}
+
+/**
+ * Response Helper (CORS Enabled)
+ */
+function jsonResponse(data) {
+  return ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON)
+    .setHeader("Access-Control-Allow-Origin", "*")
+    .setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+    .setHeader("Access-Control-Allow-Headers", "Content-Type");
+}
