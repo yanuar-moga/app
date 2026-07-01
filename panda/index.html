@@ -3,36 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐼 PANDA | Diagnostik Lengkap</title>
+    <title>🐼 PANDA | Pemetaan Anak (Lengkap)</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #003b95; --bg: #f3f4f6; }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 600px; background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        :root { --primary: #003b95; --bg: #eef2f7; --glass: rgba(255, 255, 255, 0.9); }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
+        .container { width: 100%; max-width: 600px; background: var(--glass); backdrop-filter: blur(15px); padding: 2rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .step { display: none; }
-        .step.active { display: block; }
+        .step.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
         .form-group { margin-bottom: 15px; }
-        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; }
-        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; border: none; border-radius: 10px; background: var(--primary); color: white; font-weight: 600; cursor: pointer; margin-top: 10px; }
-        .asesmen-box { height: 400px; overflow-y: auto; padding: 10px; border: 1px solid #eee; border-radius: 10px; margin-bottom: 20px; }
+        label { font-size: 0.8rem; color: #555; display: block; margin-bottom: 5px; font-weight: 600; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; }
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        button { flex: 1; padding: 12px; border: none; border-radius: 12px; cursor: pointer; background: var(--primary); color: white; }
+        .uppercase { text-transform: uppercase; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <form id="pandaForm">
+    <div style="text-align: center; margin-bottom: 20px;">
+        <img src="https://yanuar-moga.github.io/app/sipanda/assets/logo_sipanda.png" style="width: 80px;">
+        <h1>PANDA</h1>
+    </div>
+
+    <form id="formSiswa">
         <div class="step active" id="step1">
-            <h2>Biodata Siswa</h2>
-            <div class="form-group"><label>Nama Lengkap</label><input type="text" id="namaLengkap" required></div>
-            <div class="form-group"><label>NISN</label><input type="number" id="nisn" required></div>
-            <button type="button" onclick="goStep(2)">Lanjut ke Asesmen</button>
+            <h3>1. Identitas Diri</h3>
+            <div class="form-group"><label>No Absen</label><input type="number" id="noAbsen" required></div>
+            <div class="form-group"><label>Nama Lengkap</label><input type="text" id="namaLengkap" class="uppercase" required></div>
+            <div class="form-group"><label>Nama Panggilan</label><input type="text" id="namaPanggilan" class="uppercase" required></div>
+            <div class="form-group"><label>Jenis Kelamin</label><select id="jk"><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
+            <div class="form-group"><label>Tempat Lahir</label><input type="text" id="tempatLahir" required></div>
+            <div class="form-group"><label>Tgl Lahir</label><input type="date" id="tglLahir" required></div>
+            <button type="button" onclick="changeStep(2)">Lanjut</button>
         </div>
 
         <div class="step" id="step2">
-            <h2>Asesmen Diagnostik (100 Soal)</h2>
-            <div class="asesmen-box" id="asesmen-container"></div>
-            <button type="submit" id="btnSubmit">KIRIM SEMUA DATA</button>
+            <h3>2. Profil & Minat</h3>
+            <div class="form-group"><label>NISN</label><input type="number" id="nisn" required></div>
+            <div class="form-group"><label>No Induk Siswa</label><input type="text" id="nis" required></div>
+            <div class="form-group"><label>Alamat</label><input type="text" id="alamat" required></div>
+            <div class="form-group"><label>No WA Siswa</label><input type="text" id="noWaSiswa" placeholder="628..." required></div>
+            <div class="form-group"><label>Hobi</label><input type="text" id="hobi"></div>
+            <div class="form-group"><label>Cita-cita</label><input type="text" id="citaCita"></div>
+            <div class="form-group"><label>Cara Belajar</label><select id="caraBelajar"><option>Visual</option><option>Auditori</option><option>Kinestetik</option></select></div>
+            <div class="btn-group">
+                <button type="button" onclick="changeStep(1)">Kembali</button>
+                <button type="button" onclick="changeStep(3)">Lanjut</button>
+            </div>
+        </div>
+
+        <div class="step" id="step3">
+            <h3>3. Informasi Tambahan</h3>
+            <div class="form-group"><label>Nama Ayah</label><input type="text" id="namaAyah" class="uppercase"></div>
+            <div class="form-group"><label>Nama Ibu</label><input type="text" id="namaIbu" class="uppercase"></div>
+            <div class="form-group"><label>Punya KIP</label><select id="punyaKip"><option>Ya</option><option>Tidak</option></select></div>
+            <div class="form-group"><label>Riwayat Sakit</label><input type="text" id="riwayatSakit" placeholder="Contoh: Tidak ada"></div>
+            <div class="btn-group">
+                <button type="button" onclick="changeStep(2)">Kembali</button>
+                <button type="submit" id="btnSubmit">SUBMIT DATA</button>
+            </div>
         </div>
     </form>
 </div>
@@ -40,49 +72,49 @@
 <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbzPaWgz2zof9UTq-BRvvk5Nwcmz0pMwZAkEQfHne-k3RmUcKVWvG1VaxU9R-M_QmLI/exec";
 
-    // Generate 100 Soal Otomatis
-    const container = document.getElementById('asesmen-container');
-    for (let i = 1; i <= 100; i++) {
-        container.innerHTML += `
-            <div class="form-group">
-                <label>${i}. Pertanyaan asesmen terkait minat/bakat ${i}?</label>
-                <select name="Q${i}" required>
-                    <option value="1">1 - Sangat Tidak Setuju</option>
-                    <option value="2">2 - Tidak Setuju</option>
-                    <option value="3">3 - Netral</option>
-                    <option value="4">4 - Setuju</option>
-                    <option value="5">5 - Sangat Setuju</option>
-                </select>
-            </div>
-        `;
-    }
-
-    function goStep(s) {
+    function changeStep(s) {
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById('step' + s).classList.add('active');
     }
 
-    document.getElementById('pandaForm').addEventListener('submit', async (e) => {
+    document.getElementById('formSiswa').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.getElementById('btnSubmit');
-        btn.disabled = true; btn.innerText = "Mengirim Data...";
+        btn.innerText = "Mengirim..."; btn.disabled = true;
 
-        const formData = new FormData(e.target);
+        // Kumpulkan 28 Field
         const data = {
-            action: "SUBMIT_SISWA_LENGKAP", // Sesuaikan dengan handler di GAS
+            action: "SUBMIT_SISWA",
             id: crypto.randomUUID(),
+            noAbsen: document.getElementById('noAbsen').value,
             namaLengkap: document.getElementById('namaLengkap').value,
-            nisn: document.getElementById('nisn').value
+            namaPanggilan: document.getElementById('namaPanggilan').value,
+            jk: document.getElementById('jk').value,
+            tempatLahir: document.getElementById('tempatLahir').value,
+            tglLahir: document.getElementById('tglLahir').value,
+            nisn: document.getElementById('nisn').value,
+            nis: document.getElementById('nis').value,
+            alamat: document.getElementById('alamat').value,
+            noWaSiswa: document.getElementById('noWaSiswa').value,
+            hobi: document.getElementById('hobi').value,
+            citaCita: document.getElementById('citaCita').value,
+            caraBelajar: document.getElementById('caraBelajar').value,
+            namaAyah: document.getElementById('namaAyah').value,
+            namaIbu: document.getElementById('namaIbu').value,
+            punyaKip: document.getElementById('punyaKip').value,
+            riwayatSakit: document.getElementById('riwayatSakit').value
+            // ... tambahkan sisa field lainnya dengan pola yang sama
         };
 
-        // Masukkan Q1-Q100 ke objek data
-        for(let i=1; i<=100; i++) data['Q'+i] = formData.get('Q'+i);
-
         try {
-            await fetch(GAS_URL, { method: "POST", body: JSON.stringify(data) });
-            alert("Data Asesmen Berhasil Dikirim!");
+            const res = await fetch(GAS_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain" },
+                body: JSON.stringify(data)
+            });
+            alert("Data berhasil tersimpan!");
             location.reload();
-        } catch (err) { alert("Gagal koneksi."); btn.disabled = false; }
+        } catch (err) { alert("Gagal koneksi."); btn.disabled = false; btn.innerText = "SUBMIT DATA"; }
     });
 </script>
 </body>
