@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color" content="#2563eb">
+
+<title>Rekap Pesanan Jaket</title>
+
+<style>
+
+:root{
+    --primary:#2563eb;
+    --secondary:#7c3aed;
+    --green:#10b981;
+    --orange:#f59e0b;
+    --red:#ef4444;
+
+    --text:#172033;
+    --muted:#667085;
+    --border:#e5e7eb;
+
+    --bg:#f4f7ff;
+    --white:#ffffff;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+
+    margin:0;
+
+    min-height:100vh;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    color:var(--text);
+
+    background:
+
+        radial-gradient(
+            circle at top left,
+            #dbeafe,
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at bottom right,
+            #ede9fe,
+            transparent 35%
+        ),
+
+        var(--bg);
+
+}
+
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container{
+
+    width:
+        min(850px,100%);
+
+    margin:auto;
+
+    padding:
+        15px
+        12px
+        40px;
+
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.hero{
+
+    position:relative;
+
+    overflow:hidden;
+
+    padding:
+        25px
+        21px;
+
+    margin-bottom:15px;
+
+    border-radius:26px;
+
+    color:white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #7c3aed
+        );
+
+    box-shadow:
+        0 18px 40px
+        rgba(37,99,235,.22);
+
+}
+
+.hero::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:170px;
+    height:170px;
+
+    right:-55px;
+    top:-75px;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.12);
+
+}
+
+.badge{
+
+    display:inline-block;
+
+    padding:
+        6px
+        11px;
+
+    border-radius:999px;
+
+    background:
+        rgba(255,255,255,.16);
+
+    font-size:11px;
+
+    font-weight:800;
+
+}
+
+.hero h1{
+
+    margin:
+        13px
+        0
+        6px;
+
+    font-size:27px;
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+.hero p{
+
+    margin:0;
+
+    color:#e5e7ff;
+
+    font-size:13px;
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+
+/* =========================
+   STATISTIK
+========================= */
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:10px;
+
+    margin-bottom:14px;
+
+}
+
+.stat{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:15px;
+
+    text-align:center;
+
+    box-shadow:
+        0 7px 22px
+        rgba(16,24,40,.06);
+
+}
+
+.stat-icon{
+
+    font-size:23px;
+
+}
+
+.stat-number{
+
+    margin-top:4px;
+
+    font-size:22px;
+
+    font-weight:950;
+
+}
+
+.stat-label{
+
+    color:var(--muted);
+
+    font-size:11px;
+
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.card{
+
+    background:
+        rgba(255,255,255,.96);
+
+    border:
+        1px solid
+        rgba(255,255,255,.8);
+
+    border-radius:21px;
+
+    padding:17px;
+
+    box-shadow:
+        0 8px 28px
+        rgba(16,24,40,.06);
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-area{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr
+        170px;
+
+    gap:10px;
+
+    margin-bottom:15px;
+
+}
+
+input,
+select{
+
+    width:100%;
+
+    padding:
+        12px
+        13px;
+
+    border:
+        1.5px solid
+        var(--border);
+
+    border-radius:13px;
+
+    background:white;
+
+    font-family:inherit;
+
+    font-size:14px;
+
+    outline:none;
+
+}
+
+input:focus,
+select:focus{
+
+    border-color:
+        var(--primary);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(37,99,235,.08);
+
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrapper{
+
+    overflow-x:auto;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:
+        collapse;
+
+}
+
+thead{
+
+    background:
+        linear-gradient(
+            135deg,
+            #eff6ff,
+            #f5f3ff
+        );
+
+}
+
+th{
+
+    padding:
+        12px
+        10px;
+
+    text-align:left;
+
+    font-size:12px;
+
+    color:#475467;
+
+    white-space:nowrap;
+
+}
+
+td{
+
+    padding:
+        13px
+        10px;
+
+    border-bottom:
+        1px solid
+        #eef0f3;
+
+    font-size:13px;
+
+}
+
+tbody tr{
+
+    transition:.15s;
+
+}
+
+tbody tr:hover{
+
+    background:#f8fafc;
+
+}
+
+.no{
+
+    width:45px;
+
+    color:#667085;
+
+    text-align:center;
+
+}
+
+.nama{
+
+    font-weight:850;
+
+}
+
+.ukuran{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-width:48px;
+
+    padding:
+        6px
+        9px;
+
+    border-radius:9px;
+
+    background:#eef2ff;
+
+    color:#4338ca;
+
+    font-weight:950;
+
+}
+
+.jumlah{
+
+    font-weight:900;
+
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+
+    padding:35px 10px;
+
+    text-align:center;
+
+    color:var(--muted);
+
+}
+
+.spinner{
+
+    width:30px;
+    height:30px;
+
+    margin:
+        0
+        auto
+        10px;
+
+    border:
+        3px solid
+        #dbeafe;
+
+    border-top-color:
+        var(--primary);
+
+    border-radius:50%;
+
+    animation:
+        spin .7s linear infinite;
+
+}
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty{
+
+    padding:
+        40px
+        10px;
+
+    text-align:center;
+
+    color:var(--muted);
+
+}
+
+.empty-icon{
+
+    font-size:42px;
+
+    margin-bottom:7px;
+
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+
+    padding:
+        15px;
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:11px;
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+    .container{
+
+        padding:
+            10px
+            9px
+            30px;
+
+    }
+
+    .hero{
+
+        padding:
+            22px
+            17px;
+
+        border-radius:22px;
+
+    }
+
+    .hero h1{
+
+        font-size:23px;
+
+    }
+
+    .stats{
+
+        gap:7px;
+
+    }
+
+    .stat{
+
+        padding:12px 7px;
+
+        border-radius:15px;
+
+    }
+
+    .stat-number{
+
+        font-size:19px;
+
+    }
+
+    .stat-label{
+
+        font-size:9px;
+
+    }
+
+    .search-area{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .card{
+
+        padding:
+            13px;
+
+        border-radius:18px;
+
+    }
+
+    th,
+    td{
+
+        padding:
+            11px
+            8px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <header class="hero">
+
+        <div class="badge">
+
+            🧥 REKAP PESANAN
+
+        </div>
+
+        <h1>
+
+            Rekap Jaket Alumni PPG 2026
+
+        </h1>
+
+        <p>
+
+            Daftar nama pemesan dan ukuran
+            jaket yang dipesan.
+
+        </p>
+
+    </header>
+
+
+
+    <!-- STATISTIK -->
+
+    <section class="stats">
+
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                👥
+            </div>
+
+            <div
+                class="stat-number"
+                id="totalPemesan"
+            >
+                0
+            </div>
+
+            <div class="stat-label">
+                Total Pemesan
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                🧥
+            </div>
+
+            <div
+                class="stat-number"
+                id="totalJaket"
+            >
+                0
+            </div>
+
+            <div class="stat-label">
+                Total Jaket
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                📏
+            </div>
+
+            <div
+                class="stat-number"
+                id="totalUkuran"
+            >
+                0
+            </div>
+
+            <div class="stat-label">
+                Jenis Ukuran
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- DATA -->
+
+    <section class="card">
+
+
+        <!-- SEARCH -->
+
+        <div class="search-area">
+
+
+            <input
+                type="search"
+                id="search"
+                placeholder="🔎 Cari nama pemesan..."
+            >
+
+
+            <select id="filterUkuran">
+
+                <option value="">
+                    Semua Ukuran
+                </option>
+
+            </select>
+
+
+        </div>
+
+
+
+        <!-- TABLE -->
+
+        <div class="table-wrapper">
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th class="no">
+                            No
+                        </th>
+
+                        <th>
+                            Nama Pemesan
+                        </th>
+
+                        <th>
+                            Ukuran
+                        </th>
+
+                        <th>
+                            Jumlah
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="dataBody"
+                >
+
+                    <tr>
+
+                        <td
+                            colspan="4"
+                            class="loading"
+                        >
+
+                            <div
+                                class="spinner"
+                            ></div>
+
+                            Memuat data...
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+
+            </table>
+
+        </div>
+
+
+    </section>
+
+
+
+    <div class="footer">
+
+        Data diperbarui langsung
+        dari sistem pemesanan.
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   URL GOOGLE APPS SCRIPT
+===================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwwUuRKbfPZH2zxETDbNbcW_Et2juZsPWmll2iktd7JQjUEvrDO82jaUAHJnGlX6WvL/exec";
+
+
+let DATA = [];
+
+
+/* =====================================================
+   ELEMENT
+===================================================== */
+
+const search =
+document.getElementById("search");
+
+const filterUkuran =
+document.getElementById("filterUkuran");
+
+const dataBody =
+document.getElementById("dataBody");
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function esc(value){
+
+    return String(
+        value ?? ""
+    ).replace(
+        /[&<>"']/g,
+        function(m){
+
+            return {
+
+                "&":"&amp;",
+                "<":"&lt;",
+                ">":"&gt;",
+                '"':"&quot;",
+                "'":"&#039;"
+
+            }[m];
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   API
+===================================================== */
+
+async function api(data){
+
+    const response =
+        await fetch(
+            API_URL,
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                    "text/plain;charset=utf-8"
+                },
+
+                body:
+                    JSON.stringify(data)
+            }
+        );
+
+    return await response.json();
+
+}
+
+
+/* =====================================================
+   LOAD DATA
+===================================================== */
+
+async function loadData(){
+
+    try{
+
+        const response =
+            await api({
+
+                action:
+                    "getOrders"
+
+            });
+
+
+        if(
+            !response.success
+        ){
+
+            throw new Error(
+                response.message ||
+                "Gagal mengambil data."
+            );
+
+        }
+
+
+        DATA =
+            response.data ||
+            response.orders ||
+            [];
+
+
+        prepareFilter();
+
+        updateStats();
+
+        render();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+
+        dataBody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="4"
+                    class="empty"
+                >
+
+                    <div class="empty-icon">
+                        ⚠️
+                    </div>
+
+                    <b>
+                        Gagal memuat data
+                    </b>
+
+                    <br>
+
+                    <small>
+                        ${esc(error.message)}
+                    </small>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   FILTER UKURAN
+===================================================== */
+
+function prepareFilter(){
+
+    const sizes =
+        [
+            ...new Set(
+                DATA
+                .map(
+                    item =>
+                        item.ukuran ||
+                        item.Ukuran ||
+                        ""
+                )
+                .filter(Boolean)
+            )
+        ]
+        .sort();
+
+
+    filterUkuran.innerHTML = `
+
+        <option value="">
+            Semua Ukuran
+        </option>
+
+    `;
+
+
+    sizes.forEach(
+        size => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                size;
+
+            option.textContent =
+                size;
+
+            filterUkuran
+                .appendChild(
+                    option
+                );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   STATISTIK
+===================================================== */
+
+function updateStats(){
+
+    const totalPemesan =
+        DATA.length;
+
+
+    let totalJaket = 0;
+
+
+    DATA.forEach(
+        item => {
+
+            totalJaket +=
+                Number(
+                    item.jumlah ||
+                    item.Jumlah ||
+                    1
+                ) || 0;
+
+        }
+    );
+
+
+    const sizes =
+        new Set(
+            DATA.map(
+                item =>
+                    item.ukuran ||
+                    item.Ukuran
+            )
+        );
+
+
+    document.getElementById(
+        "totalPemesan"
+    ).textContent =
+        totalPemesan;
+
+
+    document.getElementById(
+        "totalJaket"
+    ).textContent =
+        totalJaket;
+
+
+    document.getElementById(
+        "totalUkuran"
+    ).textContent =
+        sizes.size;
+
+}
+
+
+/* =====================================================
+   RENDER
+===================================================== */
+
+function render(){
+
+    const keyword =
+        search.value
+        .toLowerCase()
+        .trim();
+
+
+    const ukuran =
+        filterUkuran.value;
+
+
+    const filtered =
+        DATA.filter(
+            item => {
+
+                const nama =
+                    String(
+                        item.nama ||
+                        item.Nama ||
+                        ""
+                    );
+
+
+                const size =
+                    String(
+                        item.ukuran ||
+                        item.Ukuran ||
+                        ""
+                    );
+
+
+                const cocokNama =
+                    nama
+                    .toLowerCase()
+                    .includes(
+                        keyword
+                    );
+
+
+                const cocokUkuran =
+                    !ukuran ||
+                    size === ukuran;
+
+
+                return (
+                    cocokNama &&
+                    cocokUkuran
+                );
+
+            }
+        );
+
+
+    if(
+        !filtered.length
+    ){
+
+        dataBody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="4"
+                    class="empty"
+                >
+
+                    <div class="empty-icon">
+                        🔎
+                    </div>
+
+                    Tidak ada data
+                    yang sesuai.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    dataBody.innerHTML =
+        filtered
+        .map(
+            (item,index) => {
+
+                const nama =
+                    item.nama ||
+                    item.Nama ||
+                    "-";
+
+
+                const ukuran =
+                    item.ukuran ||
+                    item.Ukuran ||
+                    "-";
+
+
+                const jumlah =
+                    item.jumlah ||
+                    item.Jumlah ||
+                    1;
+
+
+                return `
+
+                    <tr>
+
+                        <td class="no">
+                            ${index + 1}
+                        </td>
+
+                        <td class="nama">
+                            ${esc(nama)}
+                        </td>
+
+                        <td>
+
+                            <span class="ukuran">
+                                ${esc(ukuran)}
+                            </span>
+
+                        </td>
+
+                        <td class="jumlah">
+
+                            ${esc(jumlah)}
+                            pcs
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+/* =====================================================
+   EVENT FILTER
+===================================================== */
+
+search.addEventListener(
+    "input",
+    render
+);
+
+
+filterUkuran.addEventListener(
+    "change",
+    render
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadData();
+
+
+/* =====================================================
+   AUTO REFRESH 60 DETIK
+===================================================== */
+
+setInterval(
+    loadData,
+    60000
+);
+
+
+</script>
+
+
+</body>
+</html>
