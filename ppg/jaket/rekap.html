@@ -1,33 +1,62 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="theme-color" content="#2563eb">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-<title>Rekap Pesanan Jaket</title>
+<meta
+    name="theme-color"
+    content="#2563eb"
+>
+
+<title>
+    Rekap Pesanan Jaket
+</title>
+
 
 <style>
 
+/* =====================================================
+   ROOT
+===================================================== */
+
 :root{
+
     --primary:#2563eb;
     --secondary:#7c3aed;
+
     --green:#10b981;
     --orange:#f59e0b;
     --red:#ef4444;
 
     --text:#172033;
     --muted:#667085;
+
     --border:#e5e7eb;
 
     --bg:#f4f7ff;
+
     --white:#ffffff;
+
 }
 
+
+/* =====================================================
+   RESET
+===================================================== */
+
 *{
+
     box-sizing:border-box;
+
 }
+
 
 body{
 
@@ -64,14 +93,14 @@ body{
 }
 
 
-/* =========================
+/* =====================================================
    CONTAINER
-========================= */
+===================================================== */
 
 .container{
 
     width:
-        min(850px,100%);
+        min(900px,100%);
 
     margin:auto;
 
@@ -83,9 +112,9 @@ body{
 }
 
 
-/* =========================
-   HEADER
-========================= */
+/* =====================================================
+   HERO
+===================================================== */
 
 .hero{
 
@@ -116,6 +145,7 @@ body{
 
 }
 
+
 .hero::after{
 
     content:"";
@@ -123,9 +153,11 @@ body{
     position:absolute;
 
     width:170px;
+
     height:170px;
 
     right:-55px;
+
     top:-75px;
 
     border-radius:50%;
@@ -134,6 +166,7 @@ body{
         rgba(255,255,255,.12);
 
 }
+
 
 .badge{
 
@@ -154,6 +187,7 @@ body{
 
 }
 
+
 .hero h1{
 
     margin:
@@ -168,6 +202,7 @@ body{
     z-index:2;
 
 }
+
 
 .hero p{
 
@@ -184,9 +219,9 @@ body{
 }
 
 
-/* =========================
+/* =====================================================
    STATISTIK
-========================= */
+===================================================== */
 
 .stats{
 
@@ -200,6 +235,7 @@ body{
     margin-bottom:14px;
 
 }
+
 
 .stat{
 
@@ -217,11 +253,13 @@ body{
 
 }
 
+
 .stat-icon{
 
     font-size:23px;
 
 }
+
 
 .stat-number{
 
@@ -233,6 +271,7 @@ body{
 
 }
 
+
 .stat-label{
 
     color:var(--muted);
@@ -242,9 +281,9 @@ body{
 }
 
 
-/* =========================
+/* =====================================================
    CARD
-========================= */
+===================================================== */
 
 .card{
 
@@ -266,9 +305,9 @@ body{
 }
 
 
-/* =========================
-   SEARCH
-========================= */
+/* =====================================================
+   SEARCH AREA
+===================================================== */
 
 .search-area{
 
@@ -280,9 +319,10 @@ body{
 
     gap:10px;
 
-    margin-bottom:15px;
+    margin-bottom:10px;
 
 }
+
 
 input,
 select{
@@ -309,6 +349,7 @@ select{
 
 }
 
+
 input:focus,
 select:focus{
 
@@ -322,15 +363,96 @@ select:focus{
 }
 
 
-/* =========================
+/* =====================================================
+   BUTTON
+===================================================== */
+
+.refresh-area{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    margin-bottom:15px;
+
+}
+
+
+.btn-refresh{
+
+    border:0;
+
+    padding:
+        10px
+        15px;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #7c3aed
+        );
+
+    color:white;
+
+    font-family:inherit;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 6px 15px
+        rgba(37,99,235,.18);
+
+    transition:.2s;
+
+}
+
+
+.btn-refresh:hover{
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+.btn-refresh:active{
+
+    transform:
+        scale(.97);
+
+}
+
+
+.btn-refresh:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+}
+
+
+/* =====================================================
    TABLE
-========================= */
+===================================================== */
 
 .table-wrapper{
 
     overflow-x:auto;
 
+    -webkit-overflow-scrolling:touch;
+
 }
+
 
 table{
 
@@ -340,6 +462,7 @@ table{
         collapse;
 
 }
+
 
 thead{
 
@@ -351,6 +474,7 @@ thead{
         );
 
 }
+
 
 th{
 
@@ -368,6 +492,7 @@ th{
 
 }
 
+
 td{
 
     padding:
@@ -382,17 +507,20 @@ td{
 
 }
 
+
 tbody tr{
 
     transition:.15s;
 
 }
 
+
 tbody tr:hover{
 
     background:#f8fafc;
 
 }
+
 
 .no{
 
@@ -404,11 +532,13 @@ tbody tr:hover{
 
 }
 
+
 .nama{
 
     font-weight:850;
 
 }
+
 
 .ukuran{
 
@@ -434,6 +564,7 @@ tbody tr:hover{
 
 }
 
+
 .jumlah{
 
     font-weight:900;
@@ -441,13 +572,15 @@ tbody tr:hover{
 }
 
 
-/* =========================
+/* =====================================================
    LOADING
-========================= */
+===================================================== */
 
 .loading{
 
-    padding:35px 10px;
+    padding:
+        35px
+        10px;
 
     text-align:center;
 
@@ -455,9 +588,11 @@ tbody tr:hover{
 
 }
 
+
 .spinner{
 
     width:30px;
+
     height:30px;
 
     margin:
@@ -479,18 +614,22 @@ tbody tr:hover{
 
 }
 
+
 @keyframes spin{
 
     to{
-        transform:rotate(360deg);
+
+        transform:
+            rotate(360deg);
+
     }
 
 }
 
 
-/* =========================
+/* =====================================================
    EMPTY
-========================= */
+===================================================== */
 
 .empty{
 
@@ -504,6 +643,7 @@ tbody tr:hover{
 
 }
 
+
 .empty-icon{
 
     font-size:42px;
@@ -513,9 +653,32 @@ tbody tr:hover{
 }
 
 
-/* =========================
+/* =====================================================
+   ERROR
+===================================================== */
+
+.error-box{
+
+    padding:15px;
+
+    margin:10px 0;
+
+    border-radius:14px;
+
+    background:#fef2f2;
+
+    color:#b91c1c;
+
+    font-size:13px;
+
+    text-align:center;
+
+}
+
+
+/* =====================================================
    FOOTER
-========================= */
+===================================================== */
 
 .footer{
 
@@ -531,9 +694,9 @@ tbody tr:hover{
 }
 
 
-/* =========================
+/* =====================================================
    MOBILE
-========================= */
+===================================================== */
 
 @media(max-width:600px){
 
@@ -546,6 +709,7 @@ tbody tr:hover{
 
     }
 
+
     .hero{
 
         padding:
@@ -556,11 +720,13 @@ tbody tr:hover{
 
     }
 
+
     .hero h1{
 
         font-size:23px;
 
     }
+
 
     .stats{
 
@@ -568,13 +734,17 @@ tbody tr:hover{
 
     }
 
+
     .stat{
 
-        padding:12px 7px;
+        padding:
+            12px
+            7px;
 
         border-radius:15px;
 
     }
+
 
     .stat-number{
 
@@ -582,11 +752,13 @@ tbody tr:hover{
 
     }
 
+
     .stat-label{
 
         font-size:9px;
 
     }
+
 
     .search-area{
 
@@ -594,14 +766,29 @@ tbody tr:hover{
 
     }
 
+
+    .refresh-area{
+
+        justify-content:stretch;
+
+    }
+
+
+    .btn-refresh{
+
+        width:100%;
+
+    }
+
+
     .card{
 
-        padding:
-            13px;
+        padding:13px;
 
         border-radius:18px;
 
     }
+
 
     th,
     td{
@@ -625,7 +812,9 @@ tbody tr:hover{
 <div class="container">
 
 
-    <!-- HEADER -->
+    <!-- =================================================
+         HEADER
+    ================================================= -->
 
     <header class="hero">
 
@@ -635,11 +824,13 @@ tbody tr:hover{
 
         </div>
 
+
         <h1>
 
             Rekap Jaket Alumni PPG 2026
 
         </h1>
+
 
         <p>
 
@@ -652,7 +843,9 @@ tbody tr:hover{
 
 
 
-    <!-- STATISTIK -->
+    <!-- =================================================
+         STATISTIK
+    ================================================= -->
 
     <section class="stats">
 
@@ -660,58 +853,84 @@ tbody tr:hover{
         <div class="stat">
 
             <div class="stat-icon">
+
                 👥
+
             </div>
+
 
             <div
                 class="stat-number"
                 id="totalPemesan"
             >
+
                 0
+
             </div>
 
+
             <div class="stat-label">
+
                 Total Pemesan
+
             </div>
 
         </div>
 
 
+
         <div class="stat">
 
             <div class="stat-icon">
+
                 🧥
+
             </div>
+
 
             <div
                 class="stat-number"
                 id="totalJaket"
             >
+
                 0
+
             </div>
 
+
             <div class="stat-label">
+
                 Total Jaket
+
             </div>
 
         </div>
 
 
+
         <div class="stat">
 
             <div class="stat-icon">
+
                 📏
+
             </div>
+
 
             <div
                 class="stat-number"
                 id="totalUkuran"
             >
+
                 0
+
             </div>
 
+
             <div class="stat-label">
+
                 Jenis Ukuran
+
             </div>
 
         </div>
@@ -721,7 +940,9 @@ tbody tr:hover{
 
 
 
-    <!-- DATA -->
+    <!-- =================================================
+         DATA
+    ================================================= -->
 
     <section class="card">
 
@@ -735,13 +956,16 @@ tbody tr:hover{
                 type="search"
                 id="search"
                 placeholder="🔎 Cari nama pemesan..."
+                autocomplete="off"
             >
 
 
             <select id="filterUkuran">
 
                 <option value="">
+
                     Semua Ukuran
+
                 </option>
 
             </select>
@@ -751,9 +975,29 @@ tbody tr:hover{
 
 
 
+        <!-- REFRESH MANUAL -->
+
+        <div class="refresh-area">
+
+            <button
+                type="button"
+                class="btn-refresh"
+                id="btnRefresh"
+                onclick="loadData()"
+            >
+
+                🔄 Muat Ulang Data
+
+            </button>
+
+        </div>
+
+
+
         <!-- TABLE -->
 
         <div class="table-wrapper">
+
 
             <table>
 
@@ -762,30 +1006,45 @@ tbody tr:hover{
 
                     <tr>
 
+
                         <th class="no">
+
                             No
+
                         </th>
 
+
                         <th>
+
                             Nama Pemesan
+
                         </th>
 
+
                         <th>
+
                             Ukuran
+
                         </th>
 
+
                         <th>
+
                             Jumlah
+
                         </th>
+
 
                     </tr>
 
                 </thead>
 
 
+
                 <tbody
                     id="dataBody"
                 >
+
 
                     <tr>
 
@@ -794,20 +1053,25 @@ tbody tr:hover{
                             class="loading"
                         >
 
+
                             <div
                                 class="spinner"
                             ></div>
 
+
                             Memuat data...
+
 
                         </td>
 
                     </tr>
 
+
                 </tbody>
 
 
             </table>
+
 
         </div>
 
@@ -816,10 +1080,15 @@ tbody tr:hover{
 
 
 
+    <!-- =================================================
+         FOOTER
+    ================================================= -->
+
     <div class="footer">
 
-        Data diperbarui langsung
-        dari sistem pemesanan.
+        Data diperbarui saat halaman
+        dibuka atau saat tombol
+        <b>Muat Ulang Data</b> ditekan.
 
     </div>
 
@@ -832,12 +1101,16 @@ tbody tr:hover{
 
 
 /* =====================================================
-   URL GOOGLE APPS SCRIPT
+   GOOGLE APPS SCRIPT
 ===================================================== */
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbwwUuRKbfPZH2zxETDbNbcW_Et2juZsPWmll2iktd7JQjUEvrDO82jaUAHJnGlX6WvL/exec";
 
+
+/* =====================================================
+   DATA GLOBAL
+===================================================== */
 
 let DATA = [];
 
@@ -847,13 +1120,27 @@ let DATA = [];
 ===================================================== */
 
 const search =
-document.getElementById("search");
+    document.getElementById(
+        "search"
+    );
+
 
 const filterUkuran =
-document.getElementById("filterUkuran");
+    document.getElementById(
+        "filterUkuran"
+    );
+
 
 const dataBody =
-document.getElementById("dataBody");
+    document.getElementById(
+        "dataBody"
+    );
+
+
+const btnRefresh =
+    document.getElementById(
+        "btnRefresh"
+    );
 
 
 /* =====================================================
@@ -871,9 +1158,13 @@ function esc(value){
             return {
 
                 "&":"&amp;",
+
                 "<":"&lt;",
+
                 ">":"&gt;",
+
                 '"':"&quot;",
+
                 "'":"&#039;"
 
             }[m];
@@ -885,7 +1176,66 @@ function esc(value){
 
 
 /* =====================================================
-   API
+   GET FIELD
+   Membaca beberapa variasi nama header
+===================================================== */
+
+function getField(
+    item,
+    aliases
+){
+
+    if(!item){
+
+        return "";
+
+    }
+
+
+    const keys =
+        Object.keys(item);
+
+
+    for(
+        const alias of aliases
+    ){
+
+        const target =
+            String(alias)
+            .trim()
+            .toUpperCase();
+
+
+        for(
+            const key of keys
+        ){
+
+            if(
+
+                String(key)
+                .trim()
+                .toUpperCase()
+                ===
+                target
+
+            ){
+
+                return item[key];
+
+            }
+
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =====================================================
+   API REQUEST
 ===================================================== */
 
 async function api(data){
@@ -894,17 +1244,31 @@ async function api(data){
         await fetch(
             API_URL,
             {
+
                 method:"POST",
 
                 headers:{
+
                     "Content-Type":
                     "text/plain;charset=utf-8"
+
                 },
 
                 body:
                     JSON.stringify(data)
+
             }
         );
+
+
+    if(!response.ok){
+
+        throw new Error(
+            "Server tidak merespons."
+        );
+
+    }
+
 
     return await response.json();
 
@@ -913,11 +1277,53 @@ async function api(data){
 
 /* =====================================================
    LOAD DATA
+   HANYA DIPANGGIL SAAT:
+   1. HALAMAN DIBUKA
+   2. TOMBOL MUAT ULANG DITEKAN
 ===================================================== */
 
 async function loadData(){
 
     try{
+
+
+        /* ------------------------------
+           DISABLE BUTTON
+        ------------------------------ */
+
+        btnRefresh.disabled =
+            true;
+
+
+        btnRefresh.textContent =
+            "⏳ Memuat...";
+
+
+        dataBody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="4"
+                    class="loading"
+                >
+
+                    <div
+                        class="spinner"
+                    ></div>
+
+                    Memuat data...
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+        /* ------------------------------
+           REQUEST KE GAS
+        ------------------------------ */
 
         const response =
             await api({
@@ -928,23 +1334,57 @@ async function loadData(){
             });
 
 
+        console.log(
+            "RESPONSE GAS:",
+            response
+        );
+
+
+        /* ------------------------------
+           VALIDASI
+        ------------------------------ */
+
         if(
-            !response.success
+
+            !response ||
+
+            response.success !== true
+
         ){
 
             throw new Error(
-                response.message ||
-                "Gagal mengambil data."
+
+                response?.message ||
+
+                "Gagal mengambil data pesanan."
+
             );
 
         }
 
 
+        /* ------------------------------
+           SIMPAN DATA
+        ------------------------------ */
+
         DATA =
+
             response.data ||
+
             response.orders ||
+
             [];
 
+
+        console.log(
+            "DATA PESANAN:",
+            DATA
+        );
+
+
+        /* ------------------------------
+           UPDATE UI
+        ------------------------------ */
 
         prepareFilter();
 
@@ -952,11 +1392,14 @@ async function loadData(){
 
         render();
 
-    }
 
+    }
     catch(error){
 
-        console.error(error);
+        console.error(
+            "ERROR LOAD DATA:",
+            error
+        );
 
 
         dataBody.innerHTML = `
@@ -969,18 +1412,43 @@ async function loadData(){
                 >
 
                     <div class="empty-icon">
+
                         ⚠️
+
                     </div>
 
+
                     <b>
+
                         Gagal memuat data
+
                     </b>
+
 
                     <br>
 
+
                     <small>
-                        ${esc(error.message)}
+
+                        ${esc(
+                            error.message
+                        )}
+
                     </small>
+
+
+                    <div
+                        class="error-box"
+                    >
+
+                        Pastikan Google Apps Script
+                        sudah menggunakan versi terbaru
+                        dan action
+                        <b>getOrders</b>
+                        tersedia.
+
+                    </div>
+
 
                 </td>
 
@@ -989,36 +1457,62 @@ async function loadData(){
         `;
 
     }
+    finally{
+
+        btnRefresh.disabled =
+            false;
+
+
+        btnRefresh.textContent =
+            "🔄 Muat Ulang Data";
+
+    }
 
 }
 
 
 /* =====================================================
-   FILTER UKURAN
+   PREPARE FILTER
 ===================================================== */
 
 function prepareFilter(){
 
     const sizes =
+
         [
+
             ...new Set(
+
                 DATA
+
                 .map(
                     item =>
-                        item.ukuran ||
-                        item.Ukuran ||
-                        ""
+
+                        getField(
+                            item,
+                            [
+                                "UKURAN",
+                                "SIZE"
+                            ]
+                        )
+
                 )
+
                 .filter(Boolean)
+
             )
+
         ]
+
         .sort();
 
 
     filterUkuran.innerHTML = `
 
         <option value="">
+
             Semua Ukuran
+
         </option>
 
     `;
@@ -1027,21 +1521,26 @@ function prepareFilter(){
     sizes.forEach(
         size => {
 
+
             const option =
                 document.createElement(
                     "option"
                 );
 
+
             option.value =
                 size;
 
+
             option.textContent =
                 size;
+
 
             filterUkuran
                 .appendChild(
                     option
                 );
+
 
         }
     );
@@ -1050,7 +1549,7 @@ function prepareFilter(){
 
 
 /* =====================================================
-   STATISTIK
+   UPDATE STATISTIK
 ===================================================== */
 
 function updateStats(){
@@ -1065,24 +1564,51 @@ function updateStats(){
     DATA.forEach(
         item => {
 
-            totalJaket +=
+
+            const jumlah =
+
                 Number(
-                    item.jumlah ||
-                    item.Jumlah ||
-                    1
-                ) || 0;
+
+                    getField(
+                        item,
+                        [
+                            "JUMLAH",
+                            "JUMLAH PESANAN"
+                        ]
+                    )
+
+                ) || 1;
+
+
+            totalJaket +=
+                jumlah;
+
 
         }
     );
 
 
     const sizes =
+
         new Set(
-            DATA.map(
+
+            DATA
+
+            .map(
                 item =>
-                    item.ukuran ||
-                    item.Ukuran
+
+                    getField(
+                        item,
+                        [
+                            "UKURAN",
+                            "SIZE"
+                        ]
+                    )
+
             )
+
+            .filter(Boolean)
+
         );
 
 
@@ -1107,42 +1633,78 @@ function updateStats(){
 
 
 /* =====================================================
-   RENDER
+   RENDER TABLE
 ===================================================== */
 
 function render(){
 
     const keyword =
+
         search.value
         .toLowerCase()
         .trim();
 
 
     const ukuran =
+
         filterUkuran.value;
 
 
     const filtered =
+
         DATA.filter(
             item => {
 
+
+                /* --------------------------
+                   NAMA
+                -------------------------- */
+
                 const nama =
+
                     String(
-                        item.nama ||
-                        item.Nama ||
-                        ""
+
+                        getField(
+                            item,
+                            [
+                                "NAMA",
+                                "NAMA PEMESAN",
+                                "NAMA_PEMESAN"
+                            ]
+                        )
+
+                        || ""
+
                     );
 
+
+                /* --------------------------
+                   UKURAN
+                -------------------------- */
 
                 const size =
+
                     String(
-                        item.ukuran ||
-                        item.Ukuran ||
-                        ""
+
+                        getField(
+                            item,
+                            [
+                                "UKURAN",
+                                "SIZE"
+                            ]
+                        )
+
+                        || ""
+
                     );
 
 
+                /* --------------------------
+                   SEARCH
+                -------------------------- */
+
                 const cocokNama =
+
                     nama
                     .toLowerCase()
                     .includes(
@@ -1150,19 +1712,32 @@ function render(){
                     );
 
 
+                /* --------------------------
+                   FILTER UKURAN
+                -------------------------- */
+
                 const cocokUkuran =
+
                     !ukuran ||
+
                     size === ukuran;
 
 
                 return (
+
                     cocokNama &&
+
                     cocokUkuran
+
                 );
 
             }
         );
 
+
+    /* =================================================
+       EMPTY
+    ================================================= */
 
     if(
         !filtered.length
@@ -1178,8 +1753,11 @@ function render(){
                 >
 
                     <div class="empty-icon">
+
                         🔎
+
                     </div>
+
 
                     Tidak ada data
                     yang sesuai.
@@ -1195,48 +1773,101 @@ function render(){
     }
 
 
+    /* =================================================
+       TABLE
+    ================================================= */
+
     dataBody.innerHTML =
+
         filtered
+
         .map(
             (item,index) => {
 
-                const nama =
-                    item.nama ||
-                    item.Nama ||
-                    "-";
 
+                /* --------------------------
+                   NAMA
+                -------------------------- */
+
+                const nama =
+
+                    getField(
+                        item,
+                        [
+                            "NAMA",
+                            "NAMA PEMESAN",
+                            "NAMA_PEMESAN"
+                        ]
+                    )
+
+                    || "-";
+
+
+                /* --------------------------
+                   UKURAN
+                -------------------------- */
 
                 const ukuran =
-                    item.ukuran ||
-                    item.Ukuran ||
-                    "-";
 
+                    getField(
+                        item,
+                        [
+                            "UKURAN",
+                            "SIZE"
+                        ]
+                    )
+
+                    || "-";
+
+
+                /* --------------------------
+                   JUMLAH
+                -------------------------- */
 
                 const jumlah =
-                    item.jumlah ||
-                    item.Jumlah ||
-                    1;
+
+                    Number(
+
+                        getField(
+                            item,
+                            [
+                                "JUMLAH",
+                                "JUMLAH PESANAN"
+                            ]
+                        )
+
+                    ) || 1;
 
 
                 return `
 
                     <tr>
 
+
                         <td class="no">
+
                             ${index + 1}
+
                         </td>
 
+
                         <td class="nama">
+
                             ${esc(nama)}
+
                         </td>
+
 
                         <td>
 
                             <span class="ukuran">
+
                                 ${esc(ukuran)}
+
                             </span>
 
                         </td>
+
 
                         <td class="jumlah">
 
@@ -1245,19 +1876,22 @@ function render(){
 
                         </td>
 
+
                     </tr>
 
                 `;
 
             }
         )
+
         .join("");
 
 }
 
 
 /* =====================================================
-   EVENT FILTER
+   SEARCH
+   TIDAK MEMANGGIL GAS
 ===================================================== */
 
 search.addEventListener(
@@ -1265,6 +1899,11 @@ search.addEventListener(
     render
 );
 
+
+/* =====================================================
+   FILTER UKURAN
+   TIDAK MEMANGGIL GAS
+===================================================== */
 
 filterUkuran.addEventListener(
     "change",
@@ -1274,23 +1913,30 @@ filterUkuran.addEventListener(
 
 /* =====================================================
    START
+   HANYA 1 REQUEST KETIKA HALAMAN DIBUKA
 ===================================================== */
 
 loadData();
 
 
 /* =====================================================
-   AUTO REFRESH 60 DETIK
+   TIDAK ADA AUTO REFRESH
+=====================================================
+
+   Sengaja TIDAK menggunakan:
+
+   setInterval()
+
+   Data hanya diperbarui ketika:
+
+   1. Halaman pertama kali dibuka
+   2. Tombol "Muat Ulang Data" ditekan
+
 ===================================================== */
-
-setInterval(
-    loadData,
-    60000
-);
-
 
 </script>
 
 
 </body>
+
 </html>
