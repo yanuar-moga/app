@@ -1,0 +1,2488 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#2563eb">
+
+<title>Pemesanan Jaket Alumni PPG 2026</title>
+
+<style>
+:root{
+    --primary:#2563eb;
+    --secondary:#7c3aed;
+    --purple:#9333ea;
+    --green:#10b981;
+    --orange:#f59e0b;
+    --red:#ef4444;
+
+    --text:#172033;
+    --muted:#667085;
+    --border:#e4e7ec;
+    --bg:#eef4ff;
+    --white:#ffffff;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    color:var(--text);
+
+    background:
+        radial-gradient(
+            circle at top left,
+            #dbeafe 0,
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            #ede9fe 0,
+            transparent 35%
+        ),
+        #f8fafc;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container{
+    width:min(720px,100%);
+    margin:auto;
+    padding:16px 14px 45px;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    position:relative;
+    overflow:hidden;
+
+    color:#fff;
+
+    padding:28px 22px;
+
+    border-radius:28px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #6d28d9 60%,
+            #9333ea
+        );
+
+    box-shadow:
+        0 20px 45px
+        rgba(37,99,235,.22);
+
+    margin-bottom:16px;
+}
+
+.hero::before{
+    content:"";
+
+    position:absolute;
+
+    width:190px;
+    height:190px;
+
+    right:-65px;
+    top:-90px;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.12);
+}
+
+.hero::after{
+    content:"";
+
+    position:absolute;
+
+    width:130px;
+    height:130px;
+
+    left:-55px;
+    bottom:-70px;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.10);
+}
+
+.badge{
+    position:relative;
+    z-index:2;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    padding:7px 12px;
+
+    border-radius:999px;
+
+    background:
+        rgba(255,255,255,.16);
+
+    border:
+        1px solid
+        rgba(255,255,255,.20);
+
+    font-size:12px;
+
+    font-weight:800;
+}
+
+.hero h1{
+    position:relative;
+    z-index:2;
+
+    margin:15px 0 8px;
+
+    font-size:28px;
+
+    line-height:1.15;
+}
+
+.hero p{
+    position:relative;
+    z-index:2;
+
+    margin:0;
+
+    color:#e8eaff;
+
+    line-height:1.5;
+
+    font-size:14px;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.card{
+    background:
+        rgba(255,255,255,.96);
+
+    border:
+        1px solid
+        rgba(255,255,255,.8);
+
+    border-radius:22px;
+
+    padding:20px 17px;
+
+    margin-bottom:14px;
+
+    box-shadow:
+        0 9px 30px
+        rgba(16,24,40,.07);
+}
+
+.section-title{
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin:0 0 16px;
+
+    font-size:17px;
+
+    font-weight:900;
+}
+
+.icon{
+    width:39px;
+    height:39px;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:12px;
+
+    background:#eff6ff;
+
+    font-size:20px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.grid{
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:12px;
+}
+
+.field{
+    margin-bottom:12px;
+}
+
+.field:last-child{
+    margin-bottom:0;
+}
+
+label{
+    display:block;
+
+    margin-bottom:7px;
+
+    font-size:13px;
+
+    font-weight:800;
+}
+
+.required{
+    color:var(--red);
+}
+
+input,
+select,
+textarea{
+
+    width:100%;
+
+    padding:
+        12px 13px;
+
+    border:
+        1.5px solid
+        var(--border);
+
+    border-radius:13px;
+
+    background:#fff;
+
+    color:var(--text);
+
+    font-family:inherit;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+    border-color:
+        var(--secondary);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(124,58,237,.09);
+}
+
+textarea{
+
+    min-height:90px;
+
+    resize:vertical;
+}
+
+
+/* =========================
+   INFO
+========================= */
+
+.info{
+
+    display:flex;
+
+    gap:9px;
+
+    align-items:flex-start;
+
+    padding:12px;
+
+    border-radius:14px;
+
+    background:#fff7ed;
+
+    border:
+        1px solid
+        #fed7aa;
+
+    color:#9a3412;
+
+    font-size:12px;
+
+    line-height:1.5;
+}
+
+
+/* =========================
+   CHECKBOX
+========================= */
+
+.check{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    padding:11px 12px;
+
+    background:#f8fafc;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:13px;
+
+    font-size:13px;
+
+    font-weight:700;
+}
+
+.check input{
+
+    width:auto;
+}
+
+
+/* =========================
+   PRICE
+========================= */
+
+.pricebox{
+
+    padding:16px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eff6ff,
+            #f5f3ff
+        );
+}
+
+.price-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    margin:8px 0;
+
+    font-size:14px;
+}
+
+.price-row.total{
+
+    margin-top:13px;
+
+    padding-top:13px;
+
+    border-top:
+        1px dashed
+        #c7d2fe;
+
+    color:#1d4ed8;
+
+    font-size:19px;
+
+    font-weight:950;
+}
+
+
+/* =========================
+   SUBMIT
+========================= */
+
+.submit{
+
+    width:100%;
+
+    border:0;
+
+    border-radius:16px;
+
+    padding:16px 18px;
+
+    color:#fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #7c3aed
+        );
+
+    box-shadow:
+        0 12px 25px
+        rgba(37,99,235,.25);
+
+    font-size:16px;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.submit:hover{
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 15px 30px
+        rgba(37,99,235,.3);
+}
+
+.submit:active{
+
+    transform:
+        scale(.98);
+}
+
+.submit:disabled{
+
+    opacity:.65;
+
+    cursor:not-allowed;
+
+    transform:none;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+
+    padding:
+        12px;
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:11px;
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:50;
+
+    display:none;
+
+    align-items:flex-end;
+
+    justify-content:center;
+
+    padding:10px;
+
+    background:
+        rgba(15,23,42,.65);
+
+    backdrop-filter:
+        blur(6px);
+}
+
+.modal.show{
+
+    display:flex;
+}
+
+.modal-box{
+
+    width:
+        min(560px,100%);
+
+    max-height:
+        92vh;
+
+    overflow:auto;
+
+    padding:21px;
+
+    border-radius:
+        25px 25px 18px 18px;
+
+    background:#fff;
+
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,.28);
+
+    animation:
+        modalUp .25s ease;
+}
+
+@keyframes modalUp{
+
+    from{
+        opacity:0;
+        transform:
+            translateY(30px);
+    }
+
+    to{
+        opacity:1;
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* =========================
+   SUCCESS
+========================= */
+
+.success{
+
+    text-align:center;
+}
+
+.success-icon{
+
+    font-size:52px;
+}
+
+.success h2{
+
+    margin:
+        4px 0 7px;
+
+    font-size:22px;
+}
+
+.order-id{
+
+    display:inline-block;
+
+    padding:
+        8px 14px;
+
+    border-radius:999px;
+
+    background:#eef2ff;
+
+    color:#4338ca;
+
+    font-weight:950;
+
+    letter-spacing:.6px;
+}
+
+
+/* =========================
+   SUMMARY
+========================= */
+
+.summary{
+
+    margin-top:16px;
+
+    padding:14px;
+
+    border-radius:17px;
+
+    background:#f8fafc;
+}
+
+.summary-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    padding:7px 0;
+
+    font-size:13px;
+}
+
+.summary-row b:last-child{
+
+    text-align:right;
+}
+
+
+/* =========================
+   PAYMENT
+========================= */
+
+.payment{
+
+    margin-top:13px;
+
+    padding:16px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ecfdf5,
+            #eff6ff
+        );
+
+    border:
+        1px solid
+        #bfdbfe;
+}
+
+.payment-title{
+
+    font-size:12px;
+
+    font-weight:900;
+
+    color:#475467;
+}
+
+.bank{
+
+    margin-top:7px;
+
+    color:#1d4ed8;
+
+    font-size:20px;
+
+    font-weight:950;
+}
+
+.account{
+
+    margin:5px 0;
+
+    font-size:24px;
+
+    font-weight:950;
+
+    letter-spacing:1px;
+}
+
+.atasnama{
+
+    color:#475467;
+
+    font-size:13px;
+}
+
+.notice{
+
+    margin:
+        12px 0 0;
+
+    color:#667085;
+
+    font-size:12px;
+
+    line-height:1.5;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btns{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:9px;
+
+    margin-top:14px;
+}
+
+.btn{
+
+    border:0;
+
+    border-radius:13px;
+
+    padding:13px;
+
+    font-size:13px;
+
+    font-weight:850;
+
+    cursor:pointer;
+}
+
+.copy{
+
+    background:#f1f5f9;
+
+    color:#334155;
+}
+
+.wa{
+
+    background:#10b981;
+
+    color:#fff;
+}
+
+.close{
+
+    width:100%;
+
+    margin-top:9px;
+
+    background:#172033;
+
+    color:#fff;
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+
+    position:fixed;
+
+    z-index:100;
+
+    left:50%;
+
+    bottom:18px;
+
+    transform:
+        translate(-50%,20px);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    padding:
+        11px 16px;
+
+    border-radius:999px;
+
+    background:#172033;
+
+    color:white;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    transition:.25s;
+}
+
+.toast.show{
+
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
+}
+
+
+/* =========================
+   SPINNER
+========================= */
+
+.spinner{
+
+    display:inline-block;
+
+    width:17px;
+    height:17px;
+
+    margin-right:7px;
+
+    border:
+        2px solid
+        rgba(255,255,255,.45);
+
+    border-top-color:#fff;
+
+    border-radius:50%;
+
+    vertical-align:-4px;
+
+    animation:
+        spin .7s linear infinite;
+}
+
+@keyframes spin{
+
+    to{
+        transform:
+            rotate(360deg);
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:560px){
+
+    .container{
+
+        padding:
+            10px
+            10px
+            35px;
+    }
+
+    .hero{
+
+        padding:
+            23px 18px;
+
+        border-radius:22px;
+    }
+
+    .hero h1{
+
+        font-size:24px;
+    }
+
+    .card{
+
+        padding:
+            17px 14px;
+
+        border-radius:19px;
+    }
+
+    .grid{
+
+        grid-template-columns:
+            1fr;
+
+        gap:0;
+    }
+
+    .modal{
+
+        padding:7px;
+    }
+
+    .modal-box{
+
+        padding:17px;
+
+        border-radius:22px;
+    }
+
+    .btns{
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .account{
+
+        font-size:21px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HERO -->
+
+    <header class="hero">
+
+        <div class="badge">
+            🧥 PEMESANAN RESMI
+            • BATCH 1
+        </div>
+
+        <h1 id="appTitle">
+            Pemesanan Jaket Alumni PPG 2026
+        </h1>
+
+        <p id="appSubtitle">
+            Alumni Peserta PPG Guru Tertentu
+            Tahun 2026 Batch 1
+        </p>
+
+    </header>
+
+
+    <!-- FORM -->
+
+    <form id="orderForm">
+
+
+        <!-- DATA PEMESAN -->
+
+        <section class="card">
+
+            <h2 class="section-title">
+
+                <span class="icon">
+                    👤
+                </span>
+
+                Data Pemesan
+
+            </h2>
+
+
+            <div class="field">
+
+                <label>
+                    Nama Lengkap
+                    <span class="required">*</span>
+                </label>
+
+                <input
+                    id="nama"
+                    required
+                    autocomplete="name"
+                    placeholder="Nama lengkap"
+                >
+
+            </div>
+
+
+            <div class="grid">
+
+                <div class="field">
+
+                    <label>
+                        Nomor WhatsApp
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="noWhatsapp"
+                        required
+                        inputmode="tel"
+                        placeholder="08xxxxxxxxxx"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Instansi / Asal Sekolah
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="instansi"
+                        required
+                        placeholder="Nama sekolah / instansi"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Kabupaten / Kota Asal
+                </label>
+
+                <input
+                    id="kabupatenAsal"
+                    placeholder="Kabupaten / kota"
+                >
+
+            </div>
+
+        </section>
+
+
+
+        <!-- DETAIL JAKET -->
+
+        <section class="card">
+
+            <h2 class="section-title">
+
+                <span class="icon">
+                    🧥
+                </span>
+
+                Detail Jaket
+
+            </h2>
+
+
+            <div class="info">
+
+                🎨
+
+                <span>
+                    Warna jaket sudah ditentukan oleh panitia:
+                    <b id="warnaJaket">-</b>.
+                    Pemesan cukup memilih ukuran dan jumlah.
+                </span>
+
+            </div>
+
+
+            <div
+                class="grid"
+                style="margin-top:12px"
+            >
+
+                <div class="field">
+
+                    <label>
+                        Ukuran Jaket
+                        <span class="required">*</span>
+                    </label>
+
+                    <select
+                        id="ukuran"
+                        required
+                    >
+
+                        <option value="">
+                            Memuat ukuran...
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Jumlah
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="jumlah"
+                        type="number"
+                        min="1"
+                        max="20"
+                        value="1"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Catatan Tambahan
+                </label>
+
+                <textarea
+                    id="catatan"
+                    placeholder="Opsional, misalnya permintaan khusus..."
+                ></textarea>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ALAMAT -->
+
+        <section class="card">
+
+            <h2 class="section-title">
+
+                <span class="icon">
+                    🚚
+                </span>
+
+                Alamat Pengiriman
+
+            </h2>
+
+
+            <div class="field">
+
+                <label>
+                    Nama Penerima
+                    <span class="required">*</span>
+                </label>
+
+                <input
+                    id="namaPenerima"
+                    required
+                    placeholder="Nama penerima"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    WhatsApp Penerima
+                    <span class="required">*</span>
+                </label>
+
+                <input
+                    id="waPenerima"
+                    required
+                    inputmode="tel"
+                    placeholder="08xxxxxxxxxx"
+                >
+
+            </div>
+
+
+            <label class="check">
+
+                <input
+                    type="checkbox"
+                    id="sameReceiver"
+                >
+
+                Nama & WhatsApp penerima
+                sama dengan pemesan
+
+            </label>
+
+
+            <div
+                class="field"
+                style="margin-top:12px"
+            >
+
+                <label>
+                    Alamat Lengkap
+                    <span class="required">*</span>
+                </label>
+
+                <textarea
+                    id="alamat"
+                    required
+                    placeholder="Nama jalan, nomor rumah, RT/RW, dusun, dll."
+                ></textarea>
+
+            </div>
+
+
+            <div class="grid">
+
+                <div class="field">
+
+                    <label>
+                        Desa / Kelurahan
+                    </label>
+
+                    <input
+                        id="desa"
+                        placeholder="Desa / kelurahan"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Kecamatan
+                    </label>
+
+                    <input
+                        id="kecamatan"
+                        placeholder="Kecamatan"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Kabupaten / Kota
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="kabupatenTujuan"
+                        required
+                        placeholder="Kabupaten / kota"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Provinsi
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="provinsi"
+                        required
+                        placeholder="Provinsi"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="grid">
+
+                <div class="field">
+
+                    <label>
+                        Kode Pos
+                    </label>
+
+                    <input
+                        id="kodePos"
+                        inputmode="numeric"
+                        placeholder="Kode pos"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Patokan Alamat
+                    </label>
+
+                    <input
+                        id="patokan"
+                        placeholder="Contoh: dekat masjid..."
+                    >
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- PEMBAYARAN -->
+
+        <section class="card">
+
+            <h2 class="section-title">
+
+                <span class="icon">
+                    💰
+                </span>
+
+                Rincian Pembayaran
+
+            </h2>
+
+
+            <div class="pricebox">
+
+                <div class="price-row">
+
+                    <span>
+                        Harga per jaket
+                    </span>
+
+                    <b id="harga">
+                        Rp0
+                    </b>
+
+                </div>
+
+
+                <div class="price-row">
+
+                    <span>
+                        Jumlah
+                    </span>
+
+                    <b id="jumlahView">
+                        1 pcs
+                    </b>
+
+                </div>
+
+
+                <div class="price-row total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <b id="total">
+                        Rp0
+                    </b>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <button
+            class="submit"
+            id="submitBtn"
+            type="submit"
+        >
+
+            🧥 KIRIM PESANAN
+
+        </button>
+
+    </form>
+
+
+    <div class="footer">
+
+        Data pesanan akan dicatat
+        otomatis ke sistem panitia.
+
+    </div>
+
+</div>
+
+
+
+<!-- MODAL SUKSES -->
+
+<div
+    class="modal"
+    id="successModal"
+>
+
+    <div class="modal-box">
+
+
+        <div class="success">
+
+            <div class="success-icon">
+                🎉
+            </div>
+
+            <h2>
+                Pesanan Berhasil Dicatat!
+            </h2>
+
+            <div
+                class="order-id"
+                id="orderId"
+            >
+                PPG26-0001
+            </div>
+
+        </div>
+
+
+        <div
+            class="summary"
+            id="orderSummary"
+        ></div>
+
+
+        <div class="payment">
+
+            <div class="payment-title">
+
+                💳 SILAKAN LAKUKAN PEMBAYARAN
+
+            </div>
+
+
+            <div
+                class="bank"
+                id="bankName"
+            >
+                -
+            </div>
+
+
+            <div
+                class="account"
+                id="accountNumber"
+            >
+                -
+            </div>
+
+
+            <div
+                class="atasnama"
+                id="accountName"
+            >
+                a.n. -
+            </div>
+
+
+            <p
+                class="notice"
+                id="paymentMessage"
+            >
+
+                Setelah transfer,
+                silakan konfirmasi kepada admin
+                melalui WhatsApp.
+
+            </p>
+
+        </div>
+
+
+        <div class="btns">
+
+            <button
+                class="btn copy"
+                id="copyBtn"
+            >
+
+                📋 Salin Rekening
+
+            </button>
+
+
+            <button
+                class="btn wa"
+                id="waBtn"
+            >
+
+                📱 Konfirmasi WhatsApp
+
+            </button>
+
+        </div>
+
+
+        <button
+            class="btn close"
+            onclick="closeModal()"
+        >
+
+            SELESAI
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+
+<script>
+
+/* =====================================================
+   URL GOOGLE APPS SCRIPT
+===================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwwUuRKbfPZH2zxETDbNbcW_Et2juZsPWmll2iktd7JQjUEvrDO82jaUAHJnGlX6WvL/exec";
+
+
+let APP = {
+
+    hargaJaket:0,
+
+    namaBank:"",
+
+    nomorRekening:"",
+
+    atasNama:"",
+
+    noWaAdmin:""
+
+};
+
+
+let LAST_ORDER = null;
+
+
+/* =====================================================
+   HELPER
+===================================================== */
+
+const $ =
+id => document.getElementById(id);
+
+
+function rupiah(n){
+
+    return new Intl.NumberFormat(
+        "id-ID",
+        {
+            style:"currency",
+            currency:"IDR",
+            maximumFractionDigits:0
+        }
+    ).format(Number(n)||0);
+
+}
+
+
+function esc(value){
+
+    return String(
+        value ?? ""
+    ).replace(
+        /[&<>"']/g,
+        function(m){
+
+            return {
+
+                "&":"&amp;",
+                "<":"&lt;",
+                ">":"&gt;",
+                '"':"&quot;",
+                "'":"&#039;"
+
+            }[m];
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   API
+===================================================== */
+
+async function api(data){
+
+    const response =
+        await fetch(
+            API_URL,
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                    "text/plain;charset=utf-8"
+                },
+
+                body:
+                    JSON.stringify(data)
+            }
+        );
+
+    return await response.json();
+
+}
+
+
+/* =====================================================
+   LOAD CONFIG
+===================================================== */
+
+async function init(){
+
+    try{
+
+        const configResponse =
+            await api({
+                action:"getConfig"
+            });
+
+
+        if(
+            !configResponse.success
+        ){
+
+            throw new Error(
+                configResponse.message
+            );
+
+        }
+
+
+        APP =
+            configResponse.config ||
+            APP;
+
+
+        $("appTitle").textContent =
+            APP.namaAplikasi ||
+            "Pemesanan Jaket Alumni PPG 2026";
+
+
+        $("appSubtitle").textContent =
+            APP.subjudul ||
+            "";
+
+
+        $("warnaJaket").textContent =
+            APP.warnaJaket ||
+            "Sesuai ketentuan panitia";
+
+
+        $("harga").textContent =
+            rupiah(
+                APP.hargaJaket
+            );
+
+
+        updateTotal();
+
+
+        /* ======================
+           LOAD UKURAN
+        ====================== */
+
+        const ukuranResponse =
+            await api({
+                action:"getUkuran"
+            });
+
+
+        const list =
+            ukuranResponse.ukuran ||
+            [];
+
+
+        const select =
+            $("ukuran");
+
+
+        if(!list.length){
+
+            select.innerHTML = `
+                <option value="">
+                    Ukuran belum tersedia
+                </option>
+            `;
+
+        }else{
+
+            select.innerHTML =
+                `
+                <option value="">
+                    Pilih ukuran
+                </option>
+                ` +
+
+                list.map(
+                    ukuran =>
+
+                    `<option value="${esc(ukuran)}">
+                        ${esc(ukuran)}
+                    </option>`
+                ).join("");
+
+        }
+
+
+        /* ======================
+           STATUS PEMESANAN
+        ====================== */
+
+        if(
+            String(
+                APP.statusPemesanan ||
+                "BUKA"
+            ).toUpperCase()
+            !==
+            "BUKA"
+        ){
+
+            $("submitBtn").disabled =
+                true;
+
+            $("submitBtn").textContent =
+                "🔒 PEMESANAN DITUTUP";
+
+            showToast(
+                "Pemesanan sedang ditutup."
+            );
+
+        }
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        $("ukuran").innerHTML = `
+            <option value="">
+                Gagal memuat ukuran
+            </option>
+        `;
+
+
+        showToast(
+            "Gagal terhubung ke server."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   TOTAL
+===================================================== */
+
+function updateTotal(){
+
+    const quantity =
+        Math.max(
+            1,
+            Number(
+                $("jumlah").value
+            ) || 1
+        );
+
+
+    const harga =
+        Number(
+            APP.hargaJaket
+        ) || 0;
+
+
+    $("jumlahView").textContent =
+        quantity +
+        " pcs";
+
+
+    $("total").textContent =
+        rupiah(
+            harga * quantity
+        );
+
+}
+
+
+$("jumlah")
+    .addEventListener(
+        "input",
+        updateTotal
+    );
+
+
+/* =====================================================
+   PENERIMA SAMA
+===================================================== */
+
+$("sameReceiver")
+.addEventListener(
+    "change",
+    function(){
+
+        if(
+            this.checked
+        ){
+
+            $("namaPenerima").value =
+                $("nama").value;
+
+
+            $("waPenerima").value =
+                $("noWhatsapp").value;
+
+        }
+
+    }
+);
+
+
+$("nama")
+.addEventListener(
+    "input",
+    function(){
+
+        if(
+            $("sameReceiver").checked
+        ){
+
+            $("namaPenerima").value =
+                this.value;
+
+        }
+
+    }
+);
+
+
+$("noWhatsapp")
+.addEventListener(
+    "input",
+    function(){
+
+        if(
+            $("sameReceiver").checked
+        ){
+
+            $("waPenerima").value =
+                this.value;
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   SUBMIT
+===================================================== */
+
+$("orderForm")
+.addEventListener(
+    "submit",
+    async function(event){
+
+        event.preventDefault();
+
+
+        if(
+            !this.checkValidity()
+        ){
+
+            this.reportValidity();
+
+            return;
+
+        }
+
+
+        const jumlah =
+            Number(
+                $("jumlah").value
+            );
+
+
+        if(
+            jumlah < 1 ||
+            jumlah > 20
+        ){
+
+            showToast(
+                "Jumlah harus 1 sampai 20."
+            );
+
+            return;
+
+        }
+
+
+        const button =
+            $("submitBtn");
+
+
+        button.disabled =
+            true;
+
+
+        button.innerHTML =
+            `
+            <span class="spinner"></span>
+            Menyimpan pesanan...
+            `;
+
+
+        const data = {
+
+            action:
+                "submitOrder",
+
+
+            nama:
+                $("nama").value.trim(),
+
+
+            noWhatsapp:
+                $("noWhatsapp").value.trim(),
+
+
+            instansi:
+                $("instansi").value.trim(),
+
+
+            kabupatenAsal:
+                $("kabupatenAsal")
+                .value.trim(),
+
+
+            ukuran:
+                $("ukuran").value,
+
+
+            jumlah:
+                jumlah,
+
+
+            namaPenerima:
+                $("namaPenerima")
+                .value.trim(),
+
+
+            waPenerima:
+                $("waPenerima")
+                .value.trim(),
+
+
+            alamat:
+                $("alamat")
+                .value.trim(),
+
+
+            desa:
+                $("desa")
+                .value.trim(),
+
+
+            kecamatan:
+                $("kecamatan")
+                .value.trim(),
+
+
+            kabupatenTujuan:
+                $("kabupatenTujuan")
+                .value.trim(),
+
+
+            provinsi:
+                $("provinsi")
+                .value.trim(),
+
+
+            kodePos:
+                $("kodePos")
+                .value.trim(),
+
+
+            patokan:
+                $("patokan")
+                .value.trim(),
+
+
+            catatan:
+                $("catatan")
+                .value.trim()
+
+        };
+
+
+        try{
+
+            const response =
+                await api(data);
+
+
+            if(
+                !response.success
+            ){
+
+                throw new Error(
+                    response.message ||
+                    "Pesanan gagal disimpan."
+                );
+
+            }
+
+
+            LAST_ORDER =
+                response;
+
+
+            showSuccess(
+                response
+            );
+
+
+            this.reset();
+
+
+            $("jumlah").value =
+                1;
+
+
+            updateTotal();
+
+        }
+
+        catch(error){
+
+            console.error(error);
+
+
+            alert(
+                "Pesanan belum tersimpan.\n\n" +
+                error.message
+            );
+
+        }
+
+        finally{
+
+            button.disabled =
+                false;
+
+
+            button.innerHTML =
+                "🧥 KIRIM PESANAN";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   SUCCESS MODAL
+===================================================== */
+
+function showSuccess(response){
+
+    const order =
+        response.order ||
+        {};
+
+
+    const payment =
+        response.payment ||
+        {};
+
+
+    $("orderId").textContent =
+        order.idPesanan ||
+        "-";
+
+
+    $("orderSummary").innerHTML = `
+
+        <div class="summary-row">
+
+            <span>Nama</span>
+
+            <b>
+                ${esc(order.nama)}
+            </b>
+
+        </div>
+
+
+        <div class="summary-row">
+
+            <span>Instansi</span>
+
+            <b>
+                ${esc(order.instansi)}
+            </b>
+
+        </div>
+
+
+        <div class="summary-row">
+
+            <span>Ukuran</span>
+
+            <b>
+                ${esc(order.ukuran)}
+            </b>
+
+        </div>
+
+
+        <div class="summary-row">
+
+            <span>Warna</span>
+
+            <b>
+                ${esc(
+                    APP.warnaJaket ||
+                    "-"
+                )}
+            </b>
+
+        </div>
+
+
+        <div class="summary-row">
+
+            <span>Jumlah</span>
+
+            <b>
+                ${order.jumlah}
+                pcs
+            </b>
+
+        </div>
+
+
+        <div class="summary-row">
+
+            <span>Total</span>
+
+            <b>
+                ${rupiah(
+                    order.totalPembayaran
+                )}
+            </b>
+
+        </div>
+
+
+        <div class="summary-row">
+
+            <span>Penerima</span>
+
+            <b>
+                ${esc(
+                    order.namaPenerima ||
+                    ""
+                )}
+            </b>
+
+        </div>
+
+
+        <div class="summary-row">
+
+            <span>Kabupaten</span>
+
+            <b>
+                ${esc(
+                    order.kabupatenTujuan ||
+                    ""
+                )}
+            </b>
+
+        </div>
+
+    `;
+
+
+    $("bankName").textContent =
+        payment.namaBank ||
+        "-";
+
+
+    $("accountNumber").textContent =
+        payment.nomorRekening ||
+        "-";
+
+
+    $("accountName").textContent =
+        "a.n. " +
+        (
+            payment.atasNama ||
+            "-"
+        );
+
+
+    $("paymentMessage").textContent =
+        payment.pesan ||
+        "Setelah transfer, silakan konfirmasi kepada admin melalui WhatsApp.";
+
+
+    $("successModal")
+        .classList
+        .add("show");
+
+}
+
+
+/* =====================================================
+   COPY REKENING
+===================================================== */
+
+$("copyBtn")
+.addEventListener(
+    "click",
+    async function(){
+
+        const text =
+
+            `${APP.namaBank || ""}
+${APP.nomorRekening || ""}
+a.n. ${APP.atasNama || ""}`;
+
+
+        try{
+
+            await navigator
+                .clipboard
+                .writeText(text);
+
+
+            showToast(
+                "Nomor rekening berhasil disalin."
+            );
+
+        }
+
+        catch(error){
+
+            showToast(
+                "Gagal menyalin rekening."
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   WHATSAPP
+===================================================== */
+
+$("waBtn")
+.addEventListener(
+    "click",
+    function(){
+
+        if(
+            !LAST_ORDER
+        ){
+
+            return;
+
+        }
+
+
+        const order =
+            LAST_ORDER.order ||
+            {};
+
+
+        const payment =
+            LAST_ORDER.payment ||
+            {};
+
+
+        const message =
+
+`Halo Admin 👋
+
+Saya sudah melakukan pemesanan Jaket Alumni PPG Guru Tertentu Tahun 2026 Batch 1.
+
+Kode Pesanan:
+${order.idPesanan}
+
+Nama:
+${order.nama}
+
+Instansi:
+${order.instansi}
+
+Ukuran:
+${order.ukuran}
+
+Warna:
+${APP.warnaJaket || "-"}
+
+Jumlah:
+${order.jumlah} pcs
+
+Total Pembayaran:
+${rupiah(order.totalPembayaran)}
+
+Alamat Pengiriman:
+${order.alamat || ""}
+
+${order.desa || ""}
+${order.kecamatan || ""}
+${order.kabupatenTujuan || ""}
+${order.provinsi || ""} ${order.kodePos || ""}
+
+Saya sudah / akan melakukan pembayaran.
+
+Terima kasih.`;
+
+
+
+        const phone =
+
+            String(
+                payment.noWaAdmin ||
+                APP.noWaAdmin ||
+                ""
+            )
+            .replace(
+                /\D/g,
+                ""
+            );
+
+
+        if(
+            !phone
+        ){
+
+            showToast(
+                "Nomor WhatsApp admin belum diatur di CONFIG."
+            );
+
+            return;
+
+        }
+
+
+        window.open(
+
+            `https://wa.me/${phone}?text=${
+                encodeURIComponent(message)
+            }`,
+
+            "_blank"
+
+        );
+
+    }
+);
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+function closeModal(){
+
+    $("successModal")
+        .classList
+        .remove("show");
+
+}
+
+
+$("successModal")
+.addEventListener(
+    "click",
+    function(event){
+
+        if(
+            event.target.id ===
+            "successModal"
+        ){
+
+            closeModal();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(message){
+
+    const toast =
+        $("toast");
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        window.toastTimer
+    );
+
+
+    window.toastTimer =
+        setTimeout(
+            function(){
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2800
+        );
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+init();
+
+</script>
+
+</body>
+</html>
