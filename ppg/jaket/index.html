@@ -58,6 +58,7 @@ body{
         #f8fafc;
 }
 
+
 /* =========================
    CONTAINER
 ========================= */
@@ -490,6 +491,62 @@ textarea{
     cursor:not-allowed;
 
     transform:none;
+}
+
+
+/* =========================
+   TOMBOL REKAP
+========================= */
+
+.rekap-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width:100%;
+
+    margin-top:10px;
+
+    padding:14px 18px;
+
+    border-radius:16px;
+
+    border:1.5px solid #c7d2fe;
+
+    background:#eef2ff;
+
+    color:#4338ca;
+
+    text-decoration:none;
+
+    font-size:14px;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.rekap-btn:hover{
+
+    background:#e0e7ff;
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(67,56,202,.12);
+}
+
+.rekap-btn:active{
+
+    transform:
+        scale(.98);
 }
 
 
@@ -1056,7 +1113,6 @@ textarea{
         </section>
 
 
-
         <!-- DETAIL JAKET -->
 
         <section class="card">
@@ -1077,7 +1133,7 @@ textarea{
                 🎨
 
                 <span>
-                    Warna jaket sudah ditentukan oleh panitia:
+                    Warna jaket sudah ditentukan:
                     <b id="warnaJaket">-</b>.
                     Pemesan cukup memilih ukuran dan jumlah.
                 </span>
@@ -1146,7 +1202,6 @@ textarea{
             </div>
 
         </section>
-
 
 
         <!-- ALAMAT -->
@@ -1328,7 +1383,6 @@ textarea{
         </section>
 
 
-
         <!-- PEMBAYARAN -->
 
         <section class="card">
@@ -1389,6 +1443,7 @@ textarea{
         </section>
 
 
+        <!-- TOMBOL KIRIM -->
 
         <button
             class="submit"
@@ -1400,18 +1455,30 @@ textarea{
 
         </button>
 
+
+        <!-- TOMBOL REKAP -->
+
+        <a
+            href="rekap.html"
+            class="rekap-btn"
+        >
+
+            📋 LIHAT REKAP PESANAN
+
+        </a>
+
+
     </form>
 
 
     <div class="footer">
 
         Data pesanan akan dicatat
-        otomatis ke sistem panitia.
+        otomatis ke sistem.
 
     </div>
 
 </div>
-
 
 
 <!-- MODAL SUKSES -->
@@ -1502,6 +1569,7 @@ textarea{
             <button
                 class="btn copy"
                 id="copyBtn"
+                type="button"
             >
 
                 📋 Salin Rekening
@@ -1512,6 +1580,7 @@ textarea{
             <button
                 class="btn wa"
                 id="waBtn"
+                type="button"
             >
 
                 📱 Konfirmasi WhatsApp
@@ -1524,6 +1593,7 @@ textarea{
         <button
             class="btn close"
             onclick="closeModal()"
+            type="button"
         >
 
             SELESAI
@@ -1535,12 +1605,10 @@ textarea{
 </div>
 
 
-
 <div
     class="toast"
     id="toast"
 ></div>
-
 
 
 <script>
@@ -1552,6 +1620,10 @@ textarea{
 const API_URL =
 "https://script.google.com/macros/s/AKfycbwwUuRKbfPZH2zxETDbNbcW_Et2juZsPWmll2iktd7JQjUEvrDO82jaUAHJnGlX6WvL/exec";
 
+
+/* =====================================================
+   APP CONFIG
+===================================================== */
 
 let APP = {
 
@@ -1686,7 +1758,7 @@ async function init(){
 
         $("warnaJaket").textContent =
             APP.warnaJaket ||
-            "Sesuai ketentuan panitia";
+            "Sesuai ketentuan";
 
 
         $("harga").textContent =
@@ -1827,10 +1899,10 @@ function updateTotal(){
 
 
 $("jumlah")
-    .addEventListener(
-        "input",
-        updateTotal
-    );
+.addEventListener(
+    "input",
+    updateTotal
+);
 
 
 /* =====================================================
@@ -1958,76 +2030,60 @@ $("orderForm")
             action:
                 "submitOrder",
 
-
             nama:
                 $("nama").value.trim(),
-
 
             noWhatsapp:
                 $("noWhatsapp").value.trim(),
 
-
             instansi:
                 $("instansi").value.trim(),
-
 
             kabupatenAsal:
                 $("kabupatenAsal")
                 .value.trim(),
 
-
             ukuran:
                 $("ukuran").value,
 
-
             jumlah:
                 jumlah,
-
 
             namaPenerima:
                 $("namaPenerima")
                 .value.trim(),
 
-
             waPenerima:
                 $("waPenerima")
                 .value.trim(),
-
 
             alamat:
                 $("alamat")
                 .value.trim(),
 
-
             desa:
                 $("desa")
                 .value.trim(),
-
 
             kecamatan:
                 $("kecamatan")
                 .value.trim(),
 
-
             kabupatenTujuan:
                 $("kabupatenTujuan")
                 .value.trim(),
-
 
             provinsi:
                 $("provinsi")
                 .value.trim(),
 
-
             kodePos:
                 $("kodePos")
                 .value.trim(),
 
-
             patokan:
                 $("patokan")
                 .value.trim(),
-
 
             catatan:
                 $("catatan")
@@ -2250,8 +2306,8 @@ function showSuccess(response){
 
 
     $("successModal")
-        .classList
-        .add("show");
+    .classList
+    .add("show");
 
 }
 
@@ -2365,7 +2421,6 @@ Saya sudah / akan melakukan pembayaran.
 Terima kasih.`;
 
 
-
         const phone =
 
             String(
@@ -2413,8 +2468,8 @@ Terima kasih.`;
 function closeModal(){
 
     $("successModal")
-        .classList
-        .remove("show");
+    .classList
+    .remove("show");
 
 }
 
