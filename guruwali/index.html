@@ -1,0 +1,6077 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+
+<title>GURU WALI</title>
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet">
+
+
+<style>
+
+/* =====================================================
+   ROOT
+===================================================== */
+
+:root{
+  --blue:#0b44ee;
+  --blue2:#0635c9;
+  --blue3:#082fae;
+
+  --blue-soft:#eaf0ff;
+  --blue-pale:#f4f7ff;
+
+  --lime:#ccff00;
+  --lime-soft:#efffc2;
+
+  --bg:#f4f6fb;
+
+  --card:#fff;
+
+  --text:#172033;
+  --text-dark:#101828;
+
+  --muted:#6b7280;
+
+  --line:#e5e7eb;
+
+  --danger:#ef4444;
+  --danger-soft:#fee2e2;
+
+  --success:#16a34a;
+  --success-soft:#dcfce7;
+
+  --warning:#f59e0b;
+  --warning-soft:#fef3c7;
+
+  --shadow-sm:
+    0 4px 14px rgba(15,23,42,.06);
+
+  --shadow:
+    0 10px 30px rgba(15,23,42,.08);
+
+  --shadow-lg:
+    0 20px 50px rgba(15,23,42,.12);
+
+  --radius:18px;
+}
+
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+  font-family:Poppins,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.hidden{
+  display:none!important;
+}
+
+
+/* =====================================================
+   LOGIN BACKGROUND
+===================================================== */
+
+#loginScreen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+
+  position:relative;
+  overflow:hidden;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(11,68,238,.18),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(204,255,0,.08),
+      transparent 30%
+    ),
+    #0d1117;
+}
+
+
+/* animated decorative lights */
+
+#loginScreen:before,
+#loginScreen:after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+  filter:blur(2px);
+}
+
+#loginScreen:before{
+  width:300px;
+  height:300px;
+  background:
+    radial-gradient(
+      circle,
+      rgba(11,68,238,.20),
+      transparent 70%
+    );
+  top:-130px;
+  left:-100px;
+  animation:orbMove 9s ease-in-out infinite;
+}
+
+#loginScreen:after{
+  width:350px;
+  height:350px;
+  background:
+    radial-gradient(
+      circle,
+      rgba(204,255,0,.09),
+      transparent 70%
+    );
+  right:-150px;
+  bottom:-150px;
+  animation:orbMove2 11s ease-in-out infinite;
+}
+
+
+/* =====================================================
+   LOGIN CARD
+===================================================== */
+
+.login-card{
+  width:min(100%,380px);
+  min-height:700px;
+
+  background:var(--blue);
+
+  border-radius:44px;
+
+  overflow:hidden;
+
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.55),
+    0 0 0 1px rgba(255,255,255,.05);
+
+  position:relative;
+
+  animation:
+    loginCardIn .8s cubic-bezier(.22,1,.36,1);
+
+  z-index:2;
+}
+
+
+/* =====================================================
+   LOGIN TOP
+===================================================== */
+
+.top{
+  height:245px;
+
+  background:#f3f3f7;
+
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+
+  padding-top:48px;
+
+  position:relative;
+}
+
+.top:after{
+  content:"";
+
+  position:absolute;
+
+  left:0;
+  right:0;
+  bottom:-1px;
+
+  height:110px;
+
+  background:var(--blue);
+
+  clip-path:path(
+    "M 0 35 C 150 110 320 -15 500 65 L 500 120 L 0 120 Z"
+  );
+}
+
+
+/* =====================================================
+   LOGIN LOGO
+===================================================== */
+
+.logo{
+  width:110px;
+  height:110px;
+
+  border-radius:28px;
+
+  object-fit:cover;
+
+  box-shadow:
+    0 12px 35px rgba(0,0,0,.18),
+    0 0 0 5px rgba(255,255,255,.55);
+
+  position:relative;
+  z-index:2;
+
+  animation:
+    logoEntrance .9s cubic-bezier(.22,1,.36,1),
+    logoFloat 4s ease-in-out 1s infinite;
+}
+
+
+/* =====================================================
+   LOGIN BODY
+===================================================== */
+
+.login-body{
+  padding:25px 28px 28px;
+  color:#fff;
+
+  position:relative;
+}
+
+
+/* =====================================================
+   BRAND
+===================================================== */
+
+.brand{
+  text-align:center;
+  margin-bottom:25px;
+
+  animation:
+    brandIn .8s ease .25s both;
+}
+
+.brand h1{
+  margin:0;
+
+  font-size:25px;
+  font-weight:800;
+
+  letter-spacing:.3px;
+}
+
+.brand h1:after{
+  content:"";
+
+  display:block;
+
+  width:45px;
+  height:3px;
+
+  border-radius:20px;
+
+  background:var(--lime);
+
+  margin:7px auto 0;
+
+  animation:
+    brandLine .7s ease .8s both;
+}
+
+.brand p{
+  margin:7px 0 0;
+
+  font-size:11px;
+
+  opacity:.8;
+
+  animation:
+    subtitleIn .7s ease .45s both;
+}
+
+
+/* =====================================================
+   ROLE SELECTOR
+===================================================== */
+
+.roles{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+
+  gap:8px;
+
+  background:#0738cf;
+
+  padding:5px;
+
+  border-radius:14px;
+
+  margin-bottom:17px;
+
+  animation:
+    formIn .7s ease .4s both;
+}
+
+.role{
+  border:0;
+
+  border-radius:10px;
+
+  padding:10px 5px;
+
+  color:#b9c7ff;
+
+  background:transparent;
+
+  font-size:11px;
+
+  font-weight:700;
+
+  transition:
+    background .25s ease,
+    color .25s ease,
+    transform .2s ease,
+    box-shadow .25s ease;
+}
+
+.role:hover{
+  transform:translateY(-1px);
+  color:#fff;
+}
+
+.role:active{
+  transform:scale(.97);
+}
+
+.role.active{
+  background:#fff;
+
+  color:var(--blue);
+
+  box-shadow:
+    0 5px 14px rgba(0,0,0,.10);
+}
+
+
+/* =====================================================
+   LOGIN FIELD
+===================================================== */
+
+.field-label{
+  display:block;
+
+  font-size:11px;
+  font-weight:700;
+
+  margin:0 0 7px;
+
+  animation:
+    formIn .7s ease .5s both;
+}
+
+.input-wrap{
+  position:relative;
+
+  animation:
+    formIn .7s ease .55s both;
+}
+
+.login-input{
+  width:100%;
+  height:54px;
+
+  border:1px solid rgba(255,255,255,.10);
+
+  background:#0a3cd4;
+
+  color:white;
+
+  border-radius:16px;
+
+  padding:0 48px 0 16px;
+
+  outline:0;
+
+  transition:
+    border-color .25s ease,
+    box-shadow .25s ease,
+    background .25s ease,
+    transform .2s ease;
+
+  /*
+   * Tidak menggunakan maxlength.
+   * PIN boleh 3, 5, 6, 10 digit, dst.
+   */
+}
+
+.login-input::placeholder{
+  color:#b9c7ff;
+}
+
+.login-input:hover{
+  background:#0b40df;
+  border-color:rgba(255,255,255,.20);
+}
+
+.login-input:focus{
+  border-color:rgba(255,255,255,.55);
+
+  background:#0b40df;
+
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,.10),
+    0 10px 25px rgba(0,0,0,.08);
+
+  transform:translateY(-1px);
+}
+
+.eye{
+  position:absolute;
+
+  right:12px;
+  top:50%;
+
+  transform:translateY(-50%);
+
+  border:0;
+
+  background:transparent;
+
+  color:rgba(255,255,255,.55);
+
+  font-size:17px;
+
+  transition:
+    color .2s ease,
+    transform .2s ease;
+}
+
+.eye:hover{
+  color:#fff;
+
+  transform:
+    translateY(-50%)
+    scale(1.08);
+}
+
+
+/* =====================================================
+   REMEMBER
+===================================================== */
+
+.remember{
+  display:flex;
+  align-items:center;
+
+  gap:8px;
+
+  font-size:10px;
+
+  margin:13px 2px 16px;
+
+  color:#dbe3ff;
+
+  animation:
+    formIn .7s ease .6s both;
+}
+
+.remember input{
+  accent-color:var(--lime);
+}
+
+
+/* =====================================================
+   LOGIN BUTTON
+===================================================== */
+
+.login-btn{
+  width:100%;
+  height:54px;
+
+  border:0;
+
+  border-radius:16px;
+
+  background:var(--lime);
+
+  color:#101828;
+
+  font-weight:800;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,.15);
+
+  position:relative;
+
+  overflow:hidden;
+
+  transition:
+    transform .2s ease,
+    box-shadow .25s ease,
+    filter .25s ease;
+
+  animation:
+    formIn .7s ease .65s both;
+}
+
+.login-btn:before{
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:-120%;
+
+  width:80%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.55),
+      transparent
+    );
+
+  transform:skewX(-20deg);
+
+  animation:
+    buttonShine 3.5s ease-in-out 1.5s infinite;
+}
+
+.login-btn:hover{
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 14px 30px rgba(0,0,0,.22);
+
+  filter:brightness(1.03);
+}
+
+.login-btn:active{
+  transform:scale(.98);
+}
+
+.login-btn:disabled{
+  opacity:.6;
+  cursor:wait;
+}
+
+
+/* =====================================================
+   LOGIN HELP
+===================================================== */
+
+.login-help{
+  text-align:center;
+
+  font-size:10px;
+
+  color:#dbe3ff;
+
+  margin-top:18px;
+
+  line-height:1.6;
+
+  animation:
+    fadeUp .7s ease .75s both;
+}
+
+.login-help b{
+  color:#fff;
+}
+
+.footer{
+  text-align:center;
+
+  font-size:9px;
+
+  color:rgba(255,255,255,.60);
+
+  margin-top:22px;
+
+  animation:
+    fadeUp .7s ease .85s both;
+}
+
+
+/* =====================================================
+   APP
+===================================================== */
+
+#app{
+  min-height:100vh;
+
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      rgba(11,68,238,.05),
+      transparent 25%
+    ),
+    var(--bg);
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header{
+  position:sticky;
+
+  top:0;
+
+  z-index:20;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--blue2),
+      var(--blue)
+    );
+
+  color:#fff;
+
+  border-bottom:0;
+
+  padding:13px 18px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  box-shadow:
+    0 5px 20px rgba(11,68,238,.16);
+
+  animation:
+    headerIn .5s ease both;
+}
+
+.header-left{
+  display:flex;
+
+  align-items:center;
+
+  gap:11px;
+}
+
+.header-logo{
+  width:42px;
+  height:42px;
+
+  border-radius:12px;
+
+  object-fit:cover;
+
+  border:2px solid rgba(255,255,255,.35);
+
+  box-shadow:
+    0 5px 15px rgba(0,0,0,.15);
+
+  animation:
+    headerLogoFloat 4s ease-in-out infinite;
+}
+
+.header h1{
+  font-size:15px;
+
+  margin:0;
+
+  font-weight:800;
+
+  color:#fff;
+}
+
+.header small{
+  font-size:9px;
+
+  color:rgba(255,255,255,.72);
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+.logout{
+  border:1px solid rgba(255,255,255,.18);
+
+  background:rgba(255,255,255,.10);
+
+  color:#fff;
+
+  padding:9px 12px;
+
+  border-radius:11px;
+
+  font-size:10px;
+
+  font-weight:700;
+
+  transition:
+    background .2s ease,
+    color .2s ease,
+    transform .2s ease;
+}
+
+.logout:hover{
+  background:var(--lime);
+
+  color:#101828;
+
+  transform:translateY(-1px);
+}
+
+
+/* =====================================================
+   LAYOUT
+===================================================== */
+
+.layout{
+  display:flex;
+
+  max-width:1280px;
+
+  margin:auto;
+
+  min-height:
+    calc(100vh - 69px);
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar{
+  width:235px;
+
+  background:#fff;
+
+  border-right:1px solid var(--line);
+
+  padding:16px 12px;
+
+  flex:none;
+
+  box-shadow:
+    3px 0 15px rgba(15,23,42,.025);
+}
+
+.nav-title{
+  font-size:9px;
+
+  color:#9ca3af;
+
+  font-weight:800;
+
+  margin:8px 10px 10px;
+}
+
+.nav{
+  width:100%;
+
+  border:0;
+
+  background:transparent;
+
+  text-align:left;
+
+  padding:11px 12px;
+
+  border-radius:12px;
+
+  color:#4b5563;
+
+  font-size:11px;
+
+  font-weight:600;
+
+  margin-bottom:4px;
+
+  position:relative;
+
+  transition:
+    background .25s ease,
+    color .25s ease,
+    transform .2s ease;
+}
+
+.nav:hover{
+  background:#f2f5ff;
+
+  color:var(--blue);
+
+  transform:translateX(2px);
+}
+
+.nav.active{
+  background:
+    linear-gradient(
+      90deg,
+      #e8efff,
+      #f3f6ff
+    );
+
+  color:var(--blue);
+
+  box-shadow:
+    inset 3px 0 0 var(--blue);
+}
+
+.nav.active:after{
+  content:"";
+
+  position:absolute;
+
+  right:9px;
+  top:50%;
+
+  width:5px;
+  height:5px;
+
+  border-radius:50%;
+
+  background:var(--lime);
+
+  transform:translateY(-50%);
+
+  box-shadow:
+    0 0 0 3px rgba(204,255,0,.18);
+}
+
+.nav span{
+  margin-right:9px;
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.content{
+  padding:20px;
+
+  flex:1;
+
+  min-width:0;
+
+  animation:
+    contentIn .45s ease both;
+}
+
+.page-title{
+  font-size:20px;
+
+  font-weight:800;
+
+  margin:0 0 4px;
+
+  color:#15203a;
+}
+
+.page-sub{
+  font-size:11px;
+
+  color:var(--muted);
+
+  margin:0 0 18px;
+}
+
+
+/* =====================================================
+   GRID
+===================================================== */
+
+.grid{
+  display:grid;
+
+  gap:14px;
+}
+
+.stats{
+  grid-template-columns:
+    repeat(4,1fr);
+}
+
+.two{
+  grid-template-columns:
+    1fr 1fr;
+}
+
+.three{
+  grid-template-columns:
+    repeat(3,1fr);
+}
+
+
+/* =====================================================
+   CARDS
+===================================================== */
+
+.card{
+  background:#fff;
+
+  border:1px solid var(--line);
+
+  border-radius:18px;
+
+  padding:17px;
+
+  box-shadow:var(--shadow-sm);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+.card:hover{
+  transform:translateY(-2px);
+
+  box-shadow:var(--shadow);
+
+  border-color:#dce4f8;
+}
+
+
+/* =====================================================
+   STAT
+===================================================== */
+
+.stat{
+  position:relative;
+
+  overflow:hidden;
+}
+
+.stat:after{
+  content:"";
+
+  position:absolute;
+
+  width:70px;
+  height:70px;
+
+  right:-30px;
+  top:-30px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(11,68,238,.10),
+      transparent 70%
+    );
+}
+
+.stat .icon{
+  font-size:20px;
+}
+
+.stat .num{
+  font-size:25px;
+
+  font-weight:800;
+
+  margin-top:5px;
+
+  color:var(--blue);
+}
+
+.stat .label{
+  font-size:10px;
+
+  color:var(--muted);
+}
+
+
+/* =====================================================
+   TOOLBAR
+===================================================== */
+
+.toolbar{
+  display:flex;
+
+  gap:9px;
+
+  flex-wrap:wrap;
+
+  margin-bottom:13px;
+}
+
+.search{
+  height:42px;
+
+  border:1px solid var(--line);
+
+  border-radius:12px;
+
+  padding:0 13px;
+
+  outline:0;
+
+  background:#fff;
+
+  flex:1;
+
+  min-width:180px;
+
+  font-size:11px;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.search:focus{
+  border-color:#8aa6ff;
+
+  box-shadow:
+    0 0 0 3px #dbe5ff;
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.btn{
+  border:0;
+
+  border-radius:11px;
+
+  padding:10px 14px;
+
+  font-size:10px;
+
+  font-weight:700;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    filter .2s ease;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+}
+
+.btn:active{
+  transform:scale(.97);
+}
+
+.btn-primary{
+  background:
+    linear-gradient(
+      135deg,
+      var(--blue),
+      var(--blue2)
+    );
+
+  color:#fff;
+
+  box-shadow:
+    0 6px 16px rgba(11,68,238,.18);
+}
+
+.btn-primary:hover{
+  box-shadow:
+    0 9px 22px rgba(11,68,238,.25);
+
+  filter:brightness(1.04);
+}
+
+.btn-light{
+  background:#eef2f7;
+
+  color:#374151;
+}
+
+.btn-danger{
+  background:#fee2e2;
+
+  color:#b91c1c;
+}
+
+.btn-success{
+  background:#dcfce7;
+
+  color:#166534;
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.table-wrap{
+  overflow:auto;
+}
+
+.table{
+  width:100%;
+
+  border-collapse:collapse;
+
+  font-size:10px;
+}
+
+.table th{
+  background:#f8fafc;
+
+  color:#64748b;
+
+  text-align:left;
+
+  padding:10px;
+
+  white-space:nowrap;
+}
+
+.table td{
+  padding:10px;
+
+  border-top:1px solid #eef0f4;
+
+  vertical-align:top;
+}
+
+.table tr{
+  transition:
+    background .2s ease;
+}
+
+.table tr:hover td{
+  background:#fbfdff;
+}
+
+
+/* =====================================================
+   BADGE
+===================================================== */
+
+.badge{
+  display:inline-block;
+
+  padding:4px 8px;
+
+  border-radius:999px;
+
+  font-size:8px;
+
+  font-weight:700;
+
+  background:#eef2ff;
+
+  color:#3730a3;
+}
+
+.badge.green{
+  background:#dcfce7;
+
+  color:#166534;
+}
+
+.badge.red{
+  background:#fee2e2;
+
+  color:#b91c1c;
+}
+
+.badge.yellow{
+  background:#fef3c7;
+
+  color:#92400e;
+}
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+.profile{
+  display:flex;
+
+  gap:15px;
+
+  align-items:center;
+}
+
+.avatar{
+  width:78px;
+  height:78px;
+
+  border-radius:20px;
+
+  object-fit:cover;
+
+  background:#eef2f7;
+
+  border:1px solid #e5e7eb;
+}
+
+.profile h2{
+  font-size:18px;
+
+  margin:0 0 3px;
+}
+
+.profile p{
+  margin:2px 0;
+
+  font-size:10px;
+
+  color:var(--muted);
+}
+
+
+/* =====================================================
+   TIMELINE
+===================================================== */
+
+.timeline{
+  border-left:2px solid #dbe4ff;
+
+  margin:12px 0 0 8px;
+
+  padding-left:17px;
+}
+
+.timeline-item{
+  position:relative;
+
+  margin-bottom:15px;
+}
+
+.timeline-item:before{
+  content:"";
+
+  position:absolute;
+
+  left:-24px;
+
+  top:4px;
+
+  width:9px;
+  height:9px;
+
+  background:var(--blue);
+
+  border-radius:50%;
+
+  box-shadow:
+    0 0 0 4px #eaf0ff;
+}
+
+.timeline-date{
+  font-size:9px;
+
+  color:#64748b;
+}
+
+.timeline-title{
+  font-size:11px;
+
+  font-weight:700;
+
+  margin-top:2px;
+}
+
+.timeline-text{
+  font-size:10px;
+
+  color:#4b5563;
+
+  line-height:1.6;
+
+  margin-top:3px;
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.form-grid{
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:11px;
+}
+
+.form-group{
+  margin-bottom:11px;
+}
+
+.form-group.full{
+  grid-column:1/-1;
+}
+
+.form-group label{
+  display:block;
+
+  font-size:9px;
+
+  font-weight:700;
+
+  color:#4b5563;
+
+  margin-bottom:5px;
+}
+
+.form-control{
+  width:100%;
+
+  border:1px solid var(--line);
+
+  border-radius:10px;
+
+  padding:10px 11px;
+
+  outline:0;
+
+  background:#fff;
+
+  font-size:10px;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.form-control:focus{
+  border-color:#8aa6ff;
+
+  box-shadow:
+    0 0 0 3px #dbe5ff;
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal{
+  position:fixed;
+
+  inset:0;
+
+  background:rgba(15,23,42,.55);
+
+  backdrop-filter:blur(5px);
+
+  -webkit-backdrop-filter:blur(5px);
+
+  z-index:50;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  padding:18px;
+
+  animation:
+    modalBgIn .2s ease both;
+}
+
+.modal-box{
+  width:min(100%,560px);
+
+  max-height:90vh;
+
+  overflow:auto;
+
+  background:#fff;
+
+  border-radius:20px;
+
+  padding:19px;
+
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.20);
+
+  animation:
+    modalIn .35s cubic-bezier(.22,1,.36,1) both;
+}
+
+.modal-head{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  margin-bottom:15px;
+}
+
+.modal-head h3{
+  font-size:15px;
+
+  margin:0;
+
+  color:#172033;
+}
+
+.close{
+  border:0;
+
+  background:#f3f4f6;
+
+  width:32px;
+  height:32px;
+
+  border-radius:9px;
+
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.close:hover{
+  background:#fee2e2;
+
+  color:#b91c1c;
+
+  transform:rotate(4deg);
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.toast{
+  position:fixed;
+
+  right:18px;
+  bottom:18px;
+
+  background:#111827;
+
+  color:#fff;
+
+  padding:12px 15px;
+
+  border-radius:12px;
+
+  font-size:10px;
+
+  z-index:100;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.20);
+
+  animation:
+    toastIn .35s cubic-bezier(.22,1,.36,1) both;
+}
+
+
+/* =====================================================
+   LOADING / EMPTY
+===================================================== */
+
+.loading{
+  opacity:.65;
+
+  pointer-events:none;
+}
+
+.empty{
+  text-align:center;
+
+  padding:30px;
+
+  color:#9ca3af;
+
+  font-size:11px;
+}
+
+
+/* =====================================================
+   MOBILE NAV
+===================================================== */
+
+.mobile-nav{
+  display:none;
+}
+
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+
+@keyframes loginCardIn{
+
+  from{
+    opacity:0;
+    transform:
+      translateY(35px)
+      scale(.96);
+  }
+
+  to{
+    opacity:1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+@keyframes logoEntrance{
+
+  from{
+    opacity:0;
+
+    transform:
+      translateY(-20px)
+      scale(.75)
+      rotate(-6deg);
+  }
+
+  to{
+    opacity:1;
+
+    transform:
+      translateY(0)
+      scale(1)
+      rotate(0);
+  }
+
+}
+
+
+@keyframes logoFloat{
+
+  0%,
+  100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-5px);
+  }
+
+}
+
+
+@keyframes brandIn{
+
+  from{
+    opacity:0;
+
+    transform:
+      translateY(12px);
+  }
+
+  to{
+    opacity:1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+@keyframes brandLine{
+
+  from{
+    width:0;
+    opacity:0;
+  }
+
+  to{
+    width:45px;
+    opacity:1;
+  }
+
+}
+
+
+@keyframes subtitleIn{
+
+  from{
+    opacity:0;
+  }
+
+  to{
+    opacity:.8;
+  }
+
+}
+
+
+@keyframes formIn{
+
+  from{
+    opacity:0;
+
+    transform:
+      translateY(10px);
+  }
+
+  to{
+    opacity:1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+@keyframes fadeUp{
+
+  from{
+    opacity:0;
+
+    transform:
+      translateY(8px);
+  }
+
+  to{
+    opacity:1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+@keyframes buttonShine{
+
+  0%{
+    left:-120%;
+  }
+
+  35%,
+  100%{
+    left:140%;
+  }
+
+}
+
+
+@keyframes orbMove{
+
+  0%,
+  100%{
+    transform:
+      translate(0,0)
+      scale(1);
+  }
+
+  50%{
+    transform:
+      translate(45px,30px)
+      scale(1.1);
+  }
+
+}
+
+
+@keyframes orbMove2{
+
+  0%,
+  100%{
+    transform:
+      translate(0,0)
+      scale(1);
+  }
+
+  50%{
+    transform:
+      translate(-40px,-25px)
+      scale(1.08);
+  }
+
+}
+
+
+@keyframes headerIn{
+
+  from{
+    opacity:0;
+
+    transform:
+      translateY(-10px);
+  }
+
+  to{
+    opacity:1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+@keyframes headerLogoFloat{
+
+  0%,
+  100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-2px);
+  }
+
+}
+
+
+@keyframes contentIn{
+
+  from{
+    opacity:0;
+
+    transform:
+      translateY(8px);
+  }
+
+  to{
+    opacity:1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+@keyframes modalBgIn{
+
+  from{
+    opacity:0;
+  }
+
+  to{
+    opacity:1;
+  }
+
+}
+
+
+@keyframes modalIn{
+
+  from{
+    opacity:0;
+
+    transform:
+      translateY(18px)
+      scale(.97);
+  }
+
+  to{
+    opacity:1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+@keyframes toastIn{
+
+  from{
+    opacity:0;
+
+    transform:
+      translateY(12px)
+      scale(.96);
+  }
+
+  to{
+    opacity:1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:850px){
+
+  .sidebar{
+    width:195px;
+  }
+
+  .stats{
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+  .two,
+  .three{
+    grid-template-columns:1fr;
+  }
+
+}
+
+
+@media(max-width:650px){
+
+  body{
+    background:#f4f6fb;
+  }
+
+  .sidebar{
+    display:none;
+  }
+
+  .content{
+    padding:
+      13px
+      12px
+      80px;
+  }
+
+  .header{
+    padding:10px 12px;
+  }
+
+  .header-logo{
+    width:37px;
+    height:37px;
+  }
+
+  .header h1{
+    font-size:13px;
+  }
+
+  .layout{
+    display:block;
+  }
+
+
+  /* mobile bottom nav */
+
+  .mobile-nav{
+    display:flex;
+
+    position:fixed;
+
+    bottom:0;
+    left:0;
+    right:0;
+
+    height:64px;
+
+    background:
+      rgba(255,255,255,.94);
+
+    backdrop-filter:blur(12px);
+
+    -webkit-backdrop-filter:blur(12px);
+
+    border-top:1px solid var(--line);
+
+    box-shadow:
+      0 -5px 20px rgba(15,23,42,.06);
+
+    z-index:30;
+
+    justify-content:space-around;
+
+    padding:6px;
+  }
+
+  .mobile-nav button{
+    border:0;
+
+    background:transparent;
+
+    font-size:8px;
+
+    color:#6b7280;
+
+    font-weight:700;
+
+    border-radius:10px;
+
+    min-width:58px;
+
+    transition:
+      color .2s ease,
+      background .2s ease,
+      transform .2s ease;
+  }
+
+  .mobile-nav button.active{
+    color:var(--blue);
+
+    background:#eef3ff;
+
+    transform:translateY(-1px);
+  }
+
+  .mobile-nav span{
+    display:block;
+
+    font-size:18px;
+
+    margin-bottom:1px;
+  }
+
+
+  .stats{
+    grid-template-columns:
+      1fr 1fr;
+
+    gap:9px;
+  }
+
+  .stat{
+    padding:13px;
+  }
+
+  .stat .num{
+    font-size:21px;
+  }
+
+  .card{
+    padding:13px;
+
+    border-radius:15px;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-group.full{
+    grid-column:auto;
+  }
+
+  .profile{
+    align-items:flex-start;
+  }
+
+  .avatar{
+    width:62px;
+    height:62px;
+  }
+
+  .page-title{
+    font-size:17px;
+  }
+
+  .table{
+    font-size:9px;
+  }
+
+  .login-card{
+    min-height:680px;
+  }
+
+}
+
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *:before,
+  *:after{
+    animation-duration:.01ms!important;
+
+    animation-iteration-count:1!important;
+
+    transition-duration:.01ms!important;
+
+    scroll-behavior:auto!important;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     LOGIN
+===================================================== -->
+
+<section id="loginScreen">
+
+  <div class="login-card">
+
+    <div class="top">
+
+      <img
+        class="logo"
+        src="https://apxid.github.io/guruwali/assets/guruwali.png"
+        alt="Logo">
+
+    </div>
+
+
+    <div class="login-body">
+
+      <div class="brand">
+
+        <h1>GURU WALI</h1>
+
+        <p>
+          Sistem Pemantauan Perkembangan Siswa
+        </p>
+
+      </div>
+
+
+      <div class="roles">
+
+        <button
+          class="role active"
+          data-role="WALI"
+          onclick="selectRole('WALI')">
+
+          👨‍🏫 GURU WALI
+
+        </button>
+
+
+        <button
+          class="role"
+          data-role="SISWA"
+          onclick="selectRole('SISWA')">
+
+          🎓 SISWA
+
+        </button>
+
+      </div>
+
+
+      <label
+        class="field-label"
+        id="credentialLabel">
+
+        PIN GURU
+
+      </label>
+
+
+      <div class="input-wrap">
+
+        <input
+          id="credential"
+          class="login-input"
+          type="password"
+          inputmode="numeric"
+          autocomplete="off"
+          placeholder="Masukkan PIN guru"
+          onkeydown="if(event.key==='Enter')login()">
+
+        <button
+          class="eye"
+          onclick="toggleEye()"
+          type="button">
+
+          👁
+
+        </button>
+
+      </div>
+
+
+      <label class="remember">
+
+        <input
+          id="remember"
+          type="checkbox"
+          checked>
+
+        Ingat perangkat ini
+
+      </label>
+
+
+      <button
+        class="login-btn"
+        id="loginBtn"
+        onclick="login()">
+
+        MASUK
+
+      </button>
+
+
+      <div
+        class="login-help"
+        id="loginHelp">
+
+        PIN diverifikasi dari
+        <b>UserAccount</b>
+        pada database sekolah.
+
+      </div>
+
+
+      <div class="footer">
+
+        SMP NEGERI 1 MOGA • GURU WALI
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     APPLICATION
+===================================================== -->
+
+<section id="app" class="hidden">
+
+
+  <header class="header">
+
+    <div class="header-left">
+
+      <img
+        class="header-logo"
+        src="https://apxid.github.io/guruwali/assets/guruwali.png"
+        alt="Logo">
+
+      <div>
+
+        <h1>GURU WALI</h1>
+
+        <small>
+          SMP NEGERI 1 MOGA
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div
+      style="
+        display:flex;
+        align-items:center;
+        gap:8px">
+
+      <span
+        id="headerUser"
+        style="
+          font-size:10px;
+          font-weight:700">
+
+      </span>
+
+      <button
+        class="logout"
+        onclick="logout()">
+
+        Keluar
+
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <div class="layout">
+
+    <aside
+      class="sidebar"
+      id="sidebar">
+    </aside>
+
+
+    <main
+      class="content"
+      id="content">
+    </main>
+
+  </div>
+
+
+  <nav
+    class="mobile-nav"
+    id="mobileNav">
+  </nav>
+
+</section>
+
+
+<!-- =====================================================
+     MODAL
+===================================================== -->
+
+<div
+  id="modal"
+  class="modal hidden"
+  onclick="if(event.target===this)closeModal()">
+
+  <div
+    class="modal-box"
+    id="modalBox">
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+  id="toast"
+  class="toast hidden">
+</div>
+
+
+<script>
+
+/* =====================================================
+   API
+===================================================== */
+
+const API_URL =
+  'https://script.google.com/macros/s/AKfycbxTZZxRMS4GbN_tca3kEn1hibajLsuqPdsIkVLF-lh9aqO3dDTy8oyJb6HDaZhfxhFfvQ/exec';
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let state = {
+
+  token:null,
+
+  role:null,
+
+  user:null,
+
+  section:'home',
+
+  students:[],
+
+  selected:null
+
+};
+
+
+const $ =
+  id => document.getElementById(id);
+
+
+/* =====================================================
+   ROLE
+===================================================== */
+
+function selectRole(role){
+
+  document
+    .querySelectorAll('.role')
+    .forEach(function(btn){
+
+      btn.classList.toggle(
+        'active',
+        btn.dataset.role === role
+      );
+
+    });
+
+
+  $('credential').value='';
+
+  $('credential').type='password';
+
+
+  if(role === 'WALI'){
+
+    $('credential').placeholder =
+      'Masukkan PIN guru';
+
+    $('credentialLabel').textContent =
+      'PIN GURU';
+
+    $('loginHelp').innerHTML =
+      'PIN guru diverifikasi dari <b>UserAccount</b>.';
+
+  }else{
+
+    $('credential').placeholder =
+      'Masukkan PIN atau NISN';
+
+    $('credentialLabel').textContent =
+      'PIN / NISN SISWA';
+
+    $('loginHelp').innerHTML =
+      'NISN atau PIN siswa diverifikasi dari <b>UserAccount</b>.';
+
+  }
+
+}
+
+
+function currentRole(){
+
+  const active =
+    document.querySelector(
+      '.role.active'
+    );
+
+  return active
+    ? active.dataset.role
+    : 'WALI';
+
+}
+
+
+function toggleEye(){
+
+  $('credential').type =
+    $('credential').type === 'password'
+      ? 'text'
+      : 'password';
+
+}
+
+
+/* =====================================================
+   SESSION BROWSER
+===================================================== */
+
+const SESSION_KEY =
+  'waliSiswaSession';
+
+
+function saveSession(){
+
+  if(!state.token || !state.role){
+    return;
+  }
+
+
+  const data =
+    JSON.stringify({
+
+      token:state.token,
+
+      role:state.role,
+
+      user:state.user
+
+    });
+
+
+  try{
+
+    if($('remember').checked){
+
+      localStorage.setItem(
+        SESSION_KEY,
+        data
+      );
+
+      sessionStorage.removeItem(
+        SESSION_KEY
+      );
+
+    }else{
+
+      sessionStorage.setItem(
+        SESSION_KEY,
+        data
+      );
+
+      localStorage.removeItem(
+        SESSION_KEY
+      );
+
+    }
+
+  }catch(err){
+
+    try{
+
+      localStorage.setItem(
+        SESSION_KEY,
+        data
+      );
+
+    }catch(ignore){}
+
+  }
+
+}
+
+
+function loadSession(){
+
+  const stores = [
+    localStorage,
+    sessionStorage
+  ];
+
+
+  for(
+    const store of stores
+  ){
+
+    try{
+
+      const raw =
+        store.getItem(
+          SESSION_KEY
+        );
+
+
+      if(!raw){
+        continue;
+      }
+
+
+      const parsed =
+        JSON.parse(raw);
+
+
+      if(
+        parsed &&
+        parsed.token &&
+        parsed.role
+      ){
+
+        return parsed;
+
+      }
+
+    }catch(err){}
+
+  }
+
+
+  return null;
+
+}
+
+
+function clearSession(){
+
+  try{
+
+    localStorage.removeItem(
+      SESSION_KEY
+    );
+
+  }catch(err){}
+
+
+  try{
+
+    sessionStorage.removeItem(
+      SESSION_KEY
+    );
+
+  }catch(err){}
+
+}
+
+
+/* =====================================================
+   API REQUEST
+===================================================== */
+
+async function api(
+  action,
+  data={}
+){
+
+  if(
+    !API_URL ||
+    API_URL.includes(
+      'PASTE_URL'
+    )
+  ){
+
+    throw new Error(
+      'URL Web App GAS belum benar.'
+    );
+
+  }
+
+
+  const response =
+    await fetch(
+      API_URL,
+      {
+        method:'POST',
+
+        body:JSON.stringify(
+          Object.assign(
+            {action},
+            data
+          )
+        )
+      }
+    );
+
+
+  if(!response.ok){
+
+    throw new Error(
+      'Server GAS tidak merespons. HTTP ' +
+      response.status
+    );
+
+  }
+
+
+  const json =
+    await response.json();
+
+
+  if(!json.success){
+
+    throw new Error(
+      json.error ||
+      'Terjadi kesalahan pada server.'
+    );
+
+  }
+
+
+  return json;
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+async function login(){
+
+  const credential =
+    $('credential').value.trim();
+
+  const role =
+    currentRole();
+
+
+  if(!credential){
+
+    toast(
+      'Masukkan PIN/NISN terlebih dahulu.',
+      true
+    );
+
+    return;
+
+  }
+
+
+  const btn =
+    $('loginBtn');
+
+
+  btn.disabled=true;
+
+  btn.textContent=
+    'MEMERIKSA...';
+
+
+  try{
+
+    const result =
+      await api(
+        'login',
+        {
+          role:role,
+
+          credential:credential
+        }
+      );
+
+
+    state = {
+
+      token:
+        result.token,
+
+      role:
+        result.role,
+
+      user:
+        result.user,
+
+      section:'home',
+
+      students:[],
+
+      selected:null
+
+    };
+
+
+    saveSession();
+
+
+    showApp();
+
+
+    await render();
+
+
+    toast(
+      'Login berhasil. Selamat datang, ' +
+      (
+        result.user?.NAMA ||
+        ''
+      )
+    );
+
+
+  }catch(err){
+
+    toast(
+      err.message ||
+      'Login gagal.',
+      true
+    );
+
+
+  }finally{
+
+    btn.disabled=false;
+
+    btn.textContent='MASUK';
+
+  }
+
+}
+
+
+/* =====================================================
+   AUTO LOGIN
+===================================================== */
+
+async function tryAutoLogin(){
+
+  const saved =
+    loadSession();
+
+
+  if(
+    !saved ||
+    !saved.token ||
+    !saved.role
+  ){
+
+    return;
+
+  }
+
+
+  state = {
+
+    token:
+      saved.token,
+
+    role:
+      saved.role,
+
+    user:
+      saved.user || null,
+
+    section:
+      saved.section || 'home',
+
+    students:[],
+
+    selected:null
+
+  };
+
+
+  showApp();
+
+
+  try{
+
+    await render();
+
+  }catch(err){
+
+    console.warn(
+      'Render awal gagal:',
+      err
+    );
+
+  }
+
+
+  try{
+
+    const result =
+      await api(
+        'validateSession',
+        {
+          token:saved.token
+        }
+      );
+
+
+    if(result.valid){
+
+      state.role =
+        result.role ||
+        state.role;
+
+
+      if(result.user){
+
+        state.user =
+          Object.assign(
+            {},
+            state.user || {},
+            result.user
+          );
+
+      }
+
+
+      saveSession();
+
+
+      try{
+
+        await render();
+
+      }catch(err){}
+
+    }else{
+
+      console.warn(
+        'Server belum mengenali token. Sesi lokal tetap disimpan.'
+      );
+
+    }
+
+  }catch(err){
+
+    console.warn(
+      'Validasi server gagal sementara.',
+      err
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   SHOW APP
+===================================================== */
+
+function showApp(){
+
+  $('loginScreen')
+    .classList
+    .add('hidden');
+
+
+  $('app')
+    .classList
+    .remove('hidden');
+
+
+  $('headerUser').textContent =
+    state.user?.NAMA ||
+    '';
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+async function logout(){
+
+  const token =
+    state.token;
+
+
+  try{
+
+    if(token){
+
+      await api(
+        'logout',
+        {
+          token:token
+        }
+      );
+
+    }
+
+  }catch(err){
+
+    console.warn(
+      'Logout server gagal:',
+      err
+    );
+
+  }
+
+
+  clearSession();
+
+
+  state = {
+
+    token:null,
+
+    role:null,
+
+    user:null,
+
+    section:'home',
+
+    students:[],
+
+    selected:null
+
+  };
+
+
+  location.reload();
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function navItems(){
+
+  if(
+    state.role === 'WALI'
+  ){
+
+    return [
+
+      ['home','🏠','Dashboard'],
+
+      ['students','👥','Data Siswa'],
+
+      ['timeline','🕘','Riwayat 7–9'],
+
+      ['notes','📝','Catatan'],
+
+      ['targets','🎯','Target']
+
+    ];
+
+  }
+
+
+  return [
+
+    ['home','🏠','Beranda'],
+
+    ['timeline','🕘','Perjalanan 7–9'],
+
+    ['notes','📝','Catatan'],
+
+    ['targets','🎯','Target'],
+
+    ['messages','💬','Pesan Wali']
+
+  ];
+
+}
+
+
+function renderNav(){
+
+  const items =
+    navItems();
+
+
+  $('sidebar').innerHTML =
+    '<div class="nav-title">MENU UTAMA</div>' +
+
+    items.map(function(item){
+
+      return `
+        <button
+          class="nav ${
+            state.section === item[0]
+              ? 'active'
+              : ''
+          }"
+          onclick="go('${item[0]}')">
+
+          <span>${item[1]}</span>
+
+          ${item[2]}
+
+        </button>
+      `;
+
+    }).join('');
+
+
+  $('mobileNav').innerHTML =
+    items
+      .slice(0,5)
+      .map(function(item){
+
+        return `
+          <button
+            class="${
+              state.section === item[0]
+                ? 'active'
+                : ''
+            }"
+            onclick="go('${item[0]}')">
+
+            <span>${item[1]}</span>
+
+            ${item[2]}
+
+          </button>
+        `;
+
+      })
+      .join('');
+
+}
+
+
+async function go(section){
+
+  state.section =
+    section;
+
+
+  saveSession();
+
+
+  await render();
+
+}
+
+
+async function render(){
+
+  renderNav();
+
+
+  if(
+    state.role === 'WALI'
+  ){
+
+    if(
+      state.section === 'home'
+    ){
+      return renderTeacherHome();
+    }
+
+    if(
+      state.section === 'students'
+    ){
+      return renderStudents();
+    }
+
+    if(
+      state.section === 'timeline'
+    ){
+      return renderTimeline();
+    }
+
+    if(
+      state.section === 'notes'
+    ){
+      return renderNotes();
+    }
+
+    if(
+      state.section === 'targets'
+    ){
+      return renderTargets();
+    }
+
+  }else{
+
+    if(
+      state.section === 'home'
+    ){
+      return renderStudentHome();
+    }
+
+    if(
+      state.section === 'timeline'
+    ){
+      return renderStudentTimeline();
+    }
+
+    if(
+      state.section === 'notes'
+    ){
+      return renderStudentNotes();
+    }
+
+    if(
+      state.section === 'targets'
+    ){
+      return renderStudentTargets();
+    }
+
+    if(
+      state.section === 'messages'
+    ){
+      return renderStudentMessages();
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function esc(v){
+
+  return String(
+    v ?? ''
+  ).replace(
+    /[&<>"']/g,
+    function(m){
+
+      return {
+
+        '&':'&amp;',
+
+        '<':'&lt;',
+
+        '>':'&gt;',
+
+        '"':'&quot;',
+
+        "'":'&#039;'
+
+      }[m];
+
+    }
+  );
+
+}
+
+
+function date(v){
+
+  if(!v){
+    return '-';
+  }
+
+
+  const d =
+    new Date(v);
+
+
+  if(
+    isNaN(d)
+  ){
+
+    return esc(v);
+
+  }
+
+
+  return d.toLocaleDateString(
+    'id-ID',
+    {
+      day:'2-digit',
+      month:'short',
+      year:'numeric'
+    }
+  );
+
+}
+
+
+function toast(
+  msg,
+  error=false
+){
+
+  const t =
+    $('toast');
+
+
+  t.textContent =
+    msg;
+
+
+  t.style.background =
+    error
+      ? '#b91c1c'
+      : '#111827';
+
+
+  t.classList.remove(
+    'hidden'
+  );
+
+
+  clearTimeout(
+    window.__toast
+  );
+
+
+  window.__toast =
+    setTimeout(
+      function(){
+
+        t.classList.add(
+          'hidden'
+        );
+
+      },
+      3000
+    );
+
+}
+
+
+function openModal(html){
+
+  $('modalBox').innerHTML =
+    html;
+
+  $('modal')
+    .classList
+    .remove('hidden');
+
+}
+
+
+function closeModal(){
+
+  $('modal')
+    .classList
+    .add('hidden');
+
+}
+
+
+function stat(
+  icon,
+  num,
+  label
+){
+
+  return `
+    <div class="card stat">
+
+      <div class="icon">
+        ${icon}
+      </div>
+
+      <div class="num">
+        ${num}
+      </div>
+
+      <div class="label">
+        ${label}
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+/* =====================================================
+   TEACHER DASHBOARD
+===================================================== */
+
+async function renderTeacherHome(){
+
+  $('content').innerHTML = `
+
+    <h2 class="page-title">
+      Dashboard
+    </h2>
+
+    <p class="page-sub">
+      Pantauan singkat perkembangan siswa
+      yang Bapak/Ibu dampingi.
+    </p>
+
+    <div id="dash">
+
+      <div class="empty">
+        Memuat data...
+      </div>
+
+    </div>
+  `;
+
+
+  try{
+
+    const r =
+      await api(
+        'dashboard',
+        {
+          token:state.token
+        }
+      );
+
+
+    $('dash').innerHTML = `
+
+      <div class="grid stats">
+
+        ${stat(
+          '👥',
+          r.stats.siswa,
+          'Siswa aktif'
+        )}
+
+        ${stat(
+          '📝',
+          r.stats.catatan,
+          'Total catatan'
+        )}
+
+        ${stat(
+          '🎯',
+          r.stats.targetAktif,
+          'Target aktif'
+        )}
+
+        ${stat(
+          '💬',
+          r.stats.pesanBelumDibaca,
+          'Pesan belum dibaca'
+        )}
+
+      </div>
+
+
+      <div
+        class="grid two"
+        style="margin-top:14px">
+
+        <div class="card">
+
+          <b style="font-size:12px">
+            Catatan terbaru
+          </b>
+
+          ${
+            r.recentNotes.length
+
+              ? r.recentNotes
+                  .slice(0,5)
+                  .map(function(n){
+
+                    return `
+                      <div class="timeline">
+
+                        <div class="timeline-item">
+
+                          <div class="timeline-date">
+                            ${date(n.TANGGAL)}
+                            •
+                            ${esc(n.JENIS)}
+                          </div>
+
+                          <div class="timeline-title">
+                            ${esc(
+                              n.TOPIK ||
+                              'Catatan wali'
+                            )}
+                          </div>
+
+                          <div class="timeline-text">
+                            ${esc(
+                              n.CATATAN_SISWA ||
+                              n.CATATAN_INTERNAL ||
+                              ''
+                            )}
+                          </div>
+
+                        </div>
+
+                      </div>
+                    `;
+
+                  })
+                  .join('')
+
+              : `
+
+                <div class="empty">
+                  Belum ada catatan.
+                </div>
+
+              `
+          }
+
+        </div>
+
+
+        <div class="card">
+
+          <b style="font-size:12px">
+            Prinsip pencatatan
+          </b>
+
+          <div
+            style="
+              font-size:10px;
+              line-height:1.8;
+              color:#4b5563;
+              margin-top:10px">
+
+            Gunakan catatan untuk merekam
+            konsultasi, perkembangan,
+            tindak lanjut, target, dan
+            komunikasi yang relevan.
+
+            Data yang diberi visibilitas
+            <b>SISWA</b>
+            dapat dilihat oleh siswa.
+
+          </div>
+
+
+          <button
+            class="btn btn-primary"
+            style="margin-top:12px"
+            onclick="go('students')">
+
+            Buka Data Siswa →
+
+          </button>
+
+        </div>
+
+      </div>
+    `;
+
+  }catch(err){
+
+    $('dash').innerHTML = `
+      <div class="empty">
+        ${esc(err.message)}
+      </div>
+    `;
+
+  }
+
+}
+
+
+/* =====================================================
+   STUDENTS
+===================================================== */
+
+async function renderStudents(){
+
+  $('content').innerHTML = `
+
+    <h2 class="page-title">
+      Data Siswa
+    </h2>
+
+    <p class="page-sub">
+      Pilih siswa untuk melihat perjalanan
+      kelas 7 sampai kelas 9.
+    </p>
+
+
+    <div class="toolbar">
+
+      <input
+        id="studentSearch"
+        class="search"
+        placeholder="Cari nama, NISN, atau NIS..."
+        oninput="loadStudents()">
+
+
+      <button
+        class="btn btn-primary"
+        onclick="openStudentForm()">
+
+        + Tambah Siswa
+
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <div
+        id="studentTable"
+        class="table-wrap">
+
+        <div class="empty">
+          Memuat...
+        </div>
+
+      </div>
+
+    </div>
+  `;
+
+
+  await loadStudents();
+
+}
+
+
+async function loadStudents(){
+
+  try{
+
+    const r =
+      await api(
+        'students',
+        {
+          token:state.token,
+
+          q:
+            $('studentSearch')?.value ||
+            ''
+        }
+      );
+
+
+    state.students =
+      r.data || [];
+
+
+    $('studentTable').innerHTML =
+      state.students.length
+
+      ? `
+        <table class="table">
+
+          <thead>
+
+            <tr>
+
+              <th>Nama</th>
+
+              <th>NISN</th>
+
+              <th>JK</th>
+
+              <th>Status</th>
+
+              <th></th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            ${
+              state.students
+                .map(function(s){
+
+                  return `
+
+                    <tr>
+
+                      <td>
+
+                        <b>
+                          ${esc(s.NAMA)}
+                        </b>
+
+                        <br>
+
+                        <span
+                          style="color:#94a3b8">
+
+                          ${esc(s.NIS || '')}
+
+                        </span>
+
+                      </td>
+
+
+                      <td>
+                        ${esc(s.NISN)}
+                      </td>
+
+
+                      <td>
+                        ${esc(s.JK)}
+                      </td>
+
+
+                      <td>
+
+                        <span
+                          class="badge green">
+
+                          ${esc(
+                            s.STATUS ||
+                            'AKTIF'
+                          )}
+
+                        </span>
+
+                      </td>
+
+
+                      <td>
+
+                        <button
+                          class="btn btn-light"
+                          onclick="openProfile('${esc(s.SISWA_ID)}')">
+
+                          Profil
+
+                        </button>
+
+                      </td>
+
+                    </tr>
+
+                  `;
+
+                })
+                .join('')
+            }
+
+          </tbody>
+
+        </table>
+      `
+
+      : `
+
+        <div class="empty">
+          Data siswa belum tersedia.
+        </div>
+
+      `;
+
+  }catch(err){
+
+    toast(
+      err.message,
+      true
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+async function openProfile(id){
+
+  try{
+
+    const r =
+      await api(
+        'studentProfile',
+        {
+          token:state.token,
+
+          siswaId:id
+        }
+      );
+
+
+    state.selected =
+      r;
+
+
+    openModal(
+      profileHTML(r)
+    );
+
+  }catch(err){
+
+    toast(
+      err.message,
+      true
+    );
+
+  }
+
+}
+
+
+function profileHTML(r){
+
+  const s =
+    r.siswa;
+
+
+  return `
+
+    <div class="modal-head">
+
+      <h3>
+        Profil & Perjalanan Siswa
+      </h3>
+
+      <button
+        class="close"
+        onclick="closeModal()">
+
+        ✕
+
+      </button>
+
+    </div>
+
+
+    <div class="profile">
+
+      <img
+        class="avatar"
+        src="${
+          esc(
+            s.FOTO_URL ||
+            'https://via.placeholder.com/150'
+          )
+        }"
+        onerror="
+          this.src='https://via.placeholder.com/150'
+        ">
+
+
+      <div>
+
+        <h2>
+          ${esc(s.NAMA)}
+        </h2>
+
+        <p>
+          NISN:
+          ${esc(s.NISN)}
+          •
+          NIS:
+          ${esc(s.NIS || '-')}
+        </p>
+
+        <p>
+          Status:
+          ${esc(s.STATUS || 'AKTIF')}
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="grid two"
+      style="margin-top:15px">
+
+
+      <div class="card">
+
+        <b style="font-size:11px">
+          Riwayat Kelas 7–9
+        </b>
+
+        ${
+          r.riwayat.length
+
+          ? r.riwayat
+              .map(function(x){
+
+                return `
+
+                  <div class="timeline">
+
+                    <div class="timeline-item">
+
+                      <div class="timeline-date">
+
+                        ${esc(x.TAHUN_AJARAN)}
+
+                        •
+
+                        Kelas
+                        ${esc(x.TINGKAT)}
+
+                      </div>
+
+
+                      <div class="timeline-title">
+
+                        ${esc(
+                          x.ROMBEL ||
+                          '-'
+                        )}
+
+                      </div>
+
+
+                      <div class="timeline-text">
+
+                        Wali:
+                        ${esc(
+                          x.WALI_KELAS ||
+                          '-'
+                        )}
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                `;
+
+              })
+              .join('')
+
+          : `
+
+            <div class="empty">
+              Belum ada riwayat.
+            </div>
+
+          `
+        }
+
+      </div>
+
+
+      <div class="card">
+
+        <b style="font-size:11px">
+          Ringkasan Catatan
+        </b>
+
+        ${
+          r.catatan.length
+
+          ? r.catatan
+              .slice(0,6)
+              .map(function(x){
+
+                return `
+
+                  <div
+                    style="
+                      border-bottom:1px solid #eef0f4;
+                      padding:9px 0">
+
+                    <div
+                      style="
+                        font-size:8px;
+                        color:#64748b">
+
+                      ${date(x.TANGGAL)}
+                      •
+                      ${esc(x.JENIS)}
+
+                    </div>
+
+
+                    <div
+                      style="
+                        font-size:10px;
+                        font-weight:700">
+
+                      ${esc(
+                        x.TOPIK ||
+                        ''
+                      )}
+
+                    </div>
+
+
+                    <div
+                      style="
+                        font-size:9px;
+                        color:#4b5563">
+
+                      ${esc(
+                        x.CATATAN_SISWA ||
+                        x.CATATAN_INTERNAL ||
+                        ''
+                      )}
+
+                    </div>
+
+                  </div>
+
+                `;
+
+              })
+              .join('')
+
+          : `
+
+            <div class="empty">
+              Belum ada catatan.
+            </div>
+
+          `
+        }
+
+      </div>
+
+    </div>
+
+
+    <div
+      style="
+        display:flex;
+        gap:8px;
+        margin-top:14px;
+        flex-wrap:wrap">
+
+      <button
+        class="btn btn-primary"
+        onclick="
+          closeModal();
+          openNoteForm('${esc(s.SISWA_ID)}')
+        ">
+
+        + Catatan
+
+      </button>
+
+
+      <button
+        class="btn btn-success"
+        onclick="
+          closeModal();
+          openTargetForm('${esc(s.SISWA_ID)}')
+        ">
+
+        + Target
+
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   ADD STUDENT
+===================================================== */
+
+function openStudentForm(){
+
+  openModal(`
+
+    <div class="modal-head">
+
+      <h3>
+        Tambah Siswa
+      </h3>
+
+      <button
+        class="close"
+        onclick="closeModal()">
+
+        ✕
+
+      </button>
+
+    </div>
+
+
+    <div class="form-grid">
+
+      ${fg(
+        'NISN',
+        'nisn',
+        'text',
+        '',
+        'NISN wajib diisi'
+      )}
+
+      ${fg(
+        'NIS',
+        'nis',
+        'text',
+        '',
+        ''
+      )}
+
+      ${fg(
+        'NAMA',
+        'nama',
+        'text',
+        '',
+        'Nama lengkap'
+      )}
+
+      ${fg(
+        'JK',
+        'jk',
+        'text',
+        '',
+        'L / P'
+      )}
+
+      ${fg(
+        'TAHUN MASUK',
+        'tahun',
+        'text',
+        '',
+        'Contoh: 2024'
+      )}
+
+    </div>
+
+
+    <button
+      class="btn btn-primary"
+      onclick="saveNewStudent()">
+
+      Simpan
+
+    </button>
+
+  `);
+
+}
+
+
+function fg(
+  label,
+  id,
+  type='text',
+  value='',
+  ph=''
+){
+
+  return `
+
+    <div class="form-group">
+
+      <label>
+        ${label}
+      </label>
+
+      <input
+        id="${id}"
+        class="form-control"
+        type="${type}"
+        value="${esc(value)}"
+        placeholder="${esc(ph)}">
+
+    </div>
+
+  `;
+
+}
+
+
+async function saveNewStudent(){
+
+  try{
+
+    await api(
+      'saveStudent',
+      {
+        token:state.token,
+
+        data:{
+
+          NISN:
+            $('nisn').value,
+
+          NIS:
+            $('nis').value,
+
+          NAMA:
+            $('nama').value,
+
+          JK:
+            $('jk').value,
+
+          STATUS:
+            'AKTIF',
+
+          TAHUN_MASUK:
+            $('tahun').value
+
+        }
+
+      }
+    );
+
+
+    closeModal();
+
+
+    toast(
+      'Siswa berhasil ditambahkan.'
+    );
+
+
+    await renderStudents();
+
+  }catch(err){
+
+    toast(
+      err.message,
+      true
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   NOTES - TEACHER
+===================================================== */
+
+function openNoteForm(
+  siswaId
+){
+
+  openModal(`
+
+    <div class="modal-head">
+
+      <h3>
+        Tambah Catatan Wali
+      </h3>
+
+      <button
+        class="close"
+        onclick="closeModal()">
+
+        ✕
+
+      </button>
+
+    </div>
+
+
+    <input
+      id="n_siswa"
+      type="hidden"
+      value="${esc(siswaId)}">
+
+
+    <div class="form-grid">
+
+      ${fg(
+        'Tanggal',
+        'n_tanggal',
+        'date'
+      )}
+
+      ${fg(
+        'Tingkat',
+        'n_tingkat',
+        'text',
+        '',
+        'Contoh: 9'
+      )}
+
+      ${fg(
+        'Rombel',
+        'n_rombel',
+        'text',
+        '',
+        'Contoh: 9I'
+      )}
+
+      ${fg(
+        'Jenis',
+        'n_jenis',
+        'text',
+        'Konsultasi',
+        'Konsultasi / Akademik / Sosial'
+      )}
+
+
+      <div class="form-group full">
+
+        <label>
+          Topik
+        </label>
+
+        <input
+          id="n_topik"
+          class="form-control"
+          placeholder="Topik pembicaraan">
+
+      </div>
+
+
+      <div class="form-group full">
+
+        <label>
+          Catatan untuk siswa
+        </label>
+
+        <textarea
+          id="n_siswaText"
+          class="form-control"
+          rows="4"
+          placeholder="Isi yang boleh dibaca siswa">
+        </textarea>
+
+      </div>
+
+
+      <div class="form-group full">
+
+        <label>
+          Catatan internal wali
+        </label>
+
+        <textarea
+          id="n_internal"
+          class="form-control"
+          rows="3"
+          placeholder="Catatan internal">
+        </textarea>
+
+      </div>
+
+
+      <div class="form-group full">
+
+        <label>
+          Perkembangan
+        </label>
+
+        <textarea
+          id="n_dev"
+          class="form-control"
+          rows="3">
+        </textarea>
+
+      </div>
+
+
+      <div class="form-group full">
+
+        <label>
+          Tindak lanjut
+        </label>
+
+        <textarea
+          id="n_follow"
+          class="form-control"
+          rows="3">
+        </textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Visibilitas
+        </label>
+
+        <select
+          id="n_vis"
+          class="form-control">
+
+          <option value="SISWA">
+            SISWA - dapat dilihat siswa
+          </option>
+
+          <option value="INTERNAL">
+            INTERNAL - hanya wali
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="btn btn-primary"
+      onclick="saveNote()">
+
+      Simpan Catatan
+
+    </button>
+
+  `);
+
+
+  $('n_tanggal').value =
+    new Date()
+      .toISOString()
+      .slice(0,10);
+
+}
+
+
+async function saveNote(){
+
+  try{
+
+    await api(
+      'addNote',
+      {
+        token:state.token,
+
+        data:{
+
+          SISWA_ID:
+            $('n_siswa').value,
+
+          TANGGAL:
+            $('n_tanggal').value,
+
+          TAHUN_AJARAN:
+            '',
+
+          TINGKAT:
+            $('n_tingkat').value,
+
+          ROMBEL:
+            $('n_rombel').value,
+
+          JENIS:
+            $('n_jenis').value,
+
+          TOPIK:
+            $('n_topik').value,
+
+          CATATAN_SISWA:
+            $('n_siswaText').value,
+
+          CATATAN_INTERNAL:
+            $('n_internal').value,
+
+          PERKEMBANGAN:
+            $('n_dev').value,
+
+          TINDAK_LANJUT:
+            $('n_follow').value,
+
+          VISIBILITAS:
+            $('n_vis').value
+
+        }
+
+      }
+    );
+
+
+    closeModal();
+
+
+    toast(
+      'Catatan berhasil disimpan.'
+    );
+
+
+    await go('notes');
+
+  }catch(err){
+
+    toast(
+      err.message,
+      true
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   TIMELINE TEACHER
+===================================================== */
+
+async function renderTimeline(){
+
+  $('content').innerHTML = `
+
+    <h2 class="page-title">
+      Riwayat Kelas 7–9
+    </h2>
+
+    <p class="page-sub">
+      Pilih siswa untuk melihat perjalanan
+      dan riwayat pendampingannya.
+    </p>
+
+
+    <div class="card">
+
+      <div
+        id="timelineTable"
+        class="table-wrap">
+
+        <div class="empty">
+          Memuat...
+        </div>
+
+      </div>
+
+    </div>
+  `;
+
+
+  try{
+
+    const r =
+      await api(
+        'students',
+        {
+          token:state.token
+        }
+      );
+
+
+    state.students =
+      r.data || [];
+
+
+    $('timelineTable').innerHTML =
+      state.students.length
+
+      ? `
+
+        <table class="table">
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Siswa
+              </th>
+
+              <th>
+                NISN
+              </th>
+
+              <th>
+                Aksi
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            ${
+              state.students
+                .map(function(s){
+
+                  return `
+
+                    <tr>
+
+                      <td>
+                        ${esc(s.NAMA)}
+                      </td>
+
+                      <td>
+                        ${esc(s.NISN)}
+                      </td>
+
+                      <td>
+
+                        <button
+                          class="btn btn-light"
+                          onclick="
+                            openProfile(
+                              '${esc(s.SISWA_ID)}'
+                            )
+                          ">
+
+                          Lihat perjalanan
+
+                        </button>
+
+                      </td>
+
+                    </tr>
+
+                  `;
+
+                })
+                .join('')
+            }
+
+          </tbody>
+
+        </table>
+
+      `
+
+      : `
+
+        <div class="empty">
+          Belum ada siswa.
+        </div>
+
+      `;
+
+  }catch(err){
+
+    toast(
+      err.message,
+      true
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   NOTES LIST TEACHER
+===================================================== */
+
+async function renderNotes(){
+
+  $('content').innerHTML = `
+
+    <h2 class="page-title">
+      Catatan Pendampingan
+    </h2>
+
+    <p class="page-sub">
+      Semua catatan wali yang tersimpan
+      di database.
+    </p>
+
+
+    <div class="toolbar">
+
+      <button
+        class="btn btn-primary"
+        onclick="go('students')">
+
+        Pilih siswa → tambah catatan
+
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <div
+        id="notesTable"
+        class="table-wrap">
+
+        <div class="empty">
+          Memuat...
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  try{
+
+    const r =
+      await api(
+        'students',
+        {
+          token:state.token
+        }
+      );
+
+
+    const all = [];
+
+
+    for(
+      const s of (r.data || [])
+    ){
+
+      const profile =
+        await api(
+          'studentProfile',
+          {
+            token:state.token,
+
+            siswaId:
+              s.SISWA_ID
+          }
+        );
+
+
+      (profile.catatan || [])
+        .forEach(function(n){
+
+          all.push(
+            Object.assign(
+              {
+                NAMA_SISWA:
+                  s.NAMA
+              },
+              n
+            )
+          );
+
+        });
+
+    }
+
+
+    all.sort(
+      function(a,b){
+
+        return (
+          new Date(
+            b.TANGGAL || 0
+          ) -
+          new Date(
+            a.TANGGAL || 0
+          )
+        );
+
+      }
+    );
+
+
+    $('notesTable').innerHTML =
+      all.length
+
+      ? `
+
+        <table class="table">
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Tanggal
+              </th>
+
+              <th>
+                Siswa
+              </th>
+
+              <th>
+                Jenis/Topik
+              </th>
+
+              <th>
+                Catatan
+              </th>
+
+              <th>
+                Vis.
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            ${
+              all.map(function(n){
+
+                return `
+
+                  <tr>
+
+                    <td>
+                      ${date(n.TANGGAL)}
+                    </td>
+
+                    <td>
+                      <b>
+                        ${esc(n.NAMA_SISWA)}
+                      </b>
+                    </td>
+
+                    <td>
+
+                      ${esc(n.JENIS)}
+
+                      <br>
+
+                      ${esc(n.TOPIK)}
+
+                    </td>
+
+                    <td>
+
+                      ${esc(
+                        n.CATATAN_SISWA ||
+                        n.CATATAN_INTERNAL
+                      )}
+
+                    </td>
+
+                    <td>
+
+                      <span class="badge">
+
+                        ${esc(
+                          n.VISIBILITAS
+                        )}
+
+                      </span>
+
+                    </td>
+
+                  </tr>
+
+                `;
+
+              }).join('')
+            }
+
+          </tbody>
+
+        </table>
+
+      `
+
+      : `
+
+        <div class="empty">
+          Belum ada catatan.
+        </div>
+
+      `;
+
+  }catch(err){
+
+    $('notesTable').innerHTML =
+      `
+        <div class="empty">
+          ${esc(err.message)}
+        </div>
+      `;
+
+  }
+
+}
+
+
+/* =====================================================
+   TARGET TEACHER
+===================================================== */
+
+async function renderTargets(){
+
+  $('content').innerHTML = `
+
+    <h2 class="page-title">
+      Target Siswa
+    </h2>
+
+    <p class="page-sub">
+      Pantau target yang masih aktif
+      dan tindak lanjutnya.
+    </p>
+
+
+    <div class="toolbar">
+
+      <button
+        class="btn btn-primary"
+        onclick="go('students')">
+
+        Pilih siswa → tambah target
+
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <div
+        id="targetTable"
+        class="table-wrap">
+
+        <div class="empty">
+          Memuat...
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  try{
+
+    const r =
+      await api(
+        'students',
+        {
+          token:state.token
+        }
+      );
+
+
+    const all = [];
+
+
+    for(
+      const s of (r.data || [])
+    ){
+
+      const profile =
+        await api(
+          'studentProfile',
+          {
+            token:state.token,
+
+            siswaId:
+              s.SISWA_ID
+          }
+        );
+
+
+      (profile.target || [])
+        .forEach(function(n){
+
+          all.push(
+            Object.assign(
+              {
+                NAMA_SISWA:
+                  s.NAMA
+              },
+              n
+            )
+          );
+
+        });
+
+    }
+
+
+    all.sort(
+      function(a,b){
+
+        return (
+          new Date(
+            b.TANGGAL || 0
+          ) -
+          new Date(
+            a.TANGGAL || 0
+          )
+        );
+
+      }
+    );
+
+
+    $('targetTable').innerHTML =
+      all.length
+
+      ? `
+
+        <table class="table">
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Siswa
+              </th>
+
+              <th>
+                Target
+              </th>
+
+              <th>
+                Indikator
+              </th>
+
+              <th>
+                Batas
+              </th>
+
+              <th>
+                Status
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            ${
+              all.map(function(n){
+
+                const selesai =
+                  String(
+                    n.STATUS
+                  ).toLowerCase() ===
+                  'selesai';
+
+
+                return `
+
+                  <tr>
+
+                    <td>
+                      ${esc(
+                        n.NAMA_SISWA
+                      )}
+                    </td>
+
+                    <td>
+                      <b>
+                        ${esc(n.TARGET)}
+                      </b>
+                    </td>
+
+                    <td>
+                      ${esc(
+                        n.INDIKATOR ||
+                        '-'
+                      )}
+                    </td>
+
+                    <td>
+                      ${date(
+                        n.BATAS_WAKTU
+                      )}
+                    </td>
+
+                    <td>
+
+                      <span
+                        class="
+                          badge
+                          ${
+                            selesai
+                              ? 'green'
+                              : 'yellow'
+                          }
+                        ">
+
+                        ${esc(
+                          n.STATUS
+                        )}
+
+                      </span>
+
+                    </td>
+
+                  </tr>
+
+                `;
+
+              }).join('')
+            }
+
+          </tbody>
+
+        </table>
+
+      `
+
+      : `
+
+        <div class="empty">
+          Belum ada target.
+        </div>
+
+      `;
+
+  }catch(err){
+
+    $('targetTable').innerHTML =
+      `
+        <div class="empty">
+          ${esc(err.message)}
+        </div>
+      `;
+
+  }
+
+}
+
+
+/* =====================================================
+   ADD TARGET
+===================================================== */
+
+function openTargetForm(
+  siswaId
+){
+
+  openModal(`
+
+    <div class="modal-head">
+
+      <h3>
+        Tambah Target
+      </h3>
+
+      <button
+        class="close"
+        onclick="closeModal()">
+
+        ✕
+
+      </button>
+
+    </div>
+
+
+    <input
+      id="t_siswa"
+      type="hidden"
+      value="${esc(siswaId)}">
+
+
+    <div class="form-grid">
+
+      <div class="form-group full">
+
+        <label>
+          TARGET
+        </label>
+
+        <input
+          id="t_target"
+          class="form-control"
+          placeholder="Contoh: lebih konsisten mengumpulkan tugas">
+
+      </div>
+
+
+      <div class="form-group full">
+
+        <label>
+          INDIKATOR
+        </label>
+
+        <textarea
+          id="t_indikator"
+          class="form-control"
+          rows="2">
+        </textarea>
+
+      </div>
+
+
+      ${fg(
+        'Batas waktu',
+        't_batas',
+        'date'
+      )}
+
+
+      <div class="form-group">
+
+        <label>
+          TINDAK LANJUT
+        </label>
+
+        <input
+          id="t_follow"
+          class="form-control">
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="btn btn-primary"
+      onclick="saveTarget()">
+
+      Simpan Target
+
+    </button>
+
+  `);
+
+}
+
+
+async function saveTarget(){
+
+  try{
+
+    await api(
+      'addTarget',
+      {
+        token:state.token,
+
+        data:{
+
+          SISWA_ID:
+            $('t_siswa').value,
+
+          TARGET:
+            $('t_target').value,
+
+          INDIKATOR:
+            $('t_indikator').value,
+
+          BATAS_WAKTU:
+            $('t_batas').value,
+
+          TINDAK_LANJUT:
+            $('t_follow').value
+
+        }
+
+      }
+    );
+
+
+    closeModal();
+
+
+    toast(
+      'Target berhasil disimpan.'
+    );
+
+
+    await go('targets');
+
+  }catch(err){
+
+    toast(
+      err.message,
+      true
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   STUDENT
+===================================================== */
+
+async function getStudentData(){
+
+  return await api(
+    'studentDashboard',
+    {
+      token:state.token
+    }
+  );
+
+}
+
+
+async function renderStudentHome(){
+
+  $('content').innerHTML = `
+
+    <h2 class="page-title">
+
+      Halo,
+      ${esc(
+        state.user?.NAMA ||
+        'Siswa'
+      )}
+      👋
+
+    </h2>
+
+
+    <p class="page-sub">
+      Ini adalah ringkasan perjalanan
+      dan pendampinganmu.
+    </p>
+
+
+    <div id="sd">
+
+      <div class="empty">
+        Memuat...
+      </div>
+
+    </div>
+
+  `;
+
+
+  try{
+
+    const r =
+      await getStudentData();
+
+
+    state.studentData =
+      r;
+
+
+    $('sd').innerHTML = `
+
+      <div class="card profile">
+
+        <img
+          class="avatar"
+          src="${
+            esc(
+              r.siswa.FOTO_URL ||
+              'https://via.placeholder.com/150'
+            )
+          }"
+          onerror="
+            this.src='https://via.placeholder.com/150'
+          ">
+
+
+        <div>
+
+          <h2>
+            ${esc(r.siswa.NAMA)}
+          </h2>
+
+          <p>
+            NISN:
+            ${esc(r.siswa.NISN)}
+          </p>
+
+          <p>
+            Data perkembanganmu dari
+            kelas 7 sampai kelas 9
+            tersimpan dalam satu riwayat.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="grid stats"
+        style="margin-top:14px">
+
+        ${stat(
+          '📝',
+          r.stats.catatan,
+          'Catatan yang dapat dilihat'
+        )}
+
+        ${stat(
+          '🎯',
+          r.stats.targetAktif,
+          'Target aktif'
+        )}
+
+        ${stat(
+          '💬',
+          r.stats.pesan,
+          'Pesan baru'
+        )}
+
+        ${stat(
+          '🕘',
+          r.riwayat.length,
+          'Riwayat kelas'
+        )}
+
+      </div>
+
+
+      <div
+        class="grid two"
+        style="margin-top:14px">
+
+
+        <div class="card">
+
+          <b style="font-size:12px">
+            Perjalanan kelas 7–9
+          </b>
+
+          ${historyHTML(
+            r.riwayat
+          )}
+
+        </div>
+
+
+        <div class="card">
+
+          <b style="font-size:12px">
+            Catatan terbaru
+          </b>
+
+          ${
+            r.catatan
+              .slice(0,4)
+              .map(function(n){
+
+                return `
+
+                  <div class="timeline">
+
+                    <div class="timeline-item">
+
+                      <div class="timeline-date">
+                        ${date(n.TANGGAL)}
+                      </div>
+
+                      <div class="timeline-title">
+                        ${esc(
+                          n.TOPIK ||
+                          n.JENIS
+                        )}
+                      </div>
+
+                      <div class="timeline-text">
+                        ${esc(
+                          n.CATATAN_SISWA
+                        )}
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                `;
+
+              })
+              .join('')
+
+            ||
+
+            `
+
+              <div class="empty">
+                Belum ada catatan.
+              </div>
+
+            `
+          }
+
+        </div>
+
+      </div>
+
+    `;
+
+  }catch(err){
+
+    $('sd').innerHTML =
+      `
+        <div class="empty">
+          ${esc(err.message)}
+        </div>
+      `;
+
+  }
+
+}
+
+
+function historyHTML(arr){
+
+  return arr.length
+
+    ? arr
+        .map(function(x){
+
+          return `
+
+            <div class="timeline">
+
+              <div class="timeline-item">
+
+                <div class="timeline-date">
+
+                  ${esc(
+                    x.TAHUN_AJARAN
+                  )}
+
+                  •
+
+                  Kelas
+                  ${esc(
+                    x.TINGKAT
+                  )}
+
+                </div>
+
+
+                <div class="timeline-title">
+
+                  ${esc(
+                    x.ROMBEL ||
+                    '-'
+                  )}
+
+                </div>
+
+
+                <div class="timeline-text">
+
+                  Wali kelas:
+                  ${esc(
+                    x.WALI_KELAS ||
+                    '-'
+                  )}
+
+                </div>
+
+              </div>
+
+            </div>
+
+          `;
+
+        })
+        .join('')
+
+    : `
+
+      <div class="empty">
+        Riwayat belum tersedia.
+      </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   STUDENT TIMELINE
+===================================================== */
+
+async function renderStudentTimeline(){
+
+  try{
+
+    const r =
+      await getStudentData();
+
+
+    $('content').innerHTML = `
+
+      <h2 class="page-title">
+        Perjalanan Kelas 7–9
+      </h2>
+
+      <p class="page-sub">
+        Riwayat kelas dan perkembangan
+        yang tercatat.
+      </p>
+
+
+      <div class="grid two">
+
+
+        <div class="card">
+
+          <b style="font-size:12px">
+            Riwayat kelas
+          </b>
+
+          ${historyHTML(
+            r.riwayat
+          )}
+
+        </div>
+
+
+        <div class="card">
+
+          <b style="font-size:12px">
+            Perkembangan
+          </b>
+
+          ${
+            r.perkembangan.length
+
+            ? r.perkembangan
+                .map(function(x){
+
+                  return `
+
+                    <div
+                      style="
+                        padding:10px 0;
+                        border-bottom:1px solid #eef0f4">
+
+                      <b style="font-size:10px">
+
+                        ${date(x.TANGGAL)}
+
+                        •
+
+                        Kelas
+                        ${esc(x.TINGKAT)}
+
+                      </b>
+
+
+                      <div
+                        style="
+                          font-size:9px;
+                          color:#4b5563;
+                          margin-top:3px">
+
+                        ${esc(
+                          x.CATATAN ||
+                          ''
+                        )}
+
+                      </div>
+
+                    </div>
+
+                  `;
+
+                })
+                .join('')
+
+            : `
+
+              <div class="empty">
+                Belum ada data.
+              </div>
+
+            `
+          }
+
+        </div>
+
+      </div>
+
+    `;
+
+  }catch(err){
+
+    $('content').innerHTML = `
+      <div class="card empty">
+        ${esc(err.message)}
+      </div>
+    `;
+
+  }
+
+}
+
+
+/* =====================================================
+   STUDENT NOTES
+===================================================== */
+
+async function renderStudentNotes(){
+
+  try{
+
+    const r =
+      await getStudentData();
+
+
+    $('content').innerHTML = `
+
+      <h2 class="page-title">
+        Catatan Wali
+      </h2>
+
+      <p class="page-sub">
+        Catatan yang memang dibagikan untukmu.
+      </p>
+
+
+      <div class="card">
+
+        ${
+          r.catatan.length
+
+          ? r.catatan
+              .map(function(n){
+
+                return `
+
+                  <div
+                    style="
+                      padding:13px 0;
+                      border-bottom:1px solid #eef0f4">
+
+                    <div
+                      style="
+                        font-size:9px;
+                        color:#64748b">
+
+                      ${date(n.TANGGAL)}
+
+                      •
+
+                      ${esc(
+                        n.TAHUN_AJARAN
+                      )}
+
+                      •
+
+                      ${esc(
+                        n.JENIS
+                      )}
+
+                    </div>
+
+
+                    <div
+                      style="
+                        font-size:12px;
+                        font-weight:700;
+                        margin-top:3px">
+
+                      ${esc(
+                        n.TOPIK ||
+                        'Catatan wali'
+                      )}
+
+                    </div>
+
+
+                    <div
+                      style="
+                        font-size:10px;
+                        line-height:1.7;
+                        color:#4b5563;
+                        margin-top:5px">
+
+                      ${esc(
+                        n.CATATAN_SISWA ||
+                        ''
+                      )}
+
+                    </div>
+
+
+                    ${
+                      n.TINDAK_LANJUT
+
+                      ? `
+
+                        <div
+                          style="
+                            margin-top:7px;
+                            font-size:9px">
+
+                          <b>
+                            Tindak lanjut:
+                          </b>
+
+                          ${esc(
+                            n.TINDAK_LANJUT
+                          )}
+
+                        </div>
+
+                      `
+
+                      : ''
+                    }
+
+                  </div>
+
+                `;
+
+              })
+              .join('')
+
+          : `
+
+            <div class="empty">
+              Belum ada catatan yang dibagikan.
+            </div>
+
+          `
+        }
+
+      </div>
+
+    `;
+
+  }catch(err){
+
+    $('content').innerHTML = `
+      <div class="card empty">
+        ${esc(err.message)}
+      </div>
+    `;
+
+  }
+
+}
+
+
+/* =====================================================
+   STUDENT TARGET
+===================================================== */
+
+async function renderStudentTargets(){
+
+  try{
+
+    const r =
+      await getStudentData();
+
+
+    $('content').innerHTML = `
+
+      <h2 class="page-title">
+        Target Saya
+      </h2>
+
+      <p class="page-sub">
+        Target yang disepakati bersama wali.
+      </p>
+
+
+      <div class="card">
+
+        <div class="table-wrap">
+
+          <table class="table">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Target
+                </th>
+
+                <th>
+                  Indikator
+                </th>
+
+                <th>
+                  Batas
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              ${
+                r.target.length
+
+                ? r.target
+                    .map(function(x){
+
+                      const selesai =
+                        String(
+                          x.STATUS
+                        ).toLowerCase() ===
+                        'selesai';
+
+
+                      return `
+
+                        <tr>
+
+                          <td>
+
+                            <b>
+                              ${esc(
+                                x.TARGET
+                              )}
+                            </b>
+
+                          </td>
+
+                          <td>
+                            ${esc(
+                              x.INDIKATOR ||
+                              '-'
+                            )}
+                          </td>
+
+                          <td>
+                            ${date(
+                              x.BATAS_WAKTU
+                            )}
+                          </td>
+
+                          <td>
+
+                            <span
+                              class="
+                                badge
+                                ${
+                                  selesai
+                                    ? 'green'
+                                    : 'yellow'
+                                }
+                              ">
+
+                              ${esc(
+                                x.STATUS
+                              )}
+
+                            </span>
+
+                          </td>
+
+                        </tr>
+
+                      `;
+
+                    })
+                    .join('')
+
+                : `
+
+                  <tr>
+
+                    <td
+                      colspan="4"
+                      class="empty">
+
+                      Belum ada target.
+
+                    </td>
+
+                  </tr>
+
+                `
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }catch(err){
+
+    $('content').innerHTML = `
+      <div class="card empty">
+        ${esc(err.message)}
+      </div>
+    `;
+
+  }
+
+}
+
+
+/* =====================================================
+   STUDENT MESSAGES
+===================================================== */
+
+async function renderStudentMessages(){
+
+  try{
+
+    const r =
+      await getStudentData();
+
+
+    $('content').innerHTML = `
+
+      <h2 class="page-title">
+        Pesan Wali
+      </h2>
+
+      <p class="page-sub">
+        Pesan yang disampaikan wali
+        secara khusus kepadamu.
+      </p>
+
+
+      <div class="grid">
+
+        ${
+          r.messages.length
+
+          ? r.messages
+              .map(function(x){
+
+                const dibaca =
+                  String(
+                    x.STATUS_BACA
+                  ).toLowerCase() ===
+                  'dibaca';
+
+
+                return `
+
+                  <div class="card">
+
+                    <div
+                      style="
+                        display:flex;
+                        justify-content:space-between;
+                        gap:10px">
+
+                      <b style="font-size:12px">
+
+                        ${esc(
+                          x.JUDUL ||
+                          'Pesan dari wali'
+                        )}
+
+                      </b>
+
+
+                      <span
+                        class="
+                          badge
+                          ${
+                            dibaca
+                              ? 'green'
+                              : 'yellow'
+                          }
+                        ">
+
+                        ${esc(
+                          x.STATUS_BACA ||
+                          'BELUM'
+                        )}
+
+                      </span>
+
+                    </div>
+
+
+                    <div
+                      style="
+                        font-size:9px;
+                        color:#64748b;
+                        margin-top:3px">
+
+                      ${date(x.TANGGAL)}
+
+                    </div>
+
+
+                    <div
+                      style="
+                        font-size:10px;
+                        line-height:1.7;
+                        margin-top:8px">
+
+                      ${esc(x.PESAN)}
+
+                    </div>
+
+
+                    ${
+                      !dibaca
+
+                      ? `
+
+                        <button
+                          class="btn btn-light"
+                          style="margin-top:9px"
+                          onclick="
+                            readMessage(
+                              '${esc(x.PESAN_ID)}'
+                            )
+                          ">
+
+                          Tandai sudah dibaca
+
+                        </button>
+
+                      `
+
+                      : ''
+                    }
+
+                  </div>
+
+                `;
+
+              })
+              .join('')
+
+          : `
+
+            <div class="card empty">
+              Belum ada pesan dari wali.
+            </div>
+
+          `
+        }
+
+      </div>
+
+    `;
+
+  }catch(err){
+
+    $('content').innerHTML = `
+      <div class="card empty">
+        ${esc(err.message)}
+      </div>
+    `;
+
+  }
+
+}
+
+
+async function readMessage(id){
+
+  try{
+
+    await api(
+      'markMessageRead',
+      {
+        token:state.token,
+
+        pesanId:id
+      }
+    );
+
+
+    toast(
+      'Pesan ditandai sudah dibaca.'
+    );
+
+
+    await renderStudentMessages();
+
+  }catch(err){
+
+    toast(
+      err.message,
+      true
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+window.addEventListener(
+  'DOMContentLoaded',
+  function(){
+
+    selectRole('WALI');
+
+    tryAutoLogin();
+
+  }
+);
+
+</script>
+
+</body>
+</html>
