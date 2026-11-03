@@ -19,11 +19,6 @@
   --coc-gold-mid: #f3ad14;
   --coc-gold-dark: #9e6400;
   --coc-gold-border: #d49520;
-  --coc-btn-green: #59b300;
-  --coc-btn-green-shadow: #2e6600;
-  --coc-btn-red: #d9381e;
-  --coc-btn-red-shadow: #7a1b0c;
-  --coc-text-glow: 0 2px 4px rgba(0,0,0,0.9), 0 0 10px rgba(243,173,20,0.5);
 }
 
 * { box-sizing: border-box; }
@@ -35,7 +30,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Texture Pattern background */
 body::before {
   content: ""; position: fixed; inset: 0; pointer-events: none; opacity: 0.15;
   background-image: radial-gradient(#fff 1px, transparent 0);
@@ -44,7 +38,7 @@ body::before {
 
 .shell { width: min(1140px, calc(100% - 32px)); margin: auto; position: relative; z-index: 1; padding-bottom: 40px; }
 
-/* BAR ATAS / TOPBAR */
+/* TOPBAR */
 .topbar {
   display: flex; align-items: center; justify-content: space-between;
   padding: 16px 20px; margin-top: 15px;
@@ -74,7 +68,7 @@ body::before {
   border: 2px solid var(--coc-gold-border);
 }
 .status-dot { width: 12px; height: 12px; border-radius: 50%; background: #ff4747; box-shadow: 0 0 10px #ff4747; }
-.status-dot.active { background: #55ff00; box-shadow: 0 0 10px #55ff00; }
+.status-dot.active { background: #4ade80; box-shadow: 0 0 10px #4ade80; }
 .status-text { font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
 
 /* HERO SECTION */
@@ -104,39 +98,46 @@ body::before {
   text-shadow: 2px 2px 0 #000, -1px -1px 0 #000; margin: 0;
 }
 
-/* MENU GRID & CARDS */
+/* MENU GRID & CARDS DENGAN WARNA CERAH BERVARIASI */
 .menu-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
 .menu-card {
-  position: relative; min-height: 210px; padding: 20px; border-radius: 20px;
-  background: linear-gradient(180deg, var(--coc-wood-mid) 0%, var(--coc-wood-dark) 100%);
-  border: 4px solid #734529;
-  box-shadow: inset 0 3px 0 rgba(255,255,255,0.15), 0 10px 25px rgba(0,0,0,0.7);
-  display: flex; flex-direction: column; transition: transform 0.2s;
+  position: relative; min-height: 220px; padding: 20px; border-radius: 20px;
+  border: 4px solid rgba(255,255,255,0.25);
+  box-shadow: inset 0 3px 0 rgba(255,255,255,0.2), 0 10px 25px rgba(0,0,0,0.7);
+  display: flex; flex-direction: column; transition: transform 0.2s, filter 0.2s;
 }
-.menu-card:hover { transform: translateY(-5px); border-color: var(--coc-gold-mid); }
-.feature-card { grid-column: span 2; background: linear-gradient(180deg, #57331c 0%, #30190a 100%); }
+.menu-card:hover { transform: translateY(-5px); filter: brightness(1.05); }
+
+/* Tema Warna Card */
+.card-green { background: linear-gradient(145deg, #166534, #14532d); border-color: #4ade80; }
+.card-yellow { background: linear-gradient(145deg, #854d0e, #713f12); border-color: #facc15; }
+.card-orange { background: linear-gradient(145deg, #9a3412, #7c2d12); border-color: #fb923c; }
+.card-pink { background: linear-gradient(145deg, #9d174d, #831843); border-color: #f472b6; }
+.card-blue { background: linear-gradient(145deg, #0369a1, #075985); border-color: #38bdf8; }
+.card-purple { background: linear-gradient(145deg, #6b21a8, #581c87); border-color: #c084fc; }
+
+.feature-card { grid-column: span 2; }
 
 .card-top { display: flex; align-items: center; justify-content: space-between; }
 .icon-box {
-  width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; font-size: 28px;
-  background: linear-gradient(180deg, var(--coc-gold-mid), var(--coc-gold-dark));
-  border: 3px solid #ffe89e; box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  width: 54px; height: 54px; border-radius: 14px; display: grid; place-items: center; font-size: 26px;
+  background: rgba(0,0,0,0.35); border: 3px solid rgba(255,255,255,0.5); box-shadow: 0 4px 8px rgba(0,0,0,0.4);
 }
 .tag {
   font-size: 10px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;
-  background: rgba(0,0,0,0.6); color: var(--coc-gold-light); padding: 6px 12px;
-  border-radius: 99px; border: 1.5px solid var(--coc-gold-border);
+  background: rgba(0,0,0,0.5); color: #fff; padding: 6px 12px;
+  border-radius: 99px; border: 1.5px solid rgba(255,255,255,0.4);
 }
 
 .card-title {
   font-family: 'Luckiest Guy', cursive; font-size: 20px; margin: 15px 0 5px;
   color: #fff; text-shadow: 2px 2px 0 #000;
 }
-.card-desc { font-size: 12px; color: #c9b097; line-height: 1.5; margin-bottom: 20px; font-weight: 700; }
+.card-desc { font-size: 12px; color: #f3f4f6; line-height: 1.5; margin-bottom: 20px; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.6); }
 
 .card-action { margin-top: auto; display: flex; align-items: center; justify-content: space-between; }
 
-/* BUTTONS (CoC 3D Style) */
+/* BUTTONS 3D */
 .coc-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   padding: 12px 22px; border-radius: 12px; text-decoration: none;
@@ -147,12 +148,12 @@ body::before {
 }
 .coc-btn:active { top: 3px; box-shadow: 0 2px 0 var(--shadow-color), 0 4px 8px rgba(0,0,0,0.6); }
 
-.coc-btn-green { background: linear-gradient(180deg, #7cd91c 0%, var(--coc-btn-green) 100%); --shadow-color: var(--coc-btn-green-shadow); border: 2px solid #a3ff47; }
-.coc-btn-red { background: linear-gradient(180deg, #ff5238 0%, var(--coc-btn-red) 100%); --shadow-color: var(--coc-btn-red-shadow); border: 2px solid #ff8878; }
-.coc-btn-gold { background: linear-gradient(180deg, var(--coc-gold-light) 0%, var(--coc-gold-mid) 100%); --shadow-color: var(--coc-gold-dark); color: #2b170c; text-shadow: 1px 1px 0 #ffe89e; border: 2px solid #fff; }
+.coc-btn-green { background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%); --shadow-color: #14532d; border: 2px solid #bbf7d0; }
+.coc-btn-red { background: linear-gradient(180deg, #f87171 0%, #dc2626 100%); --shadow-color: #7f1d1d; border: 2px solid #fecaca; }
+.coc-btn-gold { background: linear-gradient(180deg, #facc15 0%, #ca8a04 100%); --shadow-color: #713f12; color: #1a0f07; text-shadow: 1px 1px 0 #fef08a; border: 2px solid #fef08a; }
 .coc-btn.disabled { opacity: 0.5; filter: grayscale(1); pointer-events: none; }
 
-/* MODAL PIN (CoC Dialog Style) */
+/* MODAL PIN */
 .modal-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
   display: flex; align-items: center; justify-content: center; z-index: 999;
@@ -184,7 +185,7 @@ body::before {
 }
 .pin-input:focus { border-color: #fff; }
 
-.error-msg { color: #ff5238; font-weight: 900; font-size: 12px; margin-bottom: 15px; display: none; }
+.error-msg { color: #f87171; font-weight: 900; font-size: 12px; margin-bottom: 15px; display: none; }
 
 @media(max-width: 850px) {
   .menu-grid { grid-template-columns: 1fr; }
@@ -233,7 +234,8 @@ body::before {
    </div>
 
    <div class="menu-grid">
-    <article class="menu-card feature-card">
+    <!-- 1. DOKUMEN UTAMA (Hijau Rumput) -->
+    <article class="menu-card feature-card card-green">
      <div class="card-top">
        <div class="icon-box">📚</div>
        <span class="tag">DOKUMEN UTAMA</span>
@@ -245,35 +247,40 @@ body::before {
      </div>
     </article>
 
-    <article class="menu-card">
+    <!-- 2. DATA SISWA (Kuning Kayu / Emas) -->
+    <article class="menu-card card-yellow">
      <div class="card-top"><div class="icon-box">👥</div><span class="tag">SEGERA HADIR</span></div>
      <h3 class="card-title">Data Siswa</h3>
      <p class="card-desc">Akses data peserta, rombongan belajar, dan kebutuhan administrasi siswa.</p>
      <div class="card-action"><button class="coc-btn coc-btn-green disabled">BELUM TERSEDIA</button></div>
     </article>
 
-    <article class="menu-card">
+    <!-- 3. KARTU UJIAN (Orange Terang) -->
+    <article class="menu-card card-orange">
      <div class="card-top"><div class="icon-box">🎫</div><span class="tag">SEGERA HADIR</span></div>
      <h3 class="card-title">Kartu Ujian</h3>
      <p class="card-desc">Menu untuk membuat, memeriksa, atau mencetak kartu peserta ASAS.</p>
      <div class="card-action"><button class="coc-btn coc-btn-green disabled">BELUM TERSEDIA</button></div>
     </article>
 
-    <article class="menu-card">
+    <!-- 4. JADWAL ASAS (Merah Muda) -->
+    <article class="menu-card card-pink">
      <div class="card-top"><div class="icon-box">🗓️</div><span class="tag">SEGERA HADIR</span></div>
      <h3 class="card-title">Jadwal ASAS</h3>
      <p class="card-desc">Informasi jadwal pelaksanaan, sesi, ruang, dan pengawas ujian.</p>
      <div class="card-action"><button class="coc-btn coc-btn-green disabled">BELUM TERSEDIA</button></div>
     </article>
 
-    <article class="menu-card">
+    <!-- 5. RUANG & PENGAWAS (Biru Muda) -->
+    <article class="menu-card card-blue">
      <div class="card-top"><div class="icon-box">🏫</div><span class="tag">SEGERA HADIR</span></div>
      <h3 class="card-title">Ruang &amp; Pengawas</h3>
      <p class="card-desc">Referensi pembagian ruang, denah, dan daftar pengawas ASAS.</p>
      <div class="card-action"><button class="coc-btn coc-btn-green disabled">BELUM TERSEDIA</button></div>
     </article>
 
-    <article class="menu-card">
+    <!-- 6. REKAP & BERITA ACARA (Ungu Cerah) -->
+    <article class="menu-card card-purple">
      <div class="card-top"><div class="icon-box">📊</div><span class="tag">SEGERA HADIR</span></div>
      <h3 class="card-title">Rekap &amp; Berita Acara</h3>
      <p class="card-desc">Pusat rekap pelaksanaan, administrasi, dan berita acara kegiatan.</p>
@@ -290,14 +297,12 @@ body::before {
 // ==========================================
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyuIR7WPDMZGEFEGNRT3yeR0ZX93aDIr6jAbbU3z7KIZm64Fk9DW2i0p0gpNg0Ngq2r/exec";
 
-// Cek status login dari LocalStorage saat load
 document.addEventListener("DOMContentLoaded", () => {
   const isAuth = localStorage.getItem("asas_authenticated");
   if (isAuth === "true") {
     unlockPortalUI();
   }
 
-  // Allow press Enter in PIN Input
   document.getElementById("pinInput").addEventListener("keyup", (e) => {
     if (e.key === "Enter") verifyPin();
   });
@@ -339,7 +344,6 @@ function unlockPortalUI() {
   document.getElementById("statusText").innerText = "TERBUKA";
   document.getElementById("lockBtn").style.display = "inline-flex";
 
-  // Enable protected links
   const protectedLinks = document.querySelectorAll(".protected-link");
   protectedLinks.forEach(link => link.classList.remove("disabled"));
 }
