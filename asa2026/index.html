@@ -3,37 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#1a0f07">
-<title>ASAS Command Center | CoC War Board</title>
-<!-- Google Fonts untuk nuansa game medieval / CoC -->
+<meta name="theme-color" content="#f8fafc">
+<title>ASAS Command Center | Portal Panitia</title>
+<!-- Google Fonts untuk nuansa game & profesional -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --coc-bg-dark: #120a05;
-  --coc-wood-dark: #2b170c;
-  --coc-wood-mid: #4a2a18;
-  --coc-wood-light: #6e4027;
-  --coc-gold-light: #ffe66d;
-  --coc-gold-mid: #f3ad14;
-  --coc-gold-dark: #9e6400;
-  --coc-gold-border: #d49520;
+  --bg-main: #f0fdf4;
+  --panel-border: #cbd5e1;
 }
 
 * { box-sizing: border-box; }
 body {
-  margin: 0; min-height: 100vh; color: #fff;
+  margin: 0; min-height: 100vh; color: #1e293b;
   font-family: 'Nunito', sans-serif;
-  background: var(--coc-bg-dark) radial-gradient(circle at 50% 20%, #3d2010 0%, #120a05 80%);
+  background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 50%, #fdf4ff 100%);
   background-attachment: fixed;
   overflow-x: hidden;
-}
-
-body::before {
-  content: ""; position: fixed; inset: 0; pointer-events: none; opacity: 0.15;
-  background-image: radial-gradient(#fff 1px, transparent 0);
-  background-size: 24px 24px;
 }
 
 .shell { width: min(1140px, calc(100% - 32px)); margin: auto; position: relative; z-index: 1; padding-bottom: 40px; }
@@ -41,121 +29,117 @@ body::before {
 /* TOPBAR */
 .topbar {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 20px; margin-top: 15px;
-  background: linear-gradient(180deg, var(--coc-wood-light) 0%, var(--coc-wood-dark) 100%);
-  border: 4px solid var(--coc-gold-mid);
-  border-radius: 18px;
-  box-shadow: inset 0 2px 0 rgba(255,255,255,0.2), 0 8px 20px rgba(0,0,0,0.8);
+  padding: 16px 24px; margin-top: 20px;
+  background: #ffffff;
+  border: 3px solid #cbd5e1;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
 }
 .brand { display: flex; align-items: center; gap: 14px; }
 .crest {
-  width: 52px; height: 52px; display: grid; place-items: center;
-  border: 3px solid #ffea9f; border-radius: 12px;
-  background: linear-gradient(145deg, #d9381e, #7a1b0c);
-  box-shadow: inset 0 2px 0 rgba(255,255,255,0.4), 0 4px 10px rgba(0,0,0,0.6);
-  font-size: 26px; text-shadow: 0 2px 4px #000;
+  width: 50px; height: 50px; display: grid; place-items: center;
+  border: 2.5px solid #cbd5e1; border-radius: 14px;
+  background: linear-gradient(135deg, #38bdf8, #0284c7);
+  box-shadow: 0 4px 10px rgba(56, 189, 248, 0.3);
+  font-size: 24px;
 }
 .brand-name {
   font-family: 'Luckiest Guy', cursive; font-size: 20px;
-  color: var(--coc-gold-light); letter-spacing: 1px;
-  text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+  color: #0f172a; letter-spacing: 0.5px;
 }
-.brand-sub { font-size: 11px; color: #d4bda5; font-weight: 800; letter-spacing: 1px; }
+.brand-sub { font-size: 11px; color: #64748b; font-weight: 800; letter-spacing: 0.5px; }
 
 .auth-badge {
   display: flex; align-items: center; gap: 10px;
-  background: rgba(0,0,0,0.5); padding: 8px 16px; border-radius: 99px;
-  border: 2px solid var(--coc-gold-border);
+  background: #f8fafc; padding: 8px 16px; border-radius: 99px;
+  border: 2px solid #e2e8f0;
 }
-.status-dot { width: 12px; height: 12px; border-radius: 50%; background: #ff4747; box-shadow: 0 0 10px #ff4747; }
-.status-dot.active { background: #4ade80; box-shadow: 0 0 10px #4ade80; }
-.status-text { font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+.status-dot { width: 12px; height: 12px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 8px rgba(239, 68, 68, 0.5); }
+.status-dot.active { background: #22c55e; box-shadow: 0 0 8px rgba(34, 197, 94, 0.5); }
+.status-text { font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; color: #334155; }
 
 /* HERO SECTION */
-.hero { text-align: center; padding: 40px 10px 20px; }
+.hero { text-align: center; padding: 40px 10px 25px; }
 .hero-title {
   font-family: 'Luckiest Guy', cursive;
-  font-size: clamp(36px, 6vw, 64px);
+  font-size: clamp(36px, 6vw, 60px);
   margin: 10px 0;
-  color: #fff;
-  text-shadow: 
-    3px 3px 0 #000, -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000,
-    0 6px 0 var(--coc-wood-dark), 0 10px 20px rgba(0,0,0,0.8);
+  color: #0f172a;
+  text-shadow: 0 4px 0 rgba(0,0,0,0.08);
 }
-.hero-title span { color: var(--coc-gold-light); }
+.hero-title span { color: #0284c7; }
 .hero p {
-  max-width: 600px; margin: 0 auto; color: #e6ceb8; font-size: 15px; font-weight: 800;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  max-width: 600px; margin: 0 auto; color: #475569; font-size: 15px; font-weight: 800;
+  line-height: 1.6;
 }
 
 /* SECTION HEADER */
 .section-head {
   display: flex; align-items: center; justify-content: space-between;
-  margin: 30px 0 15px; padding: 0 10px;
+  margin: 30px 0 15px; padding: 0 5px;
 }
 .section-title {
-  font-family: 'Luckiest Guy', cursive; font-size: 26px; color: var(--coc-gold-light);
-  text-shadow: 2px 2px 0 #000, -1px -1px 0 #000; margin: 0;
+  font-family: 'Luckiest Guy', cursive; font-size: 24px; color: #0f172a; margin: 0;
 }
 
-/* MENU GRID & CARDS DENGAN WARNA CERAH BERVARIASI */
+/* MENU GRID & CARDS (Warna Sangat Cerah & Font Kontras Gelap Profesional) */
 .menu-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
 .menu-card {
-  position: relative; min-height: 220px; padding: 20px; border-radius: 20px;
-  border: 4px solid rgba(255,255,255,0.25);
-  box-shadow: inset 0 3px 0 rgba(255,255,255,0.2), 0 10px 25px rgba(0,0,0,0.7);
-  display: flex; flex-direction: column; transition: transform 0.2s, filter 0.2s;
+  position: relative; min-height: 220px; padding: 22px; border-radius: 24px;
+  border: 3px solid rgba(0,0,0,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+  display: flex; flex-direction: column; transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.menu-card:hover { transform: translateY(-5px); filter: brightness(1.05); }
+.menu-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
 
-/* Tema Warna Card */
-.card-green { background: linear-gradient(145deg, #166534, #14532d); border-color: #4ade80; }
-.card-yellow { background: linear-gradient(145deg, #854d0e, #713f12); border-color: #facc15; }
-.card-orange { background: linear-gradient(145deg, #9a3412, #7c2d12); border-color: #fb923c; }
-.card-pink { background: linear-gradient(145deg, #9d174d, #831843); border-color: #f472b6; }
-.card-blue { background: linear-gradient(145deg, #0369a1, #075985); border-color: #38bdf8; }
-.card-purple { background: linear-gradient(145deg, #6b21a8, #581c87); border-color: #c084fc; }
+/* Tema Warna Card Sangat Cerah (Light Vibrant) dengan Teks Gelap Kontras Tinggi */
+.card-green  { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-color: #86efac; }
+.card-yellow { background: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%); border-color: #fde047; }
+.card-orange { background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%); border-color: #fdba74; }
+.card-pink   { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); border-color: #f472b6; }
+.card-blue   { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); border-color: #7dd3fc; }
+.card-purple { background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); border-color: #d8b4fe; }
 
 .feature-card { grid-column: span 2; }
 
 .card-top { display: flex; align-items: center; justify-content: space-between; }
 .icon-box {
-  width: 54px; height: 54px; border-radius: 14px; display: grid; place-items: center; font-size: 26px;
-  background: rgba(0,0,0,0.35); border: 3px solid rgba(255,255,255,0.5); box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; font-size: 24px;
+  background: rgba(255, 255, 255, 0.8); border: 2px solid rgba(0,0,0,0.05); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 .tag {
-  font-size: 10px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;
-  background: rgba(0,0,0,0.5); color: #fff; padding: 6px 12px;
-  border-radius: 99px; border: 1.5px solid rgba(255,255,255,0.4);
+  font-size: 10px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.7); color: #1e293b; padding: 6px 12px;
+  border-radius: 99px; border: 1.5px solid rgba(0,0,0,0.05);
 }
 
 .card-title {
-  font-family: 'Luckiest Guy', cursive; font-size: 20px; margin: 15px 0 5px;
-  color: #fff; text-shadow: 2px 2px 0 #000;
+  font-family: 'Luckiest Guy', cursive; font-size: 20px; margin: 15px 0 6px;
+  color: #0f172a; letter-spacing: 0.3px;
 }
-.card-desc { font-size: 12px; color: #f3f4f6; line-height: 1.5; margin-bottom: 20px; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.6); }
+.card-desc { font-size: 13px; color: #334155; line-height: 1.5; margin-bottom: 20px; font-weight: 800; }
 
 .card-action { margin-top: auto; display: flex; align-items: center; justify-content: space-between; }
 
-/* BUTTONS 3D */
+/* BUTTONS 3D CERAH PROFESIONAL */
 .coc-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 12px 22px; border-radius: 12px; text-decoration: none;
-  font-family: 'Luckiest Guy', cursive; font-size: 14px; letter-spacing: 1px;
-  color: #fff; text-shadow: 1px 2px 0 #000; cursor: pointer; border: none;
-  box-shadow: 0 5px 0 var(--shadow-color), 0 8px 15px rgba(0,0,0,0.6);
+  padding: 12px 22px; border-radius: 14px; text-decoration: none;
+  font-family: 'Luckiest Guy', cursive; font-size: 14px; letter-spacing: 0.5px;
+  color: #ffffff; cursor: pointer; border: none;
+  box-shadow: 0 4px 0 var(--shadow-color), 0 6px 12px rgba(0,0,0,0.1);
   transition: all 0.1s ease; position: relative; top: 0;
 }
-.coc-btn:active { top: 3px; box-shadow: 0 2px 0 var(--shadow-color), 0 4px 8px rgba(0,0,0,0.6); }
+.coc-btn:active { top: 3px; box-shadow: 0 1px 0 var(--shadow-color), 0 2px 6px rgba(0,0,0,0.1); }
 
-.coc-btn-green { background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%); --shadow-color: #14532d; border: 2px solid #bbf7d0; }
-.coc-btn-red { background: linear-gradient(180deg, #f87171 0%, #dc2626 100%); --shadow-color: #7f1d1d; border: 2px solid #fecaca; }
-.coc-btn-gold { background: linear-gradient(180deg, #facc15 0%, #ca8a04 100%); --shadow-color: #713f12; color: #1a0f07; text-shadow: 1px 1px 0 #fef08a; border: 2px solid #fef08a; }
+.coc-btn-green { background: linear-gradient(180deg, #4ade80 0%, #22c55e 100%); --shadow-color: #15803d; border: 2px solid #86efac; color: #052e16; }
+.coc-btn-red { background: linear-gradient(180deg, #f87171 0%, #ef4444 100%); --shadow-color: #b91c1c; border: 2px solid #fca5a5; }
+.coc-btn-gold { background: linear-gradient(180deg, #facc15 0%, #eab308 100%); --shadow-color: #a16207; color: #422006; border: 2px solid #fde047; }
 .coc-btn.disabled { opacity: 0.5; filter: grayscale(1); pointer-events: none; }
 
-/* MODAL PIN */
+/* MODAL PIN (Dialog Clean & Profesional) */
 .modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+  position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px);
   display: flex; align-items: center; justify-content: center; z-index: 999;
   opacity: 1; transition: opacity 0.3s ease;
 }
@@ -163,29 +147,29 @@ body::before {
 
 .coc-dialog {
   width: min(420px, calc(100% - 32px));
-  background: linear-gradient(180deg, var(--coc-wood-mid) 0%, var(--coc-wood-dark) 100%);
-  border: 5px solid var(--coc-gold-mid); border-radius: 24px;
-  box-shadow: inset 0 3px 0 rgba(255,255,255,0.3), 0 20px 50px #000;
-  padding: 30px 24px; text-align: center; position: relative;
+  background: #ffffff;
+  border: 4px solid #cbd5e1; border-radius: 28px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 35px 28px; text-align: center; position: relative;
   animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 @keyframes popIn { from { transform: scale(0.8); } to { transform: scale(1); } }
 
 .coc-dialog-title {
-  font-family: 'Luckiest Guy', cursive; font-size: 26px; color: var(--coc-gold-light);
-  text-shadow: 3px 3px 0 #000; margin: 0 0 10px;
+  font-family: 'Luckiest Guy', cursive; font-size: 24px; color: #0f172a;
+  margin: 0 0 10px; letter-spacing: 0.5px;
 }
-.coc-dialog p { color: #d4bda5; font-size: 13px; font-weight: 800; margin-bottom: 20px; }
+.coc-dialog p { color: #64748b; font-size: 13px; font-weight: 800; margin-bottom: 24px; line-height: 1.5; }
 
 .pin-input {
   width: 100%; padding: 14px; font-size: 24px; text-align: center; font-weight: 900;
-  letter-spacing: 8px; border-radius: 14px; border: 3px solid var(--coc-gold-border);
-  background: #120a05; color: var(--coc-gold-light); margin-bottom: 20px;
-  outline: none; box-shadow: inset 0 3px 6px rgba(0,0,0,0.8);
+  letter-spacing: 10px; border-radius: 14px; border: 2.5px solid #cbd5e1;
+  background: #f8fafc; color: #0f172a; margin-bottom: 20px;
+  outline: none; box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
 }
-.pin-input:focus { border-color: #fff; }
+.pin-input:focus { border-color: #0284c7; background: #fff; }
 
-.error-msg { color: #f87171; font-weight: 900; font-size: 12px; margin-bottom: 15px; display: none; }
+.error-msg { color: #ef4444; font-weight: 900; font-size: 12px; margin-bottom: 15px; display: none; }
 
 @media(max-width: 850px) {
   .menu-grid { grid-template-columns: 1fr; }
@@ -234,7 +218,7 @@ body::before {
    </div>
 
    <div class="menu-grid">
-    <!-- 1. DOKUMEN UTAMA (Hijau Rumput) -->
+    <!-- 1. DOKUMEN UTAMA (Hijau Rumput Cerah) -->
     <article class="menu-card feature-card card-green">
      <div class="card-top">
        <div class="icon-box">📚</div>
@@ -247,7 +231,7 @@ body::before {
      </div>
     </article>
 
-    <!-- 2. DATA SISWA (Kuning Kayu / Emas) -->
+    <!-- 2. DATA SISWA (Kuning Kayu Cerah) -->
     <article class="menu-card card-yellow">
      <div class="card-top"><div class="icon-box">👥</div><span class="tag">SEGERA HADIR</span></div>
      <h3 class="card-title">Data Siswa</h3>
@@ -255,7 +239,7 @@ body::before {
      <div class="card-action"><button class="coc-btn coc-btn-green disabled">BELUM TERSEDIA</button></div>
     </article>
 
-    <!-- 3. KARTU UJIAN (Orange Terang) -->
+    <!-- 3. KARTU UJIAN (Orange Cerah) -->
     <article class="menu-card card-orange">
      <div class="card-top"><div class="icon-box">🎫</div><span class="tag">SEGERA HADIR</span></div>
      <h3 class="card-title">Kartu Ujian</h3>
@@ -263,7 +247,7 @@ body::before {
      <div class="card-action"><button class="coc-btn coc-btn-green disabled">BELUM TERSEDIA</button></div>
     </article>
 
-    <!-- 4. JADWAL ASAS (Merah Muda) -->
+    <!-- 4. JADWAL ASAS (Merah Muda Cerah) -->
     <article class="menu-card card-pink">
      <div class="card-top"><div class="icon-box">🗓️</div><span class="tag">SEGERA HADIR</span></div>
      <h3 class="card-title">Jadwal ASAS</h3>
@@ -271,7 +255,7 @@ body::before {
      <div class="card-action"><button class="coc-btn coc-btn-green disabled">BELUM TERSEDIA</button></div>
     </article>
 
-    <!-- 5. RUANG & PENGAWAS (Biru Muda) -->
+    <!-- 5. RUANG & PENGAWAS (Biru Muda Cerah) -->
     <article class="menu-card card-blue">
      <div class="card-top"><div class="icon-box">🏫</div><span class="tag">SEGERA HADIR</span></div>
      <h3 class="card-title">Ruang &amp; Pengawas</h3>
@@ -293,7 +277,7 @@ body::before {
 
 <script>
 // ==========================================
-// KONFIGURASI URL GOOGLE APPS SCRIPT EXEC
+// URL GOOGLE APPS SCRIPT WEB APP
 // ==========================================
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyuIR7WPDMZGEFEGNRT3yeR0ZX93aDIr6jAbbU3z7KIZm64Fk9DW2i0p0gpNg0Ngq2r/exec";
 
