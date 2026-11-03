@@ -3,184 +3,351 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#101b2b">
-<title>ASAS Command Center | Portal Panitia</title>
+<meta name="theme-color" content="#1a0f07">
+<title>ASAS Command Center | CoC War Board</title>
+<!-- Google Fonts untuk nuansa game medieval / CoC -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{
-  --navy:#101b2b;--navy2:#172940;--blue:#244a70;--gold:#f3c66b;
-  --gold2:#ffe4a3;--cream:#fff7e7;--muted:#b8c5d5;--panel:rgba(20,39,60,.88);
-  --line:rgba(255,226,164,.2);--shadow:0 18px 45px rgba(0,0,0,.28);
+:root {
+  --coc-bg-dark: #120a05;
+  --coc-wood-dark: #2b170c;
+  --coc-wood-mid: #4a2a18;
+  --coc-wood-light: #6e4027;
+  --coc-gold-light: #ffe66d;
+  --coc-gold-mid: #f3ad14;
+  --coc-gold-dark: #9e6400;
+  --coc-gold-border: #d49520;
+  --coc-btn-green: #59b300;
+  --coc-btn-green-shadow: #2e6600;
+  --coc-btn-red: #d9381e;
+  --coc-btn-red-shadow: #7a1b0c;
+  --coc-text-glow: 0 2px 4px rgba(0,0,0,0.9), 0 0 10px rgba(243,173,20,0.5);
 }
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
- margin:0;min-height:100vh;color:#f8f4e9;
- font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
- background:
- radial-gradient(ellipse at 50% -15%,rgba(77,123,163,.38),transparent 48%),
- radial-gradient(circle at 8% 70%,rgba(28,73,105,.28),transparent 32%),
- linear-gradient(145deg,#0b1421 0%,#14263a 52%,#0c1726 100%);
- overflow-x:hidden;
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; min-height: 100vh; color: #fff;
+  font-family: 'Nunito', sans-serif;
+  background: var(--coc-bg-dark) radial-gradient(circle at 50% 20%, #3d2010 0%, #120a05 80%);
+  background-attachment: fixed;
+  overflow-x: hidden;
 }
-body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.13;
- background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
- background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent 85%)}
-.ambient{position:fixed;width:360px;height:360px;border-radius:50%;filter:blur(90px);opacity:.13;pointer-events:none;animation:float 12s ease-in-out infinite alternate}
-.ambient.one{background:#d79a39;top:10%;left:-180px}.ambient.two{background:#3d85b7;right:-190px;bottom:5%;animation-delay:-5s}
-@keyframes float{to{transform:translate(45px,-35px) scale(1.18)}}
-.shell{width:min(1180px,calc(100% - 36px));margin:auto;position:relative;z-index:1}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:24px 0 12px;gap:15px}
-.brand{display:flex;align-items:center;gap:12px}
-.crest{width:48px;height:48px;display:grid;place-items:center;border:1px solid rgba(255,220,145,.65);border-radius:15px;
- background:linear-gradient(145deg,#3a5875,#17283c);box-shadow:inset 0 1px 0 #ffffff33,0 7px 18px #0005;color:var(--gold2);font-size:23px}
-.brand-name{font-weight:900;letter-spacing:.13em;font-size:14px}
-.brand-sub{font-size:10px;color:#aebdce;letter-spacing:.18em;margin-top:4px}
-.status{display:flex;align-items:center;gap:8px;color:#cbd7e3;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
-.status-dot{width:8px;height:8px;background:#75d6a0;border-radius:50%;box-shadow:0 0 12px #75d6a0}
-.hero{text-align:center;padding:47px 12px 34px;animation:rise .8s ease both}
-.eyebrow{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:99px;padding:8px 14px;color:var(--gold2);font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;background:#ffffff08}
-.eyebrow:before,.eyebrow:after{content:"";width:18px;height:1px;background:var(--gold)}
-h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(38px,7vw,68px);line-height:1.02;letter-spacing:.015em;margin:20px 0 12px;text-shadow:0 5px 25px #0008}
-h1 span{color:var(--gold2)}
-.hero p{max-width:620px;margin:0 auto;color:#c2cfdb;line-height:1.7;font-size:14px}
-.hero-rule{display:flex;align-items:center;justify-content:center;gap:12px;margin:25px auto 0;color:var(--gold);font-size:11px;letter-spacing:.2em}
-.hero-rule:before,.hero-rule:after{content:"";height:1px;width:min(110px,18vw);background:linear-gradient(90deg,transparent,var(--gold));opacity:.7}
-.hero-rule:after{transform:scaleX(-1)}
-.section-head{display:flex;align-items:end;justify-content:space-between;margin:18px 0 17px;gap:15px}
-.section-kicker{font-size:10px;letter-spacing:.2em;color:var(--gold);font-weight:800;text-transform:uppercase;margin-bottom:6px}
-.section-title{font: bold 24px Georgia,serif;margin:0}
-.section-note{font-size:11px;color:#aebdca;text-align:right}
-.menu-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
-.menu-card{
- --accent:#eec46e;position:relative;min-height:190px;padding:19px 19px 17px;border-radius:19px;overflow:hidden;
- border:1px solid rgba(255,225,167,.25);background:linear-gradient(145deg,rgba(36,61,85,.96),rgba(17,34,52,.96));
- box-shadow:0 12px 28px #0003,inset 0 1px 0 #ffffff16;display:flex;flex-direction:column;
- transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;animation:rise .7s ease both;
+
+/* Texture Pattern background */
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; opacity: 0.15;
+  background-image: radial-gradient(#fff 1px, transparent 0);
+  background-size: 24px 24px;
 }
-.menu-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 100% 0%,rgba(255,215,139,.13),transparent 48%);pointer-events:none}
-.menu-card:after{content:"";position:absolute;width:140px;height:140px;border:1px solid #ffffff0b;border-radius:50%;right:-62px;bottom:-72px;box-shadow:0 0 0 15px #ffffff06,0 0 0 30px #ffffff04}
-.menu-card:hover{transform:translateY(-6px);border-color:rgba(255,221,151,.65);box-shadow:0 20px 36px #0005,0 0 22px #edc16a18}
-.card-top{display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:1}
-.icon-box{width:49px;height:49px;border-radius:14px;display:grid;place-items:center;font-size:24px;color:#ffe5ad;
- background:linear-gradient(145deg,#526d84,#263f57);border:1px solid #f5d18b55;box-shadow:inset 0 1px 0 #ffffff30}
-.tag{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#f4d99e;border:1px solid #f4d99e45;padding:6px 8px;border-radius:99px;background:#f4d99e0c}
-.card-title{font-size:17px;font-weight:800;margin:16px 0 5px;position:relative;z-index:1}
-.card-desc{font-size:11px;color:#b9c8d5;line-height:1.55;margin:0 0 17px;position:relative;z-index:1;max-width:95%}
-.card-action{margin-top:auto;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
-.open-btn{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:#18283a;font-size:11px;font-weight:900;letter-spacing:.05em;padding:10px 14px;border-radius:9px;
- background:linear-gradient(180deg,#ffe7ad,#e9bd62);box-shadow:0 3px 0 #a9782d,0 7px 13px #0003;transition:filter .2s,transform .2s}
-.open-btn:hover{filter:brightness(1.08);transform:translateY(-2px)}
-.open-btn:active{transform:translateY(2px);box-shadow:0 1px 0 #a9782d}
-.open-btn.disabled{background:linear-gradient(180deg,#64788a,#40566a);color:#d2dbe3;box-shadow:0 3px 0 #263b4e;cursor:not-allowed}
-.arrow{font-size:15px}
-.card-index{font:italic 12px Georgia,serif;color:#e9cb91aa}
-.feature-card{grid-column:span 2;min-height:190px;background:linear-gradient(115deg,rgba(58,79,94,.98),rgba(24,47,67,.98))}
-.feature-card .icon-box{background:linear-gradient(145deg,#8b6b39,#594421)}
-.feature-card .card-title{font: bold 21px Georgia,serif}
-.feature-card .card-desc{max-width:520px}
-.coming{opacity:.92}
-.info-strip{margin:27px 0 0;padding:17px 20px;border:1px solid #ffffff17;border-radius:14px;background:#ffffff08;display:flex;align-items:center;gap:13px;color:#c4d0dc;font-size:11px;line-height:1.6}
-.info-icon{flex:0 0 32px;height:32px;border-radius:10px;display:grid;place-items:center;background:#e8bd6420;color:var(--gold2);font-size:16px}
-.info-strip strong{color:#f4d99e}
-.footer{display:flex;justify-content:space-between;gap:12px;padding:28px 0 25px;margin-top:16px;border-top:1px solid #ffffff14;color:#8496a8;font-size:10px;letter-spacing:.04em}
-.footer b{color:#c8d2dc;font-weight:700}
-@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.menu-card:nth-child(2){animation-delay:.08s}.menu-card:nth-child(3){animation-delay:.16s}.menu-card:nth-child(4){animation-delay:.24s}.menu-card:nth-child(5){animation-delay:.32s}.menu-card:nth-child(6){animation-delay:.4s}
-@media(max-width:850px){.menu-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.feature-card{grid-column:span 2}}
-@media(max-width:540px){
- .shell{width:min(100% - 24px,440px)}.topbar{padding-top:16px}.crest{width:42px;height:42px}.brand-name{font-size:12px}.brand-sub{font-size:9px}.status{font-size:9px}
- .hero{padding:38px 5px 25px}h1{font-size:43px}.hero p{font-size:12px}
- .section-head{align-items:flex-start}.section-title{font-size:21px}.section-note{max-width:120px;font-size:10px}
- .menu-grid{grid-template-columns:1fr;gap:12px}.menu-card,.feature-card{grid-column:auto;min-height:174px;padding:16px}
- .feature-card .card-title{font-size:19px}.card-title{margin-top:13px}.info-strip{align-items:flex-start;padding:14px;font-size:10px}
- .footer{flex-direction:column;text-align:center;padding-bottom:20px}
+
+.shell { width: min(1140px, calc(100% - 32px)); margin: auto; position: relative; z-index: 1; padding-bottom: 40px; }
+
+/* BAR ATAS / TOPBAR */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; margin-top: 15px;
+  background: linear-gradient(180deg, var(--coc-wood-light) 0%, var(--coc-wood-dark) 100%);
+  border: 4px solid var(--coc-gold-mid);
+  border-radius: 18px;
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.2), 0 8px 20px rgba(0,0,0,0.8);
 }
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+.brand { display: flex; align-items: center; gap: 14px; }
+.crest {
+  width: 52px; height: 52px; display: grid; place-items: center;
+  border: 3px solid #ffea9f; border-radius: 12px;
+  background: linear-gradient(145deg, #d9381e, #7a1b0c);
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.4), 0 4px 10px rgba(0,0,0,0.6);
+  font-size: 26px; text-shadow: 0 2px 4px #000;
+}
+.brand-name {
+  font-family: 'Luckiest Guy', cursive; font-size: 20px;
+  color: var(--coc-gold-light); letter-spacing: 1px;
+  text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+}
+.brand-sub { font-size: 11px; color: #d4bda5; font-weight: 800; letter-spacing: 1px; }
+
+.auth-badge {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(0,0,0,0.5); padding: 8px 16px; border-radius: 99px;
+  border: 2px solid var(--coc-gold-border);
+}
+.status-dot { width: 12px; height: 12px; border-radius: 50%; background: #ff4747; box-shadow: 0 0 10px #ff4747; }
+.status-dot.active { background: #55ff00; box-shadow: 0 0 10px #55ff00; }
+.status-text { font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+
+/* HERO SECTION */
+.hero { text-align: center; padding: 40px 10px 20px; }
+.hero-title {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: clamp(36px, 6vw, 64px);
+  margin: 10px 0;
+  color: #fff;
+  text-shadow: 
+    3px 3px 0 #000, -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000,
+    0 6px 0 var(--coc-wood-dark), 0 10px 20px rgba(0,0,0,0.8);
+}
+.hero-title span { color: var(--coc-gold-light); }
+.hero p {
+  max-width: 600px; margin: 0 auto; color: #e6ceb8; font-size: 15px; font-weight: 800;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+/* SECTION HEADER */
+.section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 30px 0 15px; padding: 0 10px;
+}
+.section-title {
+  font-family: 'Luckiest Guy', cursive; font-size: 26px; color: var(--coc-gold-light);
+  text-shadow: 2px 2px 0 #000, -1px -1px 0 #000; margin: 0;
+}
+
+/* MENU GRID & CARDS */
+.menu-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.menu-card {
+  position: relative; min-height: 210px; padding: 20px; border-radius: 20px;
+  background: linear-gradient(180deg, var(--coc-wood-mid) 0%, var(--coc-wood-dark) 100%);
+  border: 4px solid #734529;
+  box-shadow: inset 0 3px 0 rgba(255,255,255,0.15), 0 10px 25px rgba(0,0,0,0.7);
+  display: flex; flex-direction: column; transition: transform 0.2s;
+}
+.menu-card:hover { transform: translateY(-5px); border-color: var(--coc-gold-mid); }
+.feature-card { grid-column: span 2; background: linear-gradient(180deg, #57331c 0%, #30190a 100%); }
+
+.card-top { display: flex; align-items: center; justify-content: space-between; }
+.icon-box {
+  width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; font-size: 28px;
+  background: linear-gradient(180deg, var(--coc-gold-mid), var(--coc-gold-dark));
+  border: 3px solid #ffe89e; box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+.tag {
+  font-size: 10px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;
+  background: rgba(0,0,0,0.6); color: var(--coc-gold-light); padding: 6px 12px;
+  border-radius: 99px; border: 1.5px solid var(--coc-gold-border);
+}
+
+.card-title {
+  font-family: 'Luckiest Guy', cursive; font-size: 20px; margin: 15px 0 5px;
+  color: #fff; text-shadow: 2px 2px 0 #000;
+}
+.card-desc { font-size: 12px; color: #c9b097; line-height: 1.5; margin-bottom: 20px; font-weight: 700; }
+
+.card-action { margin-top: auto; display: flex; align-items: center; justify-content: space-between; }
+
+/* BUTTONS (CoC 3D Style) */
+.coc-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 22px; border-radius: 12px; text-decoration: none;
+  font-family: 'Luckiest Guy', cursive; font-size: 14px; letter-spacing: 1px;
+  color: #fff; text-shadow: 1px 2px 0 #000; cursor: pointer; border: none;
+  box-shadow: 0 5px 0 var(--shadow-color), 0 8px 15px rgba(0,0,0,0.6);
+  transition: all 0.1s ease; position: relative; top: 0;
+}
+.coc-btn:active { top: 3px; box-shadow: 0 2px 0 var(--shadow-color), 0 4px 8px rgba(0,0,0,0.6); }
+
+.coc-btn-green { background: linear-gradient(180deg, #7cd91c 0%, var(--coc-btn-green) 100%); --shadow-color: var(--coc-btn-green-shadow); border: 2px solid #a3ff47; }
+.coc-btn-red { background: linear-gradient(180deg, #ff5238 0%, var(--coc-btn-red) 100%); --shadow-color: var(--coc-btn-red-shadow); border: 2px solid #ff8878; }
+.coc-btn-gold { background: linear-gradient(180deg, var(--coc-gold-light) 0%, var(--coc-gold-mid) 100%); --shadow-color: var(--coc-gold-dark); color: #2b170c; text-shadow: 1px 1px 0 #ffe89e; border: 2px solid #fff; }
+.coc-btn.disabled { opacity: 0.5; filter: grayscale(1); pointer-events: none; }
+
+/* MODAL PIN (CoC Dialog Style) */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+  display: flex; align-items: center; justify-content: center; z-index: 999;
+  opacity: 1; transition: opacity 0.3s ease;
+}
+.modal-overlay.hidden { opacity: 0; pointer-events: none; }
+
+.coc-dialog {
+  width: min(420px, calc(100% - 32px));
+  background: linear-gradient(180deg, var(--coc-wood-mid) 0%, var(--coc-wood-dark) 100%);
+  border: 5px solid var(--coc-gold-mid); border-radius: 24px;
+  box-shadow: inset 0 3px 0 rgba(255,255,255,0.3), 0 20px 50px #000;
+  padding: 30px 24px; text-align: center; position: relative;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes popIn { from { transform: scale(0.8); } to { transform: scale(1); } }
+
+.coc-dialog-title {
+  font-family: 'Luckiest Guy', cursive; font-size: 26px; color: var(--coc-gold-light);
+  text-shadow: 3px 3px 0 #000; margin: 0 0 10px;
+}
+.coc-dialog p { color: #d4bda5; font-size: 13px; font-weight: 800; margin-bottom: 20px; }
+
+.pin-input {
+  width: 100%; padding: 14px; font-size: 24px; text-align: center; font-weight: 900;
+  letter-spacing: 8px; border-radius: 14px; border: 3px solid var(--coc-gold-border);
+  background: #120a05; color: var(--coc-gold-light); margin-bottom: 20px;
+  outline: none; box-shadow: inset 0 3px 6px rgba(0,0,0,0.8);
+}
+.pin-input:focus { border-color: #fff; }
+
+.error-msg { color: #ff5238; font-weight: 900; font-size: 12px; margin-bottom: 15px; display: none; }
+
+@media(max-width: 850px) {
+  .menu-grid { grid-template-columns: 1fr; }
+  .feature-card { grid-column: auto; }
+}
 </style>
 </head>
 <body>
-<div class="ambient one"></div><div class="ambient two"></div>
+
+<!-- MODAL DIALOG PIN KUNCI -->
+<div class="modal-overlay" id="pinModal">
+  <div class="coc-dialog">
+    <div class="coc-dialog-title">🔒 AKSES TERKUNCI</div>
+    <p>Masukkan PIN Rahasia Panitia untuk Membuka Portal ASAS Command Center</p>
+    <input type="password" id="pinInput" class="pin-input" maxlength="10" placeholder="••••••" autofocus />
+    <div id="errorMsg" class="error-msg">PIN SALAH! SILAKAN COBA LAGI.</div>
+    <button class="coc-btn coc-btn-green" style="width:100%" onclick="verifyPin()">BUKA PORTAL</button>
+  </div>
+</div>
+
 <div class="shell">
  <header class="topbar">
   <div class="brand">
-   <div class="crest">♜</div>
-   <div><div class="brand-name">ASAS COMMAND CENTER</div><div class="brand-sub">PANITIA • PORTAL KOORDINASI</div></div>
+   <div class="crest">🛡️</div>
+   <div>
+     <div class="brand-name">ASAS COMMAND CENTER</div>
+     <div class="brand-sub">PORTAL KOORDINASI PANITIA</div>
+   </div>
   </div>
-  <div class="status"><span class="status-dot"></span> Portal koordinasi</div>
+  <div class="auth-badge">
+    <span class="status-dot" id="statusDot"></span>
+    <span class="status-text" id="statusText">TERKUNCI</span>
+    <button class="coc-btn coc-btn-red" id="lockBtn" style="padding: 4px 10px; font-size:10px; display:none;" onclick="lockPortal()">KUNCI</button>
+  </div>
  </header>
 
  <main>
   <section class="hero">
-   <div class="eyebrow">Academic Operations Hub</div>
-   <h1>ASAS <span>2026/2027</span></h1>
-   <p>Pusat akses digital untuk mendukung koordinasi dan kelancaran pelaksanaan Asesmen Sumatif Akhir Semester. Pilih menu yang Anda perlukan.</p>
-   <div class="hero-rule">SATU PINTU • LEBIH TERARAH</div>
+   <div class="hero-title">ASAS <span>2026/2027</span></div>
+   <p>Pusat Komando & Akses Digital Terpadu untuk Pelaksanaan Asesmen Sumatif Akhir Semester.</p>
   </section>
 
-  <section aria-labelledby="menuHeading">
+  <section>
    <div class="section-head">
-    <div><div class="section-kicker">Quick Access</div><h2 class="section-title" id="menuHeading">Menu Pendukung ASAS</h2></div>
-    <div class="section-note">Pilih kartu menu<br>untuk membuka layanan</div>
+    <h2 class="section-title">⚔️ MENU UTAMA</h2>
    </div>
 
    <div class="menu-grid">
     <article class="menu-card feature-card">
-     <div class="card-top"><div class="icon-box">📚</div><span class="tag">Dokumen utama</span></div>
+     <div class="card-top">
+       <div class="icon-box">📚</div>
+       <span class="tag">DOKUMEN UTAMA</span>
+     </div>
      <h3 class="card-title">Soal &amp; Kisi-Kisi ASAS</h3>
      <p class="card-desc">Akses folder pengumpulan dan dokumen soal serta kisi-kisi ASAS untuk kebutuhan panitia dan guru mata pelajaran.</p>
      <div class="card-action">
-      <a class="open-btn" href="https://drive.google.com/drive/folders/12HzkBoh_WXLa9Vlm6FXVDYxxFZyYZqW_?usp=sharing" target="_blank" rel="noopener noreferrer">BUKA FOLDER <span class="arrow">↗</span></a>
-      <span class="card-index">01 / ASAS</span>
+      <a class="coc-btn coc-btn-gold protected-link disabled" href="https://drive.google.com/drive/folders/12HzkBoh_WXLa9Vlm6FXVDYxxFZyYZqW_?usp=sharing" target="_blank" rel="noopener noreferrer">BUKA FOLDER ↗</a>
      </div>
     </article>
 
-    <article class="menu-card coming">
-     <div class="card-top"><div class="icon-box">👥</div><span class="tag">Segera hadir</span></div>
+    <article class="menu-card">
+     <div class="card-top"><div class="icon-box">👥</div><span class="tag">SEGERA HADIR</span></div>
      <h3 class="card-title">Data Siswa</h3>
      <p class="card-desc">Akses data peserta, rombongan belajar, dan kebutuhan administrasi siswa.</p>
-     <div class="card-action"><span class="open-btn disabled">LINK BELUM DIATUR</span><span class="card-index">02</span></div>
+     <div class="card-action"><button class="coc-btn coc-btn-green disabled">BELUM TERSEDIA</button></div>
     </article>
 
-    <article class="menu-card coming">
-     <div class="card-top"><div class="icon-box">🎫</div><span class="tag">Segera hadir</span></div>
+    <article class="menu-card">
+     <div class="card-top"><div class="icon-box">🎫</div><span class="tag">SEGERA HADIR</span></div>
      <h3 class="card-title">Kartu Ujian</h3>
      <p class="card-desc">Menu untuk membuat, memeriksa, atau mencetak kartu peserta ASAS.</p>
-     <div class="card-action"><span class="open-btn disabled">LINK BELUM DIATUR</span><span class="card-index">03</span></div>
+     <div class="card-action"><button class="coc-btn coc-btn-green disabled">BELUM TERSEDIA</button></div>
     </article>
 
-    <article class="menu-card coming">
-     <div class="card-top"><div class="icon-box">🗓️</div><span class="tag">Segera hadir</span></div>
+    <article class="menu-card">
+     <div class="card-top"><div class="icon-box">🗓️</div><span class="tag">SEGERA HADIR</span></div>
      <h3 class="card-title">Jadwal ASAS</h3>
      <p class="card-desc">Informasi jadwal pelaksanaan, sesi, ruang, dan pengawas ujian.</p>
-     <div class="card-action"><span class="open-btn disabled">LINK BELUM DIATUR</span><span class="card-index">04</span></div>
+     <div class="card-action"><button class="coc-btn coc-btn-green disabled">BELUM TERSEDIA</button></div>
     </article>
 
-    <article class="menu-card coming">
-     <div class="card-top"><div class="icon-box">🏫</div><span class="tag">Segera hadir</span></div>
+    <article class="menu-card">
+     <div class="card-top"><div class="icon-box">🏫</div><span class="tag">SEGERA HADIR</span></div>
      <h3 class="card-title">Ruang &amp; Pengawas</h3>
      <p class="card-desc">Referensi pembagian ruang, denah, dan daftar pengawas ASAS.</p>
-     <div class="card-action"><span class="open-btn disabled">LINK BELUM DIATUR</span><span class="card-index">05</span></div>
+     <div class="card-action"><button class="coc-btn coc-btn-green disabled">BELUM TERSEDIA</button></div>
     </article>
 
-    <article class="menu-card coming">
-     <div class="card-top"><div class="icon-box">📊</div><span class="tag">Segera hadir</span></div>
+    <article class="menu-card">
+     <div class="card-top"><div class="icon-box">📊</div><span class="tag">SEGERA HADIR</span></div>
      <h3 class="card-title">Rekap &amp; Berita Acara</h3>
      <p class="card-desc">Pusat rekap pelaksanaan, administrasi, dan berita acara kegiatan.</p>
-     <div class="card-action"><span class="open-btn disabled">LINK BELUM DIATUR</span><span class="card-index">06</span></div>
+     <div class="card-action"><button class="coc-btn coc-btn-green disabled">BELUM TERSEDIA</button></div>
     </article>
    </div>
   </section>
-
-  <aside class="info-strip">
-   <div class="info-icon">✦</div>
-   <div><strong>Informasi:</strong> Menu bertanda “Segera Hadir” merupakan tempat tautan yang akan ditambahkan kemudian. Setelah memiliki URL, cukup ubah pengaturan tautan pada kartu menu di file <b>index.html</b>.</div>
-  </aside>
  </main>
-
- <footer class="footer">
-  <div><b>ASAS COMMAND CENTER</b> &nbsp;|&nbsp; Portal Koordinasi Panitia</div>
-  <div>Dirancang untuk akses cepat • Responsif di semua perangkat</div>
- </footer>
 </div>
+
+<script>
+// ==========================================
+// KONFIGURASI URL GOOGLE APPS SCRIPT EXEC
+// ==========================================
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyuIR7WPDMZGEFEGNRT3yeR0ZX93aDIr6jAbbU3z7KIZm64Fk9DW2i0p0gpNg0Ngq2r/exec";
+
+// Cek status login dari LocalStorage saat load
+document.addEventListener("DOMContentLoaded", () => {
+  const isAuth = localStorage.getItem("asas_authenticated");
+  if (isAuth === "true") {
+    unlockPortalUI();
+  }
+
+  // Allow press Enter in PIN Input
+  document.getElementById("pinInput").addEventListener("keyup", (e) => {
+    if (e.key === "Enter") verifyPin();
+  });
+});
+
+async function verifyPin() {
+  const pinInput = document.getElementById("pinInput").value;
+  const errorMsg = document.getElementById("errorMsg");
+  
+  if (!pinInput) {
+    errorMsg.innerText = "PIN TIDAK BOLEH KOSONG!";
+    errorMsg.style.display = "block";
+    return;
+  }
+
+  errorMsg.style.display = "none";
+
+  try {
+    const response = await fetch(`${APPS_SCRIPT_URL}?pin=${encodeURIComponent(pinInput)}`);
+    const result = await response.json();
+
+    if (result.success && result.authenticated) {
+      localStorage.setItem("asas_authenticated", "true");
+      unlockPortalUI();
+    } else {
+      errorMsg.innerText = result.message || "PIN SALAH!";
+      errorMsg.style.display = "block";
+    }
+  } catch (err) {
+    errorMsg.innerText = "GAGAL MENGHUBUNGI SERVER CONFIG!";
+    errorMsg.style.display = "block";
+    console.error(err);
+  }
+}
+
+function unlockPortalUI() {
+  document.getElementById("pinModal").classList.add("hidden");
+  document.getElementById("statusDot").classList.add("active");
+  document.getElementById("statusText").innerText = "TERBUKA";
+  document.getElementById("lockBtn").style.display = "inline-flex";
+
+  // Enable protected links
+  const protectedLinks = document.querySelectorAll(".protected-link");
+  protectedLinks.forEach(link => link.classList.remove("disabled"));
+}
+
+function lockPortal() {
+  localStorage.removeItem("asas_authenticated");
+  location.reload();
+}
+</script>
 </body>
 </html>
